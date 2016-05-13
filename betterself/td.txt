@@ -1,2 +1,0 @@
-# Transform to Python 3
-# Change inputs from day values to time values, ie. move away from on 9/22 - 100mg Caffeine, but to on 9/22 at 10AM ingested 100mg Caffeine
