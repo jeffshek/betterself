@@ -67,3 +67,6 @@ personal_fixtures/
 # PyCharm
 .idea/
 
+# Mac
+.DS_Store
+
