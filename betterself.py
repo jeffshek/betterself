@@ -62,7 +62,6 @@ historical_dataframe = sanitize_input_data(historical_dataframe)
 
 # take a look at anything that has a high correlation
 correlation_results = historical_dataframe.corr()[DRIVER].dropna().sort_values(DRIVER, ascending=False)
-print correlation_results
 # historical_dataframe.to_excel('test.xlsx')
 
 
