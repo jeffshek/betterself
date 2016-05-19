@@ -70,3 +70,6 @@ personal_fixtures/
 # Mac
 .DS_Store
 
+# collect static should be ignored
+staticfiles/
+
