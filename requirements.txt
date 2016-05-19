@@ -1,1 +1,1 @@
--r /requirements/requirements.txt
+-r requirements/requirements.txt
