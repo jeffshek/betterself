@@ -3,7 +3,6 @@
   "description": "Figure Out How To Be Better",
   "env": {
     "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-python",
-    "DJANGO_SETTINGS_MODULE": "config.settings.production",
   },
   "scripts": {
     "postdeploy": "python manage.py migrate"
