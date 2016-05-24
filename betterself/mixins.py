@@ -3,7 +3,7 @@ from django.db import models
 
 
 # make sure that create and modify are always the same structure
-class BaseTimeModel(models.Model):
+class BaseModel(models.Model):
     created = models.DateField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

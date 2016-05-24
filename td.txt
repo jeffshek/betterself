@@ -1,2 +1,6 @@
 # Transform into Docker Instance
 # Setup Apps
+
+
+# Figure Out ...
+When a user deletes his / her account, how should all user generated company / supplements cascade delete?
