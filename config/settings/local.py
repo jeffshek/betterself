@@ -59,4 +59,13 @@ INSTALLED_APPS += ('django_extensions', )
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'betterself',
+        'USER': 'django_db_agent',
+        'PASSWORD': 'iwantapuppy',
+    }
+}
+
 # Your local stuff: Below this line define 3rd party library settings
