@@ -64,6 +64,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'betterself',
         'USER': 'django_db_agent',
+        # don't worry, the production database is a super hash
+        # for local, writing about puppies makes me happy
         'PASSWORD': 'iwantapuppy',
     }
 }
