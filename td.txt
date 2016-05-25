@@ -1,3 +1,6 @@
-# Change inputs from day values to time values, ie. move away from on 9/22 - 100mg Caffeine, but to on 9/22 at 10AM ingested 100mg Caffeine
-# Install Database
-# Setup Heroku
+# Transform into Docker Instance
+# Setup Apps
+
+
+# Figure Out ...
+When a user deletes his / her account, how should all user generated company / supplements cascade delete?
