@@ -16,6 +16,7 @@ class BaseModel(models.Model):
 class BaseModelWithUserGeneratedContent(models.Model):
     created = models.DateField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     class Meta:

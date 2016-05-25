@@ -27,16 +27,16 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Useful template tags:
     # 'django.contrib.humanize',
-
+    # ---
     # Admin
     'django.contrib.admin',
-
+    # ---
     # Generated
     'supplements',
     'vendors',
+    'apis',
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
