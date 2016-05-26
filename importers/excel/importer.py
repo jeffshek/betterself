@@ -1,67 +1,73 @@
-# -*- coding: utf-8 -*-
 import pandas as pd
 
-# Not every column is necessary
-DISREGARD_COLUMNS = [
-    'Day', # don't really care about what day of the week for correlations
-    'Very Distracting Time'
-]
 
-DATE_COLUMN = 'Date'
-REST_DAY_COLUMN = "Rest Day"
-REQUIRED_COLUMNS = [
-    'Sleep Time (What you got the night before)',
-    'Productivity Time'
-]
+class ExcelXlsxSanitizer(object):
+    """Take a raw historical excel file and clean it"""
+    IGNORE_COLUMNS = [
+        # don't really care about what day of the week for correlations
+        'Day',
+        'Very Distracting Time'
+    ]
+    REQUIRED_COLUMNS = [
+        'Sleep Time (What you got the night before)',
+        'Productivity Time'
+    ]
+    DATE_COLUMN = 'Date'
+    REST_DAY_COLUMN = "Rest Day"
 
-# column you care the most about improving
-# DRIVER = ['Sleep Time Minutes']
-DRIVER = ['Productivity Time (Minutes)']
-# DRIVER = ['Distracting Time (Minutes)']
+    def __init__(self, file_path, sheet=None):
+        self.file_path = file_path
+        # Sheet1 is default name for xlsx files
+        self.sheet = sheet if sheet else 'Sheet1'
 
-# lots of personal formatting to look pretty in excel, but code doesn't care about pretty
-def clean_and_rename_dataframe_columns(dataframe):
-    revised_columns = [item.strip() for item in dataframe.columns]
-    update_columns = dict(zip(dataframe.columns, revised_columns))
-    dataframe = dataframe.rename(columns=update_columns)
+    def get_sanitized_dataframe(self):
+        excel_file = pd.ExcelFile(self.file_path)
+        dataframe = excel_file.parse(self.sheet)
 
-    for column in DISREGARD_COLUMNS:
-        dataframe = dataframe.drop(column, axis=1)
+        # Sanitize so the inputs are correct and then
+        # remove any fluke days
+        dataframe = self._sanitize_sheet(dataframe)
+        dataframe = self._remove_unqualified_data(dataframe)
+        dataframe = self._set_dataframe_index(dataframe)
 
-    return dataframe
+        return dataframe
 
+    def _sanitize_sheet(self, dataframe):
+        dataframe = self._sanitize_dataframe_columns(dataframe)
+        dataframe = self._sanitize_dataframe_values(dataframe)
+        return dataframe
 
-def sanitize_input_data(dataframe):
-    dataframe = dataframe.replace('T', 1)
-    dataframe = dataframe.fillna(0)
-    return dataframe
+    def _sanitize_dataframe_columns(self, dataframe):
+        revised_columns = self._get_cleaned_column_headers(dataframe)
+        dataframe = dataframe.rename(columns=revised_columns)
 
+        for column in self.IGNORE_COLUMNS:
+            dataframe = dataframe.drop(column, axis=1)
 
-def remove_unqualified_data(dataframe):
-    for column in REQUIRED_COLUMNS:
-        valid_series = pd.notnull(dataframe[column])
-        dataframe = dataframe[valid_series]
+        return dataframe
 
-    not_rest_days = pd.isnull(dataframe[REST_DAY_COLUMN])
-    dataframe = dataframe[not_rest_days]
+    def _sanitize_dataframe_values(self, dataframe):
+        dataframe = dataframe.replace('T', 1)
+        dataframe = dataframe.fillna(0)
+        return dataframe
 
-    return dataframe
+    def _set_dataframe_index(self, dataframe):
+        dataframe = dataframe.set_index(dataframe[self.DATE_COLUMN])
+        return dataframe
 
+    def _remove_unqualified_data(self, dataframe):
+        for column in self.REQUIRED_COLUMNS:
+            valid_series = pd.notnull(dataframe[column])
+            dataframe = dataframe[valid_series]
 
-def set_dataframe_index(dataframe):
-    dataframe = dataframe.set_index(dataframe[DATE_COLUMN])
-    return dataframe
+        not_rest_days = pd.isnull(dataframe[self.REST_DAY_COLUMN])
+        dataframe = dataframe[not_rest_days]
 
+        return dataframe
 
-# read fixtures file
-historical_dataframe = pd.ExcelFile('personal_fixtures/supplements_fixtures.xlsx').parse('Sheet1', skiprows=1)
-historical_dataframe = clean_and_rename_dataframe_columns(historical_dataframe)
-historical_dataframe = remove_unqualified_data(historical_dataframe)
-historical_dataframe = set_dataframe_index(historical_dataframe)
-historical_dataframe = sanitize_input_data(historical_dataframe)
-
-# take a look at anything that has a high correlation
-correlation_results = historical_dataframe.corr()[DRIVER].dropna().sort_values(DRIVER, ascending=False)
-# historical_dataframe.to_excel('test.xlsx')
-
-
+    @classmethod
+    def _get_cleaned_column_headers(cls, dataframe):
+        """Return a k/v of crappy columns names without crappy spaces"""
+        revised_columns = [item.strip() for item in dataframe.columns]
+        updated_columns = dict(zip(dataframe.columns, revised_columns))
+        return updated_columns
