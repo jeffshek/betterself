@@ -37,6 +37,7 @@ DJANGO_APPS = (
     'supplements',
     'vendors',
     'apis',
+    'importers',
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
