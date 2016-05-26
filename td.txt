@@ -1,6 +1,17 @@
-# Transform into Docker Instance
-# Setup Apps
+# TD
+- Importer for raw xslx files
+    - Importer
+    - Sanitize
+    - Fixtures
+- Add Docker so isolated development
+    - Make Travis pass
+    - Lookup Docker to Heroku deployments
+- Add Git hooks
+- Look up Django best standards for RESTful
 
+# Tests TD
+Now
+-
 
-# Figure Out ...
-When a user deletes his / her account, how should all user generated company / supplements cascade delete?
+Later
+- When a user deletes his account, make sure cascades
