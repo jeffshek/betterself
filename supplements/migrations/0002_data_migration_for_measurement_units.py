@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
 
 
     dependencies = [
-        ('supplements', '0003_auto_20160528_1519'),
+        ('supplements', '0001_initial'),
     ]
 
     operations = [
