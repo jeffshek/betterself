@@ -2,7 +2,7 @@ import pandas as pd
 
 from django.test import TestCase
 
-from importers.excel.importer import ExcelXlsxSanitizer
+from importers.excel.importer import SupplementSanitizer
 
 
 class ExcelImporterTests(TestCase):
@@ -14,7 +14,7 @@ class ExcelImporterTests(TestCase):
 
     def test_excel_importer(self):
         file_path = 'fixtures/tests/historical_events.xslx'
-        sanitizer = ExcelXlsxSanitizer(file_path)
+        sanitizer = SupplementSanitizer(file_path)
         results = sanitizer.get_sanitized_dataframe()
 
         results_type = type(results)

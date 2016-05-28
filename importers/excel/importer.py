@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-class ExcelXlsxSanitizer(object):
+class SupplementSanitizer(object):
     """Take a raw historical excel file and clean it"""
     IGNORE_COLUMNS = [
         # don't really care about what day of the week for correlations

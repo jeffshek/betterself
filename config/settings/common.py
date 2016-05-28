@@ -16,7 +16,6 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('betterself')
 
 env = environ.Env()
-
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
 DJANGO_APPS = (
@@ -32,12 +31,7 @@ DJANGO_APPS = (
     # ---
     # Admin
     'django.contrib.admin',
-    # ---
-    # Generated
-    'supplements',
-    'vendors',
-    'apis',
-    'importers',
+
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
@@ -48,8 +42,11 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'betterself.users',  # custom users app
-    # Your stuff: custom apps go here
+    'betterself.users',
+    'supplements',
+    'vendors',
+    'apis',
+    'importers',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
