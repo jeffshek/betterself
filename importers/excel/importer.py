@@ -18,8 +18,7 @@ class ExcelFileSanitizer(object):
         excel_file = pd.ExcelFile(self.file_path)
         dataframe = excel_file.parse(self.sheet)
 
-        # Sanitize so the inputs are correct and then
-        # remove fluke days
+        # Sanitize so the inputs are correct and remove fluke days
         dataframe = self._sanitize_sheet(dataframe)
         dataframe = self._set_dataframe_index(dataframe, date_column)
         return dataframe
@@ -61,8 +60,10 @@ class ExcelFileSanitizer(object):
 
 
 class SupplementSanitizerTemplate(ExcelFileSanitizer):
-    """Take a raw historical excel of supplements and clean it"""
+    """Take a raw historical excel of supplements, clean and save it"""
+
     TEMPLATE_SAVE_MODEL = SupplementProductEventComposition
+    SUPPLEMENT_PRODUCT_CACHE = {}  # use it to match any supplement_name to a product
 
     def get_measurement_unit_and_quantity_from_name(self, name):
         # figure out that Advil (200mg) means 200 mg
@@ -70,34 +71,28 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             'measurement_unit': None,
             'quantity': None,
         }
+        # TD - Add regex search
         return result
-
-    def get_user_supplement(self, column_name):
-        # figure out what "Advil (200mg)"
-        return
 
     def create_supplement_products_from_dataframe(self, dataframe):
         # problem with flat data structures is it's hard to transverse hierarchy
-        # when you have no idea what users will input, so here we're going to
+        # when you have no idea what users will input, so we're going to
         # create everything if it doesn't exist and then let a user rename
         # on the site
 
         # if you're putting more than 30 supplements from a spreadsheet
-        # i don't trust you. this prevents a jackass from uploading
-        # an absurd amount of supplements. This importer is meant to help
-        # only a few subset of users
+        # i don't trust you. this prevents user error from uploading
+        # an absurd amount of supplements.
         if len(dataframe) > 30:
             raise CommandError("Too many columns inserted. Please contact an admin.")
 
-        for supplement in dataframe:  # this is a list of dataframe columns
-            supplement_name = supplement.strip()
-
+        for supplement_name in dataframe:  # a list of dataframe columns
             ingredient = Ingredient.get_or_create(
                 name=supplement_name,
                 user=self.user
             )
 
-            ingredient_comp_details = self.get_measurement_unit_and_quantity_from_name(name)
+            ingredient_comp_details = self.get_measurement_unit_and_quantity_from_name(supplement_name)
             ingredient_comp = IngredientComposition.get_or_create(
                 ingredient=ingredient,
                 user=self.user,
@@ -112,8 +107,14 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             supplement.ingredient_composition = [ingredient_comp]
             supplement.save()
 
+            # add to cache, so don't have to deal with flattening to search
+            # when saving individual events
+            self.SUPPLEMENT_PRODUCT_CACHE[supplement_name] = supplement
+
     def save_results(self, dataframe):
-        return
+        self.create_supplement_products_from_dataframe(dataframe)
+        for _, event in dataframe.iterrows():
+            continue
 
 
 # TD - Check Django default values for atomic transactions in 1.9

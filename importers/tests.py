@@ -6,12 +6,6 @@ from importers.excel.importer import SupplementSanitizerTemplate
 
 
 class ExcelImporterTests(TestCase):
-    def setUp(cls):
-        """
-        Not always necessary
-        """
-        pass
-
     def test_excel_importer(self):
         file_path = 'fixtures/tests/historical_events.xslx'
         sanitizer = SupplementSanitizerTemplate(file_path)
