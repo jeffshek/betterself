@@ -36,6 +36,18 @@ class ExcelImporterTests(TestCase):
         result = SupplementSanitizerTemplate.get_measurement_unit_and_quantity_from_name(test_name_2)
         self.assertEqual(result['quantity'], None)
 
+    def test_columns_with_spaces_in_excel(self):
+        series = pd.Series([1,2,3])
+        dataframe = pd.DataFrame(
+            {
+                '               A': series,   # make some ridiculous columns
+                '               B (200mg)': series,
+            }
+        )
 
-# TD
-# Make sure all columns (ie. no "    Advil" is saved, always check strip).
+        cleaned_dataframe = SupplementSanitizerTemplate._sanitize_dataframe_columns(dataframe)
+        cleaned_columns = cleaned_dataframe.columns
+
+        self.assertTrue('A' in cleaned_columns)
+        self.assertTrue('B (200mg)' in cleaned_columns)
+        self.assertFalse('               A' in cleaned_columns)

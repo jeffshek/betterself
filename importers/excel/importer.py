@@ -42,9 +42,10 @@ class ExcelFileSanitizer(object):
         dataframe = dataframe.drop(date_column, axis=1)
         return dataframe
 
-    def _sanitize_sheet(self, dataframe):
-        dataframe = self._sanitize_dataframe_columns(dataframe)
-        dataframe = self._sanitize_dataframe_values(dataframe)
+    @classmethod
+    def _sanitize_sheet(cls, dataframe):
+        dataframe = cls._sanitize_dataframe_columns(dataframe)
+        dataframe = cls._sanitize_dataframe_values(dataframe)
         return dataframe
 
     @classmethod
@@ -54,11 +55,12 @@ class ExcelFileSanitizer(object):
         updated_columns = dict(zip(dataframe.columns, revised_columns))
         return updated_columns
 
-    def _sanitize_dataframe_columns(self, dataframe):
-        revised_columns = self._get_cleaned_column_headers(dataframe)
+    @classmethod
+    def _sanitize_dataframe_columns(cls, dataframe):
+        revised_columns = cls._get_cleaned_column_headers(dataframe)
         dataframe = dataframe.rename(columns=revised_columns)
 
-        for column in self.IGNORE_COLUMNS:
+        for column in cls.IGNORE_COLUMNS:
             dataframe = dataframe.drop(column, axis=1)
 
         return dataframe
