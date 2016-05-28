@@ -38,7 +38,7 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
     by how many hours of sleep you got the night before.
     """
     input_source = create_django_choice_tuple_from_list(INPUT_SOURCES)
-    sleep_time = models.IntegerField()  # always should be stored in minutes
+    sleep_time_minutes = models.IntegerField()  # always should be stored in minutes
     # Odd debate, but what day does this event accurately represent?
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
     day = models.DateField()

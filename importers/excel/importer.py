@@ -1,6 +1,8 @@
 import pandas as pd
+from django.core.management import CommandError
 
 from events.models import SupplementProductEventComposition
+from supplements.models import Ingredient, IngredientComposition, SupplementProduct
 
 
 class ExcelFileSanitizer(object):
@@ -17,7 +19,7 @@ class ExcelFileSanitizer(object):
         dataframe = excel_file.parse(self.sheet)
 
         # Sanitize so the inputs are correct and then
-        # remove any fluke days
+        # remove fluke days
         dataframe = self._sanitize_sheet(dataframe)
         dataframe = self._set_dataframe_index(dataframe, date_column)
         return dataframe
@@ -62,13 +64,57 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
     """Take a raw historical excel of supplements and clean it"""
     TEMPLATE_SAVE_MODEL = SupplementProductEventComposition
 
-    def match_columns_with_object(self, dataframe):
+    def get_measurement_unit_and_quantity_from_name(self, name):
+        # figure out that Advil (200mg) means 200 mg
+        result = {
+            'measurement_unit': None,
+            'quantity': None,
+        }
+        return result
+
+    def get_user_supplement(self, column_name):
+        # figure out what "Advil (200mg)"
+        return
+
+    def create_supplement_products_from_dataframe(self, dataframe):
         # problem with flat data structures is it's hard to transverse hierarchy
-        # when you have no idea what users will input
-        for supplement in dataframe:
+        # when you have no idea what users will input, so here we're going to
+        # create everything if it doesn't exist and then let a user rename
+        # on the site
+
+        # if you're putting more than 30 supplements from a spreadsheet
+        # i don't trust you. this prevents a jackass from uploading
+        # an absurd amount of supplements. This importer is meant to help
+        # only a few subset of users
+        if len(dataframe) > 30:
+            raise CommandError("Too many columns inserted. Please contact an admin.")
+
+        for supplement in dataframe:  # this is a list of dataframe columns
             supplement_name = supplement.strip()
+
+            ingredient = Ingredient.get_or_create(
+                name=supplement_name,
+                user=self.user
+            )
+
+            ingredient_comp_details = self.get_measurement_unit_and_quantity_from_name(name)
+            ingredient_comp = IngredientComposition.get_or_create(
+                ingredient=ingredient,
+                user=self.user,
+                **ingredient_comp_details,
+            )
+
+            supplement = SupplementProduct.get_or_create(
+                name=supplement_name,
+                user=self.user,
+            )
+
+            supplement.ingredient_composition = [ingredient_comp]
+            supplement.save()
 
     def save_results(self, dataframe):
         return
 
 
+# TD - Check Django default values for atomic transactions in 1.9
+# - Is there a library to prevent sql injection?

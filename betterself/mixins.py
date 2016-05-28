@@ -21,3 +21,13 @@ class BaseModelWithUserGeneratedContent(models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def is_user_created(self):
+        if self.user:
+            return True
+        else:
+            return False
+
+
+

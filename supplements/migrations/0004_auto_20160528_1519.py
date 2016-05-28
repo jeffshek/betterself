@@ -32,6 +32,11 @@ class Migration(migrations.Migration):
                 'short_name': 'l',
                 'is_liquid': True,
             },
+            {
+                'name': 'pill',
+                'short_name': 'pill',
+                'is_liquid': False,
+            },
         ]
 
         for measurement in dict_list:
