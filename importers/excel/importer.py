@@ -143,5 +143,6 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             continue
 
 
-# TD - Check Django default values for atomic transactions in 1.9
-# - Is there a library to prevent sql injection?
+# TD
+# - Check Django default values for atomic transactions in 1.9
+# - Look for library to check for sql injection and evil intent
