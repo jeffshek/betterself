@@ -1,8 +1,11 @@
+import re
 import pandas as pd
+
 from django.core.management import CommandError
+from django.db.models import Q
 
 from events.models import SupplementProductEventComposition
-from supplements.models import Ingredient, IngredientComposition, SupplementProduct
+from supplements.models import Ingredient, IngredientComposition, SupplementProduct, MeasurementUnit
 
 
 class ExcelFileSanitizer(object):
@@ -65,13 +68,33 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
     TEMPLATE_SAVE_MODEL = SupplementProductEventComposition
     SUPPLEMENT_PRODUCT_CACHE = {}  # use it to match any supplement_name to a product
 
-    def get_measurement_unit_and_quantity_from_name(self, name):
+    @staticmethod
+    def get_measurement_unit_and_quantity_from_name(name):
         # figure out that Advil (200mg) means 200 mg
         result = {
             'measurement_unit': None,
             'quantity': None,
         }
-        # TD - Add regex search
+        name = 'Jack (200 mg)'
+
+        # make my regex life easier
+        name_no_spaces = name.replace(" ", "")
+        regex_match_with_parenthesis = re.search('(?<=\()\w+', name)
+        if not regex_match_with_parenthesis:
+            return result
+
+        regex_match_with_parenthesis = regex_match_with_parenthesis.group(0)
+        quantity = re.search('\d+', regex_match_with_parenthesis)
+        if quantity:
+            result['quantity'] = quantity.group(0)
+
+        measurement = re.search('[a-z]+', regex_match_with_parenthesis)
+        if measurement:
+            measurement_name = measurement.group(0)
+            measurement_query = MeasurementUnit.objects.filter(Q(short_name=measurement_name) | Q(name=measurement_name))
+            if measurement_query.exists():
+                result['measurement_unit'] = measurement_query[0]
+
         return result
 
     def create_supplement_products_from_dataframe(self, dataframe):
@@ -96,12 +119,12 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             ingredient_comp = IngredientComposition.get_or_create(
                 ingredient=ingredient,
                 user=self.user,
-                **ingredient_comp_details,
+                **ingredient_comp_details
             )
 
             supplement = SupplementProduct.get_or_create(
                 name=supplement_name,
-                user=self.user,
+                user=self.user
             )
 
             supplement.ingredient_composition = [ingredient_comp]
