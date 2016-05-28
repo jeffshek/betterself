@@ -18,7 +18,9 @@ class ExcelFileSanitizer(object):
         self.user = user
 
     def get_sanitized_dataframe(self, date_column='DATE'):
-        excel_file = pd.ExcelFile(self.file_path)
+        # ExcelFile does not handle file_paths very well, use native Python open
+        opened_file = open(self.file_path, 'rb')
+        excel_file = pd.ExcelFile(opened_file)
         dataframe = excel_file.parse(self.sheet)
 
         # Sanitize so the inputs are correct and remove fluke days
