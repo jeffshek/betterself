@@ -12,6 +12,8 @@
 # Tests TD
 Now
 -
+Change testing database to SQLite, atm ... data is persisting.
 
 Later
 - When a user deletes his account, make sure cascades
+

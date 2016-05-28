@@ -75,18 +75,17 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             'measurement_unit': None,
             'quantity': None,
         }
-        name = 'Jack (200 mg)'
 
         # make my regex life easier
         name_no_spaces = name.replace(" ", "")
-        regex_match_with_parenthesis = re.search('(?<=\()\w+', name)
+        regex_match_with_parenthesis = re.search('(?<=\()\w+', name_no_spaces)
         if not regex_match_with_parenthesis:
             return result
 
         regex_match_with_parenthesis = regex_match_with_parenthesis.group(0)
         quantity = re.search('\d+', regex_match_with_parenthesis)
         if quantity:
-            result['quantity'] = quantity.group(0)
+            result['quantity'] = int(quantity.group(0))
 
         measurement = re.search('[a-z]+', regex_match_with_parenthesis)
         if measurement:
