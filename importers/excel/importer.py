@@ -6,10 +6,11 @@ from events.models import SupplementProductEventComposition
 class ExcelFileSanitizer(object):
     IGNORE_COLUMNS = []
 
-    def __init__(self, file_path, sheet=None):
+    def __init__(self, file_path, user, sheet=None):
         self.file_path = file_path
         # Sheet1 is default name for xlsx files
         self.sheet = sheet if sheet else 'Sheet1'
+        self.user = user
 
     def get_sanitized_dataframe(self, date_column='DATE'):
         excel_file = pd.ExcelFile(self.file_path)
@@ -31,8 +32,7 @@ class ExcelFileSanitizer(object):
     def _set_dataframe_index(dataframe, date_column):
         dataframe = dataframe.set_index(dataframe[date_column])
 
-        # dump the date_column after settings, shouldn't be used
-        # in analysis
+        # drop duplicate since its now the index
         dataframe = dataframe.drop(date_column, axis=1)
         return dataframe
 
@@ -61,4 +61,14 @@ class ExcelFileSanitizer(object):
 class SupplementSanitizerTemplate(ExcelFileSanitizer):
     """Take a raw historical excel of supplements and clean it"""
     TEMPLATE_SAVE_MODEL = SupplementProductEventComposition
+
+    def match_columns_with_object(self, dataframe):
+        # problem with flat data structures is it's hard to transverse hierarchy
+        # when you have no idea what users will input
+        for supplement in dataframe:
+            supplement_name = supplement.strip()
+
+    def save_results(self, dataframe):
+        return
+
 

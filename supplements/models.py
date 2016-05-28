@@ -34,7 +34,7 @@ class SupplementProduct(BaseModelWithUserGeneratedContent):
     Or could just be something simple like Caffeine.
     """
     ingredient_composition = models.ManyToManyField(IngredientComposition)
-    vendor = models.ForeignKey(Vendor)
+    vendor = models.ForeignKey(Vendor, null=True)
 
 
 # TD - All unique constraints to all of these

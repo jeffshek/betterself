@@ -22,3 +22,6 @@ class ExcelImporterTests(TestCase):
 
         self.assertEqual(results_type, dataframe_type)
 
+
+# TD
+# Make sure all columns (ie. no "    Advil" is saved, always check strip).
