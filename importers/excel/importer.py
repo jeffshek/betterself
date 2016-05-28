@@ -17,7 +17,7 @@ class ExcelFileSanitizer(object):
         self.sheet = sheet if sheet else 'Sheet1'
         self.user = user
 
-    def get_sanitized_dataframe(self, date_column='DATE'):
+    def get_sanitized_dataframe(self, date_column='Date'):
         # ExcelFile does not handle file_paths very well, use native Python open
         opened_file = open(self.file_path, 'rb')
         excel_file = pd.ExcelFile(opened_file)
