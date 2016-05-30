@@ -135,7 +135,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             self.SUPPLEMENT_PRODUCT_CACHE[supplement_name] = supplement
 
     def save_results(self, dataframe):
-        input_source = 'user_excel'
+        source = 'user_excel'
 
         self._create_supplement_products_from_dataframe(dataframe)
         for _, event in dataframe.iterrows():
@@ -147,7 +147,8 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
                     user=self.user,
                     supplement_product=supplement_product,
                     time=time,
-                    quantity=quantity
+                    quantity=quantity,
+                    source=source
                 )
 
 # TD
