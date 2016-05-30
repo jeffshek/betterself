@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ChoiceField
 
 from betterself.base_models import BaseModelWithUserGeneratedContent, BaseModelWithRequiredUser
 from betterself.utils import create_django_choice_tuple_from_list
@@ -12,6 +13,8 @@ INPUT_SOURCES = [
     'user_excel'
 ]
 
+INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
+
 
 class SupplementProductEventComposition(BaseModelWithRequiredUser):
     """
@@ -20,8 +23,7 @@ class SupplementProductEventComposition(BaseModelWithRequiredUser):
     # since django model id is constrained to 2^31, but if we hit 2^31,
     # will figure that out when we get there ...
     """
-    # TD - Fix this, meant to be a ChoiceField
-    input_source = create_django_choice_tuple_from_list(INPUT_SOURCES)
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     supplement_product = models.ForeignKey(SupplementProduct)
     # floatfield, if ie. someone drinks 1/2 of a 5 hour energy ...
     quantity = models.FloatField(default=1)
@@ -38,8 +40,7 @@ class SleepEventLog(BaseModelWithRequiredUser):
     Mimicing how vendors report it ... since productivty is often driven
     by how many hours of sleep you got the night before.
     """
-    # TD - Fix this, meant to be a ChoiceField
-    input_source = create_django_choice_tuple_from_list(INPUT_SOURCES)
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     sleep_time_minutes = models.IntegerField()  # always should be stored in minutes
     # Odd debate, but what day does this event accurately represent?
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
