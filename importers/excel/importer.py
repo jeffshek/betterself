@@ -77,7 +77,6 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         # figure out that Advil (200mg) means 200 mg
         result = {
             'measurement_unit': None,
-            'quantity': None,
         }
 
         # make my regex life easier
@@ -100,7 +99,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
 
         return result
 
-    def create_supplement_products_from_dataframe(self, dataframe):
+    def _create_supplement_products_from_dataframe(self, dataframe):
         # problem with flat data structures is it's hard to transverse hierarchy
         # when you have no idea what users will input, so we're going to
         # create everything if it doesn't exist and then let a user rename
@@ -109,23 +108,20 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         # if you're putting more than 30 supplements from a spreadsheet
         # i don't trust you. this prevents user error from uploading
         # an absurd amount of supplements.
-        if len(dataframe) > 30:
-            raise CommandError("Too many columns inserted. Please contact an admin.")
+        if len(dataframe.columns) > 30:
+            raise CommandError("Too many columns inserted {0} entered. Please contact an admin.".format(len(dataframe)))
 
         for supplement_name in dataframe:  # a list of dataframe columns
-            ingredient = Ingredient.get_or_create(
+            ingredient, _ = Ingredient.objects.get_or_create(
                 name=supplement_name,
                 user=self.user
             )
 
             ingredient_comp_details = self.get_measurement_unit_and_quantity_from_name(supplement_name)
-            ingredient_comp = IngredientComposition.get_or_create(
-                ingredient=ingredient,
-                user=self.user,
-                **ingredient_comp_details
-            )
+            ingredient_comp, _ = IngredientComposition.objects.get_or_create(
+                ingredient=ingredient, user=self.user, **ingredient_comp_details)
 
-            supplement = SupplementProduct.get_or_create(
+            supplement, _ = SupplementProduct.objects.get_or_create(
                 name=supplement_name,
                 user=self.user
             )
@@ -138,7 +134,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             self.SUPPLEMENT_PRODUCT_CACHE[supplement_name] = supplement
 
     def save_results(self, dataframe):
-        self.create_supplement_products_from_dataframe(dataframe)
+        self._create_supplement_products_from_dataframe(dataframe)
         for _, event in dataframe.iterrows():
             continue
 
