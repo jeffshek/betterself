@@ -13,10 +13,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class BaseModelWithUserGeneratedContent(models.Model):
-    created = models.DateField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
+class BaseModelWithUserGeneratedContent(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     class Meta:
@@ -30,4 +27,12 @@ class BaseModelWithUserGeneratedContent(models.Model):
             return False
 
 
+class BaseModelWithRequiredUser(BaseModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
+    class Meta:
+        abstract = True
+
+    @property
+    def is_user_created(self):
+        return True

@@ -1,6 +1,6 @@
 from django.db import models
 
-from betterself.mixins import BaseModelWithUserGeneratedContent
+from betterself.base_models import BaseModelWithUserGeneratedContent, BaseModelWithRequiredUser
 from betterself.utils import create_django_choice_tuple_from_list
 from supplements.models import SupplementProduct
 
@@ -13,7 +13,7 @@ INPUT_SOURCES = [
 ]
 
 
-class SupplementProductEventComposition(BaseModelWithUserGeneratedContent):
+class SupplementProductEventComposition(BaseModelWithRequiredUser):
     """
     Unless a proxy goes over this, this should be the meat of all Events tracking ...
     # event tables should be better designed for very large quantity of events
@@ -29,7 +29,7 @@ class SupplementProductEventComposition(BaseModelWithUserGeneratedContent):
     time = models.DateTimeField()
 
 
-class SleepEventLog(BaseModelWithUserGeneratedContent):
+class SleepEventLog(BaseModelWithRequiredUser):
     """
     Represents how many hours of sleep you got COMING into the day.
     If a user slept 5 hours on Sunday night, Monday's log would say 5*60=300

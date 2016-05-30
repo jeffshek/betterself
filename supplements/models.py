@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from betterself.mixins import BaseModel, BaseModelWithUserGeneratedContent
+from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
 from vendors.models import Vendor
 
 ####

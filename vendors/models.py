@@ -1,6 +1,6 @@
 from django.db import models
 
-from betterself.mixins import BaseModelWithUserGeneratedContent
+from betterself.base_models import BaseModelWithUserGeneratedContent
 
 
 class Vendor(BaseModelWithUserGeneratedContent):
