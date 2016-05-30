@@ -3,6 +3,7 @@ import pandas as pd
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from events.models import SupplementProductEventComposition
 from importers.excel.importer import SupplementSanitizerTemplate
 
 # use django user model
@@ -48,6 +49,9 @@ class ExcelImporterTests(TestCase):
         results = self.sanitizer.get_sanitized_dataframe()
         self.sanitizer.save_results(results)
 
+        supplement_events_exist = SupplementProductEventComposition.objects.all().exists()
+        self.assertTrue(supplement_events_exist)
+
     def test_get_measurement_unit_and_quantity_from_name(self):
         test_name_1 = 'Snake Oil (200mg)'
         result = SupplementSanitizerTemplate.get_measurement_unit_and_quantity_from_name(test_name_1)
@@ -61,10 +65,10 @@ class ExcelImporterTests(TestCase):
         self.assertEqual(result_quantity, None)
 
     def test_columns_with_spaces_in_excel(self):
-        series = pd.Series([1,2,3])
+        series = pd.Series([1, 2, 3])
         dataframe = pd.DataFrame(
             {
-                '               A': series,   # make some ridiculous columns
+                '               A': series,  # make some ridiculous columns
                 '               B (200mg)': series,
             }
         )
@@ -75,5 +79,3 @@ class ExcelImporterTests(TestCase):
         self.assertTrue('A' in cleaned_columns)
         self.assertTrue('B (200mg)' in cleaned_columns)
         self.assertFalse('               A' in cleaned_columns)
-
-

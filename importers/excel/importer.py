@@ -93,7 +93,8 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         measurement = re.search('[a-z]+', regex_match_with_parenthesis)
         if measurement:
             measurement_name = measurement.group(0)
-            measurement_query = MeasurementUnit.objects.filter(Q(short_name=measurement_name) | Q(name=measurement_name))
+            measurement_query = MeasurementUnit.objects.filter(
+                Q(short_name=measurement_name) | Q(name=measurement_name))
             if measurement_query.exists():
                 result['measurement_unit'] = measurement_query[0]
 
@@ -134,11 +135,22 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             self.SUPPLEMENT_PRODUCT_CACHE[supplement_name] = supplement
 
     def save_results(self, dataframe):
+        input_source = 'user_excel'
+
         self._create_supplement_products_from_dataframe(dataframe)
         for _, event in dataframe.iterrows():
-            continue
+            for supplement_name, quantity in event.iteritems():
+                supplement_product = self.SUPPLEMENT_PRODUCT_CACHE[supplement_name]
+                time = event.name
 
+                SupplementProductEventComposition.objects.get_or_create(
+                    user=self.user,
+                    supplement_product=supplement_product,
+                    time=time,
+                    quantity=quantity
+                )
 
 # TD
 # - Check Django default values for atomic transactions in 1.9
 # - Look for library to check for sql injection and evil intent
+# - Turn off Django TimeZone Support Warnings
