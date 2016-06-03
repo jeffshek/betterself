@@ -8,6 +8,7 @@ Werkzeug==0.11.9
 django-test-plus==1.0.12
 factory_boy==2.7.0
 django-debug-toolbar==1.4
+pre-commit==0.8.2
 
 # improved REPL
 ipdb==0.10.0
