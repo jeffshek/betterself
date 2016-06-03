@@ -13,6 +13,7 @@
         args: ['--django']  # Use args: ['--django'] to match test*.py instead.
     -   id: trailing-whitespace
         files: \.(py|sh|yaml|txt)$
+    -   id: requirements-txt-fixer
 -   repo: git://github.com/FalconSocial/pre-commit-python-sorter
     sha: 1.0.4
     hooks:
