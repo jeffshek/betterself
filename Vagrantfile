@@ -16,10 +16,13 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", type: "dhcp"
   config.vm.synced_folder ".", "/betterself", type: "nfs"
 
+  # don't need this at the moment
+  config.ssh.insert_key = false
+
   # Provision scripts that install necessary requirements
   config.vm.provision "shell", path: "config/development/vagrant/provision_bootstrap.sh"
 
   # Copy a bash_profile config that can be customized
-  config.vm.provision "file", source: "config/development/vagrant/developer_bash_profile.config", destination: "~/.bash_profile"
+  config.vm.provision "file", source: "config/development/vagrant/developer_bash_profile", destination: "~/.bash_profile"
 
 end
