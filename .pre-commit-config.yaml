@@ -7,7 +7,7 @@
     -   id: end-of-file-fixer
         files: \.(py|sh)$
     -   id: flake8
-        files: \.(py|sh)$
+        files: \.py$
     -   id: name-tests-test
         files: tests/.+\.py$
         args: ['--django']  # Use args: ['--django'] to match test*.py instead.

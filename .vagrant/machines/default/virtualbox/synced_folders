@@ -1,0 +1,1 @@
+{"virtualbox":{},"nfs":{"/betterself":{"type":"nfs","guestpath":"/betterself","hostpath":"/sites/betterself","disabled":false,"__vagrantfile":true,"map_uid":501,"map_gid":0,"nfs_udp":true,"nfs_version":3,"uuid":"930900030"}}}
