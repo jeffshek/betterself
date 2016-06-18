@@ -3,4 +3,4 @@ export WORKON_HOME=/betterself/config/development/virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 
 workon betterself
-cd /vagrant/
+cd /betterself
