@@ -3,11 +3,6 @@
 - Add Docker so isolated development
     - Make Travis pass
     - Lookup Docker to Heroku deployments
-- Add Git hooks
-- Look up Django best standards for RESTful
 - Add os path to Heroku
-- All Mission Statement, aka how this isn't intended to sell your name to shitty snake oil company
-
-# Tests TD
 - When a user deletes his account, make sure cascades
 

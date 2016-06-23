@@ -73,3 +73,5 @@ personal_fixtures/
 # collect static should be ignored
 staticfiles/
 
+# don't include the virutalenv that's being used
+config/development/virtualenv/

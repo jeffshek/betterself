@@ -1,0 +1,6 @@
+# set the default folder where virtualenv is being stored
+export WORKON_HOME=/betterself/config/development/virtualenv
+source /usr/local/bin/virtualenvwrapper.sh
+
+workon betterself
+cd /betterself
