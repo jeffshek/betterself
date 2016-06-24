@@ -4,4 +4,5 @@ python:
   - "3.4.3"
 install:
   - pip install -r requirements/test.txt
+  - pip install -r requirements/local.txt
 script: "python manage.py test"
