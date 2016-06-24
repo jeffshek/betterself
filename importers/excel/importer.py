@@ -1,11 +1,10 @@
 import re
-import pandas as pd
 
+import pandas as pd
 from django.core.management import CommandError
 from django.db.models import Q
-
 from events.models import SupplementProductEventComposition
-from supplements.models import Ingredient, IngredientComposition, SupplementProduct, MeasurementUnit
+from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
 
 
 class ExcelFileSanitizer(object):
@@ -150,8 +149,3 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
                     quantity=quantity,
                     source=source
                 )
-
-# TD
-# - Check Django default values for atomic transactions in 1.9
-# - Look for library to check for sql injection and evil intent
-# - Turn off Django TimeZone Support Warnings

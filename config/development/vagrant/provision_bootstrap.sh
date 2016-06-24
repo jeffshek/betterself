@@ -25,3 +25,4 @@ mkvirtualenv betterself
 workon betterself
 pip install --upgrade setuptools
 pip install -r /betterself/requirements.txt
+pip install -r /betterself/local.txt
