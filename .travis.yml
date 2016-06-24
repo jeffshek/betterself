@@ -3,5 +3,5 @@ language: python
 python:
   - "3.4.3"
 install:
-  - pip install -r requirements/test.txt --use-mirrors
+  - pip install -r requirements/test.txt
 script: "python manage.py test"
