@@ -59,15 +59,18 @@ INSTALLED_APPS += ('django_extensions', )
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'betterself',
-        'USER': 'django_db_agent',
-        # don't worry, the production database is a super hash
-        # for local, writing about puppies makes me happy
-        'PASSWORD': 'iwantapuppy',
-    }
+LOCAL_DB_SETTINGS = {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'betterself',
+    'USER': 'django_db_agent',
+    # don't worry, the production database is a super hash
+    # for local, writing about puppies makes me happy
+    'PASSWORD': 'iwantapuppy',
 }
 
-# Your local stuff: Below this line define 3rd party library settings
+# local developer environments should have postgres installed
+# travis tests should run off of an actual postgres database
+if env('TEST_DATABASE_URL', default=None):
+    DATABASES['default'] = env.db('TEST_DATABASE_URL')
+else:
+    DATABASES['default'] = LOCAL_DB_SETTINGS
