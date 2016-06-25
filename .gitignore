@@ -77,4 +77,4 @@ staticfiles/
 config/development/virtualenv/
 
 # Ignore Vagrant
-# *.vagrant/
+.vagrant/
