@@ -70,4 +70,7 @@ LOCAL_DB_SETTINGS = {
 
 # local developer environments should have postgres installed
 # travis tests should run off of an actual postgres database
-DATABASES['default'] = env.db('TEST_DATABASE_URL', default=LOCAL_DB_SETTINGS)
+if env('TEST_DATABASE_URL', default=None):
+    DATABASES['default'] = env.db('TEST_DATABASE_URL')
+else:
+    DATABASES['default'] = LOCAL_DB_SETTINGS

@@ -1,4 +1,8 @@
 -r base.txt
+-r production.txt
+-r test.txt
+# local developments should have everything
+
 coverage==4.0.3
 django-debug-toolbar==1.4
 django-extensions==1.6.6
