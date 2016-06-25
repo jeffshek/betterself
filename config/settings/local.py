@@ -9,6 +9,7 @@ Local settings
 """
 
 from .common import *  # noqa
+import os
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -28,8 +29,6 @@ EMAIL_PORT = 1025
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
                     default='django.core.mail.backends.console.EmailBackend')
 
-# CACHING
-# ------------------------------------------------------------------------------
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -37,8 +36,6 @@ CACHES = {
     }
 }
 
-# django-debug-toolbar
-# ------------------------------------------------------------------------------
 MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 INSTALLED_APPS += ('debug_toolbar', )
 
@@ -51,26 +48,29 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TEMPLATE_CONTEXT': True,
 }
 
-# django-extensions
-# ------------------------------------------------------------------------------
 INSTALLED_APPS += ('django_extensions', )
-
-# TESTING
-# ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-LOCAL_DB_SETTINGS = {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'betterself',
-    'USER': 'django_db_agent',
-    # don't worry, the production database is a super hash
-    # for local, writing about puppies makes me happy
-    'PASSWORD': 'iwantapuppy',
-}
-
-# local developer environments should have postgres installed
-# travis tests should run off of an actual postgres database
-if env('TEST_DATABASE_URL', default=None):
-    DATABASES['default'] = env.db('TEST_DATABASE_URL')
+if 'TRAVIS' in os.environ:
+    LOCAL_DB_SETTINGS = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'travisci',
+            'USER': 'postgres',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 else:
-    DATABASES['default'] = LOCAL_DB_SETTINGS
+    LOCAL_DB_SETTINGS = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'betterself',
+        'USER': 'django_db_agent',
+        # don't worry, the production database is a super hash
+        # for local, writing about puppies makes me happy
+        'PASSWORD': 'iwantapuppy',
+    }
+
+# TD - Create Staging Settings
+DATABASES['default'] = LOCAL_DB_SETTINGS
