@@ -53,14 +53,12 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 if 'TRAVIS' in os.environ:
     LOCAL_DB_SETTINGS = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'travisci',
-            'USER': 'postgres',
-            'PASSWORD': '',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'travisci',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 else:
     LOCAL_DB_SETTINGS = {
