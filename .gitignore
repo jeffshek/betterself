@@ -75,3 +75,6 @@ staticfiles/
 
 # don't include the virutalenv that's being used
 config/development/virtualenv/
+
+# Ignore Vagrant
+# *.vagrant/
