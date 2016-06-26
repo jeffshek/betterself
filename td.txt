@@ -9,3 +9,5 @@
 # Tests TD
 - When a user deletes his account, make sure cascades
 
+# DevOps
+- Switch to Ansible rather than Chef provisioning
