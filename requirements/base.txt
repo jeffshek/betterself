@@ -8,6 +8,7 @@ django-floppyforms==1.6.2
 django-model-utils==2.5
 django-redis==4.4.2
 django-secure==1.0.1
+pandas==0.18.1
 Pillow==3.2.0
 psycopg2==2.6.1
 pytz==2016.4

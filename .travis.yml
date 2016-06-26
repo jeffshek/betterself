@@ -5,6 +5,5 @@ python:
 before_script:
   - psql -c 'create database travisci;' -U postgres
 install:
-  - pip install -U pip wheel
   - pip install -r requirements/test.txt
 script: "python manage.py test"
