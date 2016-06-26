@@ -60,5 +60,4 @@ LOCAL_DB_SETTINGS = {
     'PASSWORD': 'iwantapuppy',
 }
 
-# TD - Create Staging Settings
 DATABASES['default'] = LOCAL_DB_SETTINGS
