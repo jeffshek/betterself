@@ -46,7 +46,6 @@ TEST_DB_SETTINGS = {
     'USER': 'postgres',
     'PASSWORD': '',
     'HOST': 'localhost',
-    'PORT': '',
 }
 
 DATABASES['default'] = TEST_DB_SETTINGS
