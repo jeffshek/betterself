@@ -21,7 +21,8 @@ pip install virtualenvwrapper
 export WORKON_HOME=/betterself/config/development/virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 
-mkvirtualenv betterself
+# use only python 3, this defaults to python 3.4.3
+mkvirtualenv betterself --python=/usr/bin/python3
 
 workon betterself
 pip install --upgrade setuptools
