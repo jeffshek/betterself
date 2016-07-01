@@ -2,8 +2,8 @@ sudo: true
 language: python
 python:
   - "3.4.3"
+before_script:
+  - psql -c 'create database travisci;' -U postgres
 install:
-  - pip install -U pip wheel
   - pip install -r requirements/test.txt
-  - pip install -r requirements/local.txt
 script: "python manage.py test"

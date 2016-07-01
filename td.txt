@@ -1,8 +1,20 @@
-# TD
+####
+# TD - Starfish and rainbows
+####
+- Make travis pass ... in the future, make tests pass on day 1.
 - Add web area to upload file for user supplement logs
 - Add Docker so isolated development
     - Make Travis pass
     - Lookup Docker to Heroku deployments
-- Add os path to Heroku
+- Define project root in settings / check Heroku settings
+- Almost everything written in the README
+
+# Tests
 - When a user deletes his account, make sure cascades
 
+# DevOps
+- Switch to Ansible rather than Chef provisioning
+- Pay for Sentry
+
+# Long Term
+- Think about merits of switching Vagrant to Docker

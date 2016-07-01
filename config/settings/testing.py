@@ -35,29 +35,18 @@ CACHES = {
     }
 }
 
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar', )
-
-# vagrants internal ip is 10.x
-INTERNAL_IPS = ('127.0.0.1', '10.0.2.2',)
-
-DEBUG_TOOLBAR_CONFIG = {
-    'DISABLE_PANELS': [
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ],
-    'SHOW_TEMPLATE_CONTEXT': True,
-}
+INTERNAL_IPS = ('127.0.0.1')
 
 INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 LOCAL_DB_SETTINGS = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'betterself',
-    'USER': 'django_db_agent',
-    # don't worry, the production database is a super hash
-    # for local, writing about puppies makes me happy
-    'PASSWORD': 'iwantapuppy',
+    'NAME': 'travisci',
+    'USER': 'postgres',
+    'PASSWORD': '',
+    'HOST': 'localhost',
+    'PORT': '',
 }
 
 DATABASES['default'] = LOCAL_DB_SETTINGS
