@@ -3,7 +3,14 @@ import os
 import sys
 
 if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
+    if 'TRAVIS' in os.environ:
+        default = 'config.settings.testing'
+    else:
+        default = 'config.settings.local'
+
+    # for production / staging environments, the correct settings
+    # module is already set as an environment variable
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', default)
 
     from django.core.management import execute_from_command_line
 
