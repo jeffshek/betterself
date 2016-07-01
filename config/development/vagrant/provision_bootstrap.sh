@@ -31,3 +31,6 @@ pip install --upgrade setuptools
 pip install -r /betterself/requirements/production.txt
 pip install -r /betterself/requirements/test.txt
 pip install -r /betterself/requirements/local.txt
+
+# exception will be thrown if reprovisioning, but that should be okay
+su - postgres -c "createuser -s vagrant"

@@ -54,10 +54,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 LOCAL_DB_SETTINGS = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'betterself',
-    'USER': 'potential_german_shepard_owner',
-    # don't worry, the production database is a super hash
-    # for local, writing about puppies makes me happy
-    'PASSWORD': 'i_really_want_a_dog',
+    'USER': 'vagrant',
 }
 
 DATABASES['default'] = LOCAL_DB_SETTINGS
