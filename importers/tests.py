@@ -18,11 +18,9 @@ class ExcelImporterTests(TestCase):
         User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
         self.user = User.objects.get(username='jacob')
 
-    def test_excel_importer(self):
         file_path = settings.ROOT_DIR.path("importers", "fixtures", "tests", "supplement_log_fixtures.xlsx")
         # path is like a command pattern, so we call it now to get the string location
         file_path = file_path()
-
         self.sanitizer = SupplementSanitizerTemplate(file_path, self.user)
 
     def test_sanitizer_results_is_dataframe(self):

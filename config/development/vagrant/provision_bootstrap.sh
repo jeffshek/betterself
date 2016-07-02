@@ -33,4 +33,5 @@ if ! command -v psql; then
     apt-get install postgresql
     # Create vagrant pgsql superuser
     su - postgres -c "createuser -s vagrant"
+    su - postgres -c "createdb betterself"
 fi

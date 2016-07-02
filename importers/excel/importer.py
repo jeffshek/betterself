@@ -1,8 +1,10 @@
 import re
-
 import pandas as pd
+import pytz
+
 from django.core.management import CommandError
 from django.db.models import Q
+
 from events.models import SupplementProductEventComposition
 from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
 
@@ -141,6 +143,9 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             for supplement_name, quantity in event.iteritems():
                 supplement_product = self.SUPPLEMENT_PRODUCT_CACHE[supplement_name]
                 time = event.name
+
+                # localize and make as UTC time
+                time = pytz.utc.localize(time, pytz.UTC)
 
                 SupplementProductEventComposition.objects.get_or_create(
                     user=self.user,
