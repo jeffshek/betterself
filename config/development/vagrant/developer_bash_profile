@@ -4,3 +4,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 workon betterself
 cd /betterself
+
+# always show what's the git status
+git status

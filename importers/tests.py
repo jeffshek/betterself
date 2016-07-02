@@ -1,13 +1,13 @@
 import pandas as pd
 
-from django.test import TestCase
+from django.conf import settings
 from django.contrib.auth import get_user_model
-
+from django.test import TestCase
 from events.models import SupplementProductEventComposition
-from importers.excel.importer import SupplementSanitizerTemplate
 
+from importers.excel.importer import SupplementSanitizerTemplate
 # use django user model
-from supplements.models import SupplementProduct, Ingredient, MeasurementUnit, IngredientComposition
+from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
 
 User = get_user_model()
 
@@ -18,8 +18,11 @@ class ExcelImporterTests(TestCase):
         User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
         self.user = User.objects.get(username='jacob')
 
-        # use fixtures to create mock data
-        file_path = '/sites/betterself/importers/fixtures/tests/supplement_log_fixtures.xlsx'
+    def test_excel_importer(self):
+        file_path = settings.ROOT_DIR.path("importers", "fixtures", "tests", "supplement_log_fixtures.xlsx")
+        # path is like a command pattern, so we call it now to get the string location
+        file_path = file_path()
+
         self.sanitizer = SupplementSanitizerTemplate(file_path, self.user)
 
     def test_sanitizer_results_is_dataframe(self):

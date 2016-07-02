@@ -40,13 +40,12 @@ INTERNAL_IPS = ('127.0.0.1')
 INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-LOCAL_DB_SETTINGS = {
+TEST_DB_SETTINGS = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'travisci',
+    'NAME': 'travis_ci_test',
     'USER': 'postgres',
     'PASSWORD': '',
     'HOST': 'localhost',
-    'PORT': '',
 }
 
-DATABASES['default'] = LOCAL_DB_SETTINGS
+DATABASES['default'] = TEST_DB_SETTINGS
