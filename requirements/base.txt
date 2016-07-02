@@ -5,10 +5,12 @@ django-autoslug==1.9.3
 django-braces==1.8.1
 django-crispy-forms==1.6.0
 django-environ==0.4.0
+django-filter==0.13.0
 django-floppyforms==1.6.2
 django-model-utils==2.5
 django-secure==1.0.1
 djangorestframework==3.3.3
+Markdown==2.6.6
 pandas==0.18.1
 Pillow==3.2.0
 psycopg2==2.6.1
