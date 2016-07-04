@@ -3,6 +3,10 @@
 ####
 - Make travis pass ... in the future, make tests pass on day 1.
 - Add web area to upload file for user supplement logs
+- Add Docker so isolated development
+    - Make Travis pass
+    - Lookup Docker to Heroku deployments
+- Define project root in settings / check Heroku settings
 - Almost everything written in the README
 
 # Tests
@@ -10,7 +14,6 @@
 
 # DevOps
 - Switch to Ansible rather than Chef provisioning
-- Fill settings/staging.py
 - Pay for Sentry
 
 # Long Term
