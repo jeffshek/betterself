@@ -1,8 +1,8 @@
 ####
 # TD - Starfish and rainbows
 ####
-- Make travis pass ... in the future, make tests pass on day 1.
 - Add web area to upload file for user supplement logs
+- Look into Vagrant + Docker deployments
 - Add Docker so isolated development
     - Make Travis pass
     - Lookup Docker to Heroku deployments
