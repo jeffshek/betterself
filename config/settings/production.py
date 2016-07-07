@@ -4,15 +4,14 @@ Production Configurations
 
 - Use djangosecure
 - Use Amazon's S3 for storing static files and uploaded media
-# TD - Change S3 to whitespace
+# TD
+- Change S3 to whitespace
 - Use mailgun to send emails
 - Use Redis on Heroku
 - Use sentry for error logging
 - Use opbeat for error reporting
 
 """
-from __future__ import absolute_import, unicode_literals
-
 from boto.s3.connection import OrdinaryCallingFormat
 from django.utils import six
 

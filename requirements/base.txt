@@ -9,6 +9,7 @@ django-filter==0.13.0
 django-floppyforms==1.6.2
 django-model-utils==2.5
 django-secure==1.0.1
+django-subdomains==2.1.0
 djangorestframework==3.3.3
 Markdown==2.6.6
 pandas==0.18.1

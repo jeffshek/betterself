@@ -5,5 +5,9 @@ source /usr/local/bin/virtualenvwrapper.sh
 workon betterself
 cd /betterself
 
+# do some quick alias to save time
+alias dtest="python manage.py test"
+
 # always show what's the git status
 git status
+
