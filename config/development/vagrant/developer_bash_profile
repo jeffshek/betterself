@@ -2,12 +2,19 @@
 export WORKON_HOME=/betterself/config/development/virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 
+# Display Git Branch
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\D{ %T} \u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] \$ "
+# End of Display Git Branch
+
 workon betterself
 cd /betterself
 
 # use alias like dXXXXX to reprsent django do X"
 alias dtest="python manage.py test"
-alias drun="python manage.py runserver [::]:8000"
+alias drun="python manage.py runserver [::]:9000"
 
 # always show what's the git status
 git status
