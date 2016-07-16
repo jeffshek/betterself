@@ -16,8 +16,8 @@ urlpatterns = [
     url(r'^users/', include('betterself.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
 
-    # setup subdomain django urls
-    # url(r'^api/', include('apis.urls')),
+    # include api urls - change later to subdomain
+    url(r'^api/', include('apis.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

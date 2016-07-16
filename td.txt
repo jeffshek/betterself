@@ -1,15 +1,10 @@
 ####
 # TD - Starfish and rainbows
 ####
-- Spend an hour debate between debating using Postgres or a database
-that's designed for event holding
+- Change API Domain to api.betterself
+- Fix domain to redirect correctly
 - Add web area to upload file for user supplement logs
-- Look into Vagrant + Docker deployments
-- Add Docker so isolated development
-    - Make Travis pass
-    - Lookup Docker to Heroku deployments
 - Define project root in settings / check Heroku settings
-- Almost everything written in the README
 
 # Tests
 - When a user deletes his account, make sure cascades
@@ -20,3 +15,9 @@ that's designed for event holding
 
 # Long Term
 - Think about merits of switching Vagrant to Docker
+
+# Quick and Easy TDs
+- Move requirements folder into config
+
+# Major TDs
+- Everything written in the README!
