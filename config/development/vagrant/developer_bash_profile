@@ -5,8 +5,9 @@ source /usr/local/bin/virtualenvwrapper.sh
 workon betterself
 cd /betterself
 
-# do some quick alias to save time
+# use alias like dXXXXX to reprsent django do X"
 alias dtest="python manage.py test"
+alias drun="python manage.py runserver [::]:8000"
 
 # always show what's the git status
 git status
