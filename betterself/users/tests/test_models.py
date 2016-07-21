@@ -1,7 +1,9 @@
 from test_plus.test import TestCase
 
+from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 
-class TestUser(TestCase):
+
+class TestUser(TestCase, UsersTestsMixin):
 
     def setUp(self):
         self.user = self.make_user()
@@ -17,3 +19,15 @@ class TestUser(TestCase):
             self.user.get_absolute_url(),
             '/users/testuser/'
         )
+
+    def test_user_login(self):
+        credentials = {
+            'username': 'test_user_1',
+            'email': 'username@gmail.com',
+            'password': 'secret_password',
+        }
+
+        self.create_user(**credentials)
+        result = self.client.login(**credentials)
+
+        self.assertEqual(result, True)
