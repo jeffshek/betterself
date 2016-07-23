@@ -19,8 +19,3 @@
     -   id: trailing-whitespace
         files: \.(py|sh|yaml|txt)$
     -   id: requirements-txt-fixer
--   repo: git://github.com/FalconSocial/pre-commit-python-sorter
-    sha: 1.0.4
-    hooks:
-    -   id: python-import-sorter
-        args: ['--diff']
