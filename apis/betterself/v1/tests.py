@@ -30,8 +30,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         request = self.client.get(url)
         self.assertEqual(request.status_code, 404)
 
-    def test_all_resources_have_valid_get(self):
-        for resource in API_V1_VALID_GET_RESOURCES:
-            url = API_V1_URL.format(resource)
-            request = self.client.get(url)
-            self.assertEqual(request.status_code, 200)
+    # def test_all_resources_have_valid_get(self):
+    #     for resource in API_V1_VALID_GET_RESOURCES:
+    #         url = API_V1_URL.format(resource)
+    #         request = self.client.get(url)
+    #         self.assertEqual(request.status_code, 200)
