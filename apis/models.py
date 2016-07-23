@@ -1,8 +1,8 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
-# Why CharField is at 500 ....
-# StackOverflow user reports an api key of 350 characters
+
+# CharField is at 500 because StackOverflow user reports an api key of 350 characters
 
 
 class FitBitAPICredentials(models.Model):

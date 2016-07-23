@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 
-from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
 from vendors.models import Vendor
+from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
+
 
 ####
 # Why this is not a FLAT structure. Need to support complex stacks.
@@ -16,15 +16,15 @@ from vendors.models import Vendor
 # ingredient is such a weird word to spell
 class Ingredient(BaseModelWithUserGeneratedContent):
     # if some ingredient is longer than 300 characters, prob shouldn't take it.
-    # if anyone ever reads up reading this, 1,3 dimethylane is probably a great
-    # example of if you can't prounounce it, don't take it.
+    # if anyone ever reads up reading this, 1,3 dimethylamylamine is probably a great
+    # example of if you can't pronounce it, don't take it.
     name = models.CharField(max_length=300)
     # this is going to be a hard thing to source / scrap, but you do care about this, leave blank
     # but don't let default be zero.
     half_life_minutes = models.PositiveIntegerField(null=True, blank=True)
 
     def __repr__(self):
-        return "Ingredient : {0}".format(self.name)
+        return 'Ingredient : {0}'.format(self.name)
 
 
 class MeasurementUnit(BaseModel):
@@ -33,7 +33,7 @@ class MeasurementUnit(BaseModel):
     is_liquid = models.BooleanField(default=False)
 
     def __repr__(self):
-        return "Measurement : {0}".format(self.name)
+        return 'Measurement : {0}'.format(self.name)
 
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):
@@ -56,8 +56,7 @@ class SupplementProduct(BaseModelWithUserGeneratedContent):
     # quantity is an event type of attribute, so its not here.
 
     def __repr__(self):
-        return "Supplement : {0}".format(self.name)
+        return 'Supplement : {0}'.format(self.name)
 
 
 # TD - All unique constraints to all of these, make sure user is added to unique!
-
