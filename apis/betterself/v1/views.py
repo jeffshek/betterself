@@ -1,11 +1,18 @@
 from rest_framework.generics import GenericAPIView
+from django.db.models import Q
+
 from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
 
 
 class BaseGenericAPIViewV1(GenericAPIView):
-    def get_queryset(self):
+    model = None
 
-        return
+    def get_queryset(self):
+        # for all objects returned, a user should only see either
+        # objects that don't belong to a user or objects owned by a
+        # specific user
+        queryset = self.model.filter(Q(user=self.request.user) | Q(user=None))
+        return queryset
 
 
 class IngredientView(BaseGenericAPIViewV1):
