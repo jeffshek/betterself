@@ -1,6 +1,8 @@
 from rest_framework.generics import GenericAPIView
 from django.db.models import Q
 
+from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementProductSerializer, \
+    MeasurementSerializer, IngredientSerializer
 from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
 
 
@@ -16,20 +18,20 @@ class BaseGenericAPIViewV1(GenericAPIView):
 
 
 class IngredientView(BaseGenericAPIViewV1):
-    serializer_class = None
+    serializer_class = IngredientSerializer
     model = Ingredient
 
 
 class MeasurementUnitView(BaseGenericAPIViewV1):
-    serializer_class = None
+    serializer_class = MeasurementSerializer
     model = MeasurementUnit
 
 
 class IngredientCompositionView(BaseGenericAPIViewV1):
-    serializer_class = None
+    serializer_class = IngredientCompositionSerializer
     model = IngredientComposition
 
 
 class SupplementProductView(BaseGenericAPIViewV1):
-    serializer_class = None
+    serializer_class = SupplementProductSerializer
     model = SupplementProduct
