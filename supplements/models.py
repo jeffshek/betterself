@@ -27,7 +27,7 @@ class Ingredient(BaseModelWithUserGeneratedContent):
         return 'Ingredient : {0}'.format(self.name)
 
 
-class MeasurementUnit(BaseModel):
+class Measurement(BaseModel):
     name = models.CharField(max_length=100)  # 'milligram'
     short_name = models.CharField(max_length=100, null=True, blank=True)  # 'ml'
     is_liquid = models.BooleanField(default=False)
@@ -41,11 +41,11 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     Creatine, 5, grams
     """
     ingredient = models.ForeignKey(Ingredient)
-    measurement_unit = models.ForeignKey(MeasurementUnit, null=True)
+    measurement_unit = models.ForeignKey(Measurement, null=True)
     quantity = models.FloatField(default=1)
 
 
-class SupplementProduct(BaseModelWithUserGeneratedContent):
+class Supplement(BaseModelWithUserGeneratedContent):
     """
     Could be a stack like BCAA (which would have 4 ingredient comps)
     Or could just be something simple like Caffeine.

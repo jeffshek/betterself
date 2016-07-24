@@ -6,7 +6,7 @@ from django.core.management import CommandError
 from django.db.models import Q
 
 from events.models import SupplementProductEventComposition
-from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
+from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
 class ExcelFileSanitizer(object):
@@ -81,7 +81,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         }
 
         # make my regex life easier
-        name_no_spaces = name.replace(" ", "")
+        name_no_spaces = name.replace(' ', '')
         regex_match_with_parenthesis = re.search('(?<=\()\w+', name_no_spaces)
         if not regex_match_with_parenthesis:
             return result
@@ -94,7 +94,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         measurement = re.search('[a-z]+', regex_match_with_parenthesis)
         if measurement:
             measurement_name = measurement.group(0)
-            measurement_query = MeasurementUnit.objects.filter(
+            measurement_query = Measurement.objects.filter(
                 Q(short_name=measurement_name) | Q(name=measurement_name))
             if measurement_query.exists():
                 result['measurement_unit'] = measurement_query[0]
@@ -111,7 +111,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         # i don't trust you. this prevents user error from uploading
         # an absurd amount of supplements.
         if len(dataframe.columns) > 30:
-            raise CommandError("Too many columns inserted {0} entered. Please contact an admin.".format(len(dataframe)))
+            raise CommandError('Too many columns inserted {0} entered. Please contact an admin.'.format(len(dataframe)))
 
         for supplement_name in dataframe:  # a list of dataframe columns
             ingredient, _ = Ingredient.objects.get_or_create(
@@ -123,7 +123,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             ingredient_comp, _ = IngredientComposition.objects.get_or_create(
                 ingredient=ingredient, user=self.user, **ingredient_comp_details)
 
-            supplement, _ = SupplementProduct.objects.get_or_create(
+            supplement, _ = Supplement.objects.get_or_create(
                 name=supplement_name,
                 user=self.user
             )

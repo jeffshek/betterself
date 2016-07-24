@@ -28,7 +28,7 @@ class IngredientCompositionSerializer(serializers.Serializer):
     quantity = serializers.FloatField()
 
 
-class SupplementProductSerializer(serializers.Serializer):
+class SupplementSerializer(serializers.Serializer):
     # take a list of ingredients
     # accept both ids or names
     ingredient_names = serializers.CharField(max_length=600)
