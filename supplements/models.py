@@ -23,17 +23,11 @@ class Ingredient(BaseModelWithUserGeneratedContent):
     # but don't let default be zero.
     half_life_minutes = models.PositiveIntegerField(null=True, blank=True)
 
-    def __repr__(self):
-        return 'Ingredient : {0}'.format(self.name)
-
 
 class Measurement(BaseModel):
     name = models.CharField(max_length=100)  # 'milligram'
     short_name = models.CharField(max_length=100, null=True, blank=True)  # 'ml'
     is_liquid = models.BooleanField(default=False)
-
-    def __repr__(self):
-        return 'Measurement : {0}'.format(self.name)
 
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):
@@ -55,8 +49,4 @@ class Supplement(BaseModelWithUserGeneratedContent):
     vendor = models.ForeignKey(Vendor, null=True)
     # quantity is an event type of attribute, so its not here.
 
-    def __repr__(self):
-        return 'Supplement : {0}'.format(self.name)
-
-
-# TD - All unique constraints to all of these, make sure user is added to unique!
+# TD - Add unique constraints to all of these, make sure user is added to unique!

@@ -2,6 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
+from supplements.fixtures.factories import IngredientFactory
 
 VALID_GET_RESOURCES = [
     'supplements',
@@ -13,6 +14,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
     def setUpTestData(cls):
         cls.user = cls.create_user()
+        cls.ingredient = IngredientFactory()
 
     def setUp(self):
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
@@ -27,3 +29,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
             url = API_V1_URL.format(resource)
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_creation(self):
+        # this doesn't really belong here, but
+        # i can move it later
+        self.assertIsNotNone(self.ingredient)

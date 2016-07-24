@@ -12,6 +12,16 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        if hasattr(self, 'name'):
+            return '{0} : {1}'.format(class_name, self.name)
+        else:
+            return '{0}'.format(class_name)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class BaseModelWithUserGeneratedContent(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
