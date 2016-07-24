@@ -27,7 +27,7 @@ class TestUser(TestCase, UsersTestsMixin):
             'password': 'secret_password',
         }
 
-        self.create_user(**credentials)
+        self.create_user(credentials)
         result = self.client.login(**credentials)
 
         self.assertEqual(result, True)

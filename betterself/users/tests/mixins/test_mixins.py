@@ -11,13 +11,19 @@ DEFAULT_CREDENTIALS = {
 
 class UsersTestsMixin(object):
     @classmethod
-    def create_user(cls, **kwargs):
+    def create_user(cls, credentials=DEFAULT_CREDENTIALS):
         # pass username, email and password
-        user = User.objects.create_user(**kwargs)
+        user = User.objects.create_user(**credentials)
         return user
 
     @classmethod
-    def create_authenticated_user(cls, client, credentials=DEFAULT_CREDENTIALS):
-        user = cls.create_user(**credentials)
+    def create_authenticated_user_on_client(cls, client, user, credentials=DEFAULT_CREDENTIALS):
         client.force_authenticate(user)
-        return user
+
+        successfully_login = client.login(**credentials)
+
+        # just a quick check just in case
+        assert user.is_authenticated()
+        assert successfully_login
+
+        return client

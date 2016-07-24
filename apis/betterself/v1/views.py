@@ -1,5 +1,6 @@
-from rest_framework.generics import GenericAPIView
 from django.db.models import Q
+from django.http import HttpResponse
+from rest_framework.generics import GenericAPIView
 
 from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementSerializer, \
     MeasurementSerializer, IngredientSerializer
@@ -35,3 +36,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
 class SupplementView(BaseGenericAPIViewV1):
     serializer_class = SupplementSerializer
     model = Supplement
+
+    def get(self, request, **kwargs):
+        return HttpResponse('Text only, please.', content_type='text/plain')

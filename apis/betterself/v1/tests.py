@@ -11,11 +11,11 @@ API_V1_URL = '/api/v1/{0}'
 
 class APIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
-    def setUpClass(cls):
-        cls.client = APIClient()
-        cls.create_authenticated_user(cls.client)
+    def setUpTestData(cls):
+        cls.user = cls.create_user()
 
-        super().setUpClass()
+    def setUp(self):
+        self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
 
     def test_fake_resources_404(self):
         url = API_V1_URL.format('fake_made_up_resource')
