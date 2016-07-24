@@ -3,7 +3,7 @@ from rest_framework.test import APIClient
 
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 
-API_V1_VALID_GET_RESOURCES = [
+VALID_GET_RESOURCES = [
     'supplements',
 ]
 API_V1_URL = '/api/v1/{0}'
@@ -23,7 +23,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         self.assertEqual(request.status_code, 404)
 
     def test_all_resources_have_valid_get(self):
-        for resource in API_V1_VALID_GET_RESOURCES:
+        for resource in VALID_GET_RESOURCES:
             url = API_V1_URL.format(resource)
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)

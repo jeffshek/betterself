@@ -1,6 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponse
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 
 from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementSerializer, \
     MeasurementSerializer, IngredientSerializer
@@ -15,6 +14,17 @@ class BaseGenericAPIViewV1(GenericAPIView):
         # objects that don't belong to a user or objects owned by a
         # specific user
         queryset = self.model.filter(Q(user=self.request.user) | Q(user=None))
+        return queryset
+
+
+class BaseGenericListAPIViewV1(ListAPIView):
+    model = None
+
+    def get_queryset(self):
+        # for all objects returned, a user should only see either
+        # objects that don't belong to a user or objects owned by a
+        # specific user
+        queryset = self.model.objects.filter(Q(user=self.request.user) | Q(user=None))
         return queryset
 
 
@@ -33,9 +43,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
     model = IngredientComposition
 
 
-class SupplementView(BaseGenericAPIViewV1):
+class SupplementListView(BaseGenericListAPIViewV1):
     serializer_class = SupplementSerializer
     model = Supplement
-
-    def get(self, request, **kwargs):
-        return HttpResponse('Text only, please.', content_type='text/plain')
