@@ -13,15 +13,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
     def setUpClass(cls):
         cls.client = APIClient()
-
-        credentials = {
-            'username': 'tester',
-            'email': 'username@gmail.com',
-            'password': 'secret_password',
-        }
-
-        cls.create_user(**credentials)
-        cls.client.login(**credentials)
+        cls.create_authenticated_user(cls.client)
 
         super().setUpClass()
 
@@ -30,8 +22,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         request = self.client.get(url)
         self.assertEqual(request.status_code, 404)
 
-    # def test_all_resources_have_valid_get(self):
-    #     for resource in API_V1_VALID_GET_RESOURCES:
-    #         url = API_V1_URL.format(resource)
-    #         request = self.client.get(url)
-    #         self.assertEqual(request.status_code, 200)
+    def test_all_resources_have_valid_get(self):
+        for resource in API_V1_VALID_GET_RESOURCES:
+            url = API_V1_URL.format(resource)
+            request = self.client.get(url)
+            self.assertEqual(request.status_code, 200)
