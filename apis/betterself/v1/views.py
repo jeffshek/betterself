@@ -32,6 +32,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
     model = IngredientComposition
 
 
-class SupplementProductView(BaseGenericAPIViewV1):
+class SupplementView(BaseGenericAPIViewV1):
     serializer_class = SupplementSerializer
     model = Supplement
