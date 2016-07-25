@@ -2,8 +2,9 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
+from supplements.fixtures.factories import IngredientFactory
 
-API_V1_VALID_GET_RESOURCES = [
+VALID_GET_RESOURCES = [
     'supplements',
 ]
 API_V1_URL = '/api/v1/{0}'
@@ -11,19 +12,12 @@ API_V1_URL = '/api/v1/{0}'
 
 class APIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
-    def setUpClass(cls):
-        cls.client = APIClient()
+    def setUpTestData(cls):
+        cls.user = cls.create_user()
+        cls.ingredient = IngredientFactory()
 
-        credentials = {
-            'username': 'tester',
-            'email': 'username@gmail.com',
-            'password': 'secret_password',
-        }
-
-        cls.create_user(**credentials)
-        cls.client.login(**credentials)
-
-        super().setUpClass()
+    def setUp(self):
+        self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
 
     def test_fake_resources_404(self):
         url = API_V1_URL.format('fake_made_up_resource')
@@ -31,7 +25,12 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         self.assertEqual(request.status_code, 404)
 
     def test_all_resources_have_valid_get(self):
-        for resource in API_V1_VALID_GET_RESOURCES:
+        for resource in VALID_GET_RESOURCES:
             url = API_V1_URL.format(resource)
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_creation(self):
+        # this doesn't really belong here, but
+        # i can move it later
+        self.assertIsNotNone(self.ingredient)

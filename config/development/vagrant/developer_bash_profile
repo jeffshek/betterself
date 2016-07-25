@@ -20,3 +20,10 @@ alias dplus="python manage.py shell_plus"
 # always show what's the git status
 git status
 
+alias gs='git status'
+alias gc='git commit -am'
+alias gb='git branch'
+alias gp='git pull'
+alias ga='git add --all'
+alias gd='git diff'
+alias ls='ls -la'

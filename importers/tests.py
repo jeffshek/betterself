@@ -7,7 +7,7 @@ from events.models import SupplementProductEventComposition
 
 from importers.excel.importer import SupplementSanitizerTemplate
 # use django user model
-from supplements.models import Ingredient, IngredientComposition, MeasurementUnit, SupplementProduct
+from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 User = get_user_model()
 
@@ -18,7 +18,7 @@ class ExcelImporterTests(TestCase):
         User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
         self.user = User.objects.get(username='jacob')
 
-        file_path = settings.ROOT_DIR.path("importers", "fixtures", "tests", "supplement_log_fixtures.xlsx")
+        file_path = settings.ROOT_DIR.path('importers', 'fixtures', 'tests', 'supplement_log_fixtures.xlsx')
         # path is like a command pattern, so we call it now to get the string location
         file_path = file_path()
         self.sanitizer = SupplementSanitizerTemplate(file_path, self.user)
@@ -37,9 +37,9 @@ class ExcelImporterTests(TestCase):
 
         # all these would be created by a test use from fixtures
         ingredient_exists = Ingredient.objects.all().exists()
-        mu_exists = MeasurementUnit.objects.all().exists()
+        mu_exists = Measurement.objects.all().exists()
         ing_comp_exists = IngredientComposition.objects.all().exists()
-        supplement_products_exists = SupplementProduct.objects.all().exists()
+        supplement_products_exists = Supplement.objects.all().exists()
 
         self.assertTrue(ingredient_exists)
         self.assertTrue(mu_exists)

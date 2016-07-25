@@ -1,9 +1,8 @@
 from django.db import models
-from django.forms import ChoiceField
 
-from betterself.base_models import BaseModelWithUserGeneratedContent, BaseModelWithRequiredUser
+from betterself.base_models import BaseModelWithRequiredUser
 from betterself.utils import create_django_choice_tuple_from_list
-from supplements.models import SupplementProduct
+from supplements.models import Supplement
 
 INPUT_SOURCES = [
     'api',
@@ -24,7 +23,7 @@ class SupplementProductEventComposition(BaseModelWithRequiredUser):
     # will figure that out when we get there ...
     """
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
-    supplement_product = models.ForeignKey(SupplementProduct)
+    supplement_product = models.ForeignKey(Supplement)
     # floatfield, if ie. someone drinks 1/2 of a 5 hour energy ...
     quantity = models.FloatField(default=1)
     # what time did the user take the five hour energy? use the time model
@@ -45,6 +44,3 @@ class SleepEventLog(BaseModelWithRequiredUser):
     # Odd debate, but what day does this event accurately represent?
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
     day = models.DateField()
-
-
-

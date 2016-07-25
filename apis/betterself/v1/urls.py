@@ -1,7 +1,8 @@
-from apis.betterself.v1.views import APIv1Views
 from django.conf.urls import url
+
+from apis.betterself.v1.views import SupplementListView
 
 urlpatterns = [
     # urls should contain all rest resources
-    url(r'^supplements', APIv1Views.as_view()),
+    url(r'^supplements', SupplementListView.as_view()),
 ]
