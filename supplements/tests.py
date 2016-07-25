@@ -12,7 +12,7 @@ class SupplementFixtureCreationTests(TestCase, SupplementModelsFixturesMixin):
     def test_ingredients_creation(self):
         self.assertTrue(self.ingredients)
 
-    def test_default_ingreident(self):
+    def test_default_ingredient(self):
         default_ingredient = self.ingredients[0]
 
         self.assertEqual(default_ingredient.name, DEFAULT_INGREDIENT_NAME)
