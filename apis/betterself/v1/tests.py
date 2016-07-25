@@ -29,8 +29,3 @@ class APIv1Tests(TestCase, UsersTestsMixin):
             url = API_V1_URL.format(resource)
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)
-
-    def test_ingredient_creation(self):
-        # this doesn't really belong here, but
-        # i can move it later
-        self.assertIsNotNone(self.ingredient)

@@ -3,10 +3,13 @@ import factory
 
 from supplements.models import Ingredient
 
+DEFAULT_INGREDIENT_NAME = 'Leucine'
+DEFAULT_INGREDIENT_HL_MINUTE = 50
+
 
 class IngredientFactory(factory.Factory):
     class Meta:
         model = Ingredient
 
-    name = 'Leucine'
-    half_life_minutes = 50
+    name = DEFAULT_INGREDIENT_NAME
+    half_life_minutes = DEFAULT_INGREDIENT_HL_MINUTE
