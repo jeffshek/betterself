@@ -1,14 +1,14 @@
 from django.test import TestCase
 
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME, DEFAULT_INGREDIENT_HL_MINUTE
-from supplements.fixtures.mixins import SupplementModelsFixturesMixin
+from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Ingredient
 
 
-class SupplementFixtureCreationTests(TestCase, SupplementModelsFixturesMixin):
+class SupplementFixtureCreationTests(TestCase, SupplementModelsFixturesGenerator):
     @classmethod
     def setUpTestData(cls):
-        cls.create_basic_fixtures_from_factories()
+        SupplementModelsFixturesGenerator.create_basic_fixtures_from_factories()
 
     def test_ingredients_creation(self):
         self.assertTrue(self.ingredients)
