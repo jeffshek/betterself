@@ -1,6 +1,7 @@
 ####
 # TD - Starfish and rainbows
 ####
+- Add tests on Factory Boy, have a class that generates fixtures
 - Change API Domain to api.betterself
 - Fix domain to redirect correctly
 - Add web area to upload file for user supplement logs

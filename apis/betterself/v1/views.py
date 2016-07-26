@@ -19,6 +19,8 @@ class UserQuerysetFilterMixin(object):
         queryset = self.model.objects.filter(Q(user=self.request.user) | Q(user=None))
         return queryset
 
+# Have generic views that override get_queryset
+
 
 class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
     def get_queryset(self):
@@ -48,3 +50,7 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
 class SupplementListView(BaseGenericListAPIViewV1):
     serializer_class = SupplementSerializer
     model = Supplement
+
+
+# GenericList gives "get", but also need to filter out list of names and ids
+# also investigate how would you do post/put/delete if with ListAPI
