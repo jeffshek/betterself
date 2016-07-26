@@ -1,7 +1,7 @@
 from django.db import models
 
-from vendors.models import Vendor
 from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
+from vendors.models import Vendor
 
 
 ####
@@ -37,6 +37,10 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     ingredient = models.ForeignKey(Ingredient)
     measurement_unit = models.ForeignKey(Measurement, null=True)
     quantity = models.FloatField(default=1)
+
+    def __str__(self):
+        class_name = self.__class__.__name__
+        return '{0} : {1} {2}'.format(class_name, self.ingredient, self.quantity)
 
 
 class Supplement(BaseModelWithUserGeneratedContent):
