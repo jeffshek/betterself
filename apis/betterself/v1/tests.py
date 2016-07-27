@@ -17,7 +17,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def setUpTestData(cls):
         cls.user = cls.create_user()
         cls.ingredient = IngredientFactory()
-        SupplementModelsFixturesGenerator.create_factory_fixtures()
+        SupplementModelsFixturesGenerator.create_fixtures()
 
     def setUp(self):
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)

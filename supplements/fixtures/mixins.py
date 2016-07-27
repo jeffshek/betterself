@@ -4,7 +4,7 @@ from supplements.fixtures.factories import IngredientFactory, MeasurementFactory
 
 class SupplementModelsFixturesGenerator(object):
     @classmethod
-    def create_factory_fixtures(cls):
+    def create_fixtures(cls):
         # use a create on certain factories to allow many to many relationships
         # a bit of debate since there are a lot of defaults in the factory ...
         # not sure how much I like that since that's not overly explicit

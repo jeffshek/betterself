@@ -8,7 +8,7 @@ from supplements.models import Ingredient
 class SupplementFixtureCreationTests(TestCase, SupplementModelsFixturesGenerator):
     @classmethod
     def setUpTestData(cls):
-        SupplementModelsFixturesGenerator.create_factory_fixtures()
+        SupplementModelsFixturesGenerator.create_fixtures()
 
     def test_ingredients_creation(self):
         ingredient = Ingredient.objects.all().first()
