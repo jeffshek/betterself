@@ -58,4 +58,4 @@ class SupplementFactory(factory.DjangoModelFactory):
         if extracted:
             # A list of groups were passed in, use them
             for group in extracted:
-                self.ingredient_composition.add(group)
+                self.ingredient_compositions.add(group)

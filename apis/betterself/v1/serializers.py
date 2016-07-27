@@ -26,6 +26,6 @@ class IngredientCompositionSerializer(serializers.Serializer):
 
 
 class SupplementSerializer(serializers.Serializer):
-    ingredient_names = serializers.CharField(max_length=600, source='ingredient_composition')
+    ingredient_names = serializers.CharField(max_length=600, source='ingredient_compositions')
     name = serializers.CharField(max_length=300)
     vendor_name = serializers.CharField(max_length=300, source='vendor')

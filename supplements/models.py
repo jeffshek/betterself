@@ -58,7 +58,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     name = models.CharField(max_length=300)
     # TD - Make this plural
-    ingredient_composition = models.ManyToManyField(IngredientComposition)
+    ingredient_compositions = models.ManyToManyField(IngredientComposition)
     vendor = models.ForeignKey(Vendor, null=True)
     # quantity is an event type of attribute, so its not here.
 
