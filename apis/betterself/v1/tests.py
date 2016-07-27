@@ -3,9 +3,11 @@ from rest_framework.test import APIClient
 
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 from supplements.fixtures.factories import IngredientFactory
+from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
+from supplements.models import Supplement
 
 VALID_GET_RESOURCES = [
-    'supplements',
+    Supplement.RESOURCE_NAME,
 ]
 API_V1_URL = '/api/v1/{0}'
 
@@ -15,6 +17,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def setUpTestData(cls):
         cls.user = cls.create_user()
         cls.ingredient = IngredientFactory()
+        SupplementModelsFixturesGenerator.create_factory_fixtures()
 
     def setUp(self):
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
@@ -29,3 +32,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
             url = API_V1_URL.format(resource)
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)
+
+    def test_supplement_get_request(self):
+        url = API_V1_URL.format(Supplement.RESOURCE_NAME)
+        request = self.client.get(url)
+        self.assertEqual(request.status_code, 200)
