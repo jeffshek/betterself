@@ -41,7 +41,7 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'ingredient_compositions'
 
     ingredient = models.ForeignKey(Ingredient)
-    measurement_unit = models.ForeignKey(Measurement, null=True)
+    measurement_unit = models.ForeignKey(Measurement, null=True, blank=True)
     quantity = models.FloatField(default=1)
 
     def __str__(self):
@@ -58,8 +58,8 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     name = models.CharField(max_length=300)
     # TD - Make this plural
-    ingredient_compositions = models.ManyToManyField(IngredientComposition)
-    vendor = models.ForeignKey(Vendor, null=True)
+    ingredient_compositions = models.ManyToManyField(IngredientComposition, blank=True)
+    vendor = models.ForeignKey(Vendor, null=True, blank=True)
     # quantity is an event type of attribute, so its not here.
 
 # TD - Add unique constraints to all of these, make sure user is added to unique!
