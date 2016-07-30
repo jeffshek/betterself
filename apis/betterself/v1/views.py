@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 
 from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementSerializer, \
     MeasurementSerializer, IngredientSerializer
@@ -27,7 +27,7 @@ class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
         return self._get_queryset()
 
 
-class BaseGenericListAPIViewV1(ListAPIView, UserQuerysetFilterMixin):
+class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin):
     def get_queryset(self):
         return self._get_queryset()
 
@@ -47,10 +47,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
     model = IngredientComposition
 
 
-class SupplementListView(BaseGenericListAPIViewV1):
+class SupplementListCreateView(BaseGenericListCreateAPIViewV1):
     serializer_class = SupplementSerializer
     model = Supplement
-
-
-# GenericList gives "get", but also need to filter out list of names and ids
-# also investigate how would you do post/put/delete if with ListAPI
