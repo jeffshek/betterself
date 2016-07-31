@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase
 from rest_framework.test import APIClient
 
@@ -43,8 +44,10 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request_parameters = {
             'name': 'creatine',
-            'vendor_name': 't_nation',
-            'ingredient_names': 'some_stuff'
+            'vendor_id': 2,
+            'ingredient_compositions_ids': '1,2'  # this should probably be CSV enforced
         }
-        request = self.client.post(url, request_parameters)
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+
         self.assertEqual(request.status_code, 201)

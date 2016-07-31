@@ -1,12 +1,26 @@
+from django.db.models import Q
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from supplements.models import Supplement
+from supplements.models import Supplement, IngredientComposition
+
+# validate if a user has access to retrieve an object id
+from vendors.models import Vendor
+
+
+def user_viewable_objects_validator(model, user, ids_string):
+    ids_string_parsed = ids_string.strip().split(',')
+    user_viewable_objects = model.get_user_viewable_objects(user).values_list('id')
+
+    not_authorized = [item for item in ids_string_parsed if int(item) not in user_viewable_objects]
+    if not_authorized:
+        raise serializers.ValidationError('Not authorized to view {0} for {1}'.format(not_authorized[0], user))
 
 
 class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
-    url = serializers.URLField()
+    url = serializers.URLField(required=False)
 
 
 class IngredientSerializer(serializers.Serializer):
@@ -21,18 +35,39 @@ class MeasurementSerializer(serializers.Serializer):
 
 
 class IngredientCompositionSerializer(serializers.Serializer):
-    ingredient_name = serializers.CharField(max_length=300)
-    measurement_name = serializers.CharField(max_length=100)
+    ingredient = serializers.CharField(max_length=300)
+    measurement = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
 
 
-class SupplementSerializer(serializers.Serializer):
-    ingredient_names = serializers.CharField(max_length=600, source='ingredient_compositions')
+class IngredientCompositionIDsField(serializers.RelatedField):
+    """ Serializers a string of IDs of ingredient compositions """
+    SERIALIZER_MODEL = IngredientComposition
+
+    def to_representation(self, value):
+        user = self.context['request'].user
+        IngredientComposition.get_user_viewable_objects(user)
+
+
+# use this for put / post
+class SupplementCreateSerializer(serializers.Serializer):
+    # if a list of ids are provided, comma split them
+    ingredient_compositions_ids = serializers.CharField(source='ingredient_compositions')
     name = serializers.CharField(max_length=300)
-    vendor_name = serializers.CharField(max_length=300, source='vendor')
+    vendor_id = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
         # except for very specific data, all generated objects should have a user field
         user = self.context['request'].user
         validated_data['user'] = user
+
+        vendor_id = validated_data.pop('vendor_id', None)
+        if vendor_id:
+            vendor = Vendor.objects.filter(id=vendor_id).filter(Q(user=user) | Q(user__isnull=True))
+            if not vendor:
+                raise ValidationError('No Vendor ID of {0} found belong to user {1}'.format(vendor_id, user.id))
+            else:
+                validated_data['vendor'] = vendor.first()
+
+        # need to figure out
         return Supplement(**validated_data)

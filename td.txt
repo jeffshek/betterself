@@ -1,12 +1,7 @@
 ####
 # TD - Starfish and rainbows
 ####
-- Rename measurement_unit to measurement
-- Rename model attribute ingredient_composition to ingredient_compositions
-
-
-
-- Add tests on Factory Boy, have a class that generates fixtures
+- Look into decorators / libraries that help with auto-documentation ...
 - Change API Domain to api.betterself
 - Fix domain to redirect correctly
 - Add web area to upload file for user supplement logs
