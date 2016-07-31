@@ -47,6 +47,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
     model = IngredientComposition
 
 
-class SupplementListCreateView(BaseGenericListCreateAPIViewV1):
+class SupplementListCreateView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
     serializer_class = SupplementSerializer
     model = Supplement
