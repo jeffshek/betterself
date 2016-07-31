@@ -22,6 +22,9 @@ class VendorSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=254)
     url = serializers.URLField(required=False)
 
+    def create(self, validated_data):
+        return Vendor(**validated_data)
+
 
 class IngredientSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
@@ -57,7 +60,7 @@ class SupplementCreateSerializer(serializers.Serializer):
     vendor_id = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
-        # except for very specific data, all generated objects should have a user field
+        # all generated objects should have a user field
         user = self.context['request'].user
         validated_data['user'] = user
 

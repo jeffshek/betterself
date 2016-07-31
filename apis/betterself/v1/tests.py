@@ -6,6 +6,7 @@ from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 from supplements.fixtures.factories import IngredientFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
+from vendors.models import Vendor
 
 VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
@@ -43,9 +44,21 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def test_supplement_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request_parameters = {
-            'name': 'creatine',
+            'name': 'glutamine',
             'vendor_id': 2,
             'ingredient_compositions_ids': '1,2'  # this should probably be CSV enforced
+        }
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+
+        self.assertEqual(request.status_code, 201)
+
+    def test_vendor_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(Vendor.RESOURCE_NAME)
+        request_parameters = {
+            'name': 'Advil',
+            'email': 'advil@advil.com',
+            'url:': 'advil.com',
         }
         data = json.dumps(request_parameters)
         request = self.client.post(url, data=data, content_type='application/json')

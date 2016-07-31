@@ -2,8 +2,9 @@ from django.db.models import Q
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
 
 from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementCreateSerializer, \
-    MeasurementSerializer, IngredientSerializer
+    MeasurementSerializer, IngredientSerializer, VendorSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
+from vendors.models import Vendor
 
 
 class UserQuerysetFilterMixin(object):
@@ -32,6 +33,11 @@ class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin)
         return self._get_queryset()
 
 
+class VendorView(BaseGenericListCreateAPIViewV1):
+    serializer_class = VendorSerializer
+    model = Vendor
+
+
 class IngredientView(BaseGenericAPIViewV1):
     serializer_class = IngredientSerializer
     model = Ingredient
@@ -47,6 +53,6 @@ class IngredientCompositionView(BaseGenericAPIViewV1):
     model = IngredientComposition
 
 
-class SupplementListCreateView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
+class SupplementView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
     serializer_class = SupplementCreateSerializer
     model = Supplement
