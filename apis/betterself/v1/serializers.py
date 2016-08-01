@@ -50,11 +50,10 @@ class IngredientCompositionIDsField(serializers.RelatedField):
         IngredientComposition.get_user_viewable_objects(user)
 
 
-# use this for put / post
 class SupplementCreateSerializer(serializers.Serializer):
-    # if a list of ids are provided, comma split them
-    ingredient_compositions_ids = serializers.CharField(source='ingredient_compositions')
     name = serializers.CharField(max_length=300)
+    # if a list of ids are provided, comma split them
+    ingredient_compositions_ids = serializers.CharField(required=False)
     vendor_id = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -70,5 +69,4 @@ class SupplementCreateSerializer(serializers.Serializer):
             else:
                 validated_data['vendor'] = vendor.first()
 
-        # need to figure out
         return Supplement(**validated_data)
