@@ -6,6 +6,7 @@ from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 from supplements.fixtures.factories import IngredientFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
+from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
 VALID_GET_RESOURCES = [
@@ -20,7 +21,11 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def setUpTestData(cls):
         cls.user = cls.create_user()
         cls.ingredient = IngredientFactory()
+
+        # generic fixtures based on the apps, inclusive of models
+        # like measurement objects
         SupplementModelsFixturesGenerator.create_fixtures()
+        VendorModelsFixturesGenerator.create_fixtures()
 
     def setUp(self):
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
@@ -44,7 +49,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def test_supplement_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request_parameters = {
-            'name': 'glutamine',
+            'name': 'Glutamine',
             'vendor_id': 2,
             'ingredient_compositions_ids': '1,2'  # this should probably be CSV enforced
         }

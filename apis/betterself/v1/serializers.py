@@ -3,8 +3,6 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from supplements.models import Supplement, IngredientComposition
-
-# validate if a user has access to retrieve an object id
 from vendors.models import Vendor
 
 
