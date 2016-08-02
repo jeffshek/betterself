@@ -79,6 +79,7 @@ class SupplementCreateSerializer(serializers.Serializer):
 
         return supplement
 
+    # TD - if you have to implement this again, move to base model!
     @staticmethod
     def _get_ingredient_compositions_accessible_for_user(user, ingredient_compositions_ids):
         try:
