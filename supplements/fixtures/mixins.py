@@ -15,7 +15,7 @@ class SupplementModelsFixturesGenerator(object):
         # kind of a gotcha, but IngredientCompositionFactory will auto populate
         # foreign keys if the factory specifies it
         ingredient_composition = IngredientCompositionFactory(
-            ingredient=ingredient, measurement_unit=measurement
+            ingredient=ingredient, measurement=measurement
         )
 
         # factory boy is a little bit special for many to many

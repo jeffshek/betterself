@@ -37,7 +37,7 @@ class MeasurementSerializer(serializers.Serializer):
 
 class IngredientCompositionSerializer(serializers.Serializer):
     ingredient = serializers.CharField(max_length=300)
-    measurement_unit = serializers.CharField(max_length=100)
+    measurement = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
 
 

@@ -55,12 +55,12 @@ class ExcelImporterTests(TestCase):
 
     def test_get_measurement_unit_and_quantity_from_name(self):
         test_name_1 = 'Snake Oil (200mg)'
-        result = SupplementSanitizerTemplate.get_measurement_unit_and_quantity_from_name(test_name_1)
+        result = SupplementSanitizerTemplate.get_measurement_and_quantity_from_name(test_name_1)
 
         self.assertEqual(result['quantity'], 200)
 
         test_name_2 = 'Snake Oil'
-        result = SupplementSanitizerTemplate.get_measurement_unit_and_quantity_from_name(test_name_2)
+        result = SupplementSanitizerTemplate.get_measurement_and_quantity_from_name(test_name_2)
         result_quantity = result.get('quantity')
 
         self.assertEqual(result_quantity, None)

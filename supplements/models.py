@@ -41,7 +41,7 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'ingredient_compositions'
 
     ingredient = models.ForeignKey(Ingredient)
-    measurement_unit = models.ForeignKey(Measurement, null=True, blank=True)
+    measurement = models.ForeignKey(Measurement, null=True, blank=True)
     quantity = models.FloatField(default=1)
 
     def __str__(self):

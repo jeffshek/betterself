@@ -40,7 +40,7 @@ class IngredientCompositionFactory(factory.DjangoModelFactory):
         model = IngredientComposition
 
     ingredient = factory.SubFactory(IngredientFactory)
-    measurement_unit = factory.SubFactory(MeasurementFactory)
+    measurement = factory.SubFactory(MeasurementFactory)
 
 
 class SupplementFactory(factory.DjangoModelFactory):
