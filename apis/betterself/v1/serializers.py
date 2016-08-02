@@ -50,8 +50,7 @@ class IngredientCompositionIDsField(serializers.RelatedField):
         IngredientComposition.get_user_viewable_objects(user)
 
 
-class SupplementReadSerializer(serializers.Serializer):
-    # TD - Think of a better name than this
+class SupplementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = IngredientCompositionSerializer(many=True)
     vendor = VendorSerializer()
