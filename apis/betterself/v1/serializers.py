@@ -37,7 +37,7 @@ class MeasurementSerializer(serializers.Serializer):
 
 class IngredientCompositionSerializer(serializers.Serializer):
     ingredient = serializers.CharField(max_length=300)
-    measurement = serializers.CharField(max_length=100)
+    measurement_unit = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
 
 
@@ -48,6 +48,13 @@ class IngredientCompositionIDsField(serializers.RelatedField):
     def to_representation(self, value):
         user = self.context['request'].user
         IngredientComposition.get_user_viewable_objects(user)
+
+
+class SupplementReadSerializer(serializers.Serializer):
+    # TD - Think of a better name than this
+    name = serializers.CharField(max_length=300)
+    ingredient_compositions = IngredientCompositionSerializer(many=True)
+    vendor = VendorSerializer()
 
 
 class SupplementCreateSerializer(serializers.Serializer):

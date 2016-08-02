@@ -44,6 +44,7 @@ class APIv1Tests(TestCase, UsersTestsMixin):
     def test_supplement_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request = self.client.get(url)
+
         self.assertEqual(request.status_code, 200)
 
     def test_supplement_post_request(self):
