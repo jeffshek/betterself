@@ -87,3 +87,16 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         request = self.client.get(url)
 
         self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_composition_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(IngredientComposition.RESOURCE_NAME)
+
+        request_parameters = {
+            'ingredient_id': '1',
+            'measurement_id': '1',
+            'quantity:': '5.0',
+        }
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+
+        self.assertEqual(request.status_code, 200)

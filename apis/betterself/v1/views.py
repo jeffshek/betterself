@@ -1,8 +1,9 @@
 from django.db.models import Q
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
 
-from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementCreateSerializer, \
-    MeasurementSerializer, IngredientSerializer, VendorSerializer, SupplementReadOnlySerializer
+from apis.betterself.v1.serializers import IngredientCompositionReadOnlySerializer, SupplementCreateSerializer, \
+    MeasurementSerializer, IngredientSerializer, VendorSerializer, SupplementReadOnlySerializer, \
+    IngredientCompositionCreateSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -19,8 +20,6 @@ class UserQuerysetFilterMixin(object):
         # specific user
         queryset = self.model.objects.filter(Q(user=self.request.user) | Q(user=None))
         return queryset
-
-# Have generic views that override get_queryset
 
 
 class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
@@ -49,12 +48,19 @@ class MeasurementView(BaseGenericAPIViewV1):
 
 
 class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
-    serializer_class = IngredientCompositionSerializer
+    read_serializer_class = IngredientCompositionReadOnlySerializer
+    write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
+
+    def get_serializer_class(self):
+        request_method = self.request.method
+        if request_method.lower() in ['list', 'get']:
+            return self.read_serializer_class
+        else:
+            return self.write_serializer_class
 
 
 class SupplementView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
-    # this can probably be named better
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement

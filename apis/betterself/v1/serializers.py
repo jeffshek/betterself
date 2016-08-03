@@ -35,10 +35,26 @@ class MeasurementSerializer(serializers.Serializer):
     is_liquid = serializers.BooleanField(default=False)
 
 
-class IngredientCompositionSerializer(serializers.Serializer):
+class IngredientCompositionReadOnlySerializer(serializers.Serializer):
     ingredient = serializers.CharField(max_length=300)
     measurement = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
+
+
+class IngredientCompositionCreateSerializer(serializers.Serializer):
+    ingredient_id = serializers.CharField(max_length=300)
+    measurement_id = serializers.CharField(max_length=100)
+    quantity = serializers.FloatField()
+
+    def create(self, validated_data):
+
+        # ingredient_id = validated_data.pop('ingredient_id', None)
+        # measurement_id = validated_data.pop('measurement_id', None)
+        #
+        # if not ingredient_id or not measurement_id:
+        #     raise ValidationError('Invalid measurement_id or ingredient_id enterered')
+        print (validated_data)
+        return IngredientComposition(**validated_data)
 
 
 class IngredientCompositionIDsField(serializers.RelatedField):
@@ -52,7 +68,7 @@ class IngredientCompositionIDsField(serializers.RelatedField):
 
 class SupplementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    ingredient_compositions = IngredientCompositionSerializer(many=True)
+    ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
     vendor = VendorSerializer()
 
 
@@ -91,7 +107,7 @@ class SupplementCreateSerializer(serializers.Serializer):
         try:
             ingredient_compositions_ids_parsed = [int(item) for item in ingredient_compositions_ids.strip().split(',')]
         except TypeError:
-            raise TypeError('Invalid Ingredient Compositions Ids Entered {0}'.format(ingredient_compositions_ids))
+            raise ValidationError('Invalid Ingredient Compositions Ids Entered {0}'.format(ingredient_compositions_ids))
 
         queryset = IngredientComposition.objects.filter(id__in=ingredient_compositions_ids_parsed).filter(
             Q(user=user) | Q(user__isnull=True))
