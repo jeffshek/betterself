@@ -48,7 +48,7 @@ class MeasurementView(BaseGenericAPIViewV1):
     model = Measurement
 
 
-class IngredientCompositionView(BaseGenericAPIViewV1):
+class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
     serializer_class = IngredientCompositionSerializer
     model = IngredientComposition
 
