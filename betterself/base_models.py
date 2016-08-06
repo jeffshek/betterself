@@ -42,7 +42,7 @@ class BaseModelWithUserGeneratedContent(BaseModel):
     def get_user_viewable_objects(cls, user):
         # should split this into 2 filters, when is__null pull cached
         # and then filter what the user can see
-        queryset = cls.objects.filter(Q(user=user) | Q(user__is_null=True))
+        queryset = cls.objects.filter(Q(user=user) | Q(user__isnull=True))
         return queryset
 
 

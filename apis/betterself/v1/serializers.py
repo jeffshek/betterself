@@ -19,51 +19,42 @@ class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
     url = serializers.URLField(required=False)
+    id = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
-        return Vendor(**validated_data)
+        user = self.context['request'].user
+        return Vendor(user=user, **validated_data)
 
 
 class IngredientSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     half_life_minutes = serializers.IntegerField()
+    id = serializers.IntegerField(required=False)
 
 
 class MeasurementSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     short_name = serializers.CharField(max_length=100)
     is_liquid = serializers.BooleanField(default=False)
+    id = serializers.IntegerField(required=False)
 
 
 class IngredientCompositionReadOnlySerializer(serializers.Serializer):
     ingredient = serializers.CharField(max_length=300)
     measurement = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
+    id = serializers.IntegerField(required=False)
 
 
 class IngredientCompositionCreateSerializer(serializers.Serializer):
-    ingredient_id = serializers.CharField(max_length=300)
-    measurement_id = serializers.CharField(max_length=100)
+    ingredient_id = serializers.IntegerField()
+    measurement_id = serializers.IntegerField()
     quantity = serializers.FloatField()
 
     def create(self, validated_data):
-
-        # ingredient_id = validated_data.pop('ingredient_id', None)
-        # measurement_id = validated_data.pop('measurement_id', None)
-        #
-        # if not ingredient_id or not measurement_id:
-        #     raise ValidationError('Invalid measurement_id or ingredient_id enterered')
-        print (validated_data)
-        return IngredientComposition(**validated_data)
-
-
-class IngredientCompositionIDsField(serializers.RelatedField):
-    """ Serializers a string of IDs of ingredient compositions """
-    SERIALIZER_MODEL = IngredientComposition
-
-    def to_representation(self, value):
         user = self.context['request'].user
-        IngredientComposition.get_user_viewable_objects(user)
+        ingredient_composition = IngredientComposition(user=user, **validated_data)
+        return ingredient_composition
 
 
 class SupplementReadOnlySerializer(serializers.Serializer):
@@ -77,6 +68,7 @@ class SupplementCreateSerializer(serializers.Serializer):
     # if a list of ids are provided, comma split them
     ingredient_compositions_ids = serializers.CharField(required=False)
     vendor_id = serializers.IntegerField(required=False)
+    model = Supplement
 
     def create(self, validated_data):
         # all generated objects should have a user field
@@ -94,7 +86,7 @@ class SupplementCreateSerializer(serializers.Serializer):
                 ingredient_compositions_ids)
 
         # cannot associate many to many unless item has been saved
-        supplement = Supplement.objects.create(**validated_data)
+        supplement = Supplement.objects.create(user=user, **validated_data)
 
         for composition in ingredient_compositions:
             supplement.ingredient_compositions.add(composition)

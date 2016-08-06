@@ -1,4 +1,5 @@
 import json
+import logging
 from django.test import TestCase
 from rest_framework.test import APIClient
 
@@ -10,6 +11,9 @@ from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
+logger = logging.Logger(__name__)
+logger.setLevel(logging.ERROR)
+
 VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
 ]
@@ -17,7 +21,7 @@ VALID_GET_RESOURCES = [
 API_V1_LIST_CREATE_URL = '/api/v1/{0}'
 
 
-class APIv1Tests(TestCase, UsersTestsMixin):
+class BaseAPIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
     def setUpTestData(cls):
         cls.user = cls.create_user()
@@ -29,8 +33,18 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         VendorModelsFixturesGenerator.create_fixtures()
 
     def setUp(self):
+        # user has to be authenticated per each test!
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
 
+    @staticmethod
+    def _debug_request(request):
+        """ Helper function that outputs everything for easier reading """
+        logger.error('\n***Debugging Request***')
+        logger.error(request.data)
+        logger.error(request.status_code)
+
+
+class GeneralAPIv1Tests(BaseAPIv1Tests):
     def test_fake_resources_404(self):
         url = API_V1_LIST_CREATE_URL.format('fake_made_up_resource')
         request = self.client.get(url)
@@ -42,6 +56,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
             request = self.client.get(url)
             self.assertEqual(request.status_code, 200)
 
+
+class Supplementv1Tests(BaseAPIv1Tests):
     def test_supplement_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request = self.client.get(url)
@@ -50,9 +66,12 @@ class APIv1Tests(TestCase, UsersTestsMixin):
 
     def test_supplement_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
+        client_vendors = Vendor.get_user_viewable_objects(self.user)
+        vendor_id = client_vendors[0].id
+
         request_parameters = {
             'name': 'Glutamine',
-            'vendor_id': 2,
+            'vendor_id': vendor_id,
             'ingredient_compositions_ids': '1,2'  # this should probably be CSV enforced
         }
         data = json.dumps(request_parameters)
@@ -60,6 +79,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
 
         self.assertEqual(request.status_code, 201)
 
+
+class VendorV1Tests(BaseAPIv1Tests):
     def test_vendor_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(Vendor.RESOURCE_NAME)
         request_parameters = {
@@ -82,6 +103,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         # we made a default vendor, so that should definitely be in here
         self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
 
+
+class IngredientCompositionv1Tests(BaseAPIv1Tests):
     def test_ingredient_composition_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(IngredientComposition.RESOURCE_NAME)
         request = self.client.get(url)
@@ -94,9 +117,8 @@ class APIv1Tests(TestCase, UsersTestsMixin):
         request_parameters = {
             'ingredient_id': '1',
             'measurement_id': '1',
-            'quantity:': '5.0',
+            'quantity': 5,
         }
         data = json.dumps(request_parameters)
         request = self.client.post(url, data=data, content_type='application/json')
-
-        self.assertEqual(request.status_code, 200)
+        self.assertEqual(request.status_code, 201)

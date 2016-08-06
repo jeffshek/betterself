@@ -7,6 +7,7 @@
 - Add web area to upload file for user supplement logs
 - Define project root in settings / check Heroku settings
 - Add hook to Prevent "print" statements from being commited.
+- Maybe you should use proxy models instead of specific None filters
 
 # Tests
 - When a user deletes his account, make sure cascades
