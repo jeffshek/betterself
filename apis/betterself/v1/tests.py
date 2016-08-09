@@ -69,14 +69,21 @@ class Supplementv1Tests(BaseAPIv1Tests):
         client_vendors = Vendor.get_user_viewable_objects(self.user)
         vendor_id = client_vendors[0].id
 
+        # kind of janky, but create a list of valid IDs that could be passed
+        # when serializing
+        ingr_comps = IngredientComposition.get_user_viewable_objects(self.user)
+        ingr_comps_ids = list(ingr_comps.values_list('id', flat=True))
+        ingr_comps_ids = [str(x) for x in ingr_comps_ids]
+        ingr_comps_ids = ','.join(ingr_comps_ids)
+
         request_parameters = {
             'name': 'Glutamine',
             'vendor_id': vendor_id,
-            'ingredient_compositions_ids': '1,2'  # this should probably be CSV enforced
+            'ingredient_compositions_ids': ingr_comps_ids
         }
         data = json.dumps(request_parameters)
-        request = self.client.post(url, data=data, content_type='application/json')
 
+        request = self.client.post(url, data=data, content_type='application/json')
         self.assertEqual(request.status_code, 201)
 
 

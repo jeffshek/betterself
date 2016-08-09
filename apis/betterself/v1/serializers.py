@@ -86,7 +86,7 @@ class SupplementCreateSerializer(serializers.Serializer):
                 ingredient_compositions_ids)
 
         # cannot associate many to many unless item has been saved
-        supplement = Supplement.objects.create(user=user, **validated_data)
+        supplement = Supplement.objects.create(**validated_data)
 
         for composition in ingredient_compositions:
             supplement.ingredient_compositions.add(composition)

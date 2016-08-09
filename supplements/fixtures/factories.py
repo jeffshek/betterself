@@ -3,17 +3,31 @@ import factory
 
 from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
 
-DEFAULT_INGREDIENT_NAME = 'Leucine'
-DEFAULT_INGREDIENT_HL_MINUTE = 50
-DEFAULT_INGREDIENT_DETAILS = {
-    'name': DEFAULT_INGREDIENT_NAME,
-    'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE
+DEFAULT_INGREDIENT_NAME_1 = 'Leucine'
+DEFAULT_INGREDIENT_HL_MINUTE_1 = 50
+DEFAULT_INGREDIENT_DETAILS_1 = {
+    'name': DEFAULT_INGREDIENT_NAME_1,
+    'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE_1
+}
+
+DEFAULT_INGREDIENT_NAME_2 = 'Valine'
+DEFAULT_INGREDIENT_HL_MINUTE_2 = 50
+DEFAULT_INGREDIENT_DETAILS_2 = {
+    'name': DEFAULT_INGREDIENT_NAME_2,
+    'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE_2
+}
+
+DEFAULT_INGREDIENT_NAME_3 = 'Isoleucine'
+DEFAULT_INGREDIENT_HL_MINUTE_3 = 50
+DEFAULT_INGREDIENT_DETAILS_3 = {
+    'name': DEFAULT_INGREDIENT_NAME_3,
+    'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE_3
 }
 
 DEFAULT_MEASUREMENT_NAME = 'milligram'
 DEFAULT_MEASUREMENT_SHORT_NAME = 'mg'
 DEFAULT_MEASUREMENT_DETAILS = {
-    'name': DEFAULT_INGREDIENT_NAME,
+    'name': DEFAULT_INGREDIENT_NAME_1,
     'short_name': DEFAULT_MEASUREMENT_SHORT_NAME,
 }
 
@@ -24,8 +38,8 @@ class IngredientFactory(factory.DjangoModelFactory):
     class Meta:
         model = Ingredient
 
-    name = DEFAULT_INGREDIENT_NAME
-    half_life_minutes = DEFAULT_INGREDIENT_HL_MINUTE
+    name = DEFAULT_INGREDIENT_NAME_1
+    half_life_minutes = DEFAULT_INGREDIENT_HL_MINUTE_1
 
 
 class MeasurementFactory(factory.DjangoModelFactory):
