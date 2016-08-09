@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 from supplements.fixtures.factories import IngredientFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement, IngredientComposition
+from supplements.models import Supplement, IngredientComposition, Ingredient
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
@@ -57,7 +57,7 @@ class GeneralAPIv1Tests(BaseAPIv1Tests):
             self.assertEqual(request.status_code, 200)
 
 
-class Supplementv1Tests(BaseAPIv1Tests):
+class SupplementV1Tests(BaseAPIv1Tests):
     def test_supplement_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
         request = self.client.get(url)
@@ -111,7 +111,15 @@ class VendorV1Tests(BaseAPIv1Tests):
         self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
 
 
-class IngredientCompositionv1Tests(BaseAPIv1Tests):
+class IngredientSerializer(BaseAPIv1Tests):
+    def test_ingredient_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(Ingredient.RESOURCE_NAME)
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, 200)
+
+
+class IngredientCompositionV1Tests(BaseAPIv1Tests):
     def test_ingredient_composition_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(IngredientComposition.RESOURCE_NAME)
         request = self.client.get(url)
