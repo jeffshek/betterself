@@ -37,12 +37,12 @@ class VendorView(BaseGenericListCreateAPIViewV1):
     model = Vendor
 
 
-class IngredientView(BaseGenericAPIViewV1):
+class IngredientView(BaseGenericListCreateAPIViewV1):
     serializer_class = IngredientSerializer
     model = Ingredient
 
 
-class MeasurementView(BaseGenericAPIViewV1):
+class MeasurementView(BaseGenericListCreateAPIViewV1):
     serializer_class = MeasurementSerializer
     model = Measurement
 

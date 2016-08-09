@@ -58,14 +58,16 @@ class GeneralAPIv1Tests(BaseAPIv1Tests):
 
 
 class SupplementV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = Supplement
+
     def test_supplement_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
 
         self.assertEqual(request.status_code, 200)
 
     def test_supplement_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(Supplement.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         client_vendors = Vendor.get_user_viewable_objects(self.user)
         vendor_id = client_vendors[0].id
 
@@ -88,8 +90,10 @@ class SupplementV1Tests(BaseAPIv1Tests):
 
 
 class VendorV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = Vendor
+
     def test_vendor_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(Vendor.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request_parameters = {
             'name': 'Advil',
             'email': 'advil@advil.com',
@@ -101,7 +105,7 @@ class VendorV1Tests(BaseAPIv1Tests):
         self.assertEqual(request.status_code, 201)
 
     def test_vendor_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(Vendor.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
 
         self.assertEqual(request.status_code, 200)
@@ -111,23 +115,38 @@ class VendorV1Tests(BaseAPIv1Tests):
         self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
 
 
-class IngredientSerializer(BaseAPIv1Tests):
-    def test_ingredient_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(Ingredient.RESOURCE_NAME)
-        request = self.client.get(url)
+class IngredientV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = Ingredient
 
+    def test_ingredient_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
         self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+
+        request_parameters = {
+            'name': 'Advil',
+            'half_life_minutes': 30,
+        }
+
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+        self.assertEqual(request.status_code, 201)
 
 
 class IngredientCompositionV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = IngredientComposition
+
     def test_ingredient_composition_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(IngredientComposition.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
 
         self.assertEqual(request.status_code, 200)
 
     def test_ingredient_composition_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(IngredientComposition.RESOURCE_NAME)
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
 
         request_parameters = {
             'ingredient_id': '1',
