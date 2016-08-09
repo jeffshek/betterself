@@ -18,6 +18,14 @@ Vagrant.configure(2) do |config|
   # don't need this since this is not used to provision boxes
   config.ssh.insert_key = false
 
+  config.ssh.forward_agent = true
+
+  # Provision scripts that install necessary requirements
+  config.vm.provision "shell", path: "config/development/vagrant/provision_bootstrap.sh"
+
+  # Copy a bash_profile config that can be customized
+  config.vm.provision "file", source: "config/development/vagrant/developer_bash_profile", destination: "~/.bash_profile"
+
   # pandas takes a lot of memory to assemble
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
@@ -29,6 +37,5 @@ Vagrant.configure(2) do |config|
 
   # Provision scripts that install necessary requirements
   config.vm.provision "shell", path: "config/development/vagrant/provision_bootstrap.sh"
-
 
 end

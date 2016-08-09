@@ -1,9 +1,11 @@
 from django.db.models import Q
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 
-from apis.betterself.v1.serializers import IngredientCompositionSerializer, SupplementSerializer, \
-    MeasurementSerializer, IngredientSerializer
+from apis.betterself.v1.serializers import IngredientCompositionReadOnlySerializer, SupplementCreateSerializer, \
+    MeasurementSerializer, IngredientSerializer, VendorSerializer, SupplementReadOnlySerializer, \
+    IngredientCompositionCreateSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
+from vendors.models import Vendor
 
 
 class UserQuerysetFilterMixin(object):
@@ -25,9 +27,14 @@ class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
         return self._get_queryset()
 
 
-class BaseGenericListAPIViewV1(ListAPIView, UserQuerysetFilterMixin):
+class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin):
     def get_queryset(self):
         return self._get_queryset()
+
+
+class VendorView(BaseGenericListCreateAPIViewV1):
+    serializer_class = VendorSerializer
+    model = Vendor
 
 
 class IngredientView(BaseGenericAPIViewV1):
@@ -40,11 +47,27 @@ class MeasurementView(BaseGenericAPIViewV1):
     model = Measurement
 
 
-class IngredientCompositionView(BaseGenericAPIViewV1):
-    serializer_class = IngredientCompositionSerializer
+class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
+    read_serializer_class = IngredientCompositionReadOnlySerializer
+    write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
 
+    def get_serializer_class(self):
+        request_method = self.request.method
+        if request_method.lower() in ['list', 'get']:
+            return self.read_serializer_class
+        else:
+            return self.write_serializer_class
 
-class SupplementListView(BaseGenericListAPIViewV1):
-    serializer_class = SupplementSerializer
+
+class SupplementView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
+    read_serializer_class = SupplementReadOnlySerializer
+    write_serializer_class = SupplementCreateSerializer
     model = Supplement
+
+    def get_serializer_class(self):
+        request_method = self.request.method
+        if request_method.lower() in ['list', 'get']:
+            return self.read_serializer_class
+        else:
+            return self.write_serializer_class

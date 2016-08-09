@@ -74,10 +74,10 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
     SUPPLEMENT_PRODUCT_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
-    def get_measurement_unit_and_quantity_from_name(name):
+    def get_measurement_and_quantity_from_name(name):
         # figure out that Advil (200mg) means 200 mg
         result = {
-            'measurement_unit': None,
+            'measurement': None,
         }
 
         # make my regex life easier
@@ -97,7 +97,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
             measurement_query = Measurement.objects.filter(
                 Q(short_name=measurement_name) | Q(name=measurement_name))
             if measurement_query.exists():
-                result['measurement_unit'] = measurement_query[0]
+                result['measurement'] = measurement_query[0]
 
         return result
 
@@ -119,7 +119,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
                 user=self.user
             )
 
-            ingredient_comp_details = self.get_measurement_unit_and_quantity_from_name(supplement_name)
+            ingredient_comp_details = self.get_measurement_and_quantity_from_name(supplement_name)
             ingredient_comp, _ = IngredientComposition.objects.get_or_create(
                 ingredient=ingredient, user=self.user, **ingredient_comp_details)
 

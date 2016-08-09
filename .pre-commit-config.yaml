@@ -12,6 +12,7 @@
         files: \.(py|sh)$
     -   id: flake8
         files: \.py$
+        args: ['--ignore=E128']
     -   id: name-tests-test
         files: tests/.+\.py$
         args: ['--django']  # Use args: ['--django'] to match test*.py instead.
