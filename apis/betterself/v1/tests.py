@@ -143,6 +143,8 @@ class MeasurementV1Tests(BaseAPIv1Tests):
     def test_measurement_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
+
+        self.assertTrue(len(request.data) > 1)
         self.assertEqual(request.status_code, 200)
 
     def test_measurement_get_request_with_name(self):
@@ -152,6 +154,7 @@ class MeasurementV1Tests(BaseAPIv1Tests):
         }
         # don't do application/json for single key/value, issue with unpacking
         request = self.client.get(url, request_parameters)
+        self.assertIsNotNone(request.data)
         self.assertEqual(request.status_code, 200)
 
 
