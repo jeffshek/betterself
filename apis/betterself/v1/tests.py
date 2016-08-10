@@ -104,6 +104,12 @@ class MeasurementV1Tests(BaseAPIv1Tests):
         self.assertIsNotNone(request.data)
         self.assertEqual(request.status_code, 200)
 
+    def test_measurement_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.put(url)
+
+        self.assertEqual(request.status_code, 405)
+
 
 class IngredientV1Tests(BaseAPIv1Tests):
     TEST_MODEL = Ingredient
