@@ -68,13 +68,17 @@ class VendorV1Tests(BaseAPIv1Tests):
             'url:': 'advil.com',
         }
         data = json.dumps(request_parameters)
-        request = self.client.post(url, data=data, content_type='application/json')
 
+        request = self.client.post(url, data=data, content_type='application/json')
         self.assertEqual(request.status_code, 201)
 
     def test_vendor_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
+
+        contains_ids = [item['id'] for item in request.data]
+        # cannot use assertNone
+        self.assertTrue(len(contains_ids) > 0)
 
         self.assertEqual(request.status_code, 200)
         vendor_names = [item['name'] for item in request.data]

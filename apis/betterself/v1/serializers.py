@@ -19,12 +19,15 @@ class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
     url = serializers.URLField(required=False)
-    id = serializers.IntegerField(required=False)
+    id = serializers.IntegerField(required=False, read_only=True)
 
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
         return create_model(user=user, **validated_data)
+
+    class Meta:
+        fields = ('id', 'name', 'email', 'url')
 
 
 class IngredientSerializer(serializers.Serializer):

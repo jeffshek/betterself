@@ -81,3 +81,7 @@ class SupplementView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
             return self.read_serializer_class
         else:
             return self.write_serializer_class
+
+
+class EventView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
+    pass
