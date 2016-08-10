@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from apis.betterself.v1.views import SupplementView, VendorView, IngredientCompositionView, IngredientView, \
-    MeasurementView
+from apis.betterself.v1.supplements.views import SupplementView, VendorView, IngredientCompositionView, \
+    IngredientView, MeasurementView
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 

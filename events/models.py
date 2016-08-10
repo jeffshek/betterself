@@ -15,7 +15,7 @@ INPUT_SOURCES = [
 INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
 
 
-class SupplementProductEventComposition(BaseModelWithRequiredUser):
+class SupplementEvent(BaseModelWithRequiredUser):
     """
     Unless a proxy goes over this, this should be the meat of all Events tracking ...
     # event tables should be better designed for very large quantity of events
