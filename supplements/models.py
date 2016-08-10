@@ -4,6 +4,13 @@ from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
 from vendors.models import Vendor
 
 
+class Measurement(BaseModel):
+    RESOURCE_NAME = 'measurements'
+
+    name = models.CharField(max_length=100)  # 'milligram'
+    short_name = models.CharField(max_length=100, null=True, blank=True)  # 'ml'
+    is_liquid = models.BooleanField(default=False)
+
 ####
 # Why this is not a FLAT structure. Need to support complex stacks.
 ####
@@ -13,7 +20,6 @@ from vendors.models import Vendor
 #       Ingredient is Leucine.
 
 
-# ingredient is such a weird word to spell
 class Ingredient(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'ingredients'
 
@@ -24,14 +30,6 @@ class Ingredient(BaseModelWithUserGeneratedContent):
     # this is going to be a hard thing to source / scrap, but you do care about this, leave blank
     # but don't let default be zero.
     half_life_minutes = models.PositiveIntegerField(null=True, blank=True)
-
-
-class Measurement(BaseModel):
-    RESOURCE_NAME = 'measurements'
-
-    name = models.CharField(max_length=100)  # 'milligram'
-    short_name = models.CharField(max_length=100, null=True, blank=True)  # 'ml'
-    is_liquid = models.BooleanField(default=False)
 
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):

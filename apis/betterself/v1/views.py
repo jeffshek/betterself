@@ -37,11 +37,6 @@ class VendorView(BaseGenericListCreateAPIViewV1):
     model = Vendor
 
 
-class IngredientView(BaseGenericListCreateAPIViewV1):
-    serializer_class = IngredientSerializer
-    model = Ingredient
-
-
 class MeasurementView(ListAPIView):
     # TD - Switch to proxy asap
     serializer_class = MeasurementReadOnlySerializer
@@ -55,6 +50,11 @@ class MeasurementView(ListAPIView):
             queryset = self.model.objects.all()
 
         return queryset
+
+
+class IngredientView(BaseGenericListCreateAPIViewV1):
+    serializer_class = IngredientSerializer
+    model = Ingredient
 
 
 class IngredientCompositionView(BaseGenericListCreateAPIViewV1):

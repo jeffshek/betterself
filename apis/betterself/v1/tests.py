@@ -57,6 +57,97 @@ class GeneralAPIv1Tests(BaseAPIv1Tests):
             self.assertEqual(request.status_code, 200)
 
 
+class VendorV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = Vendor
+
+    def test_vendor_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request_parameters = {
+            'name': 'Advil',
+            'email': 'advil@advil.com',
+            'url:': 'advil.com',
+        }
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+
+        self.assertEqual(request.status_code, 201)
+
+    def test_vendor_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, 200)
+        vendor_names = [item['name'] for item in request.data]
+
+        # we made a default vendor, so that should definitely be in here
+        self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
+
+
+class MeasurementV1Tests(BaseAPIv1Tests):
+    # measurements should ONLY read-only
+    TEST_MODEL = Measurement
+
+    def test_measurement_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
+
+        self.assertTrue(len(request.data) > 1)
+        self.assertEqual(request.status_code, 200)
+
+    def test_measurement_get_request_with_name(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request_parameters = {
+            'name': 'milligram',
+        }
+        # don't do application/json for single key/value, issue with unpacking
+        request = self.client.get(url, request_parameters)
+        self.assertIsNotNone(request.data)
+        self.assertEqual(request.status_code, 200)
+
+
+class IngredientV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = Ingredient
+
+    def test_ingredient_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
+        self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+
+        request_parameters = {
+            'name': 'Advil',
+            'half_life_minutes': 30,
+        }
+
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+        self.assertEqual(request.status_code, 201)
+
+
+class IngredientCompositionV1Tests(BaseAPIv1Tests):
+    TEST_MODEL = IngredientComposition
+
+    def test_ingredient_composition_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, 200)
+
+    def test_ingredient_composition_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+
+        request_parameters = {
+            'ingredient_id': '1',
+            'measurement_id': '1',
+            'quantity': 5,
+        }
+        data = json.dumps(request_parameters)
+        request = self.client.post(url, data=data, content_type='application/json')
+        self.assertEqual(request.status_code, 201)
+
+
 class SupplementV1Tests(BaseAPIv1Tests):
     TEST_MODEL = Supplement
 
@@ -85,96 +176,5 @@ class SupplementV1Tests(BaseAPIv1Tests):
         }
         data = json.dumps(request_parameters)
 
-        request = self.client.post(url, data=data, content_type='application/json')
-        self.assertEqual(request.status_code, 201)
-
-
-class VendorV1Tests(BaseAPIv1Tests):
-    TEST_MODEL = Vendor
-
-    def test_vendor_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request_parameters = {
-            'name': 'Advil',
-            'email': 'advil@advil.com',
-            'url:': 'advil.com',
-        }
-        data = json.dumps(request_parameters)
-        request = self.client.post(url, data=data, content_type='application/json')
-
-        self.assertEqual(request.status_code, 201)
-
-    def test_vendor_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
-
-        self.assertEqual(request.status_code, 200)
-        vendor_names = [item['name'] for item in request.data]
-
-        # we made a default vendor, so that should definitely be in here
-        self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
-
-
-class IngredientV1Tests(BaseAPIv1Tests):
-    TEST_MODEL = Ingredient
-
-    def test_ingredient_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
-        self.assertEqual(request.status_code, 200)
-
-    def test_ingredient_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-
-        request_parameters = {
-            'name': 'Advil',
-            'half_life_minutes': 30,
-        }
-
-        data = json.dumps(request_parameters)
-        request = self.client.post(url, data=data, content_type='application/json')
-        self.assertEqual(request.status_code, 201)
-
-
-class MeasurementV1Tests(BaseAPIv1Tests):
-    # measurements should ONLY read-only
-    TEST_MODEL = Measurement
-
-    def test_measurement_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
-
-        self.assertTrue(len(request.data) > 1)
-        self.assertEqual(request.status_code, 200)
-
-    def test_measurement_get_request_with_name(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request_parameters = {
-            'name': 'milligram',
-        }
-        # don't do application/json for single key/value, issue with unpacking
-        request = self.client.get(url, request_parameters)
-        self.assertIsNotNone(request.data)
-        self.assertEqual(request.status_code, 200)
-
-
-class IngredientCompositionV1Tests(BaseAPIv1Tests):
-    TEST_MODEL = IngredientComposition
-
-    def test_ingredient_composition_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
-
-        self.assertEqual(request.status_code, 200)
-
-    def test_ingredient_composition_post_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-
-        request_parameters = {
-            'ingredient_id': '1',
-            'measurement_id': '1',
-            'quantity': 5,
-        }
-        data = json.dumps(request_parameters)
         request = self.client.post(url, data=data, content_type='application/json')
         self.assertEqual(request.status_code, 201)
