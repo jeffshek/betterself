@@ -1,8 +1,8 @@
 from django.db.models import Q
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, ListAPIView
 
 from apis.betterself.v1.serializers import IngredientCompositionReadOnlySerializer, SupplementCreateSerializer, \
-    MeasurementSerializer, IngredientSerializer, VendorSerializer, SupplementReadOnlySerializer, \
+    MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, SupplementReadOnlySerializer, \
     IngredientCompositionCreateSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
@@ -42,9 +42,19 @@ class IngredientView(BaseGenericListCreateAPIViewV1):
     model = Ingredient
 
 
-class MeasurementView(BaseGenericListCreateAPIViewV1):
-    serializer_class = MeasurementSerializer
+class MeasurementView(ListAPIView):
+    # TD - Switch to proxy asap
+    serializer_class = MeasurementReadOnlySerializer
     model = Measurement
+
+    def get_queryset(self):
+        name = self.request.query_params.get('name')
+        if name:
+            queryset = self.model.objects.filter(name__iexact=name)
+        else:
+            queryset = self.model.objects.all()
+
+        return queryset
 
 
 class IngredientCompositionView(BaseGenericListCreateAPIViewV1):

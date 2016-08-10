@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
 from supplements.fixtures.factories import IngredientFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement, IngredientComposition, Ingredient
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
@@ -37,7 +37,7 @@ class BaseAPIv1Tests(TestCase, UsersTestsMixin):
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
 
     @staticmethod
-    def _debug_request(request):
+    def debug_request(request):
         """ Helper function that outputs everything for easier reading """
         logger.error('\n***Debugging Request***')
         logger.error(request.data)
@@ -134,6 +134,25 @@ class IngredientV1Tests(BaseAPIv1Tests):
         data = json.dumps(request_parameters)
         request = self.client.post(url, data=data, content_type='application/json')
         self.assertEqual(request.status_code, 201)
+
+
+class MeasurementV1Tests(BaseAPIv1Tests):
+    # measurements should ONLY read-only
+    TEST_MODEL = Measurement
+
+    def test_measurement_get_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client.get(url)
+        self.assertEqual(request.status_code, 200)
+
+    def test_measurement_get_request_with_name(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request_parameters = {
+            'name': 'milligram',
+        }
+        # don't do application/json for single key/value, issue with unpacking
+        request = self.client.get(url, request_parameters)
+        self.assertEqual(request.status_code, 200)
 
 
 class IngredientCompositionV1Tests(BaseAPIv1Tests):

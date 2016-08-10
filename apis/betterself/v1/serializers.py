@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from supplements.models import Supplement, IngredientComposition, Ingredient
+from supplements.models import Supplement, IngredientComposition
 from vendors.models import Vendor
 
 
@@ -34,10 +34,11 @@ class IngredientSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        return Ingredient(user=user, **validated_data)
+        create_model = self.context['view'].model
+        return create_model(user=user, **validated_data)
 
 
-class MeasurementSerializer(serializers.Serializer):
+class MeasurementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     short_name = serializers.CharField(max_length=100)
     is_liquid = serializers.BooleanField(default=False)
