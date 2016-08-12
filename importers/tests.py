@@ -3,7 +3,7 @@ import pandas as pd
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from events.models import SupplementProductEventComposition
+from events.models import SupplementEvent
 
 from importers.excel.importer import SupplementSanitizerTemplate
 # use django user model
@@ -50,7 +50,7 @@ class ExcelImporterTests(TestCase):
         results = self.sanitizer.get_sanitized_dataframe()
         self.sanitizer.save_results(results)
 
-        supplement_events_exist = SupplementProductEventComposition.objects.all().exists()
+        supplement_events_exist = SupplementEvent.objects.all().exists()
         self.assertTrue(supplement_events_exist)
 
     def test_get_measurement_unit_and_quantity_from_name(self):

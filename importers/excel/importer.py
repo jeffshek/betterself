@@ -5,7 +5,7 @@ import pytz
 from django.core.management import CommandError
 from django.db.models import Q
 
-from events.models import SupplementProductEventComposition
+from events.models import SupplementEvent
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
@@ -70,7 +70,7 @@ class ExcelFileSanitizer(object):
 class SupplementSanitizerTemplate(ExcelFileSanitizer):
     """Take a raw historical excel of supplements, clean and save it"""
 
-    TEMPLATE_SAVE_MODEL = SupplementProductEventComposition
+    TEMPLATE_SAVE_MODEL = SupplementEvent
     SUPPLEMENT_PRODUCT_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
@@ -147,7 +147,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
                 # localize and make as UTC time
                 time = pytz.utc.localize(time, pytz.UTC)
 
-                SupplementProductEventComposition.objects.get_or_create(
+                SupplementEvent.objects.get_or_create(
                     user=self.user,
                     supplement_product=supplement_product,
                     time=time,

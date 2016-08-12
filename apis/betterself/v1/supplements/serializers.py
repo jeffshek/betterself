@@ -19,11 +19,15 @@ class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
     url = serializers.URLField(required=False)
-    id = serializers.IntegerField(required=False)
+    id = serializers.IntegerField(required=False, read_only=True)
 
     def create(self, validated_data):
         user = self.context['request'].user
-        return Vendor(user=user, **validated_data)
+        create_model = self.context['view'].model
+        return create_model(user=user, **validated_data)
+
+    class Meta:
+        fields = ('id', 'name', 'email', 'url')
 
 
 class IngredientSerializer(serializers.Serializer):
@@ -31,8 +35,13 @@ class IngredientSerializer(serializers.Serializer):
     half_life_minutes = serializers.IntegerField()
     id = serializers.IntegerField(required=False)
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        create_model = self.context['view'].model
+        return create_model(user=user, **validated_data)
 
-class MeasurementSerializer(serializers.Serializer):
+
+class MeasurementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     short_name = serializers.CharField(max_length=100)
     is_liquid = serializers.BooleanField(default=False)

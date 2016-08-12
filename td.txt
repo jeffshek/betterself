@@ -1,6 +1,8 @@
 ####
 # TD - Starfish and rainbows
 ####
+- Add HAL to responses
+- Ugh, switch over to proxy models after a lot of thought.
 - Look into decorators / libraries that help with auto-documentation ...
 - Change API Domain to api.betterself
 - Fix domain to redirect correctly
