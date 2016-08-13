@@ -3,8 +3,8 @@ import logging
 from django.test import TestCase
 from rest_framework.test import APIClient
 
+from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
-from supplements.fixtures.factories import IngredientFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -13,7 +13,6 @@ VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
 ]
 
-API_V1_LIST_CREATE_URL = '/api/v1/{0}'
 logger = logging.Logger(__name__)
 logger.setLevel(logging.ERROR)
 
@@ -21,8 +20,8 @@ logger.setLevel(logging.ERROR)
 class BaseAPIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
     def setUpTestData(cls):
+        # setup the user once
         cls.user = cls.create_user()
-        cls.ingredient = IngredientFactory()
 
         # generic fixtures based on the apps, inclusive of models
         # like measurement objects

@@ -1,7 +1,9 @@
 ####
 # TD - Starfish and rainbows
 ####
+- Move up to Django 1.10
 - Add HAL to responses
+- Flatten out API folder structure, too nested after seeing this in action
 - Ugh, switch over to proxy models after a lot of thought.
 - Look into decorators / libraries that help with auto-documentation ...
 - Change API Domain to api.betterself

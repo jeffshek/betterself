@@ -1,5 +1,12 @@
-from apis.betterself.v1.utils.views import UserQuerysetFilterMixin, BaseGenericListCreateAPIViewV1
+from rest_framework import serializers
 
 
-class SupplementEventSerializer(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
-    pass
+class SupplementEventSerializer(serializers.Serializer):
+    supplement_product_id = serializers.IntegerField(source='id')
+    quantity = serializers.FloatField(default=1)
+    time = serializers.DateTimeField()
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        create_model = self.context['view'].model
+        return create_model(user=user, **validated_data)

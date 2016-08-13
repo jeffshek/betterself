@@ -1,6 +1,7 @@
 import json
 
-from apis.betterself.v1.tests import BaseAPIv1Tests, API_V1_LIST_CREATE_URL
+from apis.betterself.v1.tests import BaseAPIv1Tests
+from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.models import Vendor

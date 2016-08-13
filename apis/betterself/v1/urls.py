@@ -16,3 +16,5 @@ urlpatterns = [
     url(r'^{0}'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view()),
     url(r'^{0}'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view()),
 ]
+
+API_V1_LIST_CREATE_URL = '/api/v1/{0}'
