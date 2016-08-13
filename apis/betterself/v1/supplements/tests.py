@@ -10,7 +10,8 @@ from vendors.models import Vendor
 
 
 class BaseSupplementTests(BaseAPIv1Tests):
-    # maybe debate this might be better as a template design pattern
+    # maybe debate this might be better as a template design pattern ...
+    # this inheritance chain is getting pretty long
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()

@@ -19,5 +19,4 @@ class TestSupplementEvents(BaseAPIv1Tests):
     def test_event_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
-
         self.assertEqual(request.status_code, 200)

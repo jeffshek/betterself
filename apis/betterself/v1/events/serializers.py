@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 
 class SupplementEventSerializer(serializers.Serializer):
-    supplement_product_id = serializers.IntegerField(source='id')
+    supplement_event_id = serializers.IntegerField(source='id')
+    supplement_product_id = serializers.IntegerField()
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
 
