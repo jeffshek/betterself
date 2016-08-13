@@ -5,9 +5,7 @@ from rest_framework.test import APIClient
 
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
-from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
-from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
@@ -22,11 +20,6 @@ class BaseAPIv1Tests(TestCase, UsersTestsMixin):
     def setUpTestData(cls):
         # setup the user once
         cls.user = cls.create_user()
-
-        # generic fixtures based on the apps, inclusive of models
-        # like measurement objects
-        SupplementModelsFixturesGenerator.create_fixtures()
-        VendorModelsFixturesGenerator.create_fixtures()
 
     def setUp(self):
         # user has to be authenticated per each test!

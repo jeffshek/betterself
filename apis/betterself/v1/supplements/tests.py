@@ -2,12 +2,25 @@ import json
 
 from apis.betterself.v1.tests import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
+from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
 
-class VendorV1Tests(BaseAPIv1Tests):
+class BaseSupplementTests(BaseAPIv1Tests):
+    # maybe debate this might be better as a template design pattern
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        # generic fixtures based on the apps, inclusive of all the models
+        # there, so supplementmodels includes ingredients, etc.
+        SupplementModelsFixturesGenerator.create_fixtures()
+        VendorModelsFixturesGenerator.create_fixtures()
+
+
+class VendorV1Tests(BaseSupplementTests):
     TEST_MODEL = Vendor
 
     def test_vendor_post_request(self):
@@ -37,7 +50,7 @@ class VendorV1Tests(BaseAPIv1Tests):
         self.assertTrue(DEFAULT_VENDOR_NAME in vendor_names)
 
 
-class MeasurementV1Tests(BaseAPIv1Tests):
+class MeasurementV1Tests(BaseSupplementTests):
     # measurements should ONLY read-only
     TEST_MODEL = Measurement
 
@@ -65,7 +78,7 @@ class MeasurementV1Tests(BaseAPIv1Tests):
         self.assertEqual(request.status_code, 405)
 
 
-class IngredientV1Tests(BaseAPIv1Tests):
+class IngredientV1Tests(BaseSupplementTests):
     TEST_MODEL = Ingredient
 
     def test_ingredient_get_request(self):
@@ -86,7 +99,7 @@ class IngredientV1Tests(BaseAPIv1Tests):
         self.assertEqual(request.status_code, 201)
 
 
-class IngredientCompositionV1Tests(BaseAPIv1Tests):
+class IngredientCompositionV1Tests(BaseSupplementTests):
     TEST_MODEL = IngredientComposition
 
     def test_ingredient_composition_get_request(self):
@@ -108,7 +121,7 @@ class IngredientCompositionV1Tests(BaseAPIv1Tests):
         self.assertEqual(request.status_code, 201)
 
 
-class SupplementV1Tests(BaseAPIv1Tests):
+class SupplementV1Tests(BaseSupplementTests):
     TEST_MODEL = Supplement
 
     def test_supplement_get_request(self):
