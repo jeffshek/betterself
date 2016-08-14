@@ -2,6 +2,7 @@
 # TD - Starfish and rainbows
 ####
 - Move up to Django 1.10
+- Add python manage.py check on pre-commit hook
 - Add HAL to responses
 - Flatten out API folder structure, too nested after seeing this in action
 - Ugh, switch over to proxy models after a lot of thought.
