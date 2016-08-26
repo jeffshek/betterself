@@ -15,15 +15,26 @@ logger = logging.Logger(__name__)
 logger.setLevel(logging.ERROR)
 
 
+SECONDARY_CREDENTIALS = {
+    'username': 'tester2',
+    'email': 'username@gmail.com',  # i hate that django allows multiple emails to be created
+    'password': 'secret_password',
+}
+
+
 class BaseAPIv1Tests(TestCase, UsersTestsMixin):
     @classmethod
     def setUpTestData(cls):
         # setup the user once
         cls.user = cls.create_user()
+        # create some random fake user_2 to test duplicates
+        cls.user_2 = cls.create_user(SECONDARY_CREDENTIALS)
+        super(BaseAPIv1Tests, cls).setUpTestData()
 
     def setUp(self):
         # user has to be authenticated per each test!
         self.client = self.create_authenticated_user_on_client(APIClient(), self.user)
+        self.client_2 = self.create_authenticated_user_on_client(APIClient(), self.user_2)
 
     @staticmethod
     def debug_request(request):

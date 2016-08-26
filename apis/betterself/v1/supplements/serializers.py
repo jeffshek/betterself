@@ -24,7 +24,17 @@ class VendorSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
-        return create_model(user=user, **validated_data)
+        name = validated_data.pop('name')
+
+        obj, created = create_model.objects.get_or_create(user=user, name=name,
+            defaults=validated_data)
+
+        if not created:
+            obj.email = validated_data.get('email')
+            obj.url = validated_data.get('url')
+            obj.save()
+
+        return obj
 
     class Meta:
         fields = ('id', 'name', 'email', 'url')
