@@ -51,7 +51,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)
 
-    def test_get_request_for_key(self, request_parameters, key_check):
+    def test_valid_get_request_for_key_in_response(self, request_parameters, key_check):
         """ Do a get request, and then check for a certain key type"""
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client.get(url)
@@ -140,10 +140,10 @@ class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
         request_parameters = {'name': 'milligram'}
         super().test_valid_get_request_with_params(request_parameters)
 
-    def test_get_request_for_key(self):
+    def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'name': 'milligram'}
         key = 'name'
-        super().test_get_request_for_key(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
     def test_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
@@ -164,10 +164,10 @@ class IngredientV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         request_parameters = {'name': 'Advil'}
         super().test_valid_get_request_with_params(request_parameters)
 
-    def test_get_request_for_key(self):
+    def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'quantity': 5}
         key = 'name'
-        super().test_get_request_for_key(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
 
 class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, GetRequestsTestsMixin):
@@ -182,10 +182,10 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         request_parameters = {'name': 'Glutamine'}
         super().test_valid_get_request_with_params(request_parameters)
 
-    def test_get_request_for_key(self):
+    def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'quantity': 5}
         key = 'ingredient'
-        super().test_get_request_for_key(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
 
 class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
@@ -225,7 +225,7 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         request_parameters = {'name': 'Glutamine'}
         super().test_valid_get_request_with_params(request_parameters)
 
-    def test_get_request_for_key(self):
+    def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'name': 'Glutamine'}
         key = 'name'
-        super().test_get_request_for_key(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
