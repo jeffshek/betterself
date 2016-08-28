@@ -73,6 +73,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
 
     def test_valid_get_request_for_key_in_response(self, request_parameters, key_check):
         """ Do a get request, and then check for a certain key type"""
+        # TD - Refactor so key_check is a list of keys ...
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 

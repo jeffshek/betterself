@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
@@ -10,8 +10,13 @@ from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 
-class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin):
+class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     TEST_MODEL = SupplementEvent
+    DEFAULT_POST_PARAMS = {
+        'time': datetime.datetime.now().isoformat(),
+        'quantity': 5,
+        'supplement_product_id': 1,  # redo this
+    }
 
     @classmethod
     def setUpTestData(cls):
