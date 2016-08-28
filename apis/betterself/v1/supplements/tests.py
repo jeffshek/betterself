@@ -37,7 +37,7 @@ class GenericRESTVerbsMixin(object):
 class GetRequestsTestsMixin(GenericRESTVerbsMixin):
     def test_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
+        request = self.client_1.get(url)
 
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)
@@ -46,7 +46,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
 
         # don't do application/json for single key/value, issue with unpacking
-        request = self.client.get(url, request_parameters)
+        request = self.client_1.get(url, request_parameters)
         self.assertIsNotNone(request.data)
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)
@@ -54,7 +54,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
     def test_valid_get_request_for_key_in_response(self, request_parameters, key_check):
         """ Do a get request, and then check for a certain key type"""
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.get(url)
+        request = self.client_1.get(url)
 
         contains_ids = [item['id'] for item in request.data]
         key_check_items = [item[key_check] for item in request.data]
@@ -70,7 +70,7 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
         # multiple users should be able to create the same object
-        request = self._make_post_request(self.client, post_parameters)
+        request = self._make_post_request(self.client_1, post_parameters)
         self.assertEqual(request.status_code, 201)
 
         second_request = self._make_post_request(self.client_2, post_parameters)
@@ -81,7 +81,7 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
         self.assertEqual(third_request.status_code, 201)
 
         # now let's make sure that different users should be accessing different objects
-        client_1_objects_count = self.TEST_MODEL.objects.filter(user=self.user).count()
+        client_1_objects_count = self.TEST_MODEL.objects.filter(user=self.user_1).count()
         client_2_objects_count = self.TEST_MODEL.objects.filter(user=self.user_2).count()
 
         self.assertTrue(client_1_objects_count > 0)
@@ -94,11 +94,11 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
         """
         # hard to dynamically set default post parameters for objects with heavy relationships
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
-        request = self._make_get_request(self.client)
+        request = self._make_get_request(self.client_1)
         data_items_count = len(request.data)
 
-        self._make_post_request(self.client, post_parameters)
-        second_request = self._make_get_request(self.client)
+        self._make_post_request(self.client_1, post_parameters)
+        second_request = self._make_get_request(self.client_1)
         updated_data_items_count = len(second_request.data)
 
         # since you did only one post, should go up by one
@@ -107,14 +107,14 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
     def test_post_request_changes_objects_for_right_user(self, parameters=None):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
-        client_1_starting_request = self._make_get_request(self.client)
+        client_1_starting_request = self._make_get_request(self.client_1)
         client_1_starting_data_items_count = len(client_1_starting_request.data)
         client_2_starting_request = self._make_get_request(self.client_2)
         client_2_starting_data_items_count = len(client_2_starting_request.data)
 
         self._make_post_request(self.client_2, post_parameters)
 
-        client_1_second_request = self._make_get_request(self.client)
+        client_1_second_request = self._make_get_request(self.client_1)
         client_1_second_data_items_count = len(client_1_second_request.data)
         client_2_second_request = self._make_get_request(self.client_2)
         client_2_second_data_items_count = len(client_2_second_request.data)
@@ -147,7 +147,7 @@ class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
 
     def test_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client.put(url)
+        request = self.client_1.put(url)
 
         # expected to fail, this is a read-only set of stuff
         self.assertEqual(request.status_code, 405)
@@ -192,12 +192,12 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
     TEST_MODEL = Supplement
 
     def _get_default_post_parameters(self):
-        client_vendors = Vendor.get_user_viewable_objects(self.user)
+        client_vendors = Vendor.get_user_viewable_objects(self.user_1)
         vendor_id = client_vendors[0].id
 
         # kind of janky, but create a list of valid IDs that could be passed
         # when serializing
-        ingr_comps = IngredientComposition.get_user_viewable_objects(self.user)
+        ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
         ingr_comps_ids = list(ingr_comps.values_list('id', flat=True))
         ingr_comps_ids = [str(x) for x in ingr_comps_ids]
         ingr_comps_ids = ','.join(ingr_comps_ids)
