@@ -32,6 +32,13 @@ class SupplementEvent(BaseModelWithRequiredUser):
     # so not pigeon holed and can do half_life analysis.
     time = models.DateTimeField()
 
+    def __str__(self):
+        return self.__repr__()
+
+    def __repr__(self):
+        return '{instance.supplement_product} : {instance.quantity} on ' \
+               '{instance.time} from {instance.source}'.format(instance=self)
+
 
 class SleepEventLog(BaseModelWithRequiredUser):
     """

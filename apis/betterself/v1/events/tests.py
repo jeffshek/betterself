@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from apis.betterself.v1.tests import BaseAPIv1Tests
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
@@ -10,7 +10,7 @@ from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 
-class TestSupplementEvents(BaseAPIv1Tests):
+class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin):
     TEST_MODEL = SupplementEvent
 
     @classmethod
@@ -20,10 +20,14 @@ class TestSupplementEvents(BaseAPIv1Tests):
         VendorModelsFixturesGenerator.create_fixtures()
         EventModelsFixturesGenerator.create_fixtures(cls.user_1)
 
-    def test_event_valid_get_request(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client_1.get(url)
-        self.assertEqual(request.status_code, 200)
+    def test_valid_get_request_for_key_in_response(self):
+        request_parameters = {'quantity': 1}
+        key = 'quantity'
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+
+    def test_valid_get_request_with_params(self):
+        request_parameters = {'quantity': 'Glutamine'}
+        super().test_valid_get_request_with_params(request_parameters)
 
     def test_event_empty_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)

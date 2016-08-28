@@ -7,6 +7,7 @@ class SupplementEventSerializer(serializers.Serializer):
     supplement_product_id = serializers.IntegerField()
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
+    id = serializers.IntegerField(required=False)
 
     def validate_supplement_product_id(self, value):
         user = self.context['request'].user
