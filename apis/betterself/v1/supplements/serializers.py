@@ -24,7 +24,17 @@ class VendorSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
-        return create_model(user=user, **validated_data)
+        name = validated_data.pop('name')
+
+        obj, created = create_model.objects.get_or_create(user=user, name=name,
+            defaults=validated_data)
+
+        if not created:
+            obj.email = validated_data.get('email')
+            obj.url = validated_data.get('url')
+            obj.save()
+
+        return obj
 
     class Meta:
         fields = ('id', 'name', 'email', 'url')
@@ -38,7 +48,8 @@ class IngredientSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
-        return create_model(user=user, **validated_data)
+        obj, _ = create_model.objects.get_or_create(user=user, **validated_data)
+        return obj
 
 
 class MeasurementReadOnlySerializer(serializers.Serializer):
@@ -62,14 +73,16 @@ class IngredientCompositionCreateSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        ingredient_composition = IngredientComposition(user=user, **validated_data)
-        return ingredient_composition
+        create_model = self.context['view'].model
+        obj, _ = create_model.objects.get_or_create(user=user, **validated_data)
+        return obj
 
 
 class SupplementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
     vendor = VendorSerializer()
+    id = serializers.IntegerField(required=False)
 
 
 class SupplementCreateSerializer(serializers.Serializer):

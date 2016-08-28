@@ -14,7 +14,6 @@ class VendorView(BaseGenericListCreateAPIViewV1):
 
 
 class MeasurementView(ListAPIView):
-    # TD - Switch to proxy asap
     serializer_class = MeasurementReadOnlySerializer
     model = Measurement
 
