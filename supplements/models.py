@@ -12,7 +12,7 @@ class Measurement(BaseModel):
     is_liquid = models.BooleanField(default=False)
 
 ####
-# Why this is not a FLAT structure. Need to support complex stacks.
+# Not a flat structure because of need to support complex stacks.
 ####
 # 5 Grams of BCAA (Branched Chained Amino Acid). BCAA is the Supplement Product
 #   Each gram of BCAA has 1.25 of each amino acid.
@@ -33,9 +33,7 @@ class Ingredient(BaseModelWithUserGeneratedContent):
 
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):
-    """
-    Creatine, 5, grams
-    """
+    """ Creatine, 5, grams """
     RESOURCE_NAME = 'ingredient_compositions'
 
     ingredient = models.ForeignKey(Ingredient)
