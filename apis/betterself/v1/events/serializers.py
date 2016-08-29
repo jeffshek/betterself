@@ -8,6 +8,7 @@ class SupplementEventSerializer(serializers.Serializer):
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
     id = serializers.IntegerField(required=False)
+    source = serializers.CharField()
 
     def validate_supplement_product(self, value):
         user = self.context['request'].user
@@ -20,9 +21,10 @@ class SupplementEventSerializer(serializers.Serializer):
         user = self.context['request'].user
         create_model = self.context['view'].model
 
-        # hardcode this for now
-        source = 'web'
+        quantity = validated_data.pop('quantity')
+        time = validated_data.pop('time')
+        supplement_product_id = validated_data.pop('supplement_product_id')
 
-        obj, _ = create_model.objects.get_or_create(user=user, source=source,
-            **validated_data)
+        obj, _ = create_model.objects.get_or_create(user=user, quantity=quantity,
+            time=time, supplement_product_id=supplement_product_id, **validated_data)
         return obj

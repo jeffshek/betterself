@@ -12,10 +12,14 @@ from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     TEST_MODEL = SupplementEvent
-    DEFAULT_POST_PARAMS = {
-        'time': datetime.datetime.now().isoformat(),
-        'quantity': 5,
-    }
+
+    def setUp(self):
+        self.DEFAULT_POST_PARAMS = {
+            'time': datetime.datetime.now().isoformat(),
+            'quantity': 5,
+            'source': 'api',
+        }
+        super().setUp()
 
     @classmethod
     def setUpTestData(cls):
@@ -51,3 +55,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         data = json.dumps(data)
         request = self.client_1.post(url, data, content_type='application/json')
         self.assertEqual(request.status_code, 400)
+
+    def test_uniqueness_on_post_requests(self):
+        request = self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
+        self.assertEqual(request.status_code, 201)

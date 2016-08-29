@@ -1,18 +1,14 @@
 ####
 # TD - Starfish and rainbows
 ####
+- Add HAL to responses OR attempt to import everything you have in as a test
 - Move up to Django 1.10
 - Add python manage.py check on pre-commit hook
-- Add HAL to responses
-- Flatten out API folder structure, too nested after seeing this in action
-- Ugh, switch over to proxy models after a lot of thought.
 - Look into decorators / libraries that help with auto-documentation ...
-- Change API Domain to api.betterself
 - Fix domain to redirect correctly
 - Add web area to upload file for user supplement logs
 - Define project root in settings / check Heroku settings
 - Add hook to Prevent "print" statements from being commited.
-- Maybe you should use proxy models instead of specific None filters
 
 # Tests
 - When a user deletes his account, make sure cascades
@@ -20,9 +16,6 @@
 # DevOps
 - Switch to Ansible rather than Chef provisioning
 - Pay for Sentry
-
-# Long Term
-- Think about merits of switching Vagrant to Docker
 
 # Quick and Easy TDs
 - Move requirements folder into config
