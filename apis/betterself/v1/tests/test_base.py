@@ -142,3 +142,8 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
 
         self.assertEqual(client_1_starting_data_items_count, client_1_second_data_items_count)
         self.assertNotEquals(client_2_starting_data_items_count, client_2_second_data_items_count)
+
+    def test_empty_post_request(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.post(url)
+        self.assertEqual(request.status_code, 400)
