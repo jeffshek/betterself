@@ -13,15 +13,17 @@ User = get_user_model()
 
 
 class ExcelImporterTests(TestCase):
-    def setUp(self):
-        # create user
-        User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
-        self.user = User.objects.get(username='jacob')
+    file_path = settings.ROOT_DIR.path('importers', 'fixtures', 'tests', 'supplement_log_fixtures.xlsx')
 
-        file_path = settings.ROOT_DIR.path('importers', 'fixtures', 'tests', 'supplement_log_fixtures.xlsx')
-        # path is like a command pattern, so we call it now to get the string location
-        file_path = file_path()
-        self.sanitizer = SupplementSanitizerTemplate(file_path, self.user)
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
+        cls.user = User.objects.get(username='jacob')
+
+        file_path = cls.file_path()
+        cls.sanitizer = SupplementSanitizerTemplate(file_path, cls.user)
+
+        super().setUpTestData()
 
     def test_sanitizer_results_is_dataframe(self):
         results = self.sanitizer.get_sanitized_dataframe()
