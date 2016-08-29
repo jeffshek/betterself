@@ -19,6 +19,10 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
             'quantity': 5,
             'source': 'api',
         }
+        # pass a parameter just to make sure the default parameter is valid
+        valid_supplement = Supplement.get_user_viewable_objects(self.user_1).first()
+        self.DEFAULT_POST_PARAMS['supplement_product_id'] = valid_supplement.id
+
         super().setUp()
 
     @classmethod
@@ -27,10 +31,6 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         SupplementModelsFixturesGenerator.create_fixtures()
         VendorModelsFixturesGenerator.create_fixtures()
         EventModelsFixturesGenerator.create_fixtures(cls.user_1)
-
-        # pass a parameter just to make sure the default parameter is valid
-        valid_supplement = Supplement.get_user_viewable_objects(cls.user_1).first()
-        cls.DEFAULT_POST_PARAMS['supplement_product_id'] = valid_supplement.id
 
     def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'quantity': 1}
@@ -57,5 +57,17 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         self.assertEqual(request.status_code, 400)
 
     def test_uniqueness_on_post_requests(self):
-        request = self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
-        self.assertEqual(request.status_code, 201)
+        """
+        See how many objects were originally, make a request, and then see if it remains the same after
+        posting the same data. It should!
+        """
+        amount_of_events = self.TEST_MODEL.objects.filter(user=self.user_1).count()
+
+        self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
+        amount_of_events_post_request = self.TEST_MODEL.objects.filter(user=self.user_1).count()
+
+        self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
+        amount_of_events_post_request_repeated = self.TEST_MODEL.objects.filter(user=self.user_1).count()
+
+        self.assertTrue(amount_of_events_post_request > amount_of_events)
+        self.assertEqual(amount_of_events_post_request_repeated, amount_of_events_post_request)
