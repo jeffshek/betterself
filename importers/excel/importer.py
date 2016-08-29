@@ -54,6 +54,7 @@ class ExcelFileSanitizer(object):
         """Return a k/v of crappy columns names without crappy spaces"""
         revised_columns = [item.strip() for item in dataframe.columns]
         updated_columns = dict(zip(dataframe.columns, revised_columns))
+
         return updated_columns
 
     @classmethod
@@ -113,7 +114,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         if len(dataframe.columns) > 30:
             raise CommandError('Too many columns inserted {0} entered. Please contact an admin.'.format(len(dataframe)))
 
-        for supplement_name in dataframe:  # a list of dataframe columns
+        for supplement_name in dataframe:
             ingredient, _ = Ingredient.objects.get_or_create(
                 name=supplement_name,
                 user=self.user

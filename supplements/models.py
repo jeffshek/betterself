@@ -11,6 +11,9 @@ class Measurement(BaseModel):
     short_name = models.CharField(max_length=100, null=True, blank=True)  # 'ml'
     is_liquid = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '{obj.name}'.format(obj=self)
+
 ####
 # Not a flat structure because of need to support complex stacks.
 ####
@@ -41,8 +44,10 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     quantity = models.FloatField(default=1)
 
     def __str__(self):
-        class_name = self.__class__.__name__
-        return '{0} : {1} {2}'.format(class_name, self.ingredient, self.quantity)
+        return self.__repr__()
+
+    def __repr__(self):
+        return '{obj.ingredient} : {obj.quantity} {obj.measurement}'.format(obj=self)
 
 
 class Supplement(BaseModelWithUserGeneratedContent):

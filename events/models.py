@@ -36,8 +36,8 @@ class SupplementEvent(BaseModelWithRequiredUser):
         return self.__repr__()
 
     def __repr__(self):
-        return '{instance.supplement_product} : {instance.quantity} on ' \
-               '{instance.time} from {instance.source}'.format(instance=self)
+        return '{obj.supplement_product} : {obj.quantity} on ' \
+               '{obj.time} from {obj.source}'.format(obj=self)
 
 
 class SleepEventLog(BaseModelWithRequiredUser):
