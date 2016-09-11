@@ -14,10 +14,10 @@ class BaseModel(models.Model):
         abstract = True
 
     def __str__(self):
-        class_name = self.__class__.__name__
         if hasattr(self, 'name'):
-            return '{0} : {1}'.format(class_name, self.name)
+            return '{0}'.format(self.name)
         else:
+            class_name = self.__class__.__name__
             return '{0}'.format(class_name)
 
     def __repr__(self):

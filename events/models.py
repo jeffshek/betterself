@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from betterself.base_models import BaseModelWithRequiredUser
@@ -36,8 +38,11 @@ class SupplementEvent(BaseModelWithRequiredUser):
         return self.__repr__()
 
     def __repr__(self):
-        return '{obj.supplement_product} : {obj.quantity} on ' \
-               '{obj.time} from {obj.source}'.format(obj=self)
+        formatted_time = datetime.datetime.strftime(self.time, '%Y-%m-%d %I:%M%p')
+        formatted_quantity = '{:.0f}'.format(self.quantity)
+
+        return '{quantity} {obj.supplement_product} ' \
+               '{time} from {obj.source} event'.format(obj=self, time=formatted_time, quantity=formatted_quantity)
 
 
 class SleepEventLog(BaseModelWithRequiredUser):
