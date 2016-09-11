@@ -232,7 +232,6 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
-INSTALLED_APPS
 ADMIN_URL = r'^admin/'
 
 SUBDOMAIN_URLCONFS = {

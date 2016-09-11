@@ -14,8 +14,11 @@ apt-get install build-essential autoconf libtool pkg-config python-opengl python
 
 if ! command -v psql; then
     apt-get install -y postgresql
-    # Create vagrant pgsql superuser
+    # modify so postgres has access
+    su - postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+    # Create vagrant psql superuser
     su - postgres -c "createuser -s vagrant"
+    su - postgres -c "createdb betterself"
 fi
 
 pip install virtualenv
@@ -34,10 +37,3 @@ pip install --upgrade setuptools
 pip install -r /betterself/requirements/production.txt
 pip install -r /betterself/requirements/test.txt
 pip install -r /betterself/requirements/local.txt
-
-if ! command -v psql; then
-    apt-get install postgresql -y
-    # Create vagrant pgsql superuser
-    su - postgres -c "createuser -s vagrant"
-    su - postgres -c "createdb betterself"
-fi

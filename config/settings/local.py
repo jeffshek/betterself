@@ -7,8 +7,10 @@ Local settings
 - Add Django Debug Toolbar
 - Add django-extensions as app
 """
+import sys
 
 from .common import *  # noqa
+
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -57,12 +59,9 @@ LOCAL_DB_SETTINGS = {
     'USER': 'vagrant',
 }
 
-LOCAL_DB_SETTINGS = {
-    # Enable postgres when everyone is a bit more stable
-    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': 'betterself',
-    'USER': 'vagrant',
-}
+# if running python manage.py test, sqlite for now
+if 'test' in sys.argv:
+    LOCAL_DB_SETTINGS['ENGINE'] = 'django.db.backends.sqlite3'
+
 
 DATABASES['default'] = LOCAL_DB_SETTINGS
