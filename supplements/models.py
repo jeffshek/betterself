@@ -47,7 +47,13 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
         return self.__repr__()
 
     def __repr__(self):
-        return '{obj.ingredient} : {obj.quantity} {obj.measurement}'.format(obj=self)
+        if self.measurement:
+            return '{ingredient.name} ({obj.quantity} {measurement.name})'.format(obj=self, ingredient=self.ingredient,
+                measurement=self.measurement)
+        elif self.quantity != 1:
+            return '{ingredient.name} ({obj.quantity})'.format(obj=self, ingredient=self.ingredient)
+        else:
+            return '{ingredient.name}'.format(ingredient=self.ingredient)
 
 
 class Supplement(BaseModelWithUserGeneratedContent):
@@ -58,7 +64,6 @@ class Supplement(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplements'
 
     name = models.CharField(max_length=300)
-    # TD - Make this plural
     ingredient_compositions = models.ManyToManyField(IngredientComposition, blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
     # quantity is an event type of attribute, so its not here.

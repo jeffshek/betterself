@@ -50,7 +50,7 @@ class ExcelFileSanitizer(object):
         return dataframe
 
     @classmethod
-    def _get_cleaned_column_headers(cls, dataframe):
+    def _get_stripped_column_headers(cls, dataframe):
         """Return a k/v of crappy columns names without crappy spaces"""
         revised_columns = [item.strip() for item in dataframe.columns]
         updated_columns = dict(zip(dataframe.columns, revised_columns))
@@ -59,7 +59,7 @@ class ExcelFileSanitizer(object):
 
     @classmethod
     def _sanitize_dataframe_columns(cls, dataframe):
-        revised_columns = cls._get_cleaned_column_headers(dataframe)
+        revised_columns = cls._get_stripped_column_headers(dataframe)
         dataframe = dataframe.rename(columns=revised_columns)
 
         for column in cls.IGNORE_COLUMNS:
@@ -102,6 +102,15 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
 
         return result
 
+    def _parse_ingredient_from_column_entry(self, column_name):
+        regex_match = re.search('^[A-Za-z ]+', column_name)
+        # this cleans up situations where you had Theanine (150mg)
+        first_match = regex_match.group(0)
+
+        # this fixes situations where you had 'Theanine '
+        first_match = first_match.strip()
+        return first_match
+
     def _create_supplement_products_from_dataframe(self, dataframe):
         # problem with flat data structures is it's hard to transverse hierarchy
         # when you have no idea what users will input, so we're going to
@@ -114,18 +123,22 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
         if len(dataframe.columns) > 30:
             raise CommandError('Too many columns inserted {0} entered. Please contact an admin.'.format(len(dataframe)))
 
-        for supplement_name in dataframe:
+        for column_name in dataframe:
+            # go from Tyrosine (500mg) to Tyrosine
+            ingredient_parsed = self._parse_ingredient_from_column_entry(column_name)
+
             ingredient, _ = Ingredient.objects.get_or_create(
-                name=supplement_name,
+                name=ingredient_parsed,
                 user=self.user
             )
 
-            ingredient_comp_details = self.get_measurement_and_quantity_from_name(supplement_name)
+            ingredient_comp_details = self.get_measurement_and_quantity_from_name(column_name)
+
             ingredient_comp, _ = IngredientComposition.objects.get_or_create(
                 ingredient=ingredient, user=self.user, **ingredient_comp_details)
 
             supplement, _ = Supplement.objects.get_or_create(
-                name=supplement_name,
+                name=ingredient_parsed,
                 user=self.user
             )
 
@@ -134,7 +147,7 @@ class SupplementSanitizerTemplate(ExcelFileSanitizer):
 
             # add to cache, so don't have to deal with flattening to search
             # when saving individual events
-            self.SUPPLEMENT_PRODUCT_CACHE[supplement_name] = supplement
+            self.SUPPLEMENT_PRODUCT_CACHE[column_name] = supplement
 
     def save_results(self, dataframe):
         source = 'user_excel'

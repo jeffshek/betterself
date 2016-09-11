@@ -13,6 +13,7 @@
     -   id: flake8
         files: \.py$
         args: ['--ignore=E128']
+        exclude: local\.py$  # ignore config settings
     -   id: name-tests-test
         files: tests/.+\.py$
         args: ['--django']  # Use args: ['--django'] to match test*.py instead.

@@ -33,6 +33,11 @@ class ExcelImporterTests(TestCase):
 
         self.assertEqual(results_type, dataframe_type)
 
+    def test_supplement_products_dont_natively_exist(self):
+        # paranoid that i might mess up something one day
+        supplement_products_exists = Supplement.objects.all().exists()
+        self.assertFalse(supplement_products_exists)
+
     def test_supplements_creation_from_sanitizer(self):
         results = self.sanitizer.get_sanitized_dataframe()
         self.sanitizer._create_supplement_products_from_dataframe(results)
@@ -49,6 +54,8 @@ class ExcelImporterTests(TestCase):
         self.assertTrue(supplement_products_exists)
 
     def test_fixtures_import(self):
+        # this is kind of a crappy test, but i'm just using implicit knowledge of fixtures
+        # to test that the entries created are correct
         results = self.sanitizer.get_sanitized_dataframe()
         self.sanitizer.save_results(results)
 

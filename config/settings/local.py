@@ -57,4 +57,12 @@ LOCAL_DB_SETTINGS = {
     'USER': 'vagrant',
 }
 
+LOCAL_DB_SETTINGS = {
+    # Enable postgres when everyone is a bit more stable
+    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': 'betterself',
+    'USER': 'vagrant',
+}
+
 DATABASES['default'] = LOCAL_DB_SETTINGS
