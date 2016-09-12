@@ -1,1 +1,39 @@
-{% extends "base.html" %}
+{#TODO - Swap out to newer MarkmarkStrapdownJS library ... #}
+<html>
+<title>About Us</title>
+
+<xmp theme="united" style="display:none;">
+## What? (*)
+* Track an event in 10 seconds (or less) on your phone (iPhone and Android support)
+
+* Track your supplements / food intake / weather / locations to see what REALLY impacts your day.
+
+* Ever wonder if fish oil REALLY WORKS? Correlations of your data across events like sleep and fitness (FitBit), productivity (RescueTime), or your personal tracker (whatever that may be). See a dashboard of all your quantified metrics.
+
+* Easy export of all your data. No intention to hold your data hostage.
+
+* Easy import of data. Import your data via an Excel file, use our RESTful API, or use vendors (if provided).
+
+* Use different analytical methods to learn the usefulness of a supplement/events. Ever wonder if hangovers still impact you three days from the binge? Or if your productivity really takes a hit with only 5 hours of sleep?
+
+## Why? (*)
+
+* This project was built because I was frustrated by how difficult it was to track what supplements worked and don't. Felt there should be a better way for me to know supplements I'm taking is snake oil or meaningful.
+
+* Inspired by reddit nootropics (specifically [Scott Alexander's survey](http://slatestarcodex.com/2016/03/01/2016-nootropics-survey-results/)), [gwern's doubleblind studies](https://www.gwern.net/Nootropics), lots of anecdotal posts on Longecity and Reddit. Also partially motivated by the really bad posts (that time someone was convinced theanine made him a genius).
+
+* I don't want all my data to be held hostage (hence, the ease to export).
+
+* I want an app that doesn't care about my name and what I'm doing (we don't ask for anything besides a random username and a password to start). If you're scared, hit the big "delete all my data" button. The code is open-sourced at [GitHub](https://github.com/jeffshek/betterself), so you can see what exactly is going on with your data.
+
+* I want an app that is more robust than Excel ... something that allows me to choose different correlation methods to productivity, and where strangers on the internet can provide feedback.
+
+**\(*) DISCLAIMER - THERE IS A LOT HERE THAT HASN'T BEEN IMPLEMENTED YET. LIKE MOST SUPPLEMENTS ... OVERPROMISE, UNDERDELIVER.**
+
+</xmp>
+
+{% block javascript %}
+    <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+{% endblock javascript %}
+
+</html>
