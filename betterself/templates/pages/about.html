@@ -1,9 +1,9 @@
-{#TODO - Swap out to newer MarkmarkStrapdownJS library ... #}
 <html>
 <title>About Us</title>
 
-<xmp theme="united" style="display:none;">
-## What? (*)
+<xmp theme="Superhero">
+## What?
+---
 * Track an event in 10 seconds (or less) on your phone (iPhone and Android support)
 
 * Track your supplements / food intake / weather / locations to see what REALLY impacts your day.
@@ -16,8 +16,8 @@
 
 * Use different analytical methods to learn the usefulness of a supplement/events. Ever wonder if hangovers still impact you three days from the binge? Or if your productivity really takes a hit with only 5 hours of sleep?
 
-## Why? (*)
-
+## Why?
+---
 * This project was built because I was frustrated by how difficult it was to track what supplements worked and don't. Felt there should be a better way for me to know supplements I'm taking is snake oil or meaningful.
 
 * Inspired by reddit nootropics (specifically [Scott Alexander's survey](http://slatestarcodex.com/2016/03/01/2016-nootropics-survey-results/)), [gwern's doubleblind studies](https://www.gwern.net/Nootropics), lots of anecdotal posts on Longecity and Reddit. Also partially motivated by the really bad posts (that time someone was convinced theanine made him a genius).
@@ -28,12 +28,13 @@
 
 * I want an app that is more robust than Excel ... something that allows me to choose different correlation methods to productivity, and where strangers on the internet can provide feedback.
 
-**\(*) DISCLAIMER - THERE IS A LOT HERE THAT HASN'T BEEN IMPLEMENTED YET. LIKE MOST SUPPLEMENTS ... OVERPROMISE, UNDERDELIVER.**
+---
+DISCLAIMER : There is a LOT here that hasn't been implemented yet. Like most supplements ... overpromise, underdeliver.
 
 </xmp>
 
 {% block javascript %}
-    <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.rawgit.com/Naereen/StrapDown.js/master/strapdown.min.js?nonnavbar=y"></script>
 {% endblock javascript %}
 
 </html>
