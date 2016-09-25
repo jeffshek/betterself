@@ -78,3 +78,6 @@ config/development/virtualenv/
 
 # Ignore Vagrant
 .vagrant/
+
+# ignore your local development test script
+*local_dev_test_script*
