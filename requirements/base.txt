@@ -13,6 +13,7 @@ django-secure==1.0.1
 django-subdomains==2.1.0
 djangorestframework==3.3.3
 factory-boy==2.7.0
+ipython==4.2
 Markdown==2.6.6
 numpy==1.11.1
 openpyxl==2.4.0
