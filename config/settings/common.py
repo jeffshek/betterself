@@ -175,7 +175,6 @@ STATIC_URL = '/static/'
 _betterself_static_files_dir = ROOT_DIR.path('betterself', 'static')
 
 STATICFILES_DIRS = (
-    str(APPS_DIR.path('static')),
     str(APPS_DIR.path('betterself', 'static')),
 )
 

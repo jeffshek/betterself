@@ -1,3 +1,4 @@
+import datetime
 import pandas as pd
 
 from django.conf import settings
@@ -89,3 +90,48 @@ class ExcelImporterTests(TestCase):
         self.assertTrue('A' in cleaned_columns)
         self.assertTrue('B (200mg)' in cleaned_columns)
         self.assertFalse('               A' in cleaned_columns)
+
+    def test_true_strings_get_validated_to_one(self):
+        """ Correlations don't work for strings labelled as True, duh """
+        supplement_name = 'Random Supplement'
+        true_string_names = ['True', 'true', 't', 'T']
+        values_to_create = 50
+
+        for true_string_name in true_string_names:
+            serialized_dataframe = self._get_serialized_dataframe(supplement_name, true_string_name, values_to_create)
+
+            # if creating true/false, those result in 1 or 0s ...
+            series_sum = serialized_dataframe[supplement_name].sum()
+            self.assertEqual(1 * values_to_create, series_sum)
+
+    def test_false_strings_get_validated_to_one(self):
+        """ Correlations don't work for strings labelled as True, duh """
+        supplement_name = 'Random Supplement'
+        false_string_names = ['False', 'false', 'f', 'F']
+        values_to_create = 50
+
+        for string_name in false_string_names:
+            serialized_dataframe = self._get_serialized_dataframe(supplement_name, string_name, values_to_create)
+
+            # if creating true/false, those result in 1 or 0s ...
+            series_sum = serialized_dataframe[supplement_name].sum()
+            self.assertEqual(0, series_sum)
+
+    def _get_serialized_dataframe(self, supplement_name, boolean_string_name, values_to_create):
+        data_values = [boolean_string_name] * values_to_create
+        today = datetime.date.today()
+        periods_ago = today - datetime.timedelta(days=values_to_create - 1)
+        date_range = pd.date_range(periods_ago, today)
+
+        # this would be stupid if the count is off
+        self.assertEqual(len(data_values), len(date_range))
+
+        dataframe = pd.DataFrame(index=date_range)
+        dataframe[supplement_name] = data_values
+
+        # make sure there's no dynamic type conversion that can screw you
+        series = dataframe[supplement_name]
+        self.assertEqual(series[0], boolean_string_name)
+
+        serialized_dataframe = SupplementSanitizerTemplate._sanitize_dataframe_values(dataframe)
+        return serialized_dataframe

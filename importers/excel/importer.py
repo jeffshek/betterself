@@ -32,6 +32,15 @@ class ExcelFileSanitizer(object):
     @staticmethod
     def _sanitize_dataframe_values(dataframe):
         dataframe = dataframe.replace('T', 1)
+        dataframe = dataframe.replace('t', 1)
+        dataframe = dataframe.replace('True', 1)
+        dataframe = dataframe.replace('true', 1)
+
+        dataframe = dataframe.replace('F', 0)
+        dataframe = dataframe.replace('f', 0)
+        dataframe = dataframe.replace('False', 0)
+        dataframe = dataframe.replace('false', 0)
+
         dataframe = dataframe.fillna(0)
         return dataframe
 
