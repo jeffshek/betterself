@@ -65,3 +65,11 @@ if 'test' in sys.argv:
 
 
 DATABASES['default'] = LOCAL_DB_SETTINGS
+
+# Use this to debug whitenoise issues
+# Use Whitenoise to serve static files
+# See: https://whitenoise.readthedocs.io/
+# WHITENOISE_MIDDLEWARE = (
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+# )
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
