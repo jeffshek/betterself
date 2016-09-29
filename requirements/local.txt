@@ -1,5 +1,5 @@
 # overlaps with test
-django-debug-toolbar==1.4
+django-debug-toolbar==1.5
 django-extensions==1.6.6
 
 # local only specific
