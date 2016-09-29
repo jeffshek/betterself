@@ -4,7 +4,7 @@ html {
 body {
 	font-size: 15px;
 	color: #333;
-	background: url(../../img/blur/img2.jpg) no-repeat 30% 30%;
+	background: url(/images/blur/img2.jpg) no-repeat 30% 30%;
 }
 p {
 	color: #333;
