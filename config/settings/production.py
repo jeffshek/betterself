@@ -12,6 +12,7 @@ Production Configurations
 - Use opbeat for error reporting
 
 """
+
 from boto.s3.connection import OrdinaryCallingFormat
 from django.utils import six
 
@@ -36,12 +37,13 @@ INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 SECURITY_MIDDLEWARE = (
     'djangosecure.middleware.SecurityMiddleware',
 )
+# Take out whitenoise until you know what you're doing
 # Use Whitenoise to serve static files
 # See: https://whitenoise.readthedocs.io/
-WHITENOISE_MIDDLEWARE = (
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-)
-MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
+# WHITENOISE_MIDDLEWARE = (
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+# )
+# MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
 RAVEN_MIDDLEWARE = (
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
 )
