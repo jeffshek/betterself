@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider Flickr Template</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<!-- bootstrap style sheet -->
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+		
+		<!-- syntaxHilighter style sheet -->
+		<link rel="stylesheet" type="text/css" href="../assets/syntax-highlighter/styles/shCore.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../assets/syntax-highlighter/styles/shThemeDefault.css" media="all">
+		
+		<!-- main style -->
+		<link rel="stylesheet" type="text/css" href="../assets/css/style.css" media="all">
+		
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		<!-- Master Slider Skin -->
+		<link href="../masterslider/skins/light-6/style.css" rel='stylesheet' type='text/css'>
+		 
+		<!-- MasterSlider Template Style -->
+		<link href='style/ms-flickr.css' rel='stylesheet' type='text/css'>
+		
+		<!-- google font Lato 
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+		-->
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<!-- Master Slider -->
+		<script src="../masterslider/masterslider.min.js"></script>
+		
+		<!-- Master Slider Flickr Plugin -->
+		<script src="masterslider.flickr.js"></script>
+
+		<!-- Tabs -->
+		<script src="../assets/js/tab.js"></script>
+		<script src="../assets/syntax-highlighter/scripts/shCore.js"></script>
+		<script src="../assets/syntax-highlighter/scripts/shBrushXml.js"></script>
+		<script src="../assets/syntax-highlighter/scripts/shBrushCss.js"></script>
+		<script src="../assets/syntax-highlighter/scripts/shBrushJScript.js"></script>
+		
+	</head>
+		
+	<body>
+	<!-- header -->
+	<header class="header">
+		<img src="../assets/css/img/ms-logo.gif" class="logo"/>
+		<nav class="navbar mainnav" >
+			<ul class="nav">
+				<li><a href="http://www.masterslider.com/">HOME</a></li>
+				<li><a href="http://www.masterslider.com/transition-gallery/">TRANSITION GALLERY</a></li>
+				<li><a href="http://support.averta.net/envato/support/master-slider/">SUPPORT FORUM</a></li>
+				<li><a href="http://support.averta.net/envato/faq/master-slider/">FAQ</a></li>
+			</ul>
+		</nav>
+	</header>
+		<!-- end of header -->
+
+	<!-- template -->
+	<div class="ms-flickr-template">
+		<!-- masterslider -->
+		<div class="master-slider ms-skin-light-6 round-skin" id="masterslider">   
+		</div>
+		<!-- end of masterslider -->
+	</div>
+	<!-- end of template -->
+
+	<div class="hilight-wrapper">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+		  <li class="active"><a  href="#html" data-toggle="tab">HTML</a></li>
+		  <li><a href="#java-script" data-toggle="tab">JavaScript</a></li>
+		  <li><a href="#requierd-files" data-toggle="tab">Required Files</a></li>
+		  <a class="ms-doc-link" target="_blank"  href="http://www.masterslider.com/doc/">Master Slider Documentation</a>
+		</ul>
+
+		<!-- Tab panes -->
+
+		<div class="tab-content">
+		 	<div class="tab-pane fade in active" id="html">
+		 		<div class="html-describe">You need to put the following html markup in your html document where you want to have slider </div>
+		 		<pre class="brush: html">
+	&lt;!-- template -->
+	&lt;div class="ms-flickr-template">
+		&lt;!-- masterslider -->
+		&lt;div class="master-slider ms-skin-light-6 round-skin" id="masterslider">   
+		&lt;/div>
+		&lt;!-- end of masterslider -->
+	&lt;/div>
+	&lt;!-- end of template -->			
+				</pre>
+
+		 	</div>
+		  	<div class="tab-pane fade" id="java-script">
+		  		<div class="html-describe">You need to put the following scripts just before the &lt; &#8260; body&gt; </div>
+		  		<pre class="brush: js">
+	&lt;script type="text/javascript">		
+	
+		var slider = new MasterSlider();
+		slider.setup('masterslider' , {
+			width:900,
+			height:600,
+			space:5,
+			fillMode:'fit',
+			preload:1,
+			view:'basic'
+		});
+		
+		slider.control('arrows');	
+		slider.control('thumblist' , {autohide:false ,dir:'h',arrows:false});
+		slider.control('bullets');
+		
+		var flkr = new MSFlickr(slider , {key:'Your API Key Here ...' , id:'User/Photoset ID' , desc:false , count:15});
+		
+	&lt;/script>
+				</pre>
+		  	</div>
+			<div class="tab-pane fade" id="requierd-files">
+				<div class="html-describe">You need to import the following files  </div>
+				<pre class="brush: html">
+		&lt;!-- Base MasterSlider style sheet -->
+		&lt;link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		&lt;!-- Master Slider Skin -->
+		&lt;link href="../masterslider/skins/light-6/style.css" rel='stylesheet' type='text/css'>
+		 
+		&lt;!-- MasterSlider Template Style -->
+		&lt;link href='style/ms-flickr.css' rel='stylesheet' type='text/css'>
+		
+		&lt;!-- google font Lato 
+		&lt;link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+		-->
+		&lt;script src="../masterslider/jquery.min.js">&lt;/script>
+		&lt;script src="../masterslider/jquery.easing.min.js">&lt;/script>
+		
+		&lt;!-- Master Slider -->
+		&lt;script src="../masterslider/masterslider.min.js">&lt;/script>
+		
+		&lt;!-- Master Slider Flickr Plugin -->
+		&lt;script src="masterslider.flickr.js">&lt;/script>
+				</pre>
+			</div>
+					
+		</div>
+		<!-- end of Tab panes -->
+	</div>	
+	<!-- end of syntaxHylight wrapper -->
+	
+	</body>
+	
+	<script type="text/javascript">		
+	
+		var slider = new MasterSlider();
+		slider.setup('masterslider' , {
+			width:900,
+			height:600,
+			space:5,
+			fillMode:'fit',
+			preload:1,
+			view:'basic'
+		});
+		
+		slider.control('arrows');	
+		slider.control('thumblist' , {autohide:false, dir:'h',arrows:false,align:'bottom',width:127,height:137,margin:1,space:1,hideUnder:400});
+		slider.control('bullets');
+		
+		var flkr = new MSFlickr(slider , { key:'[Your Flickr API Key]' , id:'[Photoset ID or User ID]' , desc:false , count:15});
+
+		$('#myTab a').click(function (e) {
+		  e.preventDefault()
+		  $(this).tab('show')
+		});
+
+		SyntaxHighlighter.all();
+	</script>
+</html>

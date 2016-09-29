@@ -1,0 +1,80 @@
+.ms-phone-template .ms-phone-cont .ms-view{
+	background-color: #17171a;
+}
+.ms-phone-template .ms-phone-cont{
+    max-width: 386px;
+	position: relative;
+	margin: 0 auto;
+}
+
+.ms-phone-template.ms-phone-land .ms-phone-cont {
+    max-width: 666px;
+}
+
+.ms-phone-template.ms-phone-land .ms-lt-slider-cont {
+	position: relative;
+	padding: 4.6% 16.1% 10% 15.5%;
+    max-width: 455px;
+}
+
+.ms-phone-template .ms-lt-slider-cont {
+    position: relative;
+    padding: 26.2% 16.5% 33% 16.8%;
+    max-width: 258px;
+}
+.ms-phone-template .ms-phone-bg {
+    max-width: 100%;
+    position: absolute;
+}
+
+.ms-phone-template .ms-nav-prev,
+.ms-phone-template .ms-nav-next {
+    background: url(skin.png) no-repeat -11px -9px;
+    width: 35px;
+    height: 40px;
+    left: -120px;
+    margin-top: -17px;
+    position: absolute;
+    top:50%;
+    cursor: pointer;
+}
+.ms-phone-template .ms-nav-next {
+	background-position: -59px -9px;
+	right: -120px;
+	left:auto;
+}
+
+.ms-phone-template .ms-bullets.ms-dir-h {
+	position: absolute;
+	bottom: -30%;
+	right: 50%;
+	width: 100px;
+}
+
+.ms-phone-template .ms-bullets.ms-dir-h .ms-bullets-count {
+	position: relative;
+	right: -50%;
+}
+
+.ms-phone-template .ms-bullet {
+	width: 10px;
+	height: 10px;
+	background: url(skin.png) no-repeat -112px -25px;
+	margin: 4px;
+}
+
+.ms-phone-template .ms-bullet-selected {
+    background-position: -143px -25px;
+}
+
+.ms-phone-template.ms-phone-land .ms-bullets.ms-dir-h {
+    bottom: -21%;
+}
+
+.ms-phone-template.ms-phone-land .ms-nav-next {
+    right: -150px;
+}
+
+.ms-phone-template.ms-phone-land .ms-nav-prev {
+    left: -150px;
+}

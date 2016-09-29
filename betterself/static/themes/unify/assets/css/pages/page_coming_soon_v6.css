@@ -1,0 +1,123 @@
+html {
+	min-height: 100%;
+	position: relative;
+	background: radial-gradient(circle farthest-side at 100% 0, #2294d7, #275296) no-repeat;
+	position: relative;
+	padding: 30px 0;
+}
+html:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: url(../../img/coming-soon/black-ipad.png) no-repeat 120% 120%;
+	z-index: 1;
+	opacity: 1;
+	transition: all .3s;
+}
+@media (max-width: 1200px) {
+	html:after {
+		opacity: .3;
+	}
+}
+@media (max-width: 900px) {
+	html:after {
+		background-position: 10% 100%;
+	}
+}
+body {
+	font: 300 14px/1.6 "Open Sans", Arial, sans-serif;
+	background: none;
+	position: relative;
+	z-index: 2;
+}
+p, li, li a, label {
+  color: #fff;
+}
+a,
+a:hover,
+a:active,
+a:focus {
+	color: #db392a;
+}
+
+@media (max-width: 600px) {
+	.col-2xs-12 {
+		width: 100%;
+	}
+}
+
+h1 {
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: 300;
+	letter-spacing: 1px;
+}
+.btn-u-lg.btn-u-upper, a.btn-u-lg.btn-u-upper {
+  font-size: 12px;
+  font-weight: bold;
+}
+.btn-u-upper {
+  text-transform: uppercase;
+}
+
+.copyright {
+	margin: 0;
+}
+.copyright a {
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 1px;
+}
+
+/* Countdown */
+#defaultCountdown {
+	width: 100%;
+	overflow: hidden;
+	color: #fff;
+}
+#defaultCountdown span.countdown-section {
+	padding: 0 10px 0 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	display: inline-block;
+	position: relative;
+}
+#defaultCountdown span.countdown-section:after {
+	content: ":";
+	position: absolute;
+	left: 0;
+	top: -3px;
+	font: 300 36px/1 "Open Sans", sans-serif;
+}
+#defaultCountdown span.countdown-section:first-child:after {
+	display: none;
+}
+#defaultCountdown span.countdown-section:first-child {
+	padding-left: 0;
+	margin-left: -10px;
+}
+#defaultCountdown span.countdown-section:last-child {
+	width: 100px;
+}
+#defaultCountdown span.countdown-amount {
+	position: relative;
+	display: block;
+	padding: 0 10px;
+	font: 300 36px/1 "Open Sans", sans-serif;
+}
+#defaultCountdown span.countdown-period {
+	display: block;
+	font-size: 12px;
+	font-weight: 300;
+	text-transform: uppercase;
+	padding-top: 5px;
+}
+
+@media (max-width: 650px) {
+	#defaultCountdown span.countdown-section:last-child {
+		display: none;
+	}
+}

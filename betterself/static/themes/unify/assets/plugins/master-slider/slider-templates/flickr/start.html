@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider Flickr Template</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		<!-- Master Slider Skin -->
+		<link href="../masterslider/skins/light-6/style.css" rel='stylesheet' type='text/css'>
+		 
+		<!-- MasterSlider Template Style -->
+		<link href='style/ms-flickr.css' rel='stylesheet' type='text/css'>
+		
+		<!-- google font Lato 
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+		-->
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<!-- Master Slider -->
+		<script src="../masterslider/masterslider.min.js"></script>
+		
+		<!-- Master Slider Flickr Plugin -->
+		<script src="masterslider.flickr.js"></script>
+
+	</head>
+		
+	<body>
+
+	<!-- template -->
+	<div class="ms-flickr-template">
+		<!-- masterslider -->
+		<div class="master-slider ms-skin-light-6 round-skin" id="masterslider">   
+		</div>
+		<!-- end of masterslider -->
+	</div>
+	<!-- end of template -->
+
+	</body>
+	
+	<script type="text/javascript">		
+	
+		var slider = new MasterSlider();
+		slider.setup('masterslider' , {
+			width:900,
+			height:600,
+			space:5,
+			fillMode:'fit',
+			preload:1,
+			view:'basic'
+		});
+		
+		slider.control('arrows');	
+		slider.control('thumblist' , {autohide:false, dir:'h',arrows:false,align:'bottom',width:127,height:137,margin:1,space:1,hideUnder:400});
+		slider.control('bullets');
+		
+		var flkr = new MSFlickr(slider , { key:'[Your Flickr API Key]' , id:'[Photoset ID or User ID]' , desc:false , count:15});
+
+	</script>
+</html>

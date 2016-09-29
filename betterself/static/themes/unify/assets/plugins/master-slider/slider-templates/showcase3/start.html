@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider Showcase2 Template</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		<!-- Master Slider Skin -->
+		<link href="../masterslider/skins/default/style.css" rel='stylesheet' type='text/css'>
+		 
+		<!-- MasterSlider Template Style -->
+		<link href='style/ms-showcase3.css' rel='stylesheet' type='text/css'>
+		
+		<!-- google font Lato 
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+		-->
+		
+		<!-- jQuery -->
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<!-- Master Slider -->
+		<script src="../masterslider/masterslider.min.js"></script>
+
+	</head>
+		
+	<body>
+
+	<!-- template -->
+	<div class="ms-showcase3-template">
+				<!-- masterslider -->
+				<div class="master-slider ms-skin-default" id="masterslider">
+				    <div class="ms-slide">
+				        <img src="../masterslider/style/blank.gif" data-src="img/1.png" alt="lorem ipsum dolor sit"/>  
+				      	<div class="ms-thumb thumb-green" > </div>
+				    </div>
+				    <div class="ms-slide">
+				        <img src="../masterslider/style/blank.gif" data-src="img/2.png" alt="lorem ipsum dolor sit"/>     
+				        <div class="ms-thumb thumb-yellow" > </div>
+				    </div>
+				    <div class="ms-slide">
+				        <img src="../masterslider/style/blank.gif" data-src="img/3.png" alt="lorem ipsum dolor sit"/>    
+				       <div class="ms-thumb thumb-orange" > </div>
+				    </div>
+				    <div class="ms-slide">
+				        <img src="../masterslider/style/blank.gif" data-src="img/4.png" alt="lorem ipsum dolor sit"/>    
+				         <div class="ms-thumb thumb-red" > </div>
+				    </div>
+				    <div class="ms-slide">
+				        <img src="../masterslider/style/blank.gif" data-src="img/5.png" alt="lorem ipsum dolor sit"/>  
+				         <div class="ms-thumb thumb-blue" > </div>     
+				    </div>
+				</div>
+				<!-- end of masterslider -->
+	</div>
+	<!-- end of template -->
+	
+	</body>
+	
+	<script type="text/javascript">		
+	
+		var slider = new MasterSlider();
+		slider.setup('masterslider' , {
+			width:432,	
+			height:403,
+			space:0,
+			fillMode:'fit',
+			loop:true,
+			view:'mask'
+		});
+		slider.control('thumblist' , {autohide:false ,dir:'h',arrows:false});
+
+	</script>
+</html>

@@ -1,0 +1,99 @@
+/*Wrapping element for Sticky-Footer*/
+html {
+	height: 100%;
+	position: relative;
+}
+body {
+	min-height: 100%;
+	background: #60686d;
+}
+
+/*page 404 error 5
+------------------------------------*/
+.error-v6 {
+	text-align: center;
+	padding: 60px 0;
+}
+
+.error-v6 h1 {
+	text-transform: uppercase;
+	font-size: 36px;
+	line-height: 1.2;
+	font-weight: 300;
+	color: #fff;
+	margin: 50px 0 30px;
+}
+
+.error-v6 span.sorry {
+	color: #fff;
+	display: block;
+	font-size: 18px;
+	font-weight: 300;
+	padding-bottom: 50px;
+}
+
+.error-v6 .h1 {
+	color: #454d51;
+	font-size: 180px;
+	line-height: 260px;
+	margin-bottom: 28px;
+	font-weight: 200;
+	display: block;
+}
+.error-v6 .h1 img {
+	position: relative;
+	top: -15px;
+}
+
+/*For Mobile Devices*/
+@media (max-width: 620px) {
+	.error-v6 .h1 {
+		font-size: 108px;
+	}
+	.error-v6 .h1 img {
+		width: 159px;
+	}
+}
+
+@media (max-width: 380px) {
+	.error-v6 .h1 {
+		font-size: 75px;
+	}
+	.error-v6 .h1 img {
+		width: 110px;
+		top: -7px;
+	}
+}
+
+.error-v6 span.input-group-btn .btn-u {
+	width: 168px;
+	height: 45px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	font-size: 14px;
+	padding: 12px;
+}
+
+/*Sticky-Footer
+------------------------------------*/
+.sticky-footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 20px;
+	/* Set the fixed height of the footer here */
+	height: 60px;
+}
+.copyright-space {
+	color: #eee;
+	text-align: center;
+	font-size: 14px;
+}
+.copyright-space a:hover {
+	color: #e74c3c;
+}
+@media (max-height: 800px) {
+	.sticky-footer {
+		position: static;
+	}
+}

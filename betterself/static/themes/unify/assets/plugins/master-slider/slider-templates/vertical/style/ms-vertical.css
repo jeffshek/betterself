@@ -1,0 +1,137 @@
+.ms-tabs-vertical-template {
+	max-width: 660px;
+	padding: 5px 135px 5px 5px;
+	margin: 0 auto;
+	background: black;
+}
+
+.ms-tabs-vertical-template .ms-sbar .ms-bar{
+	background-color: black;
+}
+
+.ms-tabs-vertical-template .ms-nav-prev,
+.ms-tabs-vertical-template .ms-nav-next {
+    top: 10px;
+    left: 50%;
+    background: url(arrow.png) no-repeat;
+    background-position: -11px -6px;
+    width: 40px;
+    height: 30px;
+    margin-left: -20px;
+    margin-top: 0;
+}
+
+.ms-tabs-vertical-template .ms-nav-next{
+	top:auto;
+	bottom:10px;
+	background-position: -11px -53px;
+}
+
+
+.ms-vertical-template  .ms-thumb-list.ms-dir-h {
+	bottom: -101px;
+	width: 100%;
+	height: 113px;
+}
+
+.ms-vertical-template  .ms-thumb-list.ms-dir-v {
+	height: 100%;
+	width: 130px;
+	right: -130px;
+	top: 0;
+}
+
+.ms-vertical-template  .ms-thumb-frame {
+	cursor: pointer;
+}
+
+.ms-vertical-template .ms-thumb-list.ms-dir-h .ms-thumb-frame {
+	width: 214px;
+	height: auto;
+	margin: 12px 0 0 0;
+}
+
+.ms-vertical-template .ms-thumb-list.ms-dir-v .ms-thumb-frame {
+	width: 130px;
+	height: 85px;
+	margin: 0 0 5px 5px;
+	opacity: 0.5;
+	-webkit-transition: opacity 300ms;
+	-moz-transition: opacity 300ms;
+	-ms-transition: opacity 300ms;
+	-o-transition: opacity 300ms;
+	transition: opacity 300ms;
+}
+
+.ms-vertical-template  .ms-thumb-frame-selected {
+	opacity: 1 !important; 
+}
+
+.ms-vertical-template  .ms-thumb-frame-selected h3{
+	color:#4b8aac;
+}
+
+
+.ms-vertical-template .ms-thumblist-fwd, .ms-thumblist-bwd {
+    width: 100%;
+	position: absolute;
+	top: 0;
+	height: 15px;
+	cursor: pointer;
+	background: url(arrow.png) no-repeat;
+	
+    background-position: 50% -106px;
+}
+.ms-vertical-template .ms-thumblist-bwd {
+    top: auto;
+    bottom: 0;
+    background-position: 50% -145px;
+}
+
+@media (max-width: 600px) {
+	.ms-vertical-template  .ms-thumb-list.ms-dir-v {
+		width: 80px;
+		right: -80px;
+	 }
+	 
+	.ms-vertical-template  .ms-thumb-list.ms-dir-v .ms-thumb-frame {
+		width: 80px;
+		height: 45px;
+	}
+	
+	.ms-vertical-template {
+		padding-right: 85px;
+
+	}
+ }
+ 
+@media (max-width: 300px) {
+	.ms-vertical-template .ms-thumb-list.ms-dir-v {
+		display: none;
+	 }
+	 	
+	.ms-vertical-template{
+		padding-right: 5px;
+
+	}
+ }
+
+ /* Layers */
+.ms-layer.video-title {
+    font-family: "Lato",sans-serif;
+    color: white;
+    font-weight: 600;
+    font-size: 42px;
+    margin:0px;
+    letter-spacing:0px;
+}
+
+.ms-layer.video-title.video-top-title {
+    font-size: 16px;
+    color: gray;
+}
+
+.ms-layer.video-title.video-sub-title {
+    font-size: 22px;
+    font-weight: 300;
+}

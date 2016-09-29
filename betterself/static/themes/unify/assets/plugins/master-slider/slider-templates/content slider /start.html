@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider AutoHeight Template</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		<!-- Master Slider Skin -->
+		<link href="../masterslider/skins/default/style.css" rel='stylesheet' type='text/css'>
+		 
+		<!-- MasterSlider Template Style -->
+		<link href='style/ms-content-slider.css' rel='stylesheet' type='text/css'>
+			
+		<!-- jQuery -->
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<!-- Master Slider -->
+		<script src="../masterslider/masterslider.min.js"></script>
+		
+	</head>
+		
+	<body>
+		<!-- masterslider -->
+		<div class="master-slider ms-skin-default" id="masterslider">
+			
+			<div class="ms-slide" style="background-color:#4269A3">
+				<p class="parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor <a href="http://google.com/">incididunt </a>ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				
+			</div>
+			<div class="ms-slide" style="background-color:#42A39F">
+				<p class="parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
+				
+			</div>
+			<div class="ms-slide" style="background-color:#B84F68">
+				<p class="parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+					
+			</div>
+
+		</div>
+		<!-- end of masterslider -->
+	</body>
+	
+	<script type="text/javascript">		
+
+			
+		var slider = new MasterSlider();
+
+		slider.control("arrows", {autohide:false});
+		slider.control("bullets", {autohide:false});
+		
+		slider.setup("masterslider", {
+			width:1000,
+			height:10,
+			centerControls:false,
+		  	space:5,
+		  	layout:"fillwidth",
+		  	autoHeight:true,
+		 	loop:true
+		});
+
+	</script>
+</html>

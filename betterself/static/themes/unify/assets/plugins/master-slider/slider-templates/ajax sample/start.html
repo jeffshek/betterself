@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider Ajax Sample</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		 
+		<!-- MasterSlider default skin -->
+		<link rel="stylesheet" href="../masterslider/skins/default/style.css" />
+		 
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<script src="../masterslider/masterslider.min.js"></script>
+	
+		<style type="text/css" media="screen">
+			body{margin:0;}
+
+			.page-wrapper{
+				max-width: 1500px;
+				margin: 0 auto;
+			}
+
+			.menu{
+				list-style: none;
+				height: 40px
+			}
+			
+			.menu a{
+				color:#333;
+				text-decoration: none;
+				font-family: Arial;
+				font-size: 13px;
+				padding:5px 15px;
+				display: block;
+			}
+
+			.menu li{
+				float: left;
+				background: #dedede;
+				
+				margin:0 5px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<em>Please note that Ajax requests may not work in local machine. </em>
+		<ul class="menu" id="menu">
+			<li><a href="#" data-id="1">Slider1</a></li>
+			<li><a href="#" data-id="2">Slider2</a></li>
+			<li><a href="#" data-id="3">Slider3</a></li>
+		</ul>
+
+		<div class="page-wrapper" id="sliderContainer">
+			<!-- Slider content inserts here -->
+		</div>
+		
+	</body>
+	
+	<script type="text/javascript">	
+
+		var slider;
+
+		$('#menu li>a').click(function(event){
+			var $this = $(this),
+				slider_id = $this.data('id');
+
+			removeSlider();
+
+			$.ajax({
+				url: 'sliders/slider'+slider_id+'.html',
+			}).done(function(data) {
+				$('#sliderContainer').html(data);
+				createNewSlider();
+			});
+
+			event.preventDefault();
+		});
+
+		// load first slider
+		$('#menu li>a').eq(0).trigger('click');
+
+		function removeSlider(){
+			if(!slider) return;
+			slider.api.destroy();
+			// or slider.destroy();
+		}
+
+		function createNewSlider(){
+			slider = new MasterSlider();
+
+			slider.control("arrows");
+			slider.control("bullets");
+
+			slider.setup("masterslider", {
+				width:1000,
+				height:500,
+				loop:true
+			});
+		}
+
+	</script>
+
+</html>

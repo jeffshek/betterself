@@ -1,0 +1,217 @@
+/*--------------------------------------------------
+  Registration and Login Page v4
+----------------------------------------------------*/
+html {
+	min-height: 100%;
+	position: relative;
+}
+body {
+	margin-bottom: 178px;
+	font-size: 14px;
+}
+.image-block {
+	padding: 70px 0;
+	overflow: hidden;
+}
+
+/* Form block */
+.form-block {
+	padding: 70px 159px;
+	background: #fff;
+}
+.form-block img {
+	margin-bottom: 100px;
+}
+
+/* Form Header */
+.form-block h2 {
+	text-transform: uppercase;
+}
+
+/* Input fields */
+.form-block .input-group input.form-control {
+	background: transparent;
+	border-left: none;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 50px;
+	border-color: rgba(214,214,214,.5);
+	border-left: none;
+	color: #969595;
+}
+
+.form-block .list-unstyled {
+	margin: 0 -5px;
+	padding: 10px 0 13px;
+}
+
+/* Input fields icons */
+.form-block .input-group-addon {
+	min-width: 40px;
+	background: transparent;
+	border-color: rgba(214,214,214,.5);
+	padding-right: 0;
+}
+.form-block .input-group-addon i {
+	font-size: 16px;
+	position: relative;
+	top: 1px;
+}
+.form-block .form-control:focus {
+  box-shadow: none;
+  border-color: #999;
+}
+
+/* Buttons */
+.form-block .btn-u,
+.form-block .btn {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-transform: uppercase;
+}
+
+/* Social buttons */
+.login-block .social-login {
+	color: rgba(0,0,0,.5);
+	padding-top: 60px;
+	border-top: 1px solid #eee;
+	position: relative;
+}
+.login-block .or {
+	position: absolute;
+	border: 1px solid #eee;
+	width: 70px;
+	height: 70px;
+	top: -35px;
+	left: 50%;
+	margin-left: -35px;
+	text-transform: uppercase;
+	background: #fff;
+	line-height: 70px;
+	padding: 0 24px;
+}
+
+.login-block .btn {
+	padding: 12px 20px;
+	font-size: 13px;
+}
+.login-block .btn .fa {
+	position: relative;
+	top: 2px;
+	font-size: 18px;
+	margin-right: 10px;
+}
+
+.login-block .btn-facebook:focus {
+	color: #4863ae;
+}
+.login-block .btn-twitter:focus {
+	color: #46c0fb;
+}
+
+/* Bottom part */
+.login-block .bottom p {
+	text-transform: uppercase;
+}
+.login-block .bottom .btn-u {
+	width: 190px;
+	text-align: center;
+	line-height: 38px;
+}
+.login-block .bottom .btn-u:hover {
+	color: #fff;
+}
+
+/* Registration form */
+.reg-block .checkbox label {
+	display: list-item;
+	list-style: none;
+}
+.reg-block .checkbox label {
+	max-width: 230px
+}
+
+/* Sticky-Footer */
+.sticky-footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 50px 15px 40px;
+	text-align: center;
+	border-top: 1px solid #eee;
+	background: #fff;
+}
+
+/* Social links */
+.sticky-footer .copyright-space {
+	margin: 0;
+}
+
+@media (min-width: 992px) {
+	.login-block,
+	.reg-block {
+		min-width: 400px;
+	}
+	.login-block .social-login:before,
+	.login-block .social-login:after {
+		position: absolute;
+		top: -2px;
+		height: 2px;
+		background: #fff;
+		width: 110px;
+		content: "";
+	}
+	.login-block .social-login:before {
+		left: 0;
+	}
+	.login-block .social-login:after {
+		right: 0;
+	}
+}
+
+@media (max-width: 1138px) {
+	.form-block {
+		padding-right: 85px;
+		padding-left: 85px;
+	}
+	.login-block .social-login,
+	.login-block .bottom {
+		text-align: center;
+	}
+	.social-login ul li:first-child,
+	.bottom ul li:first-child {
+		margin-bottom: 20px;
+	}
+}
+
+@media (max-width: 991px) {
+	.form-block {
+		padding: 70px 40px;
+	}
+}
+
+@media (max-width: 767px) {
+	body {
+		margin-bottom: 0;
+	}
+	.sticky-footer {
+		position: static;
+	}
+}
+
+@media (max-width: 418px) {
+	.login-block .checkbox {
+		margin-bottom: 30px;
+	}
+	.login-block .checkbox ul li:first-child {
+		margin-bottom: 10px;
+	}
+	.login-block .checkbox ul li:last-child {
+		float: none !important;
+	}
+}
+
+#topcontrol:hover {
+	background: #e74c3c;
+}

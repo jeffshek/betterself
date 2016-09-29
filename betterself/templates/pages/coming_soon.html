@@ -12,22 +12,22 @@
   <meta name="author" content="BetterSelf">
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
+  <link rel="shortcut icon" href="{% static "images/logos/v1/favicon/favicon.ico" %}">
 
   <!-- Web Fonts -->
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,700,600&amp;subset=cyrillic,latin">
 
   <!-- CSS Global Compulsory-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static "css/unify/style.css" %}">
+  <link rel="stylesheet" href="{% static "themes/unify/assets/css/style.css" %}">
 
   <!-- CSS Implementing Plugins -->
-  <link rel="stylesheet" href="{% static "css/unify/plugins/animate.css" %}">
-  <link rel="stylesheet" href="{% static "css/unify/plugins/line-icons.css" %}">
-  <link rel="stylesheet" href="{% static "css/unify/plugins/font-awesome.css" %}">
+  <link rel="stylesheet" href="{% static "themes/unify/assets/plugins/animate.css" %}">
+  <link rel="stylesheet" href="{% static "themes/unify/assets/plugins/line-icons.css" %}">
+  <link rel="stylesheet" href="{% static "themes/unify/assets/plugins/font-awesome.css" %}">
 
   <!-- CSS Page Style -->
-  <link rel="stylesheet" href="{% static "css/unify/pages/page_coming_soon_v2.css" %}">
+  <link rel="stylesheet" href="{% static "themes/unify/assets/css/pages/page_coming_soon_v2.css" %}">
 </head>
 
 <body><!--  class="bg-color-teal" -->
@@ -75,17 +75,16 @@
 
 <!-- JS Implementing Plugins -->
 {#im going to regret this when i dont understand these plugins#}
-<script src="{% static "js/unify/back-to-top.js" %}"></script>
-<script src="{% static "js/unify/smoothScroll.js" %}"></script>
-{#besig's inheritance renamed from jquery.plugin.js#}
-<script src="{% static "js/unify/john_besig_inheritance.js" %}"></script>
-<script src="{% static "js/unify/plugins/jquery.countdown.min.js" %}"></script>
+<script src="{% static "themes/unify/assets/plugins/back-to-top.js" %}"></script>
+<script src="{% static "themes/unify/assets/plugins/smoothScroll.js" %}"></script>
+<script src="{% static "themes/unify/assets/plugins/countdown/jquery.plugin.js" %}"></script>
+<script src="{% static "themes/unify/assets/plugins/countdown/jquery.countdown.min.js" %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.3/jquery.backstretch.min.js"></script>
 
 <!-- JS Page Level -->
-<script src="{% static "js/unify/app.js" %}"></script>
-<script src="{% static "js/unify/style-switcher.js" %}"></script>
-<script src="{% static "js/unify/page_coming_soon.js" %}"></script>
+<script src="{% static "themes/unify/assets/js/app.js" %}"></script>
+<script src="{% static "themes/unify/assets/js/plugins/style-switcher.js" %}"></script>
+<script src="{% static "themes/unify/assets/js/pages/page_coming_soon.js" %}"></script>
 
 <script>
   jQuery(document).ready(function() {
@@ -93,9 +92,9 @@
     PageComingSoon.initPageComingSoon();
 
     $(".coming-soon-v2-left").backstretch([
-      "assets/img/bg/7.jpg",
-      "assets/img/bg/4.jpg",
-      "assets/img/bg/5.jpg"
+      "{% static "themes/unify/assets/img/bg/7.jpg" %}",
+      "{% static "themes/unify/assets/img/bg/4.jpg" %}",
+      "{% static "themes/unify/assets/img/bg/5.jpg" %}",
     ], {duration: 3000, fade:750});
 
     $('body').css('margin-top', Number($(document).height() - $('.coming-soon-v2').height())/2);

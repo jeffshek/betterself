@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Master Slider Fullscreen Template</title>	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<!-- Base MasterSlider style sheet -->
+		<link rel="stylesheet" href="../masterslider/style/masterslider.css" />
+		
+		<!-- Master Slider Skin -->
+		<link href="../masterslider/skins/default/style.css" rel='stylesheet' type='text/css'>
+		 
+		<!-- MasterSlider Template Style -->
+		<link href='style/ms-fixedlayers.css' rel='stylesheet' type='text/css'>
+		
+		<!-- google font Lato -->
+		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'>
+		
+		
+		<!-- jQuery -->
+		<script src="../masterslider/jquery.min.js"></script>
+		<script src="../masterslider/jquery.easing.min.js"></script>
+		
+		<!-- Master Slider -->
+		<script src="../masterslider/masterslider.min.js"></script>
+		
+		<style type="text/css">
+			.header{margin-bottom: 0;}
+
+			.master-slider{
+				height: 100%;
+				font-family: Lato, arial, sans-serif;
+			}
+		
+		</style>
+
+
+	</head>
+		
+	<body>
+		
+	<!-- template -->
+	<div class="ms-fixed-layers-template" id="slider1-wrapper">
+		<!-- masterslider -->
+		<div class="master-slider ms-skin-default" id="masterslider">
+		    <div class="ms-slide slide-1">
+		     <div class="slide-pattern"></div>
+		        <img src="../masterslider/style/blank.gif" data-src="img/1.jpg" alt="lorem ipsum dolor sit"/>  
+		        <h3 class="ms-layer bold-text-white bigtext"
+					data-type="text"
+					data-ease="easeOutQuint"
+					data-effect="top(40)"
+					data-duration="1500"
+					data-origin="mc"
+					data-offset-x="0"
+					data-offset-y="0"
+					data-position="fixed"
+		        >
+		        	FIRST SLIDE
+		        </h3>
+		    </div>
+		    <div class="ms-slide slide-2">
+		       <div class="slide-pattern"></div>
+		       <h3 class="ms-layer bold-text-white bigtext"
+					data-type="text"
+					data-ease="easeOutQuint"
+					data-effect="top(40)"
+					data-duration="1500"
+					data-origin="mc"
+					data-offset-x="0"
+					data-offset-y="0"
+					data-position="fixed"
+		        >
+		        	SECOND SLIDE
+		        </h3>
+		        <img src="../masterslider/style/blank.gif" data-src="img/2.jpg" alt="lorem ipsum dolor sit"/>     
+		    </div>
+		    <div class="ms-slide slide-3">
+		       <div class="slide-pattern"></div>
+		        <h3 class="ms-layer bold-text-white bigtext"
+					data-type="text"
+					data-ease="easeOutQuint"
+					data-effect="top(40)"
+					data-duration="1500"
+					data-origin="mc"
+					data-offset-x="0"
+					data-offset-y="0"
+					data-position="fixed"
+		        >
+		        	THIRD SLIDE
+		        </h3>
+		        <img src="../masterslider/style/blank.gif" data-src="img/3.jpg" alt="lorem ipsum dolor sit"/>    
+		    </div>
+		    <div class="ms-slide slide-4">
+		       <div class="slide-pattern"></div>
+
+		      <h3 class="ms-layer bold-text-white bigtext"
+					data-type="text"
+					data-ease="easeOutQuint"
+					data-effect="top(40)"
+					data-duration="1500"
+					data-origin="mc"
+					data-offset-x="0"
+					data-offset-y="0"
+					data-position="fixed"
+		        >
+		        	FOURTH SLIDE
+		        </h3>
+
+		        <img src="../masterslider/style/blank.gif" data-src="img/4.jpg" alt="lorem ipsum dolor sit"/>    
+		    </div>
+
+		    <div class="ms-slide slide-5">
+		       <div class="slide-pattern"></div>
+
+				<h3 class="ms-layer bold-text-white bigtext"
+					data-type="text"
+					data-ease="easeOutQuint"
+					data-effect="top(40)"
+					data-duration="1500"
+					data-origin="mc"
+					data-offset-x="0"
+					data-offset-y="0"
+					data-position="fixed"
+		        >
+		        	FIFTH SLIDE
+		        </h3>
+				
+				<video data-autopause="false" data-mute="true" data-loop="true" data-fill-mode="fill">
+		            <source src="../assets/video/video.mp4" type="video/mp4"/>
+					<source src="../assets/video/video.webm" type="video/webm"/>
+					<source src="../assets/video/video.ogv" type="video/ogg"/>
+		        </video>
+		        <img src="../masterslider/style/blank.gif" data-src="img/video.jpg" alt="lorem ipsum dolor sit"/>    
+		    </div>
+		</div>
+		<!-- end of masterslider -->
+	</div>
+	<!-- end of template -->
+
+	</body>
+	
+	<script type="text/javascript">		
+	
+		var slider = new MasterSlider();
+
+		slider.control('arrows' ,{insertTo:'#masterslider'});	
+		slider.control('bullets');	
+
+		slider.setup('masterslider' , {
+			width:1024,
+			height:768,
+			space:5,
+			view:'basic',
+			instantStartLayers:true,
+			speed:20
+		});
+		
+	</script>
+</html>

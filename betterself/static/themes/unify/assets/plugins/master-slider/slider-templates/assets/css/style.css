@@ -1,0 +1,117 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Header style ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+body{
+	font-size:13px;
+ 	/*overflow:hidden;*/
+ }
+
+.header {
+	height: 55px;
+	background-color: #f2f2f2;
+	border-bottom: solid 1px silver;
+	margin-bottom: 50px;
+}
+
+.logo { margin: 10px 18px;}
+
+.mainnav {
+		position: absolute;
+		right: 0px;
+		top:0px;
+		font-size: 12px;
+	}
+	
+	.mainnav .nav>li>a{
+		padding:17px 10px 18px;
+	}
+	.navbar .nav>li>a {
+		color:#777; 
+	}
+.navbar .nav {
+position: relative;
+left: 0;
+display: block;
+float: left;
+margin: 0 10px 0 0;
+}
+.navbar .nav>li {
+float: left;
+}
+.navbar .nav>li>a:focus, .navbar .nav>li>a:hover {
+color: #333;
+text-decoration: none;
+background-color: transparent;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end of Header style ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ syntax hilighter style ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.syntaxhighlighter .gutter .line {border-right: 3px solid #DADADA !important;}
+.syntaxhighlighter .toolbar {background: #B9B9B9 !important;}
+.syntaxhighlighter .line.alt2 {	background-color: #FAFAFA !important;}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end of syntax hilighter style ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.hilight-wrapper {
+	margin: 0px auto;
+	margin-top: 50px;
+	margin-bottom: 30px;
+	max-width: 1056px;
+	border: 1px solid #ddd;
+}
+.hilight-wrapper .nav{
+	background-color: #f2f2f2;
+}
+.hilight-wrapper .active>a{
+	background-color: #fff !important;
+	padding-bottom: 12px !important;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+	
+	border: 0px !important;
+}
+.active{
+	position: relative;
+}
+
+.nav-tabs>li>a {
+	margin-right: 1px !important;
+}
+.ms-doc-link{
+	float: right;
+	margin-top: 10px;
+	margin-right: 14px;
+	padding-right: 25px;
+	background-image: url('img/document.png');
+	background-repeat: no-repeat;
+	background-position: right;
+	height: 20px;
+
+}
+.html-describe {
+	border-bottom: 1px solid #e1e1e1;
+	padding-top: 18px;
+	padding-bottom: 18px;
+	padding-left: 39px;
+	color: #777777;
+	background-image: url('img/describ-icon.png');
+	background-repeat: no-repeat;
+	background-position: 13px 18px;
+}
+a:hover, a:focus {
+	color: #428bca;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ to overwrite Bootstrapt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+*, :before, :after {
+-webkit-box-sizing: content-box;
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+}
+
+.syntaxhighlighter {
+margin-bottom: 0px !important;
+}
+.syntaxhighlighter.html{
+	max-height: 400px;
+}
