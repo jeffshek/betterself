@@ -12,7 +12,6 @@ body {
 ------------------------------------*/
 /* Top */
 .bg-top {
-	background: url(../../img/bg/4.jpg) no-repeat scroll center center / cover;
 	position: relative;
 	z-index: 1;
 }
@@ -66,7 +65,6 @@ i.icon-lg.icon-line {
 
 /* Bottom */
 .bg-bottom {
-	background: url(../../img/bg/5.jpg) no-repeat scroll center center / cover;
 	position: relative;
 	z-index: 1;
 }

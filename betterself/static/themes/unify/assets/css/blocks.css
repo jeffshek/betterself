@@ -253,7 +253,6 @@
 }
 
 .video-business-img1 {
-  background: url(../video/youtube-business/video-business-img1.jpg) no-repeat center;
   background-size: cover; /*Scales the background image to be as large as possible*/
 }
 
@@ -6791,7 +6790,6 @@ a.thumbnail {
 	padding: 40px 0;
 	border-top: 1px solid #eee;
 	border-bottom: 1px solid #eee;
-	background: url(../img/breadcrumbs.png) repeat;
 }
 
 /*Gallery Page
@@ -6991,7 +6989,6 @@ ul.blog-tags a:hover i {
 
 .slider-promo-info-bg {
 	padding: 25px 20px 20px;
-	background: url(../img/bg-black.png) repeat;
 }
 
 .slider-promo-info span.big-size {
