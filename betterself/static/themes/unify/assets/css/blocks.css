@@ -3618,14 +3618,6 @@
     background-position: 1024px 0;
   }
 }
-@-moz-keyframe infiniteBackground {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 1024px 0;
-  }
-}
 
 .interactive-slider-v2:after {
   top: 0;
@@ -4328,7 +4320,6 @@
 
 .blog-thumb .blog-thumb-hover:hover .hover-grad {
   opacity: 1;
-  transform 0.55s;
   transition: opacity 0.55s,
 }
 
