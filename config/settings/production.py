@@ -123,7 +123,7 @@ AWS_EXPIRY = 60 * 60 * 24 * 7
 # Revert the following and use str after the above-mentioned bug is fixed in
 # either django-storage-redux or boto
 AWS_HEADERS = {
-    'Cache-Control': six.b('max-age=%d, s-maxage=%d, must-revalidate' % (
+    'Cache-Control': six.b('max-age={0:d}, s-maxage={1:d}, must-revalidate'.format(
         AWS_EXPIRY, AWS_EXPIRY))
 }
 
