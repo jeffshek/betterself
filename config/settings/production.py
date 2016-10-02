@@ -34,18 +34,31 @@ INSTALLED_APPS += ('djangosecure', )
 # raven sentry client
 # See https://docs.getsentry.com/hosted/clients/python/integrations/django/
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
+
+SENTRY_DSN_USER = env('SENTRY_DSN_USER')
+SENTRY_DSN_PASS = env('SENTRY_DSN_PASS')
+SENTRY_DSN_PROJECT = env('SENTRY_DSN_PROJECT')
+SENTRY_DSN = 'https://{dsn_user}:{dsn_pass}@sentry.io/{dsn_project}'.format(dsn_user=SENTRY_DSN_USER,
+    dsn_pass=SENTRY_DSN_PASS, dsn_project=SENTRY_DSN_PROJECT)
+
+RAVEN_CONFIG = {
+    'dsn': SENTRY_DSN,
+    # Add release version later
+    # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
+}
+
 SECURITY_MIDDLEWARE = (
     'djangosecure.middleware.SecurityMiddleware',
 )
-# Take out whitenoise until you know what you're doing
+
 # Use Whitenoise to serve static files
-# See: https://whitenoise.readthedocs.io/
 WHITENOISE_MIDDLEWARE = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
 RAVEN_MIDDLEWARE = (
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
 )
 MIDDLEWARE_CLASSES = RAVEN_MIDDLEWARE + MIDDLEWARE_CLASSES
 
@@ -127,7 +140,7 @@ AWS_HEADERS = {
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
                          default='betterself <noreply@betterself.io>')
-EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+# EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 # MAILGUN_ACCESS_KEY = env('DJANGO_MAILGUN_API_KEY')
 # MAILGUN_SERVER_NAME = env('DJANGO_MAILGUN_SERVER_NAME')
 # EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[betterself] ')
