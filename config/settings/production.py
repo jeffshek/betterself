@@ -93,6 +93,7 @@ SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=True)
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[
     'betterself.io',
+    'www.betterself.io',
     'betterself.herokuapp.com']
 )
 # END SITE CONFIGURATION
