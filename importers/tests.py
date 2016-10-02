@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from events.models import SupplementEvent
 
-from importers.excel.importer import SupplementSanitizerTemplate
+from importers.excel.importer import ExcelSupplementFileSanitizer
 # use django user model
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
@@ -22,7 +22,7 @@ class ExcelImporterTests(TestCase):
         cls.user = User.objects.get(username='jacob')
 
         file_path = cls.file_path()
-        cls.sanitizer = SupplementSanitizerTemplate(file_path, cls.user)
+        cls.sanitizer = ExcelSupplementFileSanitizer(file_path, cls.user)
 
         super().setUpTestData()
 
@@ -65,12 +65,12 @@ class ExcelImporterTests(TestCase):
 
     def test_get_measurement_unit_and_quantity_from_name(self):
         test_name_1 = 'Snake Oil (200mg)'
-        result = SupplementSanitizerTemplate.get_measurement_and_quantity_from_name(test_name_1)
+        result = ExcelSupplementFileSanitizer.get_measurement_and_quantity_from_name(test_name_1)
 
         self.assertEqual(result['quantity'], 200)
 
         test_name_2 = 'Snake Oil'
-        result = SupplementSanitizerTemplate.get_measurement_and_quantity_from_name(test_name_2)
+        result = ExcelSupplementFileSanitizer.get_measurement_and_quantity_from_name(test_name_2)
         result_quantity = result.get('quantity')
 
         self.assertEqual(result_quantity, None)
@@ -84,7 +84,7 @@ class ExcelImporterTests(TestCase):
             }
         )
 
-        cleaned_dataframe = SupplementSanitizerTemplate._sanitize_dataframe_columns(dataframe)
+        cleaned_dataframe = ExcelSupplementFileSanitizer._sanitize_dataframe_columns(dataframe)
         cleaned_columns = cleaned_dataframe.columns
 
         self.assertTrue('A' in cleaned_columns)
@@ -133,5 +133,5 @@ class ExcelImporterTests(TestCase):
         series = dataframe[supplement_name]
         self.assertEqual(series[0], boolean_string_name)
 
-        serialized_dataframe = SupplementSanitizerTemplate._sanitize_dataframe_values(dataframe)
+        serialized_dataframe = ExcelSupplementFileSanitizer._sanitize_dataframe_values(dataframe)
         return serialized_dataframe

@@ -77,7 +77,7 @@ class ExcelFileSanitizer(object):
         return dataframe
 
 
-class SupplementSanitizerTemplate(ExcelFileSanitizer):
+class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
     """Take a raw historical excel of supplements, clean and save it"""
 
     TEMPLATE_SAVE_MODEL = SupplementEvent

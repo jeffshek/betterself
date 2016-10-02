@@ -1,8 +1,8 @@
-from importers.excel.importer import SupplementSanitizerTemplate
+from importers.excel.importer import ExcelSupplementFileSanitizer
 
 personal_fixtures_file = '/betterself/personal_fixtures/supplement_fixtures.xlsx'
 
-sanitizer = SupplementSanitizerTemplate(personal_fixtures_file, user=None)
+sanitizer = ExcelSupplementFileSanitizer(personal_fixtures_file, user=None)
 dataframe = sanitizer.get_sanitized_dataframe()
 
 dataframe_cols = dataframe.columns
