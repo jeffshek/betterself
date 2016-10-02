@@ -238,11 +238,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ]
 }
-
-# Static Assets, leave this in here because you're an idiot
-# ------------------------
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MIDDLEWARE = (
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-)
-MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES

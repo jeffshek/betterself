@@ -72,4 +72,5 @@ DATABASES['default'] = LOCAL_DB_SETTINGS
 # WHITENOISE_MIDDLEWARE = (
 #     'whitenoise.middleware.WhiteNoiseMiddleware',
 # )
+# MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
