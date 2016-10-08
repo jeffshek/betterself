@@ -83,7 +83,13 @@ class DataFrameEventsAnalyzer(object):
         # 3             | 100       | 100 mg    | 60m
         # the sum versus average over a rolling period SHOULD result in the sme correlation
         # should probably check this with a test ...
-        dataframe = dataframe.rolling(window=window, center=False).sum()
+        dataframe = dataframe.rolling(window=window, center=False, min_periods=1).sum()
+
+        # don't care about entire rows that are NaN because they won't have a sum
+        dataframe = dataframe.dropna(how='all')
+
+        # for anything that isn't filled in, assume those are zeros
+        dataframe = dataframe.fillna(0)
 
         correlation_results = dataframe.corr(method, min_periods)[measurement]
         correlation_results_sorted = correlation_results.sort_values(inplace=False)

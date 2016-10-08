@@ -22,7 +22,8 @@ Vagrant.configure(2) do |config|
 
   # pandas takes a lot of memory to assemble
   config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
+    # the fact that you can use this much memory in pandas kinda scares me
+    v.memory = 4096
     v.cpus = 2
   end
 
