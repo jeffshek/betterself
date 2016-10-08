@@ -1,5 +1,3 @@
-import pandas as pd
-
 from django.core.exceptions import ValidationError
 
 VALID_CORRELATION_METHODS = ['pearson', 'spearman', 'kendall']
@@ -11,11 +9,14 @@ class DataFrameEventsAnalyzer(object):
     """
     def __init__(self, dataframe, ignore_columns=None, rest_day_column_name=None):
         # certain columns might be just notes or useless information that can be ignored
+        dataframe_cols = dataframe.columns
         if ignore_columns:
             assert isinstance(ignore_columns, list)
             self.ignore_columns = ignore_columns
+            self.valid_columns = [item for item in dataframe_cols if item not in ignore_columns]
         else:
             self.ignore_columns = []
+            self.valid_columns = dataframe_cols
 
         # if it's a rest day, the correlations shouldn't be used. ie. if you're drinking caffeine on
         # Sunday and wasn't intending to get any work done, then those days shouldn't be used to measure how effective
@@ -24,10 +25,6 @@ class DataFrameEventsAnalyzer(object):
             assert isinstance(rest_day_column_name, str)
             dataframe = dataframe[dataframe[rest_day_column_name] == False]  # noqa
 
-        dataframe_cols = dataframe.columns
-        valid_columns = [item for item in dataframe_cols if item not in ignore_columns]
-
-        self.valid_columns = valid_columns
         self.dataframe = dataframe
 
     @staticmethod
@@ -43,9 +40,11 @@ class DataFrameEventsAnalyzer(object):
 
     def get_correlation_for_measurement(self, measurement, add_yesterday_lag=False, method='pearson', min_periods=1):
         """
-        IE. Measurement is the column name of what you're trying to improve / correlate
-        If add_yesterday_lag is True, take a look if yesterday's supplements impacted
-        Productivity / Sleep / etc. today.
+        :param measurement: Measurement is the column name of what you're trying to improve / correlate
+        :param add_yesterday_lag: factor if you drank coffee yesterday
+        :param method: see pandas documentation
+        :param min_periods: see pandas documentation
+        :return: correlation series
         """
         self._validate_correlation_method(method)
         # copy lets me be certain each result doesn't mess up state
@@ -54,19 +53,27 @@ class DataFrameEventsAnalyzer(object):
         if add_yesterday_lag:
             dataframe = self._add_yesterday_correlation_to_dataframe(dataframe)
 
-        dataframe = self._remove_invalid_measurement_days(dataframe)
+        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
 
         correlation_results = dataframe.corr(method, min_periods)[measurement]
         correlation_results_sorted = correlation_results.sort_values(inplace=False)
 
         return correlation_results_sorted
 
-    def get_rolling_correlation_for_measurement(self, measurement, window, method='pearson', min_periods=1):
+    def get_correlation_across_summed_days_for_measurement(self, measurement, window=7, method='pearson',
+            min_periods=1):
+        """
+        :param measurement: dataframe column name of productivity driver
+        :param window: how many days to sum up
+        :param method: what type of correlation pattern
+        :param min_periods: see pandas documentation
+        :return: correlation series
+        """
         self._validate_correlation_method(method)
         # copy lets me be certain each result doesn't mess up state
         dataframe = self.dataframe.copy()
 
-        dataframe = self._remove_invalid_measurement_days(dataframe)
+        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
         # kind of an annoying internal debate, but theoretically for pearson (i can't verify for all)
         # the sum of a lookback, ie. let's say you took
         # day (x-axis)  | caffeine  | theanine  | productive time
@@ -76,7 +83,7 @@ class DataFrameEventsAnalyzer(object):
         # 3             | 100       | 100 mg    | 60m
         # the sum versus average over a rolling period SHOULD result in the sme correlation
         # should probably check this with a test ...
-        dataframe = pd.rolling_sum(dataframe, window=window)
+        dataframe = dataframe.rolling(window=window, center=False).sum()
 
         correlation_results = dataframe.corr(method, min_periods)[measurement]
         correlation_results_sorted = correlation_results.sort_values(inplace=False)

@@ -17,3 +17,4 @@ rest_day_column_name = 'Rest Day'
 
 analyzer = DataFrameEventsAnalyzer(dataframe, ignore_columns=ignore_columns, rest_day_column_name=rest_day_column_name)
 print(analyzer.get_correlation_for_measurement(correlation_driver))
+analyzer.get_correlation_across_summed_days_for_measurement(correlation_driver)
