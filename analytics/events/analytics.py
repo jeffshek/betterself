@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from numpy import dtype
 
 VALID_CORRELATION_METHODS = ['pearson', 'spearman', 'kendall']
 
@@ -60,6 +61,21 @@ class DataFrameEventsAnalyzer(object):
 
         return correlation_results_sorted
 
+    # i don't think this is used, so comment this out and remove soon
+    # @staticmethod
+    # def convert_to_seconds(time):
+    #     # if it's a datetime object, don't do anything, only do something for time objects
+    #     if isinstance(time, Timestamp):
+    #         return time
+    #
+    #     # certain raw excel files may only have time attribute (no date) for those ... convert to seconds
+    #     minutes_in_seconds = time.minutes * 60
+    #     hours_in_seconds = time.hours * 3600
+    #     seconds_in_seconds = time.seconds
+    #
+    #     time_elapsed = minutes_in_seconds + hours_in_seconds + seconds_in_seconds
+    #     return time_elapsed
+
     def get_correlation_across_summed_days_for_measurement(self, measurement, window=7, method='pearson',
             min_periods=1):
         """
@@ -69,21 +85,37 @@ class DataFrameEventsAnalyzer(object):
         :param min_periods: see pandas documentation
         :return: correlation series
         """
-        self._validate_correlation_method(method)
-        # copy lets me be certain each result doesn't mess up state
-        dataframe = self.dataframe.copy()
-
-        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
-        # kind of an annoying internal debate, but theoretically for pearson (i can't verify for all)
-        # the sum of a lookback, ie. let's say you took
+        # kind of an annoying internal debate, but theoretically for pearson (i can't verify for all correlation meths)
+        # example 1
         # day (x-axis)  | caffeine  | theanine  | productive time
         # 0             | 100mg     | 0 mg      | 20m
         # 1             | 50        | 0 mg      | 10m
         # 2             | 150       | 0 mg      | 25m
         # 3             | 100       | 100 mg    | 60m
-        # the sum versus average over a rolling period SHOULD result in the sme correlation
-        # should probably check this with a test ...
-        dataframe = dataframe.rolling(window=window, center=False, min_periods=1).sum()
+        # the sum versus average over a rolling period SHOULD result in the same correlation
+        self._validate_correlation_method(method)
+
+        # copy lets me be certain each result doesn't mess up state
+        dataframe = self.dataframe.copy()
+
+        # take out days when the measurement is zero (since it's hard to differentiate between missing data and
+        # an actual zero, at least from an excel import)
+        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
+
+        # not all dataframe columns are rollable ...
+        # not sure what to do about stuff like 2:00 AM  ... if someone puts 2 hours ... should it just automatically
+        # convert to seconds? that feels a little more reasonable versus putting some hacky logic to subtract
+        # from midnight from 4AM, THANKS A LOT EXCEL
+        rollable_column_types = {dtype('float64'), dtype('int64')}
+        dataframe_col_types = dataframe.dtypes
+        dataframe_rollable_columns = [col for col in dataframe.columns if dataframe_col_types[col] in
+            rollable_column_types]
+
+        rollable_dataframe = dataframe[dataframe_rollable_columns]
+        rolled_dataframe = rollable_dataframe.rolling(window=window, center=False, min_periods=1).sum()
+
+        # update means any of the valid columns that could be updated ... are
+        dataframe.update(rolled_dataframe)
 
         # don't care about entire rows that are NaN because they won't have a sum
         dataframe = dataframe.dropna(how='all')
@@ -91,6 +123,7 @@ class DataFrameEventsAnalyzer(object):
         # for anything that isn't filled in, assume those are zeros
         dataframe = dataframe.fillna(0)
 
+        # i love you pandas, you make my life so easy
         correlation_results = dataframe.corr(method, min_periods)[measurement]
         correlation_results_sorted = correlation_results.sort_values(inplace=False)
 
