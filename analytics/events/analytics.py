@@ -102,17 +102,7 @@ class DataFrameEventsAnalyzer(object):
         # an actual zero, at least from an excel import)
         dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
 
-        # not all dataframe columns are rollable ...
-        # not sure what to do about stuff like 2:00 AM  ... if someone puts 2 hours ... should it just automatically
-        # convert to seconds? that feels a little more reasonable versus putting some hacky logic to subtract
-        # from midnight from 4AM, THANKS A LOT EXCEL
-        rollable_column_types = {dtype('float64'), dtype('int64')}
-        dataframe_col_types = dataframe.dtypes
-        dataframe_rollable_columns = [col for col in dataframe.columns if dataframe_col_types[col] in
-            rollable_column_types]
-
-        rollable_dataframe = dataframe[dataframe_rollable_columns]
-        rolled_dataframe = rollable_dataframe.rolling(window=window, center=False, min_periods=1).sum()
+        rolled_dataframe = self.get_rolled_dataframe(dataframe, window)
 
         # update means any of the valid columns that could be updated ... are
         dataframe.update(rolled_dataframe)
@@ -128,6 +118,20 @@ class DataFrameEventsAnalyzer(object):
         correlation_results_sorted = correlation_results.sort_values(inplace=False)
 
         return correlation_results_sorted
+
+    def get_rolled_dataframe(self, dataframe, window, min_periods=None):
+        # not all dataframe columns are rollable ...
+        # not sure what to do about stuff like 2:00 AM  ... if someone puts 2 hours ... should it just automatically
+        # convert to seconds? that feels a little more reasonable versus putting some hacky logic to subtract
+        # from midnight from 4AM, THANKS A LOT EXCEL
+        rollable_column_types = {dtype('float64'), dtype('int64')}
+        dataframe_col_types = dataframe.dtypes
+        dataframe_rollable_columns = [col for col in dataframe.columns if dataframe_col_types[col] in
+            rollable_column_types]
+        rollable_dataframe = dataframe[dataframe_rollable_columns]
+        # haven't figured out the right way to deal with min_periods
+        rolled_dataframe = rollable_dataframe.rolling(window=window, center=False).sum()
+        return rolled_dataframe
 
     @staticmethod
     def _remove_invalid_measurement_days(dataframe, measurement):
