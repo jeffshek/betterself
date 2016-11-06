@@ -100,6 +100,7 @@ class DataFrameEventsAnalyzer(object):
 
         # take out days when the measurement is zero (since it's hard to differentiate between missing data and
         # an actual zero, at least from an excel import)
+        # TODO - this is a bad idea, you need to rethink this.
         dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
 
         rolled_dataframe = self.get_rolled_dataframe(dataframe, window)
@@ -124,13 +125,16 @@ class DataFrameEventsAnalyzer(object):
         # not sure what to do about stuff like 2:00 AM  ... if someone puts 2 hours ... should it just automatically
         # convert to seconds? that feels a little more reasonable versus putting some hacky logic to subtract
         # from midnight from 4AM, THANKS A LOT EXCEL
-        rollable_column_types = {dtype('float64'), dtype('int64')}
+        ROLLABLE_COLUMN_TYPES = {dtype('float64'), dtype('int64')}
+
         dataframe_col_types = dataframe.dtypes
         dataframe_rollable_columns = [col for col in dataframe.columns if dataframe_col_types[col] in
-            rollable_column_types]
+            ROLLABLE_COLUMN_TYPES]
+
         rollable_dataframe = dataframe[dataframe_rollable_columns]
         # haven't figured out the right way to deal with min_periods
         rolled_dataframe = rollable_dataframe.rolling(window=window, center=False).sum()
+
         return rolled_dataframe
 
     @staticmethod
