@@ -11,6 +11,8 @@ class DataFrameEventsAnalyzer(object):
     def __init__(self, dataframe, ignore_columns=None, rest_day_column_name=None):
         # certain columns might be just notes or useless information that can be ignored
         dataframe_cols = dataframe.columns
+        # maybe ignore is a bad name ... non-weighted columns? something that implies
+        # that it shouldn't be used in correlation analysis
         if ignore_columns:
             assert isinstance(ignore_columns, list)
             self.ignore_columns = ignore_columns
@@ -61,21 +63,6 @@ class DataFrameEventsAnalyzer(object):
 
         return correlation_results_sorted
 
-    # i don't think this is used, so comment this out and remove soon
-    # @staticmethod
-    # def convert_to_seconds(time):
-    #     # if it's a datetime object, don't do anything, only do something for time objects
-    #     if isinstance(time, Timestamp):
-    #         return time
-    #
-    #     # certain raw excel files may only have time attribute (no date) for those ... convert to seconds
-    #     minutes_in_seconds = time.minutes * 60
-    #     hours_in_seconds = time.hours * 3600
-    #     seconds_in_seconds = time.seconds
-    #
-    #     time_elapsed = minutes_in_seconds + hours_in_seconds + seconds_in_seconds
-    #     return time_elapsed
-
     def get_correlation_across_summed_days_for_measurement(self, measurement, window=7, method='pearson',
             min_periods=1):
         """
@@ -121,10 +108,8 @@ class DataFrameEventsAnalyzer(object):
         return correlation_results_sorted
 
     def get_rolled_dataframe(self, dataframe, window, min_periods=None):
-        # not all dataframe columns are rollable ...
-        # not sure what to do about stuff like 2:00 AM  ... if someone puts 2 hours ... should it just automatically
-        # convert to seconds? that feels a little more reasonable versus putting some hacky logic to subtract
-        # from midnight from 4AM, THANKS A LOT EXCEL
+        # not all dataframe columns are rollable ... the original source (excel) should already have them
+        # listed as minutes, so don't try to sum up Time objects
         ROLLABLE_COLUMN_TYPES = {dtype('float64'), dtype('int64')}
 
         dataframe_col_types = dataframe.dtypes
@@ -133,6 +118,9 @@ class DataFrameEventsAnalyzer(object):
 
         rollable_dataframe = dataframe[dataframe_rollable_columns]
         # haven't figured out the right way to deal with min_periods
+        # the thinking is that this rolling function should not be as forgiving
+        # instead, maybe have the serializer replace NaN data with zeroes at that step
+        # since "unfilled data" frequently just means None
         rolled_dataframe = rollable_dataframe.rolling(window=window, center=False).sum()
 
         return rolled_dataframe

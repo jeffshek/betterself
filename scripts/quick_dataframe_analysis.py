@@ -15,17 +15,15 @@ ignore_columns = [
 ]
 
 correlation_driver = 'Productivity Time (Minutes)'
+# use this to ignore days
 rest_day_column_name = 'Rest Day'
 
 analyzer = DataFrameEventsAnalyzer(dataframe, ignore_columns=ignore_columns, rest_day_column_name=rest_day_column_name)
-print(analyzer.get_correlation_for_measurement(correlation_driver))
-
 dataframe = analyzer.dataframe
-test_column = correlation_driver
 
 summed_dataframe = analyzer.get_rolled_dataframe(dataframe, 7)
-summed_correlation_ts = summed_dataframe[test_column]
-original_correlation_ts = dataframe[test_column]
+summed_correlation_ts = summed_dataframe[correlation_driver]
+original_correlation_ts = dataframe[correlation_driver]
 
 pretty_view = pd.DataFrame(index=summed_correlation_ts.index,
     data={
