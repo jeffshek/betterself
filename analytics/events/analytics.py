@@ -107,7 +107,8 @@ class DataFrameEventsAnalyzer(object):
 
         return correlation_results_sorted
 
-    def get_rolled_dataframe(self, dataframe, window, min_periods=None):
+    @staticmethod
+    def get_rolled_dataframe(dataframe, window, min_periods=None):
         # not all dataframe columns are rollable ... the original source (excel) should already have them
         # listed as minutes, so don't try to sum up Time objects
         ROLLABLE_COLUMN_TYPES = {dtype('float64'), dtype('int64')}
