@@ -1,4 +1,4 @@
-# A one-off script that is manually run to look at individual results
+# A one-off script that is run (manually) to look at individual results
 from analytics.events.analytics import DataFrameEventsAnalyzer
 from importers.excel.importer import ExcelSupplementFileSanitizer
 
