@@ -81,3 +81,5 @@ config/development/virtualenv/
 
 # ignore your local development test script
 *local_dev_test_script*
+
+*output.csv*

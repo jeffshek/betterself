@@ -74,6 +74,15 @@ class DataFrameEventsAnalyzerTests(TestCase):
         # about the only thing we could be certain of is productivity's correlation with itself should be 1
         self.assertTrue(correlation[self.PRODUCTIVITY_COLUMN] == 1)
 
+    def test_correlation_analytics_includes_yesterday(self):
+        dataframe = self._create_dataframe_fixture()
+        analyzer = DataFrameEventsAnalyzer(dataframe)
+        correlation = analyzer.get_correlation_for_measurement(self.PRODUCTIVITY_COLUMN, add_yesterday_lag=True)
+
+        # about the only thing we could be certain of is productivity's correlation with itself should be 1
+        correlation_includes_previous_day = any('Yesterday' in item for item in correlation.index)
+        self.assertTrue(correlation_includes_previous_day)
+
     def test_rolling_correlation_analytics(self):
         dataframe = self._create_dataframe_fixture()
         analyzer = DataFrameEventsAnalyzer(dataframe)

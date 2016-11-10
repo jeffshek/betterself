@@ -2,12 +2,14 @@ from django.core.exceptions import ValidationError
 from numpy import dtype
 
 VALID_CORRELATION_METHODS = ['pearson', 'spearman', 'kendall']
+ROLLABLE_COLUMN_TYPES = {dtype('float64'), dtype('int64')}
 
 
 class DataFrameEventsAnalyzer(object):
     """
     Takes a DataFrame and returns analytics on top of it.
     """
+
     def __init__(self, dataframe, ignore_columns=None, rest_day_column_name=None):
         # certain columns might be just notes or useless information that can be ignored
         dataframe_cols = dataframe.columns
@@ -30,8 +32,10 @@ class DataFrameEventsAnalyzer(object):
 
         self.dataframe = dataframe
 
-    @staticmethod
-    def _add_yesterday_correlation_to_dataframe(dataframe, valid_columns):
+    @classmethod
+    def _add_yesterday_correlation_to_dataframe(cls, dataframe):
+        valid_columns = cls.get_rollable_columns(dataframe)
+
         for col in valid_columns:
             # Advil - Yesterday
             shifted_col_name = '{0} - Yesterday'.format(col)
@@ -108,14 +112,17 @@ class DataFrameEventsAnalyzer(object):
         return correlation_results_sorted
 
     @staticmethod
-    def get_rolled_dataframe(dataframe, window, min_periods=None):
+    def get_rollable_columns(dataframe):
         # not all dataframe columns are rollable ... the original source (excel) should already have them
         # listed as minutes, so don't try to sum up Time objects
-        ROLLABLE_COLUMN_TYPES = {dtype('float64'), dtype('int64')}
-
         dataframe_col_types = dataframe.dtypes
-        dataframe_rollable_columns = [col for col in dataframe.columns if dataframe_col_types[col] in
+        dataframe_rollable_columns = [col_name for col_name, col_type in dataframe_col_types.items() if col_type in
             ROLLABLE_COLUMN_TYPES]
+        return dataframe_rollable_columns
+
+    @classmethod
+    def get_rolled_dataframe(cls, dataframe, window, min_periods=None):
+        dataframe_rollable_columns = cls.get_rollable_columns(dataframe)
 
         rollable_dataframe = dataframe[dataframe_rollable_columns]
         # haven't figured out the right way to deal with min_periods

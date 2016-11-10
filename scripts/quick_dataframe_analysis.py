@@ -4,7 +4,7 @@ from importers.excel.importer import ExcelSupplementFileSanitizer
 
 personal_fixtures_file = '/betterself/personal_fixtures/supplement_event_log.xlsx'
 
-sanitizer = ExcelSupplementFileSanitizer(personal_fixtures_file, user=None)
+sanitizer = ExcelSupplementFileSanitizer(personal_fixtures_file, user=None, sheet='Log')
 dataframe = sanitizer.get_sanitized_dataframe()
 
 ignore_columns = [
@@ -19,7 +19,11 @@ rest_day_column_name = 'Rest Day'
 analyzer = DataFrameEventsAnalyzer(dataframe, ignore_columns=ignore_columns, rest_day_column_name=rest_day_column_name)
 dataframe = analyzer.dataframe
 
+print (analyzer.get_correlation_for_measurement(correlation_driver, add_yesterday_lag=True))
+
 summed_dataframe = analyzer.get_rolled_dataframe(dataframe, 7)
+
+summed_dataframe.to_csv('output.csv')
 
 # TD - Create Data fixture that sums up dataframe
 # sum function should not accept nulls
