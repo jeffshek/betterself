@@ -16,7 +16,7 @@ correlation_driver = 'Productivity Time (Minutes)'
 # use this to ignore days
 rest_day_column_name = 'Rest Day'
 
-analyzer = DataFrameEventsAnalyzer(dataframe, ignore_columns=ignore_columns, rest_day_column_name=rest_day_column_name)
+analyzer = DataFrameEventsAnalyzer(dataframe, ignore_columns=ignore_columns, rest_day_column=rest_day_column_name)
 dataframe = analyzer.dataframe
 
 print (analyzer.get_correlation_for_measurement(correlation_driver, add_yesterday_lag=True))

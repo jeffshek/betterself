@@ -10,7 +10,7 @@ class DataFrameEventsAnalyzer(object):
     Takes a DataFrame and returns analytics on top of it.
     """
 
-    def __init__(self, dataframe, ignore_columns=None, rest_day_column_name=None):
+    def __init__(self, dataframe, ignore_columns=None, rest_day_column=None):
         # certain columns might be just notes or useless information that can be ignored
         dataframe_cols = dataframe.columns
         # maybe ignore is a bad name ... non-weighted columns? something that implies
@@ -26,9 +26,9 @@ class DataFrameEventsAnalyzer(object):
         # if it's a rest day, the correlations shouldn't be used. ie. if you're drinking caffeine on
         # Sunday and wasn't intending to get any work done, then those days shouldn't be used to measure how effective
         # caffeine is.
-        if rest_day_column_name:
-            assert isinstance(rest_day_column_name, str)
-            dataframe = dataframe[dataframe[rest_day_column_name] == False]  # noqa
+        if rest_day_column:
+            assert isinstance(rest_day_column, str)
+            dataframe = dataframe[dataframe[rest_day_column] == False]  # noqa
 
         self.dataframe = dataframe
 
