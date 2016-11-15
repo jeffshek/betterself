@@ -45,14 +45,7 @@ class DataFrameEventsAnalyzer(object):
 
         return dataframe
 
-    def get_correlation_for_measurement(self, measurement, add_yesterday_lag=False, method='pearson', min_periods=1):
-        """
-        :param measurement: Measurement is the column name of what you're trying to improve / correlate
-        :param add_yesterday_lag: factor if you drank coffee yesterday
-        :param method: see pandas documentation
-        :param min_periods: see pandas documentation
-        :return: correlation series
-        """
+    def _get_cleaned_dataframe_copy(self, measurement, add_yesterday_lag, method):
         self._validate_correlation_method(method)
         # copy lets me be certain each result doesn't mess up state
         dataframe = self.dataframe.copy()
@@ -61,38 +54,30 @@ class DataFrameEventsAnalyzer(object):
             dataframe = self._add_yesterday_correlation_to_dataframe(dataframe)
 
         dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
+        return dataframe
 
+    @staticmethod
+    def _get_correlation_from_dataframe(dataframe, measurement, method, min_periods):
         correlation_results = dataframe.corr(method, min_periods)[measurement]
         correlation_results_sorted = correlation_results.sort_values(inplace=False)
-
         return correlation_results_sorted
 
-    def get_correlation_across_summed_days_for_measurement(self, measurement, window=7, method='pearson',
-            min_periods=1):
+    def get_correlation_for_measurement(self, measurement, add_yesterday_lag=False, method='pearson', min_periods=1):
         """
-        :param measurement: dataframe column name of productivity driver
-        :param window: how many days to sum up
-        :param method: what type of correlation pattern
+        :param measurement: Measurement is the column name of what you're trying to improve / correlate
+        :param add_yesterday_lag: factor if you drank coffee yesterday
+        :param method: see pandas documentation
         :param min_periods: see pandas documentation
         :return: correlation series
         """
-        # kind of an annoying internal debate, but theoretically for pearson (i can't verify for all correlation meths)
-        # example 1
-        # day (x-axis)  | caffeine  | theanine  | productive time
-        # 0             | 100mg     | 0 mg      | 20m
-        # 1             | 50        | 0 mg      | 10m
-        # 2             | 150       | 0 mg      | 25m
-        # 3             | 100       | 100 mg    | 60m
-        # the sum versus average over a rolling period SHOULD result in the same correlation
-        self._validate_correlation_method(method)
+        # i love you pandas, you make my life so easy
+        dataframe = self._get_cleaned_dataframe_copy(measurement, add_yesterday_lag=add_yesterday_lag, method=method)
+        correlation_results_sorted = self._get_correlation_from_dataframe(dataframe, measurement, method, min_periods)
+        return correlation_results_sorted
 
-        # copy lets me be certain each result doesn't mess up state
-        dataframe = self.dataframe.copy()
-
-        # take out days when the measurement is zero (since it's hard to differentiate between missing data and
-        # an actual zero, at least from an excel import)
-        # TODO - this is a bad idea, you need to rethink this.
-        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
+    def get_correlation_across_summed_days_for_measurement(self, measurement, add_yesterday_lag=False, window=7,
+            method='pearson', min_periods=1):
+        dataframe = self._get_cleaned_dataframe_copy(measurement, add_yesterday_lag=add_yesterday_lag, method=method)
 
         rolled_dataframe = self.get_rolled_dataframe(dataframe, window)
 
@@ -105,10 +90,7 @@ class DataFrameEventsAnalyzer(object):
         # for anything that isn't filled in, assume those are zeros
         dataframe = dataframe.fillna(0)
 
-        # i love you pandas, you make my life so easy
-        correlation_results = dataframe.corr(method, min_periods)[measurement]
-        correlation_results_sorted = correlation_results.sort_values(inplace=False)
-
+        correlation_results_sorted = self._get_correlation_from_dataframe(dataframe, measurement, method, min_periods)
         return correlation_results_sorted
 
     @staticmethod
