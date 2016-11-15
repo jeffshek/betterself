@@ -33,8 +33,10 @@ class DataFrameEventsAnalyzer(object):
         self.dataframe = dataframe
 
     @classmethod
-    def _add_yesterday_correlation_to_dataframe(cls, dataframe):
+    def add_yesterday_shifted_to_dataframe(cls, dataframe):
         valid_columns = cls.get_rollable_columns(dataframe)
+
+        dataframe = dataframe.copy()
 
         for col in valid_columns:
             # Advil - Yesterday
@@ -51,7 +53,7 @@ class DataFrameEventsAnalyzer(object):
         dataframe = self.dataframe.copy()
 
         if add_yesterday_lag:
-            dataframe = self._add_yesterday_correlation_to_dataframe(dataframe)
+            dataframe = self.add_yesterday_shifted_to_dataframe(dataframe)
 
         dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
         return dataframe
@@ -87,7 +89,7 @@ class DataFrameEventsAnalyzer(object):
         # don't care about entire rows that are NaN because they won't have a sum
         dataframe = dataframe.dropna(how='all')
 
-        # for anything that isn't filled in, assume those are zeros
+        # for anything that isn't filled in, assume those are zeros, kind of have to because we're summing
         dataframe = dataframe.fillna(0)
 
         correlation_results_sorted = self._get_correlation_from_dataframe(dataframe, measurement, method, min_periods)
@@ -134,3 +136,13 @@ class DataFrameEventsAnalyzer(object):
 
         if method not in VALID_CORRELATION_METHODS:
             raise ValidationError('Correlation must be one of {0} methods'.format(VALID_CORRELATION_METHODS))
+
+    @classmethod
+    def get_dataframe_event_count(cls, dataframe):
+        rollable_columns = cls.get_rollable_columns(dataframe)
+        event_count = {}
+        for col in rollable_columns:
+            series = dataframe[col]
+            series_count = series[series > 0].count()
+            event_count[col] = series_count
+        return event_count
