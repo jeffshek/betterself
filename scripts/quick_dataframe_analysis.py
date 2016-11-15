@@ -22,10 +22,10 @@ dataframe = analyzer.dataframe
 dataframe_with_yesterday = analyzer.add_yesterday_shifted_to_dataframe(dataframe)
 
 # get a list of any value that isn't a zero that should be counted
-event_count = analyzer.get_dataframe_event_count(dataframe_with_yesterday)
+event_count = analyzer.get_dataframe_event_count(dataframe)
 
 results = (analyzer.get_correlation_across_summed_days_for_measurement(measurement=correlation_driver,
-    add_yesterday_lag=True))
+    add_yesterday_lag=False))
 results.to_csv('output.csv')
 
 results_with_counts = pd.DataFrame(data={
@@ -39,3 +39,5 @@ counts_greater_than_20 = results_with_counts['count'] > 20
 
 results_with_counts = results_with_counts[counts_greater_than_20]
 results_with_counts.to_csv('output.csv')
+
+print (results_with_counts)
