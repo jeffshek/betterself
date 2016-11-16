@@ -16,9 +16,6 @@ class DataFrameEventsAnalyzerTests(TestCase):
     def setUpTestData(cls):
         super(DataFrameEventsAnalyzerTests, cls).setUpTestData()
 
-    def setUp(self):
-        pass
-
     @staticmethod
     def _create_dataframe_fixture():
         # multiply by X because i'm too lazy to write random numbers
@@ -92,3 +89,20 @@ class DataFrameEventsAnalyzerTests(TestCase):
         self.assertTrue(correlation[self.NEGATIVE_PRODUCTIVITY_COLUMN] == -1)
         # doing a lame non-linear transform to diverge from 1, but should generally indicate a positive correlation ...
         self.assertTrue(correlation[self.SOME_POSITIVELY_CORRELATED_COLUMN] > .9)
+
+    def test_rolling_analytics_rolls(self):
+        window = 7
+        dataframe = self._create_dataframe_fixture()
+        analyzer = DataFrameEventsAnalyzer(dataframe)
+        rolled_dataframe = analyzer.get_rolled_dataframe(dataframe, window=window)
+        last_rolled_results = rolled_dataframe.ix[-1]
+
+        dataframe_columns = dataframe.keys()
+        for column in dataframe_columns:
+            # get the last window (ie. last 7 day results of the series)
+            series = dataframe[column][-1 * window:].values
+            series_sum = sum(series)
+
+            last_rolled_results_column = last_rolled_results[column]
+
+            self.assertEqual(series_sum, last_rolled_results_column)
