@@ -106,3 +106,20 @@ class DataFrameEventsAnalyzerTests(TestCase):
             last_rolled_results_column = last_rolled_results[column]
 
             self.assertEqual(series_sum, last_rolled_results_column)
+
+    def test_dataframe_events_count(self):
+        """
+        This test seems pretty primal, ie too low level, but should catch yourself
+        from using >0 versus != 0
+        """
+        dataframe = self._create_dataframe_fixture()
+        analyzer = DataFrameEventsAnalyzer(dataframe)
+        events_count = analyzer.get_dataframe_event_count(dataframe)
+
+        dataframe_columns = dataframe.keys()
+        for column in dataframe_columns:
+            series = dataframe[column]
+            values_not_zero = [item for item in series if item != 0]
+            values_count = len(values_not_zero)
+
+            self.assertEqual(events_count[column], values_count)

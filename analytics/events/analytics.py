@@ -143,6 +143,6 @@ class DataFrameEventsAnalyzer(object):
         event_count = {}
         for col in rollable_columns:
             series = dataframe[col]
-            series_count = series[series > 0].count()
+            series_count = series[series != 0].count()
             event_count[col] = series_count
         return event_count
