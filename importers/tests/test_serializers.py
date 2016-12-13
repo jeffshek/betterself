@@ -7,7 +7,6 @@ from django.test import TestCase
 from events.models import SupplementEvent
 
 from importers.excel.importer import ExcelSupplementFileSanitizer
-# use django user model
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 User = get_user_model()
@@ -55,9 +54,14 @@ class ExcelImporterTests(TestCase):
         self.assertTrue(supplement_products_exists)
 
     def test_fixtures_import(self):
+        supplement_events_dont_exist_yet = SupplementEvent.objects.all().exists()
+        self.assertFalse(supplement_events_dont_exist_yet)
+
         # this is kind of a crappy test, but i'm just using implicit knowledge of fixtures
         # to test that the entries created are correct
         results = self.sanitizer.get_sanitized_dataframe()
+
+        # TODO - refactor this so it sucks less, ideally create it and then review individual data points
         self.sanitizer.save_results(results)
 
         supplement_events_exist = SupplementEvent.objects.all().exists()
