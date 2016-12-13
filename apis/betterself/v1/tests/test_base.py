@@ -128,15 +128,15 @@ class PostRequestsTestsMixin(GenericRESTVerbsMixin):
     def test_post_request_changes_objects_for_right_user(self, parameters=None):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
-        client_1_starting_request = self._make_get_request(self.client_1)
-        client_1_starting_data_items_count = len(client_1_starting_request.data)
-        client_2_starting_request = self._make_get_request(self.client_2)
-        client_2_starting_data_items_count = len(client_2_starting_request.data)
+        client_1_starting_get_request = self._make_get_request(self.client_1)
+        client_1_starting_data_items_count = len(client_1_starting_get_request.data)
+        client_2_starting_get_request = self._make_get_request(self.client_2)
+        client_2_starting_data_items_count = len(client_2_starting_get_request.data)
 
         self._make_post_request(self.client_2, post_parameters)
 
-        client_1_second_request = self._make_get_request(self.client_1)
-        client_1_second_data_items_count = len(client_1_second_request.data)
+        client_1_second_get_request = self._make_get_request(self.client_1)
+        client_1_second_data_items_count = len(client_1_second_get_request.data)
         client_2_second_request = self._make_get_request(self.client_2)
         client_2_second_data_items_count = len(client_2_second_request.data)
 
