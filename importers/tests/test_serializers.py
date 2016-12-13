@@ -92,7 +92,7 @@ class ExcelImporterTests(TestCase):
         self.assertFalse('               A' in cleaned_columns)
 
     def test_true_strings_get_validated_to_one(self):
-        """ Correlations don't work for strings labelled as True, duh """
+        # Correlations don't work for strings labelled as True, duh
         supplement_name = 'Random Supplement'
         true_string_names = ['True', 'true', 't', 'T']
         values_to_create = 50
@@ -105,7 +105,7 @@ class ExcelImporterTests(TestCase):
             self.assertEqual(1 * values_to_create, series_sum)
 
     def test_false_strings_get_validated_to_one(self):
-        """ Correlations don't work for strings labelled as True, duh """
+        # Correlations don't work for strings labelled as True, duh
         supplement_name = 'Random Supplement'
         false_string_names = ['False', 'false', 'f', 'F']
         values_to_create = 50
