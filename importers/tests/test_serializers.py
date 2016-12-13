@@ -27,6 +27,7 @@ class ExcelImporterTests(TestCase):
         super().setUpTestData()
 
     def test_sanitizer_results_is_dataframe(self):
+        print ('yahoo')
         results = self.sanitizer.get_sanitized_dataframe()
 
         results_type = type(results)
