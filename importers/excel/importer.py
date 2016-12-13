@@ -111,7 +111,8 @@ class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
 
         return result
 
-    def _parse_ingredient_from_column_entry(self, column_name):
+    @staticmethod
+    def _parse_ingredient_from_column_entry(column_name):
         regex_match = re.search('^[A-Za-z ]+', column_name)
         # this cleans up situations where you had Theanine (150mg)
         first_match = regex_match.group(0)
