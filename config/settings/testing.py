@@ -42,8 +42,8 @@ INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 TEST_DB_SETTINGS = {
-    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
     # diagnose if this is a recent change in travis breaking
+    # need to probably switch this back to postgres, but travis config is a pain
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': 'travis_ci_test',
     'USER': 'postgres',
