@@ -1,5 +1,7 @@
 sudo: true
 language: python
+cache:
+  pip: true
 python:
   - "3.4.3"
 before_script:
