@@ -49,7 +49,6 @@ LOCAL_APPS = (
     'supplements',
     'vendors',
     'apis',
-    'importers',
     'events',
 )
 
