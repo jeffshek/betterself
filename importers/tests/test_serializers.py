@@ -1,12 +1,12 @@
 import datetime
-import pandas as pd
 
+import pandas as pd
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from events.models import SupplementEvent
 
-from importers.excel.serializer import ExcelSupplementFileSerializer
+from events.models import SupplementEvent
+from importers.serializers.excel.serializer import ExcelSupplementFileSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 User = get_user_model()

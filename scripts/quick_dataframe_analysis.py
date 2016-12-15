@@ -1,7 +1,8 @@
 # A one-off script that is run (manually) to look at individual results
-from analytics.events.analytics import DataFrameEventsAnalyzer
-from importers.excel.serializer import ExcelSupplementFileSerializer
 import pandas as pd
+
+from analytics.events.analytics import DataFrameEventsAnalyzer
+from importers.serializers.excel.serializer import ExcelSupplementFileSerializer
 
 personal_fixtures_file = '/betterself/personal_fixtures/supplement_event_log.xlsx'
 
