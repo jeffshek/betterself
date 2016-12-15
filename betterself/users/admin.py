@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
 
 
+# TODO - I don't really like this from CookieCutter
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
