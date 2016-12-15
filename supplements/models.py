@@ -34,6 +34,9 @@ class Ingredient(BaseModelWithUserGeneratedContent):
     # but don't let default be zero.
     half_life_minutes = models.PositiveIntegerField(null=True, blank=True)
 
+    class Meta:
+        unique_together = ('name', 'user')
+
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):
     """ Creatine, 5, grams """
@@ -42,6 +45,9 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     ingredient = models.ForeignKey(Ingredient)
     measurement = models.ForeignKey(Measurement, null=True, blank=True)
     quantity = models.FloatField(default=1)
+
+    class Meta:
+        unique_together = ('user', 'ingredient', 'measurement', 'quantity')
 
     def __str__(self):
         return self.__repr__()
@@ -68,4 +74,5 @@ class Supplement(BaseModelWithUserGeneratedContent):
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
     # quantity is an event type of attribute, so its not here.
 
-# TD - Add unique constraints to all of these, make sure user is added to unique!
+    class Meta:
+        unique_together = ('user', 'name', 'vendor')
