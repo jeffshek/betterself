@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from events.models import SupplementEvent
-from importers.serializers.excel.serializer import ExcelSupplementFileSerializer
+from importers.serializers.excel.serializers import ExcelSupplementFileSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 User = get_user_model()

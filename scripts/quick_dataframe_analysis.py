@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 
 from analytics.events.analytics import DataFrameEventsAnalyzer
-from importers.serializers.excel.serializer import ExcelSupplementFileSerializer
+from importers.serializers.excel.serializers import ExcelSupplementFileSerializer
 
 # Setup Constants
 User = get_user_model()
