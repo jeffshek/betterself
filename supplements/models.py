@@ -34,6 +34,9 @@ class Ingredient(BaseModelWithUserGeneratedContent):
     # but don't let default be zero.
     half_life_minutes = models.PositiveIntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return '{obj.name} - {obj.user}'.format(obj=self)
+
     class Meta:
         unique_together = ('name', 'user')
 
@@ -48,6 +51,7 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = ('user', 'ingredient', 'measurement', 'quantity')
+        ordering = ['user', 'ingredient__name']
 
     def __str__(self):
         return self.__repr__()
@@ -76,3 +80,4 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = ('user', 'name', 'vendor')
+        ordering = ['user', 'name']
