@@ -1,8 +1,0 @@
-@import "_variables";
-@import "_mixins";
-
-@each $item in $brands {
-  .btn-#{nth($item, 1)} {
-    @include btn( #{nth($item, 2)} );
-  }
-}
