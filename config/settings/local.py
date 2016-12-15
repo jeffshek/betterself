@@ -9,7 +9,7 @@ Local settings
 """
 import sys
 
-from .common import *  # noqa
+from config.settings.common import *  # noqa
 
 
 # DEBUG

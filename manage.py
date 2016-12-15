@@ -8,10 +8,6 @@ if __name__ == '__main__':
     else:
         default = 'config.settings.local'
 
-    print (default)
-
-    # default = 'config.settings.testing'
-
     # for production / staging environments, the correct settings
     # module is already set as an environment variable
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', default)

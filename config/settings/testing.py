@@ -7,8 +7,9 @@ Local settings
 - Add Django Debug Toolbar
 - Add django-extensions as app
 """
+import sys
 
-from .common import *  # noqa
+from config.settings.common import *  # noqa
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -41,7 +42,9 @@ INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 TEST_DB_SETTINGS = {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # diagnose if this is a recent change in travis breaking
+    'ENGINE': 'django.db.backends.sqlite3',
     'NAME': 'travis_ci_test',
     'USER': 'postgres',
     'PASSWORD': '',

@@ -16,7 +16,7 @@ Production Configurations
 from boto.s3.connection import OrdinaryCallingFormat
 from django.utils import six
 
-from .common import *  # noqa
+from config.settings.common import *  # noqa
 
 # SECRET CONFIGURATION
 # ------------------------------------------------------------------------------
