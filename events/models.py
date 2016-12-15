@@ -35,6 +35,7 @@ class SupplementEvent(BaseModelWithRequiredUser):
     time = models.DateTimeField()
 
     class Meta:
+        ordering = ['user', '-time']
         verbose_name = 'Supplement Event'
         verbose_name_plural = 'Supplement Events'
 
