@@ -4,19 +4,22 @@ import pytz
 
 from django.core.management import CommandError
 from django.db.models import Q
+from numpy import dtype
 
 from events.models import SupplementEvent
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
 class ExcelFileSerializer(object):
-    IGNORE_COLUMNS = []
 
-    def __init__(self, file_path, user, sheet=None):
+    def __init__(self, file_path, user, ignore_columns=None, sheet=None):
         self.file_path = file_path
         # Sheet1 is default name for xlsx files
         self.sheet = sheet if sheet else 'Sheet1'
         self.user = user
+
+        ignore_columns = ignore_columns if ignore_columns else []
+        self.ignore_columns = ignore_columns
 
     def get_sanitized_dataframe(self, date_column='Date'):
         # ExcelFile does not handle file_paths very well, use native Python open
@@ -54,7 +57,7 @@ class ExcelFileSerializer(object):
 
     @classmethod
     def _sanitize_sheet(cls, dataframe):
-        dataframe = cls._sanitize_dataframe_columns(dataframe)
+        dataframe = cls.sanitize_dataframe_columns(dataframe)
         dataframe = cls._sanitize_dataframe_values(dataframe)
         return dataframe
 
@@ -67,11 +70,13 @@ class ExcelFileSerializer(object):
         return updated_columns
 
     @classmethod
-    def _sanitize_dataframe_columns(cls, dataframe):
+    def sanitize_dataframe_columns(cls, dataframe, ignore_columns=None):
+        ignore_columns = ignore_columns if ignore_columns else []
+
         revised_columns = cls._get_stripped_column_headers(dataframe)
         dataframe = dataframe.rename(columns=revised_columns)
 
-        for column in cls.IGNORE_COLUMNS:
+        for column in ignore_columns:
             dataframe = dataframe.drop(column, axis=1)
 
         return dataframe
@@ -169,7 +174,14 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
         source = 'user_excel'
 
         self._create_supplement_products_from_dataframe(dataframe)
-        for _, event in dataframe.iterrows():
+
+        # events should only consist of numeric values, ie. 1 serving of caffeine ...
+        dataframe_dtypes_dict = dataframe.dtypes.to_dict()
+        valid_dataframe_columns = [k for k, v in dataframe_dtypes_dict.items() if v == dtype('float64')]
+
+        valid_dataframe = dataframe[valid_dataframe_columns]
+
+        for _, event in valid_dataframe.iterrows():
 
             for supplement_name, quantity in event.iteritems():
 
@@ -187,7 +199,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                 # localize and make as UTC time
                 time = pytz.utc.localize(time, pytz.UTC)
 
-                SupplementEvent.objects.get_or_create(
+                self.TEMPLATE_SAVE_MODEL.objects.get_or_create(
                     user=self.user,
                     supplement_product=supplement_product,
                     time=time,

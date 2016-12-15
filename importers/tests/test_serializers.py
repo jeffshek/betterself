@@ -88,7 +88,7 @@ class ExcelImporterTests(TestCase):
             }
         )
 
-        cleaned_dataframe = ExcelSupplementFileSerializer._sanitize_dataframe_columns(dataframe)
+        cleaned_dataframe = ExcelSupplementFileSerializer.sanitize_dataframe_columns(dataframe)
         cleaned_columns = cleaned_dataframe.columns
 
         self.assertTrue('A' in cleaned_columns)
