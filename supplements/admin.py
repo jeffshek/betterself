@@ -6,6 +6,7 @@ from supplements.models import Measurement, Ingredient, IngredientComposition, S
 @admin.register(Measurement)
 class MeasurementAdmin(admin.ModelAdmin):
     list_display = ('name', 'short_name', 'is_liquid')
+    search_fields = ('short_name', 'name')
 
     class Meta:
         model = Measurement
@@ -23,6 +24,7 @@ class IngredientAdmin(admin.ModelAdmin):
 @admin.register(IngredientComposition)
 class IngredientCompositionAdmin(admin.ModelAdmin):
     list_display = ('user', 'ingredient_name', 'measurement', 'quantity')
+    search_fields = ('user__username', 'name')
 
     class Meta:
         model = IngredientComposition
@@ -35,6 +37,7 @@ class IngredientCompositionAdmin(admin.ModelAdmin):
 @admin.register(Supplement)
 class SupplementAdmin(admin.ModelAdmin):
     list_display = ('user', 'name', 'ingredient_composition_display', 'vendor')
+    search_fields = ('user__username', 'name')
 
     class Meta:
         model = Supplement
