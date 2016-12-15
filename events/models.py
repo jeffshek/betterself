@@ -34,6 +34,10 @@ class SupplementEvent(BaseModelWithRequiredUser):
     # so not pigeon holed and can do half_life analysis.
     time = models.DateTimeField()
 
+    class Meta:
+        verbose_name = 'Supplement Event'
+        verbose_name_plural = 'Supplement Events'
+
     def __str__(self):
         return self.__repr__()
 

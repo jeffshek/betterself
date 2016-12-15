@@ -52,6 +52,8 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     class Meta:
         unique_together = ('user', 'ingredient', 'measurement', 'quantity')
         ordering = ['user', 'ingredient__name']
+        verbose_name = 'Ingredient Composition'
+        verbose_name_plural = 'Ingredient Compositions'
 
     def __str__(self):
         return self.__repr__()
@@ -81,3 +83,5 @@ class Supplement(BaseModelWithUserGeneratedContent):
     class Meta:
         unique_together = ('user', 'name', 'vendor')
         ordering = ['user', 'name']
+        verbose_name = 'Supplement'
+        verbose_name_plural = 'Supplements'
