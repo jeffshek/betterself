@@ -164,6 +164,8 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             self.SUPPLEMENT_PRODUCT_CACHE[column_name] = supplement
 
     def save_results(self, dataframe):
+        # potentially consider making this into its own DataframeImporter file
+        # kind of seems like it should, but also kind of feels like overkill
         source = 'user_excel'
 
         self._create_supplement_products_from_dataframe(dataframe)
