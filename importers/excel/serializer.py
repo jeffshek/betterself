@@ -9,7 +9,7 @@ from events.models import SupplementEvent
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
-class ExcelFileSanitizer(object):
+class ExcelFileSerializer(object):
     IGNORE_COLUMNS = []
 
     def __init__(self, file_path, user, sheet=None):
@@ -77,7 +77,7 @@ class ExcelFileSanitizer(object):
         return dataframe
 
 
-class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
+class ExcelSupplementFileSerializer(ExcelFileSerializer):
     """Take a raw historical excel of supplements, clean and save it"""
 
     TEMPLATE_SAVE_MODEL = SupplementEvent
@@ -113,7 +113,8 @@ class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
 
     @staticmethod
     def _parse_ingredient_from_column_entry(column_name):
-        regex_match = re.search('^[A-Za-z ]+', column_name)
+        regex_match = re.search('^[A-Za-z0-9 ]+', column_name)
+
         # this cleans up situations where you had Theanine (150mg)
         first_match = regex_match.group(0)
 
@@ -130,8 +131,11 @@ class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
         # if you're putting more than 30 supplements from a spreadsheet
         # i don't trust you. this prevents user error from uploading
         # an absurd amount of supplements.
-        if len(dataframe.columns) > 30:
-            raise CommandError('Too many columns inserted {0} entered. Please contact an admin.'.format(len(dataframe)))
+        dataframe_col_count = len(dataframe.columns)
+        dataframe_col_limit = 150
+        if dataframe_col_count > dataframe_col_limit:
+            raise CommandError('Too many columns. {0} entered. Max is {1}'
+                               'Please contact an admin.'.format(dataframe_col_count, dataframe_col_limit))
 
         for column_name in dataframe:
             # go from Tyrosine (500mg) to Tyrosine
@@ -166,6 +170,9 @@ class ExcelSupplementFileSanitizer(ExcelFileSanitizer):
         for _, event in dataframe.iterrows():
 
             for supplement_name, quantity in event.iteritems():
+
+                # TD - Either ignore columns or dataframe should be expected to be saved as-is
+
                 # if it's zero, don't count it as an event since it didn't happen
                 if quantity == 0:
                     continue

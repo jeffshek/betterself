@@ -1,12 +1,14 @@
 # A one-off script that is run (manually) to look at individual results
 from analytics.events.analytics import DataFrameEventsAnalyzer
-from importers.excel.importer import ExcelSupplementFileSanitizer
+from importers.excel.serializer import ExcelSupplementFileSerializer
 import pandas as pd
 
 personal_fixtures_file = '/betterself/personal_fixtures/supplement_event_log.xlsx'
 
-sanitizer = ExcelSupplementFileSanitizer(personal_fixtures_file, user=None, sheet='Log')
+sanitizer = ExcelSupplementFileSerializer(personal_fixtures_file, user=None, sheet='Log')
 dataframe = sanitizer.get_sanitized_dataframe()
+
+sanitizer.save_results(dataframe)
 
 ignore_columns = [
     'Day',
