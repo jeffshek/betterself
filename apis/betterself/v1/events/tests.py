@@ -1,14 +1,17 @@
 import datetime
 import json
 
+from django.contrib.auth import get_user_model
+
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.users.models import User
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
+
+User = get_user_model()
 
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
