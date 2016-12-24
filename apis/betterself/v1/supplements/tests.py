@@ -29,7 +29,7 @@ class VendorV1Tests(SupplementBaseTests, PostRequestsTestsMixin):
 
 
 class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
-    # measurements should ONLY read-only
+    # measurements should be ONLY read-only
     TEST_MODEL = Measurement
 
     def test_valid_get_request_with_params(self):
@@ -91,7 +91,7 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         client_vendors = Vendor.get_user_viewable_objects(self.user_1)
         vendor_id = client_vendors[0].id
 
-        # kind of janky, but create a list of valid IDs that could be passed
+        # kind of whack, but create a list of valid IDs that could be passed
         # when serializing
         ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
         ingr_comps_ids = list(ingr_comps.values_list('id', flat=True))

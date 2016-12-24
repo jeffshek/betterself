@@ -1,6 +1,8 @@
 import datetime
 import json
 
+from django.contrib.auth import get_user_model
+
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import EventModelsFixturesGenerator
@@ -9,16 +11,21 @@ from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
+User = get_user_model()
+
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     TEST_MODEL = SupplementEvent
 
     def setUp(self):
+        defaults_user, _ = User.objects.get_or_create(username='default')
         self.DEFAULT_POST_PARAMS = {
             'time': datetime.datetime.now().isoformat(),
             'quantity': 5,
             'source': 'api',
+            'user': str(defaults_user.uuid)
         }
+
         # pass a parameter just to make sure the default parameter is valid
         valid_supplement = Supplement.get_user_viewable_objects(self.user_1).first()
         self.DEFAULT_POST_PARAMS['supplement_product_id'] = valid_supplement.id

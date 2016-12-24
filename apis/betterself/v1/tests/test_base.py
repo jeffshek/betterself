@@ -5,27 +5,22 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
+from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from supplements.models import Supplement
 
 VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
 ]
 logger = logging.Logger(__name__)
-SECONDARY_CREDENTIALS = {
-    'username': 'tester2',
-    'email': 'username@gmail.com',  # i hate that django allows multiple emails to be created
-    'password': 'secret_password',
-}
 
 
-class BaseAPIv1Tests(TestCase, UsersTestsMixin):
+class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
-        # setup the user once
-        cls.user_1 = cls.create_user()
-        # create some random fake user_2 to test duplicates
-        cls.user_2 = cls.create_user(SECONDARY_CREDENTIALS)
+        # i don't know how much i like this after seeing this a while later
+        # but the base_tests create user fixtures that are logged in for client 1 and client2
+        # this becomes useful because there are a lot of fixtures created from the "default"
+        cls._create_user_fixtures()
         super(BaseAPIv1Tests, cls).setUpTestData()
 
     def setUp(self):
@@ -41,7 +36,7 @@ class BaseAPIv1Tests(TestCase, UsersTestsMixin):
         logger.error(request.status_code)
 
 
-class GenericRESTVerbsMixin(object):
+class GenericRESTMethodMixin(object):
     def _make_post_request(self, client, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         data = json.dumps(request_parameters)
@@ -54,7 +49,7 @@ class GenericRESTVerbsMixin(object):
         return request
 
 
-class GetRequestsTestsMixin(GenericRESTVerbsMixin):
+class GetRequestsTestsMixin(GenericRESTMethodMixin):
     def test_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
@@ -86,7 +81,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
         self.assertTrue(len(key_check_items) > 0)
 
 
-class PostRequestsTestsMixin(GenericRESTVerbsMixin):
+class PostRequestsTestsMixin(GenericRESTMethodMixin):
     def test_post_request(self, parameters=None):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
