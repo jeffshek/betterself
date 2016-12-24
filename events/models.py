@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 
-from betterself.base_models import BaseModelWithRequiredUser
+from betterself.base_models import BaseModelWithUserGeneratedContent
 from betterself.utils import create_django_choice_tuple_from_list
 from supplements.models import Supplement
 
@@ -17,7 +17,7 @@ INPUT_SOURCES = [
 INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
 
 
-class SupplementEvent(BaseModelWithRequiredUser):
+class SupplementEvent(BaseModelWithUserGeneratedContent):
     """
     Unless a proxy goes over this, this should be the meat of all Events tracking ...
     # event tables should be better designed for very large quantity of events
@@ -29,6 +29,7 @@ class SupplementEvent(BaseModelWithRequiredUser):
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     supplement_product = models.ForeignKey(Supplement)
     # floatfield, if ie. someone drinks 1/2 of a 5 hour energy ...
+    # probably should switch to decimal field??
     quantity = models.FloatField(default=1)
     # what time did the user take the five hour energy? use the time model
     # so not pigeon holed and can do half_life analysis.
@@ -50,7 +51,7 @@ class SupplementEvent(BaseModelWithRequiredUser):
                '{time} from {obj.source} event'.format(obj=self, time=formatted_time, quantity=formatted_quantity)
 
 
-class SleepEventLog(BaseModelWithRequiredUser):
+class SleepEventLog(BaseModelWithUserGeneratedContent):
     """
     Represents how many hours of sleep you got COMING into the day.
     If a user slept 5 hours on Sunday night, Monday's log would say 5*60=300
