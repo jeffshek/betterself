@@ -17,6 +17,9 @@ logger = logging.Logger(__name__)
 class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
+        # i don't know how much i like this after seeing this a while later
+        # but the base_tests create user fixtures that are logged in for client 1 and client2
+        # this becomes useful because there are a lot of fixtures created from the "default"
         cls._create_user_fixtures()
         super(BaseAPIv1Tests, cls).setUpTestData()
 
@@ -33,7 +36,7 @@ class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
         logger.error(request.status_code)
 
 
-class GenericRESTVerbsMixin(object):
+class GenericRESTMethodMixin(object):
     def _make_post_request(self, client, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         data = json.dumps(request_parameters)
@@ -46,7 +49,7 @@ class GenericRESTVerbsMixin(object):
         return request
 
 
-class GetRequestsTestsMixin(GenericRESTVerbsMixin):
+class GetRequestsTestsMixin(GenericRESTMethodMixin):
     def test_get_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
@@ -78,7 +81,7 @@ class GetRequestsTestsMixin(GenericRESTVerbsMixin):
         self.assertTrue(len(key_check_items) > 0)
 
 
-class PostRequestsTestsMixin(GenericRESTVerbsMixin):
+class PostRequestsTestsMixin(GenericRESTMethodMixin):
     def test_post_request(self, parameters=None):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
