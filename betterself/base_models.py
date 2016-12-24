@@ -1,13 +1,15 @@
 # maybe change the location of this file, but don't have a better place at the moment
-from django.contrib.auth import get_user_model
-# from django.db import IntegrityError
-from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db import models
 from django.db.models import Q
 
 
 # Most Django models should be derived from this ... impose that many classes have similar
 # create / modify attributes
+# from betterself.users.models import User
+
+
 class BaseModel(models.Model):
     created = models.DateField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -16,11 +18,7 @@ class BaseModel(models.Model):
         abstract = True
 
     def __str__(self):
-        if hasattr(self, 'name'):
-            return '{0}'.format(self.name)
-        else:
-            class_name = self.__class__.__name__
-            return '{0}'.format(class_name)
+        return self.name if hasattr(self, 'name') else self.__class__.__name__
 
     def __repr__(self):
         return self.__str__()
@@ -39,17 +37,10 @@ class BaseModel(models.Model):
 
 
 class BaseModelWithUserGeneratedContent(BaseModel):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     class Meta:
         abstract = True
-
-    @property
-    def is_user_created(self):
-        if self.user:
-            return True
-        else:
-            return False
 
     # restrict access to objects that only belong to a user or belong to no one
     @classmethod
