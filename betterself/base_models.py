@@ -25,11 +25,9 @@ class BaseModelWithUserGeneratedContent(BaseModel):
     class Meta:
         abstract = True
 
-    # restrict access to objects that only belong to a user or belong to no one
+    # restrict access to objects that only belong to a user or belong to "defaults"
     @classmethod
     def get_user_viewable_objects(cls, user):
-        # should split this into 2 filters, when is__null pull cached
-        # and then filter what the user can see
         default_user = get_user_model().objects.get(username='default')
         queryset = cls.objects.filter(Q(user=user) | Q(user=default_user))
         return queryset
