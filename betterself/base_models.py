@@ -1,6 +1,6 @@
 # maybe change the location of this file, but don't have a better place at the moment
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
+# from django.db import IntegrityError
 from django.db import models
 from django.conf import settings
 from django.db.models import Q
@@ -26,20 +26,19 @@ class BaseModel(models.Model):
         return self.__str__()
 
 
-class UserGeneratedModelManager(models.Manager):
-    # If this ever grows any more complexity in scope, don't do it. Just remove this altogether!
-    # This complexity is RARELY worth it as a forewarning to yourself ...
-    def create(self, **kwargs):
-        # override create because any creating of models not from a data-migration
-        # should contain a user
-        if 'user' not in kwargs:
-            raise IntegrityError('User parameter is required in non data-migration transactions')
-
-        return super().create(**kwargs)
+# class UserGeneratedModelManager(models.Manager):
+#     # If this ever grows any more complexity in scope, don't do it. Just remove this altogether!
+#     # This complexity is RARELY worth it as a forewarning to yourself ...
+#     def create(self, **kwargs):
+#         # override create because any creating of models not from a data-migration
+#         # should contain a user
+#         if 'user' not in kwargs:
+#             raise IntegrityError('User parameter is required in non data-migration transactions')
+#
+#         return super().create(**kwargs)
 
 
 class BaseModelWithUserGeneratedContent(BaseModel):
-    objects = UserGeneratedModelManager()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     class Meta:
