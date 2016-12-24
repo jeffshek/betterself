@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.db import models
 
 from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
@@ -85,3 +86,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
         ordering = ['user', 'name']
         verbose_name = 'Supplement'
         verbose_name_plural = 'Supplements'
+
+    def create(self, **kwargs):
+        if 'user' not in kwargs:
+            raise IntegrityError('User parameter is required in non data-migration transactions')

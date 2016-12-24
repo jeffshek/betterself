@@ -5,27 +5,19 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
+from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from supplements.models import Supplement
 
 VALID_GET_RESOURCES = [
     Supplement.RESOURCE_NAME,
 ]
 logger = logging.Logger(__name__)
-SECONDARY_CREDENTIALS = {
-    'username': 'tester2',
-    'email': 'username@gmail.com',  # i hate that django allows multiple emails to be created
-    'password': 'secret_password',
-}
 
 
-class BaseAPIv1Tests(TestCase, UsersTestsMixin):
+class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
-        # setup the user once
-        cls.user_1 = cls.create_user()
-        # create some random fake user_2 to test duplicates
-        cls.user_2 = cls.create_user(SECONDARY_CREDENTIALS)
+        cls._create_user_fixtures()
         super(BaseAPIv1Tests, cls).setUpTestData()
 
     def setUp(self):

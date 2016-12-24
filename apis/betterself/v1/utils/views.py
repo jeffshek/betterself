@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
 
@@ -12,7 +13,8 @@ class UserQuerysetFilterMixin(object):
         # for all objects returned, a user should only see either
         # objects that don't belong to a user or objects owned by a
         # specific user
-        queryset = self.model.objects.filter(Q(user=self.request.user) | Q(user=None))
+        default_user = get_user_model().objects.get(username='default')
+        queryset = self.model.objects.filter(Q(user=self.request.user) | Q(user=default_user))
         return queryset
 
 

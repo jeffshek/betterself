@@ -8,8 +8,14 @@ DEFAULT_CREDENTIALS = {
     'password': 'secret_password',
 }
 
+SECONDARY_DEFAULT_CREDENTIALS = {
+    'username': 'tester2',
+    'email': 'username@gmail.com',  # i hate that django allows multiple emails to be created
+    'password': 'secret_password',
+}
 
-class UsersTestsMixin(object):
+
+class UsersTestsFixturesMixin(object):
     @classmethod
     def create_user(cls, credentials=DEFAULT_CREDENTIALS):
         # pass username, email and password
@@ -27,3 +33,11 @@ class UsersTestsMixin(object):
         assert successfully_login
 
         return client
+
+    @classmethod
+    def _create_user_fixtures(cls):
+        # setup the user once
+        cls.user_1 = cls.create_user()
+        # create some random fake user_2 to test duplicates
+        cls.user_2 = cls.create_user(SECONDARY_DEFAULT_CREDENTIALS)
+        cls.default_user, _ = User.objects.get_or_create(username='default')

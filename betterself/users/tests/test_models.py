@@ -1,9 +1,9 @@
 from test_plus.test import TestCase
 
-from betterself.users.tests.mixins.test_mixins import UsersTestsMixin
+from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 
 
-class TestUser(TestCase, UsersTestsMixin):
+class TestUser(TestCase, UsersTestsFixturesMixin):
 
     def setUp(self):
         self.user = self.make_user()

@@ -3,6 +3,7 @@ import json
 
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from betterself.users.models import User
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
@@ -14,10 +15,12 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
     TEST_MODEL = SupplementEvent
 
     def setUp(self):
+        defaults_user, _ = User.objects.get_or_create(username='default')
         self.DEFAULT_POST_PARAMS = {
             'time': datetime.datetime.now().isoformat(),
             'quantity': 5,
             'source': 'api',
+            'user': defaults_user.id
         }
         # pass a parameter just to make sure the default parameter is valid
         valid_supplement = Supplement.get_user_viewable_objects(self.user_1).first()
@@ -61,6 +64,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         See how many objects were originally, make a request, and then see if it remains the same after
         posting the same data. It should!
         """
+
         amount_of_events = self.TEST_MODEL.objects.filter(user=self.user_1).count()
 
         self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)

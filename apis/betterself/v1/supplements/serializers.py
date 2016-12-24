@@ -124,9 +124,9 @@ class SupplementCreateSerializer(serializers.Serializer):
             raise ValidationError('Invalid Ingredient Compositions Ids Entered {0}'.format(ingredient_compositions_ids))
 
         queryset = IngredientComposition.objects.filter(id__in=ingredient_compositions_ids_parsed).filter(
-            Q(user=user) | Q(user__isnull=True))
+            Q(user=user) | Q(user__username='default'))
 
-        if not queryset.first():
+        if not queryset.exists():
             raise ValidationError('No Ingredient Composition IDs of {0} found belong to user {1}'.format(
                 ingredient_compositions_ids, user.id))
         else:
@@ -134,8 +134,8 @@ class SupplementCreateSerializer(serializers.Serializer):
 
     @staticmethod
     def _add_vendor_to_validated_data(user, validated_data, vendor_id):
-        vendor = Vendor.objects.filter(id=vendor_id).filter(Q(user=user) | Q(user__isnull=True))
-        if not vendor:
+        vendor = Vendor.objects.filter(id=vendor_id).filter(Q(user=user) | Q(user__username='default'))
+        if not vendor.exists():
             raise ValidationError('No Vendor ID of {0} found belong to user {1}'.format(vendor_id, user.id))
         else:
             validated_data['vendor'] = vendor.first()
