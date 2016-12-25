@@ -38,6 +38,10 @@ CACHES = {
 
 INTERNAL_IPS = ('127.0.0.1')
 
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[
+    'testserver']
+)
+
 INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
