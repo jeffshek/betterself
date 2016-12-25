@@ -8,13 +8,14 @@ from supplements.models import IngredientComposition, Supplement, Ingredient, Me
 from vendors.models import Vendor
 
 urlpatterns = [
-    # urls should contain all rest resources
-    url(r'^{0}'.format(Vendor.RESOURCE_NAME), VendorView.as_view()),
-    url(r'^{0}'.format(Supplement.RESOURCE_NAME), SupplementView.as_view()),
-    url(r'^{0}'.format(Ingredient.RESOURCE_NAME), IngredientView.as_view()),
-    url(r'^{0}'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view()),
-    url(r'^{0}'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view()),
-    url(r'^{0}'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view()),
+    url(r'^{0}'.format(Vendor.RESOURCE_NAME), VendorView.as_view(), name=Vendor.RESOURCE_NAME),
+    url(r'^{0}'.format(Supplement.RESOURCE_NAME), SupplementView.as_view(), name=Supplement.RESOURCE_NAME),
+    url(r'^{0}'.format(Ingredient.RESOURCE_NAME), IngredientView.as_view(), name=Ingredient.RESOURCE_NAME),
+    url(r'^{0}'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view(), name=Measurement.RESOURCE_NAME),
+    url(r'^{0}'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view(),
+        name=IngredientComposition.RESOURCE_NAME),
+    url(r'^{0}'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view(),
+        name=SupplementEvent.RESOURCE_NAME),
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}'

@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
     'allauth',  # registration
     'allauth.account',  # registration
+    'allauth.socialaccount',  # registration TODO - find out what this is and remove
     'rest_framework',
 )
 

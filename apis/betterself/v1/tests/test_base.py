@@ -14,6 +14,9 @@ VALID_GET_RESOURCES = [
 logger = logging.Logger(__name__)
 
 
+# I'm such an idiot, refactor all of this to be good mixins
+# switch them to a template design Pattern ... that way you don't
+# have to super over and over like a fool
 class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
@@ -27,13 +30,6 @@ class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
         # user has to be authenticated per each test!
         self.client_1 = self.create_authenticated_user_on_client(APIClient(), self.user_1)
         self.client_2 = self.create_authenticated_user_on_client(APIClient(), self.user_2)
-
-    @staticmethod
-    def debug_request(request):
-        """ Helper function that outputs everything for easier reading """
-        logger.error('\n***Debugging Request***')
-        logger.error(request.data)
-        logger.error(request.status_code)
 
 
 class GenericRESTMethodMixin(object):
