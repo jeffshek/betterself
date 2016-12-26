@@ -8,22 +8,25 @@ or 2) eat my own dog food and use post/puts to create the historical data. I've 
 battle-tested API will make the eventual iOS / Android apps much easier to develop.
 """
 from rest_framework.reverse import reverse
+from rest_framework.authtoken.models import Token
 
 import requests
 
 
 class BetterSelfAPIAdapter(object):
-    def __init__(self, domain, login_cookies):
+    """
+    Takes a user, retrieves the token, accesses RESTful endpoints.
+    """
+    def __init__(self, domain, user):
         self.domain = domain
-        self.login_cookies = login_cookies
+        self.user = user
+        self.api_token = Token.objects.get_or_create(user=user)
+        self.headers = {'Authorization': 'Token {}'.format(self.api_token.token)}
 
     def get_resource_endpoint_url(self, resource):
         url = reverse(resource.RESOURCE_NAME)
         return self.domain + url
 
-    def get_resource(self, resource, resource_parameters=None):
+    def get_resource(self, resource, parameters=None):
         resource_endpoint = self.get_resource_endpoint_url(resource)
-        print (resource_endpoint)
-        response = requests.get(resource_endpoint, cookies=self.login_cookies)
-        response = requests.get(resource_endpoint, data=self.login_cookies)
-        print (response)
+        response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
