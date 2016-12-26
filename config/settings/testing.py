@@ -7,7 +7,7 @@ Local settings
 - Add Django Debug Toolbar
 - Add django-extensions as app
 """
-import sys
+print ('Using {} configurations'.format(__name__))
 
 from config.settings.common import *  # noqa
 

@@ -12,6 +12,7 @@ Production Configurations
 - Use opbeat for error reporting
 
 """
+print ('Using {} configurations'.format(__name__))
 
 from boto.s3.connection import OrdinaryCallingFormat
 from django.utils import six

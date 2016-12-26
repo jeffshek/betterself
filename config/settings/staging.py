@@ -1,1 +1,2 @@
-# TD - Make sure to use production.py as your boilerplate
+# TODO - setup staging environment
+print ('Using {} configurations'.format(__name__))
