@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Local settings
-
-- Run in Debug mode
-- Use console backend for emails
-- Add Django Debug Toolbar
-- Add django-extensions as app
+This file has a REALLY stupid name because if it's just named test*.py
+unittest imports this. It won't set the settings, but I rather one less thing
+being imported at tests.
 """
 print ('Using {} configurations'.format(__name__))
 
@@ -58,4 +55,4 @@ TEST_DB_SETTINGS = {
 DATABASES['default'] = TEST_DB_SETTINGS
 
 # Where API Endpoints should hit
-API_ENDPOINT = 'http://127.0.0.1:8081'
+API_ENDPOINT = 'http://localhost:8081'
