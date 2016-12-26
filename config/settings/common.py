@@ -225,10 +225,6 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
 
-SUBDOMAIN_URLCONFS = {
-    'api': 'apis.betterself.urls',
-}
-
 REST_FRAMEWORK = {
     # by default, someone will need to be logged in before they are
     # able to view any rest points
