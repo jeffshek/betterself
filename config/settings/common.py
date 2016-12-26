@@ -33,7 +33,7 @@ DJANGO_APPS = (
     # ---
     # Admin
     'django.contrib.admin',
-
+    'rest_framework.authtoken',
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
@@ -61,7 +61,6 @@ MIDDLEWARE_CLASSES = (
     # Make sure djangosecure.middleware.SecurityMiddleware is listed first
     'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'subdomains.middleware.SubdomainURLRoutingMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -235,5 +234,10 @@ REST_FRAMEWORK = {
     # able to view any rest points
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }

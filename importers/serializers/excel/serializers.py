@@ -181,20 +181,11 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
         valid_dataframe = dataframe[valid_dataframe_columns]
 
-        for _, event in valid_dataframe.iterrows():
-
+        for index, event in valid_dataframe.iterrows():
             for supplement_name, quantity in event.iteritems():
-
-                # TD - Either ignore columns or dataframe should be expected to be saved as-is
-
-                # if it's zero, don't count it as an event since it didn't happen
-                if quantity == 0:
-                    continue
-
                 supplement_product = self.SUPPLEMENT_PRODUCT_CACHE[supplement_name]
 
-                # pandas specific thing where the index becomes the name
-                time = event.name
+                time = index
 
                 # localize and make as UTC time
                 time = pytz.utc.localize(time, pytz.UTC)
