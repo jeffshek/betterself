@@ -33,7 +33,7 @@ DJANGO_APPS = (
     # ---
     # Admin
     'django.contrib.admin',
-
+    'rest_framework.authtoken',
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
@@ -235,5 +235,10 @@ REST_FRAMEWORK = {
     # able to view any rest points
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }

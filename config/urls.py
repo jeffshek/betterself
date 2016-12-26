@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+from rest_framework.authtoken import views
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/coming_soon.html'), name='home'),
@@ -30,6 +31,6 @@ if settings.DEBUG:
         url(r'^403/$', default_views.permission_denied, kwargs={'exception': Exception('Permission Denied')}),
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
-
+        url(r'^api-token-auth/', views.obtain_auth_token, name='api_token'),
     ]
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
