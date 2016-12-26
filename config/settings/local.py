@@ -63,8 +63,10 @@ LOCAL_DB_SETTINGS = {
 if 'test' in sys.argv:
     LOCAL_DB_SETTINGS['ENGINE'] = 'django.db.backends.sqlite3'
 
-
 DATABASES['default'] = LOCAL_DB_SETTINGS
+
+# Where API Endpoints should hit
+API_ENDPOINT = 'http://127.0.0.1:9000'
 
 # Use this to debug whitenoise issues
 # Use Whitenoise to serve static files

@@ -56,3 +56,6 @@ TEST_DB_SETTINGS = {
 }
 
 DATABASES['default'] = TEST_DB_SETTINGS
+
+# Where API Endpoints should hit
+API_ENDPOINT = 'http://127.0.0.1:8081'

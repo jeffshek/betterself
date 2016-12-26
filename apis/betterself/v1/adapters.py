@@ -7,21 +7,24 @@ or 2) eat my own dog food and use post/puts to create the historical data. I've 
 1) and I know it works ... but I've decided to with option 2 since empirically a
 battle-tested API will make the eventual iOS / Android apps much easier to develop.
 """
-from rest_framework.reverse import reverse
-from rest_framework.authtoken.models import Token
-
 import requests
+from rest_framework.authtoken.models import Token
+from rest_framework.reverse import reverse
+from django.conf import settings
 
 
 class BetterSelfAPIAdapter(object):
     """
     Takes a user, retrieves the token, accesses RESTful endpoints.
     """
-    def __init__(self, domain, user):
-        self.domain = domain
+    def __init__(self, user):
         self.user = user
-        self.api_token = Token.objects.get_or_create(user=user)
-        self.headers = {'Authorization': 'Token {}'.format(self.api_token.token)}
+        self.api_token, _ = Token.objects.get_or_create(user=user)
+        self.headers = {'Authorization': 'Token {}'.format(self.api_token.key)}
+
+        # use to figure out how to prefix a resource endpoint
+        # so it's either http://127.0.0.1:9000/ --- then api/v1/sleep, etc.
+        self.domain = settings.API_ENDPOINT
 
     def get_resource_endpoint_url(self, resource):
         url = reverse(resource.RESOURCE_NAME)
@@ -30,3 +33,4 @@ class BetterSelfAPIAdapter(object):
     def get_resource(self, resource, parameters=None):
         resource_endpoint = self.get_resource_endpoint_url(resource)
         response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
+        return response
