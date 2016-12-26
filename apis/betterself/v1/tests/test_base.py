@@ -6,11 +6,7 @@ from rest_framework.test import APIClient
 
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
-from supplements.models import Supplement
 
-VALID_GET_RESOURCES = [
-    Supplement.RESOURCE_NAME,
-]
 logger = logging.Logger(__name__)
 
 

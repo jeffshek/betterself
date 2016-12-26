@@ -6,6 +6,8 @@ importing - I had two options. 1) Just use django's native methods (get_or_creat
 or 2) eat my own dog food and use post/puts to create the historical data. I've tested
 1) and I know it works ... but I've decided to with option 2 since empirically a
 battle-tested API will make the eventual iOS / Android apps much easier to develop.
+
+https://plus.google.com/+RipRowan/posts/eVeouesvaVX Steve Yegge's Platform Rant
 """
 import requests
 from rest_framework.authtoken.models import Token
