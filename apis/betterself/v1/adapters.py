@@ -9,6 +9,8 @@ battle-tested API will make the eventual iOS / Android apps much easier to devel
 
 https://plus.google.com/+RipRowan/posts/eVeouesvaVX Steve Yegge's Platform Rant
 """
+import json
+
 import requests
 from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
@@ -33,6 +35,11 @@ class BetterSelfAPIAdapter(object):
         return self.domain + url
 
     def get_resource(self, resource, parameters=None):
+        response = self.get_resource_response(resource, parameters)
+        data = json.loads(response.text)
+        return data
+
+    def get_resource_response(self, resource, parameters=None):
         resource_endpoint = self.get_resource_endpoint_url(resource)
         response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
         return response

@@ -7,6 +7,11 @@ from apis.betterself.v1.utils.views import UserQuerysetFilterMixin, BaseGenericL
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
+"""
+These inherited models such as BaseGenericListCreateAPIViewV1 contain a override to get_queryset
+so that users won't have access to models that are not the default or don't belong to them!
+"""
+
 
 class VendorView(BaseGenericListCreateAPIViewV1):
     serializer_class = VendorSerializer
@@ -14,6 +19,8 @@ class VendorView(BaseGenericListCreateAPIViewV1):
 
 
 class MeasurementView(ListAPIView):
+    # Users are not allowed to create measurements, only can choose
+    # whatever is on the default
     serializer_class = MeasurementReadOnlySerializer
     model = Measurement
 
