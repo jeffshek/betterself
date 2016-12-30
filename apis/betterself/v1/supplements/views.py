@@ -16,6 +16,7 @@ so that users won't have access to models that are not the default or don't belo
 class VendorView(BaseGenericListCreateAPIViewV1):
     serializer_class = VendorSerializer
     model = Vendor
+    filter_fields = ('name',)
 
 
 class MeasurementView(ListAPIView):
@@ -27,7 +28,7 @@ class MeasurementView(ListAPIView):
     def get_queryset(self):
         name = self.request.query_params.get('name')
         if name:
-            queryset = self.model.objects.filter(name__iexact=name)
+            queryset = self.model.objects.filter(name=name)
         else:
             queryset = self.model.objects.all()
 
