@@ -1,8 +1,11 @@
 from django.test import LiveServerTestCase
+from django.test import TestCase
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
+from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory
+from supplements.models import Ingredient
 from vendors.fixtures.factories import VendorFactory
 from vendors.models import Vendor
 
@@ -12,16 +15,18 @@ adapters responds correctly. Most of the tests here are functional and not integ
 tests
 """
 
+MOCK_VENDOR_NAME = 'MadScienceLabs'
+MOCK_INGREDIENT_NAME = 'BCAA'
 
-class TestAdapters(LiveServerTestCase):
-    """
-    python manage.py test apis.betterself.v1.tests.test_adapters
-    """
+
+class TestAdapters(LiveServerTestCase, TestCase):
+    # python manage.py test apis.betterself.v1.tests.test_adapters
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         default_user, _ = User.objects.get_or_create(username='default')
-        VendorFactory(user=default_user, name='MadScienceLabs')
-        super().setUpClass()
+        VendorFactory(user=default_user, name=MOCK_VENDOR_NAME)
+        ingredient = IngredientFactory(user=default_user, name=MOCK_INGREDIENT_NAME)
+        IngredientCompositionFactory(user=default_user, ingredient=ingredient)
 
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
@@ -31,11 +36,36 @@ class TestAdapters(LiveServerTestCase):
     def test_resources_get_on_adapter(self):
         for resource in VALID_REST_RESOURCES:
             response = self.adapter.get_resource_response(resource)
-        self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
 
-    def test_get_vendor_view_handles_filters(self):
+    def test_get_vendor_view_handles_empty_filter(self):
         parameters = {
             'name': 'FakeFakeVendor',
         }
         data = self.adapter.get_resource(Vendor, parameters=parameters)
         self.assertEqual(len(data), 0)
+
+    def test_get_vendor_view_filters(self):
+        parameters = {
+            'name': MOCK_VENDOR_NAME,
+        }
+        data = self.adapter.get_resource(Vendor, parameters=parameters)
+        self.assertEqual(len(data), 1)
+
+    def test_get_ingredient_name_filter(self):
+        parameters = {
+            'name': MOCK_INGREDIENT_NAME,
+        }
+        data = self.adapter.get_resource(Ingredient, parameters=parameters)
+        self.assertEqual(len(data), 1)
+
+    def test_get_ingredient_empty_filter(self):
+        parameters = {
+            'name': 'non_existent',
+        }
+        data = self.adapter.get_resource(Ingredient, parameters=parameters)
+        self.assertEqual(len(data), 0)
+
+    def test_get_ingredient_composition(self):
+        data = self.adapter.get_resource(Ingredient)
+        self.assertEqual(len(data), 1)

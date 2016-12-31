@@ -38,6 +38,7 @@ class MeasurementView(ListAPIView):
 class IngredientView(BaseGenericListCreateAPIViewV1):
     serializer_class = IngredientSerializer
     model = Ingredient
+    filter_fields = ('name', 'half_life_minutes', )
 
 
 class IngredientCompositionView(BaseGenericListCreateAPIViewV1):

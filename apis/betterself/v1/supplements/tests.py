@@ -1,5 +1,6 @@
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, DEFAULT_INGREDIENT_HL_MINUTE_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -57,11 +58,11 @@ class IngredientV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
     }
 
     def test_valid_get_request_with_params(self):
-        request_parameters = {'name': 'Advil'}
+        request_parameters = {'name': DEFAULT_INGREDIENT_NAME_1}
         super().test_valid_get_request_with_params(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'quantity': 5}
+        request_parameters = {'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE_1}
         key = 'name'
         super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
