@@ -7,7 +7,7 @@ class SupplementEventSerializer(serializers.Serializer):
     supplement_product_id = serializers.IntegerField(min_value=1)
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
-    id = serializers.IntegerField(required=False)
+    uuid = serializers.UUIDField(required=False)
     source = serializers.CharField()
 
     def validate_supplement_product(self, value):

@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from supplements.models import Supplement, IngredientComposition
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.models import Vendor
 
 
@@ -19,7 +19,7 @@ class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
     url = serializers.URLField(required=False)
-    id = serializers.IntegerField(required=False, read_only=True)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -36,14 +36,14 @@ class VendorSerializer(serializers.Serializer):
 
         return obj
 
-    class Meta:
-        fields = ('id', 'name', 'email', 'url')
+    # class Meta:
+    #     fields = ('uuid', 'name', 'email', 'url')
 
 
 class IngredientSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     half_life_minutes = serializers.IntegerField()
-    id = serializers.IntegerField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -56,25 +56,33 @@ class MeasurementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     short_name = serializers.CharField(max_length=100)
     is_liquid = serializers.BooleanField(default=False)
-    id = serializers.IntegerField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
 
 class IngredientCompositionReadOnlySerializer(serializers.Serializer):
     ingredient = serializers.CharField(max_length=300)
     measurement = serializers.CharField(max_length=100)
     quantity = serializers.FloatField()
-    id = serializers.IntegerField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
 
 class IngredientCompositionCreateSerializer(serializers.Serializer):
-    ingredient_id = serializers.IntegerField()
-    measurement_id = serializers.IntegerField()
+    ingredient_uuid = serializers.UUIDField()
+    measurement_uuid = serializers.UUIDField()
     quantity = serializers.FloatField()
 
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
-        obj, _ = create_model.objects.get_or_create(user=user, **validated_data)
+
+        ingredient_uuid = validated_data.pop('ingredient_uuid')
+        ingredient = Ingredient.objects.get(uuid=ingredient_uuid)
+
+        measurement_uuid = validated_data.pop('measurement_uuid')
+        measurement = Measurement.objects.get(uuid=measurement_uuid)
+
+        obj, _ = create_model.objects.get_or_create(user=user, ingredient=ingredient,
+            measurement=measurement, **validated_data)
         return obj
 
 
@@ -82,14 +90,14 @@ class SupplementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
     vendor = VendorSerializer()
-    id = serializers.IntegerField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
 
 class SupplementCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    # if a list of ids are provided, comma split them
-    ingredient_compositions_ids = serializers.CharField(required=False)
-    vendor_id = serializers.IntegerField(required=False)
+    # if a list of uuids are provided, comma split them
+    ingredient_compositions_uuids = serializers.UUIDField(required=False)
+    vendor_uuid = serializers.UUIDField(required=False)
     model = Supplement
 
     def create(self, validated_data):

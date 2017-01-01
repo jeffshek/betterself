@@ -32,6 +32,7 @@ class GenericRESTMethodMixin(object):
     def _make_post_request(self, client, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         data = json.dumps(request_parameters)
+        print (url)
         request = client.post(url, data=data, content_type='application/json')
         return request
 
@@ -64,7 +65,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 
-        contains_ids = [item['id'] for item in request.data]
+        contains_ids = [item['uuid'] for item in request.data]
         key_check_items = [item[key_check] for item in request.data]
 
         # cannot use assertNone

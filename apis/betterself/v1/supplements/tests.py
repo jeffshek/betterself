@@ -70,10 +70,14 @@ class IngredientV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
 class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, GetRequestsTestsMixin):
     TEST_MODEL = IngredientComposition
     DEFAULT_POST_PARAMS = {
-        'ingredient_id': '1',
-        'measurement_id': '1',
         'quantity': 5,
     }
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.DEFAULT_POST_PARAMS['ingredient_uuid'] = Ingredient.objects.all().first().uuid.__str__()
+        cls.DEFAULT_POST_PARAMS['measurement_uuid'] = Measurement.objects.all().first().uuid.__str__()
 
     def test_valid_get_request_with_params(self):
         request_parameters = {'name': 'Glutamine'}
