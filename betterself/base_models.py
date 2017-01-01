@@ -1,4 +1,5 @@
 # maybe change the location of this file, but don't have a better place at the moment
+import uuid as uuid
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -8,6 +9,7 @@ from django.db.models import Q
 class BaseModel(models.Model):
     created = models.DateField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    uuid = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
