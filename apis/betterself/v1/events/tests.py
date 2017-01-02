@@ -10,6 +10,7 @@ from events.models import SupplementEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
+import dateutil.parser
 
 User = get_user_model()
 
@@ -19,12 +20,10 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
     TEST_MODEL = SupplementEvent
 
     def setUp(self):
-        defaults_user, _ = User.objects.get_or_create(username='default')
         self.DEFAULT_POST_PARAMS = {
-            'time': datetime.datetime.now().isoformat(),
+            'time': datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'quantity': 5,
             'source': 'api',
-            'user': str(defaults_user.uuid)
         }
 
         # pass a parameter just to make sure the default parameter is valid
@@ -41,10 +40,23 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         EventModelsFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_default_parameters_created_correctly(self):
-        # a bit too much of an integration test, but realized that
+        # this is a bit too much of an integration test, but realized that
         # it was overly friendly and tests were passing without catching
         # potential issues
-        self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
+        params_time = dateutil.parser.parse(self.DEFAULT_POST_PARAMS['time'])
+        quantity = self.DEFAULT_POST_PARAMS['quantity']
+        source = self.DEFAULT_POST_PARAMS['source']
+        user = self.user_1
+
+        response = self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
+        uuid = response.data['uuid']
+        event = SupplementEvent.objects.get(uuid=uuid)
+
+        event_time = event.time
+        self.assertEqual(params_time.microsecond, event_time.microsecond)
+        self.assertEqual(quantity, event.quantity)
+        self.assertEqual(source, event.source)
+        self.assertEqual(user, event.user)
 
     def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'quantity': 1}
@@ -57,8 +69,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
     def test_event_invalid_supplement_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        now = datetime.datetime.now()
-        now = now.isoformat()
+        now = datetime.datetime.now().isoformat()
 
         # negative ids don't exist ... so this should fail
         data = {
