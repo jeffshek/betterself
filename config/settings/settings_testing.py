@@ -39,7 +39,6 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[
     'testserver']
 )
 
-INSTALLED_APPS += ('django_extensions', )
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 TEST_DB_SETTINGS = {
