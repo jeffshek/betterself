@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('source', models.CharField(choices=[('api', 'Api'), ('ios', 'Ios'), ('android', 'Android'), ('web', 'Web'), ('user_excel', 'User_Excel')], max_length=50)),
                 ('quantity', models.FloatField(default=1)),
                 ('time', models.DateTimeField()),
-                ('supplement_product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='supplements.Supplement')),
+                ('supplement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='supplements.Supplement')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

@@ -15,6 +15,7 @@ User = get_user_model()
 
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+    # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
     TEST_MODEL = SupplementEvent
 
     def setUp(self):
@@ -28,7 +29,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
         # pass a parameter just to make sure the default parameter is valid
         valid_supplement = Supplement.get_user_viewable_objects(self.user_1).first()
-        self.DEFAULT_POST_PARAMS['supplement_product_id'] = valid_supplement.id
+        self.DEFAULT_POST_PARAMS['supplement_uuid'] = str(valid_supplement.uuid)
 
         super().setUp()
 
@@ -38,6 +39,12 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         SupplementModelsFixturesGenerator.create_fixtures()
         VendorModelsFixturesGenerator.create_fixtures()
         EventModelsFixturesGenerator.create_fixtures(cls.user_1)
+
+    def test_default_parameters_created_correctly(self):
+        # a bit too much of an integration test, but realized that
+        # it was overly friendly and tests were passing without catching
+        # potential issues
+        self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
 
     def test_valid_get_request_for_key_in_response(self):
         request_parameters = {'quantity': 1}
@@ -55,7 +62,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
         # negative ids don't exist ... so this should fail
         data = {
-            'supplement_product_id': -1,
+            'supplement_uuid': -1,
             'time': now,
         }
 

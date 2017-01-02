@@ -27,10 +27,8 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplement_events'
 
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
-    supplement_product = models.ForeignKey(Supplement)
-    # floatfield, if ie. someone drinks 1/2 of a 5 hour energy ...
-    # probably should switch to decimal field??
-    quantity = models.FloatField(default=1)
+    supplement = models.ForeignKey(Supplement)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2)
     # what time did the user take the five hour energy? use the time model
     # so not pigeon holed and can do half_life analysis.
     time = models.DateTimeField()
@@ -47,7 +45,7 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
         formatted_time = datetime.datetime.strftime(self.time, '%Y-%m-%d %I:%M%p')
         formatted_quantity = '{:.0f}'.format(self.quantity)
 
-        return '{quantity} {obj.supplement_product} ' \
+        return '{quantity} {obj.supplement} ' \
                '{time} from {obj.source} event'.format(obj=self, time=formatted_time, quantity=formatted_quantity)
 
 

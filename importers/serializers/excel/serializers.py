@@ -86,7 +86,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
     """Take a raw historical excel of supplements, clean and save it"""
 
     TEMPLATE_SAVE_MODEL = SupplementEvent
-    SUPPLEMENT_PRODUCT_CACHE = {}  # use it to match any supplement_name to a product
+    SUPPLEMENT_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
     def get_measurement_and_quantity_from_name(name):
@@ -127,7 +127,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
         first_match = first_match.strip()
         return first_match
 
-    def _create_supplement_products_from_dataframe(self, dataframe):
+    def _create_supplements_from_dataframe(self, dataframe):
         # problem with flat data structures is it's hard to transverse hierarchy
         # when you have no idea what users will input, so we're going to
         # create everything if it doesn't exist and then let a user rename
@@ -166,14 +166,14 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
             # add to cache, so don't have to deal with flattening to search
             # when saving individual events
-            self.SUPPLEMENT_PRODUCT_CACHE[column_name] = supplement
+            self.SUPPLEMENT_CACHE[column_name] = supplement
 
     def save_results(self, dataframe):
         # potentially consider making this into its own DataframeImporter file
         # kind of seems like it should, but also kind of feels like overkill
         source = 'user_excel'
 
-        self._create_supplement_products_from_dataframe(dataframe)
+        self._create_supplements_from_dataframe(dataframe)
 
         # events should only consist of numeric values, ie. 1 serving of caffeine ...
         dataframe_dtypes_dict = dataframe.dtypes.to_dict()
@@ -183,7 +183,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
         for index, event in valid_dataframe.iterrows():
             for supplement_name, quantity in event.iteritems():
-                supplement_product = self.SUPPLEMENT_PRODUCT_CACHE[supplement_name]
+                supplement = self.SUPPLEMENT_CACHE[supplement_name]
 
                 time = index
 
@@ -192,7 +192,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
                 self.TEMPLATE_SAVE_MODEL.objects.get_or_create(
                     user=self.user,
-                    supplement_product=supplement_product,
+                    supplement=supplement,
                     time=time,
                     quantity=quantity,
                     source=source

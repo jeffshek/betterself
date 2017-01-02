@@ -33,25 +33,25 @@ class ExcelImporterTests(TestCase):
 
         self.assertEqual(results_type, dataframe_type)
 
-    def test_supplement_products_dont_natively_exist(self):
+    def test_supplements_dont_natively_exist(self):
         # paranoid that i might mess up something one day
-        supplement_products_exists = Supplement.objects.all().exists()
-        self.assertFalse(supplement_products_exists)
+        supplement_exists = Supplement.objects.all().exists()
+        self.assertFalse(supplement_exists)
 
     def test_supplements_creation_from_sanitizer(self):
         results = self.sanitizer.get_sanitized_dataframe()
-        self.sanitizer._create_supplement_products_from_dataframe(results)
+        self.sanitizer._create_supplements_from_dataframe(results)
 
         # all these would be created by a test use from fixtures
         ingredient_exists = Ingredient.objects.all().exists()
         mu_exists = Measurement.objects.all().exists()
         ing_comp_exists = IngredientComposition.objects.all().exists()
-        supplement_products_exists = Supplement.objects.all().exists()
+        supplement_exists = Supplement.objects.all().exists()
 
         self.assertTrue(ingredient_exists)
         self.assertTrue(mu_exists)
         self.assertTrue(ing_comp_exists)
-        self.assertTrue(supplement_products_exists)
+        self.assertTrue(supplement_exists)
 
     def test_fixtures_import(self):
         supplement_events_dont_exist_yet = SupplementEvent.objects.all().exists()

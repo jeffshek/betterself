@@ -1,8 +1,5 @@
-from django.db.models import Q
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from drf_compound_fields.fields import ListOrItemField
-
+from rest_framework import serializers
 
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.models import Vendor
@@ -125,29 +122,3 @@ class SupplementCreateSerializer(serializers.Serializer):
             supplement.ingredient_compositions.add(composition)
 
         return supplement
-
-    @staticmethod
-    def _get_ingredient_compositions_accessible_for_user(user, ingredient_compositions_ids):
-        try:
-            ingredient_compositions_ids_parsed = [int(item) for item in ingredient_compositions_ids.strip().split(',')]
-        except TypeError:
-            raise ValidationError('Invalid Ingredient Compositions Ids Entered {0}'.format(ingredient_compositions_ids))
-
-        queryset = IngredientComposition.objects.filter(id__in=ingredient_compositions_ids_parsed).filter(
-            Q(user=user) | Q(user__username='default'))
-
-        if not queryset.exists():
-            raise ValidationError('No Ingredient Composition IDs of {0} found belong to user {1}'.format(
-                ingredient_compositions_ids, user.id))
-        else:
-            return queryset
-
-    @staticmethod
-    def _add_vendor_to_validated_data(user, validated_data, vendor_id):
-        vendor = Vendor.objects.filter(id=vendor_id).filter(Q(user=user) | Q(user__username='default'))
-        if not vendor.exists():
-            raise ValidationError('No Vendor ID of {0} found belong to user {1}'.format(vendor_id, user.id))
-        else:
-            validated_data['vendor'] = vendor.first()
-
-        return validated_data

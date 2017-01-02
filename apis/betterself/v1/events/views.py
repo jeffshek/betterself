@@ -6,4 +6,3 @@ from events.models import SupplementEvent
 class SupplementEventView(BaseGenericListCreateAPIViewV1):
     serializer_class = SupplementEventSerializer
     model = SupplementEvent
-    # filter_fields = ('quantity', )

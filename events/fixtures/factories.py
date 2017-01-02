@@ -10,6 +10,6 @@ class SupplementEventFactory(factory.DjangoModelFactory):
         model = SupplementEvent
 
     source = 'api'
-    supplement_product = factory.SubFactory(SupplementFactory)
+    supplement = factory.SubFactory(SupplementFactory)
     quantity = 1
     time = datetime.datetime.now()

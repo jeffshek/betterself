@@ -30,4 +30,4 @@ class EventModelsFixturesGenerator(object):
             input_source = test_case[1]
             event_time = test_case[2]
             SupplementEventFactory(quantity=quantity, source=input_source,
-                time=event_time, user=user, supplement_product=supplement)
+                time=event_time, user=user, supplement=supplement)
