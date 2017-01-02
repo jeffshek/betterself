@@ -24,15 +24,8 @@ class MeasurementView(ListAPIView):
     # whatever is on the default
     serializer_class = MeasurementReadOnlySerializer
     model = Measurement
-
-    def get_queryset(self):
-        name = self.request.query_params.get('name')
-        if name:
-            queryset = self.model.objects.filter(name=name)
-        else:
-            queryset = self.model.objects.all()
-
-        return queryset
+    filter_fields = ('name',)
+    queryset = Measurement.objects.all()
 
 
 class IngredientView(BaseGenericListCreateAPIViewV1):
