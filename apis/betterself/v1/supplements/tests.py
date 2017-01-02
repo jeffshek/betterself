@@ -90,25 +90,37 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
 
 
 class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+    # python manage.py test apis.betterself.v1.supplements.tests.SupplementV1Tests
     TEST_MODEL = Supplement
 
     def _get_default_post_parameters(self):
         client_vendors = Vendor.get_user_viewable_objects(self.user_1)
-        vendor_id = client_vendors[0].id
+        vendor_id = client_vendors[0].uuid.__str__()
 
         # kind of whack, but create a list of valid IDs that could be passed
         # when serializing
         ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
-        ingr_comps_ids = list(ingr_comps.values_list('id', flat=True))
-        ingr_comps_ids = [str(x) for x in ingr_comps_ids]
-        ingr_comps_ids = ','.join(ingr_comps_ids)
+        ingr_comps_uuids = ingr_comps.values_list('uuid', flat=True)
+        ingr_comps_uuids = [str(item) for item in ingr_comps_uuids]
 
         request_parameters = {
             'name': 'Glutamine',
-            'vendor_id': vendor_id,
-            'ingredient_compositions_ids': ingr_comps_ids
+            'vendor_uuid': vendor_id,
+            'ingredient_compositions_uuids': ingr_comps_uuids
         }
         return request_parameters
+
+    def test_default_parameters_recorded_correctly(self):
+        request_parameters = self._get_default_post_parameters()
+        self._make_post_request(self.client_1, request_parameters)
+
+        supplement = Supplement.objects.get(name=request_parameters['name'])
+        vendor_uuid = supplement.vendor.uuid.__str__()
+        ingr_comps_uuids = supplement.ingredient_compositions.values_list('uuid', flat=True)
+        ingr_comps_uuids = [str(item) for item in ingr_comps_uuids]
+
+        self.assertEqual(vendor_uuid, request_parameters['vendor_uuid'])
+        self.assertSetEqual(set(ingr_comps_uuids), set(request_parameters['ingredient_compositions_uuids']))
 
     def test_post_request(self):
         request_parameters = self._get_default_post_parameters()

@@ -32,7 +32,6 @@ class GenericRESTMethodMixin(object):
     def _make_post_request(self, client, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         data = json.dumps(request_parameters)
-        print (url)
         request = client.post(url, data=data, content_type='application/json')
         return request
 

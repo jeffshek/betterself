@@ -1,6 +1,8 @@
 from django.db.models import Q
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from drf_compound_fields.fields import ListOrItemField
+
 
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.models import Vendor
@@ -36,9 +38,6 @@ class VendorSerializer(serializers.Serializer):
 
         return obj
 
-    # class Meta:
-    #     fields = ('uuid', 'name', 'email', 'url')
-
 
 class IngredientSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
@@ -67,22 +66,23 @@ class IngredientCompositionReadOnlySerializer(serializers.Serializer):
 
 
 class IngredientCompositionCreateSerializer(serializers.Serializer):
-    ingredient_uuid = serializers.UUIDField()
-    measurement_uuid = serializers.UUIDField()
+    ingredient_uuid = serializers.UUIDField(source='ingredient.uuid')
+    measurement_uuid = serializers.UUIDField(source='measurement.uuid')
     quantity = serializers.FloatField()
 
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
 
-        ingredient_uuid = validated_data.pop('ingredient_uuid')
+        ingredient_uuid = validated_data['ingredient']['uuid']
         ingredient = Ingredient.objects.get(uuid=ingredient_uuid)
+        validated_data['ingredient'] = ingredient
 
-        measurement_uuid = validated_data.pop('measurement_uuid')
+        measurement_uuid = validated_data['measurement']['uuid']
         measurement = Measurement.objects.get(uuid=measurement_uuid)
+        validated_data['measurement'] = measurement
 
-        obj, _ = create_model.objects.get_or_create(user=user, ingredient=ingredient,
-            measurement=measurement, **validated_data)
+        obj, _ = create_model.objects.get_or_create(user=user, **validated_data)
         return obj
 
 
@@ -95,9 +95,12 @@ class SupplementReadOnlySerializer(serializers.Serializer):
 
 class SupplementCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    # if a list of uuids are provided, comma split them
-    ingredient_compositions_uuids = serializers.UUIDField(required=False)
-    vendor_uuid = serializers.UUIDField(required=False)
+    # TODO - this ListOrItemField is a hack just to make many to many associations
+    # serialize. don't love it, but don't know a clean way around it just yet
+    ingredient_compositions_uuids = ListOrItemField(
+        serializers.UUIDField(), required=False, source='ingredient_compositions'
+    )
+    vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     model = Supplement
 
     def create(self, validated_data):
@@ -105,15 +108,15 @@ class SupplementCreateSerializer(serializers.Serializer):
         user = self.context['request'].user
         validated_data['user'] = user
 
-        vendor_id = validated_data.pop('vendor_id', None)
-        if vendor_id:
-            validated_data = self._add_vendor_to_validated_data(user, validated_data, vendor_id)
+        if 'ingredient_compositions' in validated_data:
+            ingredient_compositions_uuids = validated_data.pop('ingredient_compositions')
+            ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
+        else:
+            ingredient_compositions = []
 
-        ingredient_compositions = []
-        ingredient_compositions_ids = validated_data.pop('ingredient_compositions_ids', None)
-        if ingredient_compositions_ids:
-            ingredient_compositions = self._get_ingredient_compositions_accessible_for_user(user,
-                ingredient_compositions_ids)
+        vendor_uuid = validated_data['vendor']['uuid']
+        vendor = Vendor.objects.get(uuid=vendor_uuid)
+        validated_data['vendor'] = vendor
 
         # cannot associate many to many unless item has been saved
         supplement, _ = Supplement.objects.get_or_create(**validated_data)
@@ -123,7 +126,6 @@ class SupplementCreateSerializer(serializers.Serializer):
 
         return supplement
 
-    # TD - if you have to implement this again, move to base model!
     @staticmethod
     def _get_ingredient_compositions_accessible_for_user(user, ingredient_compositions_ids):
         try:

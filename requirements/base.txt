@@ -11,6 +11,7 @@ django-floppyforms==1.6.2
 django-model-utils==2.5
 django-secure==1.0.1
 djangorestframework==3.3.3
+drf-compound-fields==1.0.0
 factory-boy==2.8.1
 ipython==4.2
 Markdown==2.6.6
