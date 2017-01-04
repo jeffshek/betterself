@@ -5,7 +5,7 @@ from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory
-from supplements.models import Ingredient
+from supplements.models import Ingredient, IngredientComposition
 from vendors.fixtures.factories import VendorFactory
 from vendors.models import Vendor
 
@@ -69,3 +69,18 @@ class TestAdapters(LiveServerTestCase, TestCase):
     def test_get_ingredient_composition(self):
         data = self.adapter.get_resource(Ingredient)
         self.assertEqual(len(data), 1)
+
+    def test_get_filters_on_ingredient_composition(self):
+        data = self.adapter.get_resource(IngredientComposition)
+        for ingredient_composition in data:
+            ingredient_uuid = ingredient_composition['ingredient']['uuid']
+
+            # do a lookup based on an ingredient .. make sure we can navigate
+            # back and forth based on uuid lookups
+            filter_parameters = {
+                'ingredient_uuid': ingredient_uuid
+            }
+            filtered_data = self.adapter.get_resource(IngredientComposition, parameters=filter_parameters)
+            filtered_data_ingredient_uuids = [result['ingredient']['uuid'] for result in filtered_data]
+
+            self.assertTrue(ingredient_uuid in filtered_data_ingredient_uuids)

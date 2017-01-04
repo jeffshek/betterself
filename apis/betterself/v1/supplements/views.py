@@ -1,5 +1,6 @@
 from rest_framework.generics import ListAPIView
 
+from apis.betterself.v1.supplements.filters import IngredientCompositionFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
@@ -38,6 +39,7 @@ class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
     read_serializer_class = IngredientCompositionReadOnlySerializer
     write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
+    filter_class = IngredientCompositionFilter
 
     def get_serializer_class(self):
         request_method = self.request.method

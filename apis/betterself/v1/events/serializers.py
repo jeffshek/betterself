@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
+from apis.betterself.v1.supplements.serializers import SupplementReadOnlySerializer
 from supplements.models import Supplement
 
 
-class SupplementEventSerializer(serializers.Serializer):
+class SupplementEventCreateSerializer(serializers.Serializer):
     supplement_uuid = serializers.UUIDField(source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
@@ -23,3 +24,11 @@ class SupplementEventSerializer(serializers.Serializer):
         obj, _ = create_model.objects.get_or_create(user=user, quantity=quantity,
             time=time, supplement=supplement, **validated_data)
         return obj
+
+
+class SupplementEventReadOnlySerializer(serializers.Serializer):
+    supplement = SupplementReadOnlySerializer()
+    quantity = serializers.FloatField()
+    time = serializers.DateTimeField()
+    source = serializers.CharField()
+    uuid = serializers.UUIDField()

@@ -1,8 +1,17 @@
-from apis.betterself.v1.events.serializers import SupplementEventSerializer
+from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer
 from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1
 from events.models import SupplementEvent
 
 
 class SupplementEventView(BaseGenericListCreateAPIViewV1):
-    serializer_class = SupplementEventSerializer
+    serializer_class = SupplementEventCreateSerializer
     model = SupplementEvent
+    read_serializer_class = SupplementEventReadOnlySerializer
+    write_serializer_class = SupplementEventCreateSerializer
+
+    def get_serializer_class(self):
+        request_method = self.request.method
+        if request_method.lower() in ['list', 'get']:
+            return self.read_serializer_class
+        else:
+            return self.write_serializer_class

@@ -5,15 +5,6 @@ from supplements.models import Supplement, IngredientComposition, Ingredient, Me
 from vendors.models import Vendor
 
 
-def user_viewable_objects_validator(model, user, ids_string):
-    ids_string_parsed = ids_string.strip().split(',')
-    user_viewable_objects = model.get_user_viewable_objects(user).values_list('id')
-
-    not_authorized = [item for item in ids_string_parsed if int(item) not in user_viewable_objects]
-    if not_authorized:
-        raise serializers.ValidationError('Not authorized to view {0} for {1}'.format(not_authorized[0], user))
-
-
 class VendorSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     email = serializers.EmailField(max_length=254)
@@ -56,10 +47,10 @@ class MeasurementReadOnlySerializer(serializers.Serializer):
 
 
 class IngredientCompositionReadOnlySerializer(serializers.Serializer):
-    ingredient = serializers.CharField(max_length=300)
-    measurement = serializers.CharField(max_length=100)
+    ingredient = IngredientSerializer(required=True)
+    measurement = MeasurementReadOnlySerializer()
     quantity = serializers.FloatField()
-    uuid = serializers.UUIDField(required=False, read_only=True)
+    uuid = serializers.UUIDField(read_only=True)
 
 
 class IngredientCompositionCreateSerializer(serializers.Serializer):
