@@ -10,8 +10,8 @@ battle-tested API will make the eventual iOS / Android apps much easier to devel
 https://plus.google.com/+RipRowan/posts/eVeouesvaVX Steve Yegge's Platform Rant
 """
 import json
-
 import requests
+
 from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
 from django.conf import settings
@@ -19,7 +19,7 @@ from django.conf import settings
 
 class BetterSelfAPIAdapter(object):
     """
-    Takes a user, retrieves the token, accesses RESTful endpoints.
+    Takes a user, retrieves the token and fetches RESTful endpoints for that user
     """
     def __init__(self, user):
         self.user = user
@@ -30,16 +30,22 @@ class BetterSelfAPIAdapter(object):
         # so it's either http://127.0.0.1:9000/ --- then api/v1/sleep, etc.
         self.domain = settings.API_ENDPOINT
 
-    def get_resource_endpoint_url(self, resource):
+    def fetch_resource_endpoint_url(self, resource):
+        # just called fetch so no confusion with "get"
         url = reverse(resource.RESOURCE_NAME)
         return self.domain + url
 
-    def get_resource(self, resource, parameters=None):
+    def get_resource_response(self, resource, parameters=None):
+        resource_endpoint = self.fetch_resource_endpoint_url(resource)
+        response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
+        return response
+
+    def get_resource_data(self, resource, parameters=None):
         response = self.get_resource_response(resource, parameters)
         data = json.loads(response.text)
         return data
 
-    def get_resource_response(self, resource, parameters=None):
-        resource_endpoint = self.get_resource_endpoint_url(resource)
-        response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
+    def post_resource_response(self, resource, parameters):
+        resource_endpoint = self.fetch_resource_endpoint_url(resource)
+        response = requests.post(resource_endpoint, data=parameters, headers=self.headers)
         return response

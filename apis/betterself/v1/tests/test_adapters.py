@@ -11,8 +11,8 @@ from vendors.models import Vendor
 
 """
 This inherits LiveServerTestCase since we're spin up a port to listen and test
-adapters responds correctly. Most of the tests here are functional and not integration
-tests
+adapters responds correctly. Most of the tests here are functional and not pure unit
+tests ,,, there's also some overlap with some of the more basic unit tests
 """
 
 MOCK_VENDOR_NAME = 'MadScienceLabs'
@@ -42,36 +42,36 @@ class TestAdapters(LiveServerTestCase, TestCase):
         parameters = {
             'name': 'FakeFakeVendor',
         }
-        data = self.adapter.get_resource(Vendor, parameters=parameters)
+        data = self.adapter.get_resource_data(Vendor, parameters=parameters)
         self.assertEqual(len(data), 0)
 
     def test_get_vendor_view_filters(self):
         parameters = {
             'name': MOCK_VENDOR_NAME,
         }
-        data = self.adapter.get_resource(Vendor, parameters=parameters)
+        data = self.adapter.get_resource_data(Vendor, parameters=parameters)
         self.assertEqual(len(data), 1)
 
     def test_get_ingredient_name_filter(self):
         parameters = {
             'name': MOCK_INGREDIENT_NAME,
         }
-        data = self.adapter.get_resource(Ingredient, parameters=parameters)
+        data = self.adapter.get_resource_data(Ingredient, parameters=parameters)
         self.assertEqual(len(data), 1)
 
     def test_get_ingredient_empty_filter(self):
         parameters = {
             'name': 'non_existent',
         }
-        data = self.adapter.get_resource(Ingredient, parameters=parameters)
+        data = self.adapter.get_resource_data(Ingredient, parameters=parameters)
         self.assertEqual(len(data), 0)
 
     def test_get_ingredient_composition(self):
-        data = self.adapter.get_resource(Ingredient)
+        data = self.adapter.get_resource_data(Ingredient)
         self.assertEqual(len(data), 1)
 
     def test_get_filters_on_ingredient_composition(self):
-        data = self.adapter.get_resource(IngredientComposition)
+        data = self.adapter.get_resource_data(IngredientComposition)
         for ingredient_composition in data:
             ingredient_uuid = ingredient_composition['ingredient']['uuid']
 
@@ -80,7 +80,15 @@ class TestAdapters(LiveServerTestCase, TestCase):
             filter_parameters = {
                 'ingredient_uuid': ingredient_uuid
             }
-            filtered_data = self.adapter.get_resource(IngredientComposition, parameters=filter_parameters)
+            filtered_data = self.adapter.get_resource_data(IngredientComposition, parameters=filter_parameters)
             filtered_data_ingredient_uuids = [result['ingredient']['uuid'] for result in filtered_data]
 
             self.assertTrue(ingredient_uuid in filtered_data_ingredient_uuids)
+
+    def test_post_on_vendor_resource(self):
+        parameters = {
+            'name': 'non_existent',
+            'email': 'somefakeemail@gmail.com',
+        }
+        data = self.adapter.post_resource_response(Vendor, parameters)
+        self.assertEqual(data.status_code, 201)
