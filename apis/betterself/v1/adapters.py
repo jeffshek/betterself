@@ -49,3 +49,8 @@ class BetterSelfAPIAdapter(object):
         resource_endpoint = self.fetch_resource_endpoint_url(resource)
         response = requests.post(resource_endpoint, data=parameters, headers=self.headers)
         return response
+
+    def post_resource_data(self, resource, parameters):
+        response = self.post_resource_response(resource, parameters)
+        data = json.loads(response.text)
+        return data

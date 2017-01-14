@@ -29,7 +29,7 @@ class VendorSerializer(serializers.Serializer):
 
 class IngredientSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    half_life_minutes = serializers.IntegerField()
+    half_life_minutes = serializers.IntegerField(required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def create(self, validated_data):

@@ -18,9 +18,10 @@ tests ,,, there's also some overlap with some of the more basic unit tests
 MOCK_VENDOR_NAME = 'MadScienceLabs'
 MOCK_INGREDIENT_NAME = 'BCAA'
 
+# python manage.py test apis.betterself.v1.tests.test_adapters
 
-class TestAdapters(LiveServerTestCase, TestCase):
-    # python manage.py test apis.betterself.v1.tests.test_adapters
+
+class AdapterTests(LiveServerTestCase, TestCase):
     @classmethod
     def setUpTestData(cls):
         default_user, _ = User.objects.get_or_create(username='default')
@@ -33,11 +34,15 @@ class TestAdapters(LiveServerTestCase, TestCase):
         self.adapter = BetterSelfAPIAdapter(self.default_user)
         super().setUp()
 
+
+class GenericAdapterTests(AdapterTests):
     def test_resources_get_on_adapter(self):
         for resource in VALID_REST_RESOURCES:
             response = self.adapter.get_resource_response(resource)
             self.assertEqual(response.status_code, 200)
 
+
+class VendorAdapterTests(AdapterTests):
     def test_get_vendor_view_handles_empty_filter(self):
         parameters = {
             'name': 'FakeFakeVendor',
@@ -52,6 +57,22 @@ class TestAdapters(LiveServerTestCase, TestCase):
         data = self.adapter.get_resource_data(Vendor, parameters=parameters)
         self.assertEqual(len(data), 1)
 
+    def test_post_on_vendor_resource(self):
+        name = 'non_existent'
+        email = 'somefakeemail@gmail.com'
+
+        parameters = {
+            'name': name,
+            'email': email,
+        }
+
+        data = self.adapter.post_resource_data(Vendor, parameters)
+
+        self.assertEqual(data['name'], name)
+        self.assertEqual(data['email'], email)
+
+
+class IngredientAdapterTests(AdapterTests):
     def test_get_ingredient_name_filter(self):
         parameters = {
             'name': MOCK_INGREDIENT_NAME,
@@ -65,6 +86,13 @@ class TestAdapters(LiveServerTestCase, TestCase):
         }
         data = self.adapter.get_resource_data(Ingredient, parameters=parameters)
         self.assertEqual(len(data), 0)
+
+    def test_post_ingredient(self):
+        parameters = {
+            'name': 'non_existent',
+        }
+        data = self.adapter.post_resource_data(Ingredient, parameters)
+        print (data)
 
     def test_get_ingredient_composition(self):
         data = self.adapter.get_resource_data(Ingredient)
@@ -84,11 +112,3 @@ class TestAdapters(LiveServerTestCase, TestCase):
             filtered_data_ingredient_uuids = [result['ingredient']['uuid'] for result in filtered_data]
 
             self.assertTrue(ingredient_uuid in filtered_data_ingredient_uuids)
-
-    def test_post_on_vendor_resource(self):
-        parameters = {
-            'name': 'non_existent',
-            'email': 'somefakeemail@gmail.com',
-        }
-        data = self.adapter.post_resource_response(Vendor, parameters)
-        self.assertEqual(data.status_code, 201)
