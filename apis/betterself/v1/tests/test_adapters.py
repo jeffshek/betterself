@@ -4,8 +4,8 @@ from django.test import TestCase
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
-from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory
-from supplements.models import Ingredient, IngredientComposition, Measurement
+from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
+from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
 from vendors.models import Vendor
 
@@ -29,6 +29,7 @@ class AdapterTests(LiveServerTestCase, TestCase):
         VendorFactory(user=default_user, name=MOCK_VENDOR_NAME)
         ingredient = IngredientFactory(user=default_user, name=MOCK_INGREDIENT_NAME)
         IngredientCompositionFactory(user=default_user, ingredient=ingredient)
+        SupplementFactory(user=default_user)
 
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
@@ -200,3 +201,33 @@ class IngredientCompositionAdapterTests(AdapterTests):
         # if invalid, no uuid will be passed back, instead all that's sent will be
         # {'measurement_uuid': ['"cake_is_lie" is not a valid UUID.']}
         self.assertIsNone(data.get('uuid'))
+
+
+class SupplementAdapterTests(AdapterTests):
+    def test_get_supplements(self):
+        # safety check to make sure you didn't do anything that managed to
+        # break this
+        supplements = self.adapter.get_resource_data(Supplement)
+        self.assertTrue(len(supplements) > 0)
+
+    def test_get_supplements_if_none_available(self):
+        Supplement.objects.all().delete()
+
+        supplements = self.adapter.get_resource_data(Supplement)
+        self.assertTrue(len(supplements) == 0)
+
+    def test_get_no_supplements_if_none_belong_to_user_or_default(self):
+        # because all user created objects have limited access to only
+        # the user that created it or the default user, check to make sure
+        # that any attempts to get data that don't belong ... shouldn't
+        supplements = self.adapter.get_resource_data(Supplement)
+        supplements_prior_update = len(supplements)
+
+        nobody = User.objects.create_user('nobody knows')
+        Supplement.objects.all().update(user=nobody)
+
+        supplements = self.adapter.get_resource_data(Supplement)
+        supplements_after_update = len(supplements)
+
+        self.assertEqual(supplements_after_update, 0)
+        self.assertNotEqual(supplements_prior_update, supplements_after_update)
