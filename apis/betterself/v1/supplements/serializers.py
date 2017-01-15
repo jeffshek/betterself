@@ -1,5 +1,6 @@
 from drf_compound_fields.fields import ListOrItemField
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.models import Vendor
@@ -99,12 +100,24 @@ class SupplementCreateSerializer(serializers.Serializer):
         if 'ingredient_compositions' in validated_data:
             ingredient_compositions_uuids = validated_data.pop('ingredient_compositions')
             ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
+
+            if ingredient_compositions.count() != len(ingredient_compositions_uuids):
+                raise ValidationError('Not all ingredient composition UUIDs were found {}'.format(
+                    ingredient_compositions_uuids))
         else:
             ingredient_compositions = []
 
-        vendor_uuid = validated_data['vendor']['uuid']
-        vendor = Vendor.objects.get(uuid=vendor_uuid)
-        validated_data['vendor'] = vendor
+        if 'vendor' in validated_data:
+            # remove vendor from the validation data since we need to check if it exists or not
+            vendor_details = validated_data.pop('vendor')
+            vendor_uuid = vendor_details['uuid']
+
+            try:
+                vendor = Vendor.objects.get(uuid=vendor_uuid)
+            except Vendor.DoesNotExist:
+                raise ValidationError('Vendor does not exist with UUID of {}'.format(vendor_uuid))
+
+            validated_data['vendor'] = vendor
 
         # cannot associate many to many unless item has been saved
         supplement, _ = Supplement.objects.get_or_create(**validated_data)
