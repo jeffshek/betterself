@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 
 from betterself.base_models import BaseModelWithUserGeneratedContent
@@ -42,7 +40,7 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
         return self.__repr__()
 
     def __repr__(self):
-        formatted_time = datetime.datetime.strftime(self.time, '%Y-%m-%d %I:%M%p')
+        formatted_time = self.time.strftime('%Y-%m-%d %I:%M%p')
         formatted_quantity = '{:.0f}'.format(self.quantity)
 
         return '{quantity} {obj.supplement} ' \

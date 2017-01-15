@@ -1,4 +1,5 @@
 from django.test import LiveServerTestCase, TestCase
+from django.utils import timezone
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
@@ -268,6 +269,7 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
         # when django errors out, it does it by returning the key field with an error
         # and includes nothing else
         self.assertFalse('name' in data)
+        self.assertEqual(len(data), 1)
 
     def test_post_supplements_with_invalid_vendor_uuid(self):
         supplement_name = 'cheese'
@@ -280,6 +282,7 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
 
         # when django errors out, it does it by returning the key field with an error and description
         self.assertTrue('vendor_uuid' in data)
+        self.assertEqual(len(data), 1)
         self.assertFalse('name' in data)
 
 
@@ -293,3 +296,46 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
 
         default_user, _ = User.objects.get_or_create(username='default')
         SupplementEventFactory(user=default_user)
+
+    def test_post_events(self):
+        supplement_uuid = self.adapter.get_resource_data(Supplement)[0]['uuid']
+        parameters = {
+            'source': 'android',
+            'supplement_uuid': supplement_uuid,
+            'quantity': 3.5,
+            'time': timezone.now()
+        }
+
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        self.assertEqual(supplement_uuid, data['supplement_uuid'])
+
+    def test_post_events_with_invalid_uuid(self):
+        supplement_uuid = 'woooopeeee'
+        parameters = {
+            'source': 'android',
+            'supplement_uuid': supplement_uuid,
+            'quantity': 3.5,
+            'time': timezone.now()
+        }
+
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+
+        # if error, only the field is returned and an error corresponding
+        self.assertTrue('supplement_uuid' in data)
+        self.assertEqual(len(data), 1)
+
+    def test_post_events_with_invalid_source(self):
+        supplement_uuid = self.adapter.get_resource_data(Supplement)[0]['uuid']
+        # this should make source nonsensical
+        parameters = {
+            'source': supplement_uuid,
+            'supplement_uuid': supplement_uuid,
+            'quantity': 3.5,
+            'time': timezone.now()
+        }
+
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+
+        # if error, only the field is returned and an error corresponding
+        self.assertTrue('source' in data)
+        self.assertEqual(len(data), 1)

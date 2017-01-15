@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apis.betterself.v1.supplements.serializers import SupplementReadOnlySerializer
+from events.models import INPUT_SOURCES_TUPLES
 from supplements.models import Supplement
 
 
@@ -8,7 +9,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     supplement_uuid = serializers.UUIDField(source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
-    source = serializers.CharField()
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     uuid = serializers.UUIDField(required=False)
 
     def create(self, validated_data):
