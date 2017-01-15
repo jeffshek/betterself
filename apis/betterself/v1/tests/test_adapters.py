@@ -4,6 +4,7 @@ from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
 from events.fixtures.factories import SupplementEventFactory
+from events.models import SupplementEvent
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -288,5 +289,5 @@ class SupplementEventsAdaptersTests(AdapterTests):
         SupplementEventFactory(user=default_user)
 
     def test_get_supplement_event(self):
-        # data = self.adapter.get_resource_data(SupplementEvent)
-        pass
+        data = self.adapter.get_resource_data(SupplementEvent)
+        self.assertTrue(len(data) > 0)
