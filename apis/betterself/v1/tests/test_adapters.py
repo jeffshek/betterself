@@ -203,17 +203,8 @@ class IngredientCompositionAdapterTests(AdapterTests):
         self.assertIsNone(data.get('uuid'))
 
 
-# class SupplementAdapterTests(LiveServerTestCase):
 class SupplementAdapterTests(AdapterTests):
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementAdapterTests
-
-    @classmethod
-    def setUpTestData(cls):
-        default_user, _ = User.objects.get_or_create(username='default')
-        VendorFactory(user=default_user, name=MOCK_VENDOR_NAME)
-        ingredient = IngredientFactory(user=default_user, name=MOCK_INGREDIENT_NAME)
-        IngredientCompositionFactory(user=default_user, ingredient=ingredient)
-        SupplementFactory(user=default_user)
 
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
