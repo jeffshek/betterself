@@ -291,3 +291,24 @@ class SupplementEventsAdaptersTests(AdapterTests):
     def test_get_supplement_event(self):
         data = self.adapter.get_resource_data(SupplementEvent)
         self.assertTrue(len(data) > 0)
+
+    def test_get_event_if_none_exist(self):
+        SupplementEvent.objects.all().delete()
+
+        supplement_events = self.adapter.get_resource_data(SupplementEvent)
+        self.assertTrue(len(supplement_events) == 0)
+
+    def test_get_events_if_none_belong_to_user(self):
+        model = SupplementEvent
+
+        records = self.adapter.get_resource_data(model)
+        records_prior_update = len(records)
+
+        nobody = User.objects.create_user('nobody knows')
+        model.objects.all().update(user=nobody)
+
+        records = self.adapter.get_resource_data(model)
+        records_after_update = len(records)
+
+        self.assertEqual(records_after_update, 0)
+        self.assertNotEqual(records_prior_update, records_after_update)
