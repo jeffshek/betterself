@@ -1,5 +1,5 @@
-import datetime
 import factory
+from django.utils import timezone
 
 from events.models import SupplementEvent
 from supplements.fixtures.factories import SupplementFactory
@@ -12,4 +12,4 @@ class SupplementEventFactory(factory.DjangoModelFactory):
     source = 'api'
     supplement = factory.SubFactory(SupplementFactory)
     quantity = 1
-    time = datetime.datetime.now()
+    time = timezone.now()

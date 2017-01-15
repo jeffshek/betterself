@@ -1,6 +1,7 @@
 # making a bet that factory_boy will pan out as we get more data
 import factory
 
+from betterself.users.fixtures.factories import UserFactory
 from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
 
 DEFAULT_INGREDIENT_NAME_1 = 'Leucine'
@@ -62,6 +63,7 @@ class SupplementFactory(factory.DjangoModelFactory):
         model = Supplement
 
     name = DEFAULT_SUPPLEMENT_NAME
+    user = factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def ingredient_composition(self, create, extracted, **kwargs):

@@ -1,9 +1,9 @@
-from django.test import LiveServerTestCase
-from django.test import TestCase
+from django.test import LiveServerTestCase, TestCase
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
+from events.fixtures.factories import SupplementEventFactory
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -276,3 +276,17 @@ class SupplementAdapterTests(AdapterTests):
         # when django errors out, it does it by returning the key field with an error and description
         self.assertTrue('vendor_uuid' in data)
         self.assertFalse('name' in data)
+
+
+class SupplementEventsAdaptersTests(AdapterTests):
+    # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementEventsAdaptersTests
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        default_user, _ = User.objects.get_or_create(username='default')
+        SupplementEventFactory(user=default_user)
+
+    def test_get_supplement_event(self):
+        # data = self.adapter.get_resource_data(SupplementEvent)
+        pass
