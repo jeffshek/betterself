@@ -10,17 +10,45 @@ from supplements.models import Ingredient, IngredientComposition, Measurement, S
 from vendors.fixtures.factories import VendorFactory
 from vendors.models import Vendor
 
-"""
-This inherits LiveServerTestCase since we're spin up a port to listen and test
-adapters responds correctly. Most of the tests here are functional and not pure unit
-tests ... there's also some overlap with some of the more basic unit tests
-"""
-
 MOCK_VENDOR_NAME = 'MadScienceLabs'
 MOCK_INGREDIENT_NAME = 'BCAA'
 
 
 # python manage.py test apis.betterself.v1.tests.test_adapters
+
+class TestResourceMixin(object):
+    def test_get_resource(self):
+        data = self.adapter.get_resource_data(self.model)
+        self.assertTrue(len(data) > 0)
+
+    def test_get_resource_if_none_exist(self):
+        self.model.objects.all().delete()
+
+        data = self.adapter.get_resource_data(self.model)
+        self.assertTrue(len(data) == 0)
+
+    def test_get_resource_if_none_belong_to_user(self):
+        # because all user created objects have limited access to only
+        # the user that created it or the default user, check to make sure
+        # that any attempts to get data that don't belong ... shouldn't
+        records = self.adapter.get_resource_data(self.model)
+        records_prior_update = len(records)
+
+        nobody = User.objects.create_user('nobody knows')
+        self.model.objects.all().update(user=nobody)
+
+        records = self.adapter.get_resource_data(self.model)
+        records_after_update = len(records)
+
+        self.assertEqual(records_after_update, 0)
+        self.assertNotEqual(records_prior_update, records_after_update)
+
+
+"""
+This inherits LiveServerTestCase since we're spin up a port to listen and test
+adapters responds correctly. Most of the tests here are functional and not pure unit
+tests ... there's also some overlap with some of the more basic unit tests
+"""
 
 
 class AdapterTests(LiveServerTestCase, TestCase):
@@ -45,7 +73,9 @@ class GenericAdapterTests(AdapterTests):
             self.assertEqual(response.status_code, 200)
 
 
-class VendorAdapterTests(AdapterTests):
+class VendorAdapterTests(AdapterTests, TestResourceMixin):
+    model = Vendor
+
     def test_get_vendor_view_handles_empty_filter(self):
         parameters = {
             'name': 'FakeFakeVendor',
@@ -75,7 +105,9 @@ class VendorAdapterTests(AdapterTests):
         self.assertEqual(data['email'], email)
 
 
-class IngredientAdapterTests(AdapterTests):
+class IngredientAdapterTests(AdapterTests, TestResourceMixin):
+    model = Ingredient
+
     def test_get_ingredient_name_filter(self):
         parameters = {
             'name': MOCK_INGREDIENT_NAME,
@@ -139,10 +171,8 @@ class IngredientAdapterTests(AdapterTests):
         self.assertNotEquals(data['uuid'], uuid)
 
 
-class IngredientCompositionAdapterTests(AdapterTests):
-    def test_get_ingredient_composition(self):
-        data = self.adapter.get_resource_data(Ingredient)
-        self.assertEqual(len(data), 1)
+class IngredientCompositionAdapterTests(AdapterTests, TestResourceMixin):
+    model = IngredientComposition
 
     def test_get_filters_on_ingredient_composition(self):
         data = self.adapter.get_resource_data(IngredientComposition)
@@ -204,41 +234,15 @@ class IngredientCompositionAdapterTests(AdapterTests):
         self.assertIsNone(data.get('uuid'))
 
 
-class SupplementAdapterTests(AdapterTests):
+class SupplementAdapterTests(AdapterTests, TestResourceMixin):
+    model = Supplement
+
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementAdapterTests
 
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
         self.adapter = BetterSelfAPIAdapter(self.default_user)
         super().setUp()
-
-    def test_get_supplements(self):
-        # safety check to make sure you didn't do anything that managed to
-        # break this
-        supplements = self.adapter.get_resource_data(Supplement)
-        self.assertTrue(len(supplements) > 0)
-
-    def test_get_supplements_if_none_available(self):
-        Supplement.objects.all().delete()
-
-        supplements = self.adapter.get_resource_data(Supplement)
-        self.assertTrue(len(supplements) == 0)
-
-    def test_get_no_supplements_if_none_belong_to_user_or_default(self):
-        # because all user created objects have limited access to only
-        # the user that created it or the default user, check to make sure
-        # that any attempts to get data that don't belong ... shouldn't
-        supplements = self.adapter.get_resource_data(Supplement)
-        supplements_prior_update = len(supplements)
-
-        nobody = User.objects.create_user('nobody knows')
-        Supplement.objects.all().update(user=nobody)
-
-        supplements = self.adapter.get_resource_data(Supplement)
-        supplements_after_update = len(supplements)
-
-        self.assertEqual(supplements_after_update, 0)
-        self.assertNotEqual(supplements_prior_update, supplements_after_update)
 
     def test_post_supplements(self):
         supplement_name = 'cheese'
@@ -279,7 +283,7 @@ class SupplementAdapterTests(AdapterTests):
         self.assertFalse('name' in data)
 
 
-class SupplementEventsAdaptersTests(AdapterTests):
+class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
     model = SupplementEvent
 
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementEventsAdaptersTests
@@ -289,26 +293,3 @@ class SupplementEventsAdaptersTests(AdapterTests):
 
         default_user, _ = User.objects.get_or_create(username='default')
         SupplementEventFactory(user=default_user)
-
-    def test_get_supplement_event(self):
-        data = self.adapter.get_resource_data(SupplementEvent)
-        self.assertTrue(len(data) > 0)
-
-    def test_get_event_if_none_exist(self):
-        SupplementEvent.objects.all().delete()
-
-        supplement_events = self.adapter.get_resource_data(SupplementEvent)
-        self.assertTrue(len(supplement_events) == 0)
-
-    def test_get_events_if_none_belong_to_user(self):
-        records = self.adapter.get_resource_data(self.model)
-        records_prior_update = len(records)
-
-        nobody = User.objects.create_user('nobody knows')
-        self.model.objects.all().update(user=nobody)
-
-        records = self.adapter.get_resource_data(self.model)
-        records_after_update = len(records)
-
-        self.assertEqual(records_after_update, 0)
-        self.assertNotEqual(records_prior_update, records_after_update)
