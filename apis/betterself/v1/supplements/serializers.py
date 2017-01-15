@@ -89,6 +89,7 @@ class SupplementCreateSerializer(serializers.Serializer):
     ingredient_compositions_uuids = ListOrItemField(
         serializers.UUIDField(), required=False, source='ingredient_compositions'
     )
+    # TODO - think about a custom serializer for Vendor instead of doing it in create
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     model = Supplement
 

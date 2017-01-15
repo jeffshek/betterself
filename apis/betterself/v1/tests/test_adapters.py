@@ -205,7 +205,6 @@ class IngredientCompositionAdapterTests(AdapterTests):
 
 # class SupplementAdapterTests(LiveServerTestCase):
 class SupplementAdapterTests(AdapterTests):
-
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementAdapterTests
 
     @classmethod
@@ -257,3 +256,32 @@ class SupplementAdapterTests(AdapterTests):
 
         data = self.adapter.post_resource_data(Supplement, parameters=parameters)
         self.assertEqual(data['name'], supplement_name)
+
+    def test_post_supplements_with_invalid_uuid(self):
+        supplement_name = 'cheese'
+        parameters = {
+            'name': supplement_name,
+            'ingredient_compositions_uuids': [1, 2],
+        }
+
+        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
+
+        # if this errors (ie. something along the lines of
+        # {'ingredient_compositions_uuids': ['"2" is not a valid UUID.']}
+        self.assertTrue('ingredient_compositions_uuids' in data)
+        # when django errors out, it does it by returning the key field with an error
+        # and includes nothing else
+        self.assertFalse('name' in data)
+
+    def test_post_supplements_with_invalid_vendor_uuid(self):
+        supplement_name = 'cheese'
+        parameters = {
+            'name': supplement_name,
+            'vendor_uuid': [1, 2],
+        }
+
+        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
+
+        # when django errors out, it does it by returning the key field with an error and description
+        self.assertTrue('vendor_uuid' in data)
+        self.assertFalse('name' in data)
