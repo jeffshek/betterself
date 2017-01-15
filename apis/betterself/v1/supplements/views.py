@@ -4,7 +4,7 @@ from apis.betterself.v1.supplements.filters import IngredientCompositionFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
-from apis.betterself.v1.utils.views import UserQuerysetFilterMixin, BaseGenericListCreateAPIViewV1
+from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -49,7 +49,7 @@ class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
             return self.write_serializer_class
 
 
-class SupplementView(BaseGenericListCreateAPIViewV1, UserQuerysetFilterMixin):
+class SupplementView(BaseGenericListCreateAPIViewV1):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement

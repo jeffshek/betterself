@@ -12,7 +12,7 @@ from vendors.models import Vendor
 """
 This inherits LiveServerTestCase since we're spin up a port to listen and test
 adapters responds correctly. Most of the tests here are functional and not pure unit
-tests ,,, there's also some overlap with some of the more basic unit tests
+tests ... there's also some overlap with some of the more basic unit tests
 """
 
 MOCK_VENDOR_NAME = 'MadScienceLabs'
@@ -203,7 +203,24 @@ class IngredientCompositionAdapterTests(AdapterTests):
         self.assertIsNone(data.get('uuid'))
 
 
+# class SupplementAdapterTests(LiveServerTestCase):
 class SupplementAdapterTests(AdapterTests):
+
+    # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementAdapterTests
+
+    @classmethod
+    def setUpTestData(cls):
+        default_user, _ = User.objects.get_or_create(username='default')
+        VendorFactory(user=default_user, name=MOCK_VENDOR_NAME)
+        ingredient = IngredientFactory(user=default_user, name=MOCK_INGREDIENT_NAME)
+        IngredientCompositionFactory(user=default_user, ingredient=ingredient)
+        SupplementFactory(user=default_user)
+
+    def setUp(self):
+        self.default_user, _ = User.objects.get_or_create(username='default')
+        self.adapter = BetterSelfAPIAdapter(self.default_user)
+        super().setUp()
+
     def test_get_supplements(self):
         # safety check to make sure you didn't do anything that managed to
         # break this
@@ -231,3 +248,12 @@ class SupplementAdapterTests(AdapterTests):
 
         self.assertEqual(supplements_after_update, 0)
         self.assertNotEqual(supplements_prior_update, supplements_after_update)
+
+    def test_post_supplements(self):
+        supplement_name = 'cheese'
+        parameters = {
+            'name': supplement_name
+        }
+
+        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
+        self.assertEqual(data['name'], supplement_name)
