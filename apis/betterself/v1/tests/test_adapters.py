@@ -280,6 +280,8 @@ class SupplementAdapterTests(AdapterTests):
 
 
 class SupplementEventsAdaptersTests(AdapterTests):
+    model = SupplementEvent
+
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementEventsAdaptersTests
     @classmethod
     def setUpTestData(cls):
@@ -299,15 +301,13 @@ class SupplementEventsAdaptersTests(AdapterTests):
         self.assertTrue(len(supplement_events) == 0)
 
     def test_get_events_if_none_belong_to_user(self):
-        model = SupplementEvent
-
-        records = self.adapter.get_resource_data(model)
+        records = self.adapter.get_resource_data(self.model)
         records_prior_update = len(records)
 
         nobody = User.objects.create_user('nobody knows')
-        model.objects.all().update(user=nobody)
+        self.model.objects.all().update(user=nobody)
 
-        records = self.adapter.get_resource_data(model)
+        records = self.adapter.get_resource_data(self.model)
         records_after_update = len(records)
 
         self.assertEqual(records_after_update, 0)
