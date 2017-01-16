@@ -284,6 +284,24 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
         self.assertEqual(len(data), 1)
         self.assertFalse('name' in data)
 
+    def test_post_supplements_with_non_existent_vendor_uuid(self):
+        vendor_uuid = Vendor.objects.all().first().uuid
+        supplement_name = 'cheese'
+        parameters = {
+            'name': supplement_name,
+            'vendor_uuid': vendor_uuid,
+        }
+
+        # delete all vendor_ids so we can now test out what happens
+        Vendor.objects.all().delete()
+
+        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
+
+        # when django errors out, it does it by returning the key field with an error and description
+        self.assertTrue('non_field_errors' in data)
+        self.assertEqual(len(data), 1)
+        self.assertFalse('name' in data)
+
 
 class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
     model = SupplementEvent

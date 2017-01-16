@@ -89,16 +89,23 @@ class SupplementCreateSerializer(serializers.Serializer):
     ingredient_compositions_uuids = ListOrItemField(
         serializers.UUIDField(), required=False, source='ingredient_compositions'
     )
-    # TODO - think about a custom serializer for Vendor instead of doing it in create
     # really want to refactor all UUID looks ups to be serialized separately to do a lookup
     # to make sure that the UUID is valid before trying to create it
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     model = Supplement
 
-    def create(self, validated_data):
-        # all generated objects should have a user field
-        user = self.context['request'].user
-        validated_data['user'] = user
+    def validate(self, validated_data):
+        if 'vendor' in validated_data:
+            vendor_details = validated_data.pop('vendor')
+            # vendor_details = validated_data['vendor']
+            vendor_uuid = vendor_details['uuid']
+
+            try:
+                vendor = Vendor.objects.get(uuid=vendor_uuid)
+            except Vendor.DoesNotExist:
+                raise ValidationError('Non-required vendor UUID doesn\'t exist'.format(vendor_uuid))
+
+            validated_data['vendor'] = vendor
 
         if 'ingredient_compositions' in validated_data:
             ingredient_compositions_uuids = validated_data.pop('ingredient_compositions')
@@ -110,17 +117,15 @@ class SupplementCreateSerializer(serializers.Serializer):
         else:
             ingredient_compositions = []
 
-        if 'vendor' in validated_data:
-            # remove vendor from the validation data since we need to check if it exists or not
-            vendor_details = validated_data.pop('vendor')
-            vendor_uuid = vendor_details['uuid']
+        validated_data['ingredient_compositions'] = ingredient_compositions
 
-            try:
-                vendor = Vendor.objects.get(uuid=vendor_uuid)
-            except Vendor.DoesNotExist:
-                raise ValidationError('Vendor does not exist with UUID of {}'.format(vendor_uuid))
+        return validated_data
 
-            validated_data['vendor'] = vendor
+    def create(self, validated_data):
+        # all generated objects should have a user field
+        user = self.context['request'].user
+        validated_data['user'] = user
+        ingredient_compositions = validated_data.pop('ingredient_compositions')
 
         # cannot associate many to many unless item has been saved
         supplement, _ = Supplement.objects.get_or_create(**validated_data)
