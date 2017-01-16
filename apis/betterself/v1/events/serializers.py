@@ -15,7 +15,8 @@ class SupplementEventCreateSerializer(serializers.Serializer):
 
     @classmethod
     def validate_supplement_uuid(cls, value):
-        # make sure this object actually exists
+        # serializers check if these are valid uuid fields, but they don't
+        # check that these objects should actually exist. do it here!
         try:
             Supplement.objects.get(uuid=value)
         except Supplement.DoesNotExist:

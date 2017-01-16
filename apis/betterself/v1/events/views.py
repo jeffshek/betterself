@@ -4,7 +4,6 @@ from events.models import SupplementEvent
 
 
 class SupplementEventView(BaseGenericListCreateAPIViewV1):
-    serializer_class = SupplementEventCreateSerializer
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
