@@ -90,6 +90,8 @@ class SupplementCreateSerializer(serializers.Serializer):
         serializers.UUIDField(), required=False, source='ingredient_compositions'
     )
     # TODO - think about a custom serializer for Vendor instead of doing it in create
+    # really want to refactor all UUID looks ups to be serialized separately to do a lookup
+    # to make sure that the UUID is valid before trying to create it
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     model = Supplement
 

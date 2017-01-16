@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from apis.betterself.v1.supplements.serializers import SupplementReadOnlySerializer
@@ -11,6 +12,16 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     uuid = serializers.UUIDField(required=False)
+
+    @classmethod
+    def validate_supplement_uuid(cls, value):
+        # make sure this object actually exists
+        try:
+            Supplement.objects.get(uuid=value)
+        except Supplement.DoesNotExist:
+            raise ValidationError('Supplement UUID {} does not exist'.format(value))
+
+        return value
 
     def create(self, validated_data):
         user = self.context['request'].user

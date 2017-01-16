@@ -239,7 +239,6 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
     model = Supplement
 
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementAdapterTests
-
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
         self.adapter = BetterSelfAPIAdapter(self.default_user)
@@ -338,4 +337,21 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
 
         # if error, only the field is returned and an error corresponding
         self.assertTrue('source' in data)
+        self.assertEqual(len(data), 1)
+
+    def test_post_events_with_valid_but_no_longer_exists_uuid(self):
+        supplement_uuid = self.adapter.get_resource_data(Supplement)[0]['uuid']
+        Supplement.objects.all().delete()
+
+        parameters = {
+            'source': 'android',
+            'supplement_uuid': supplement_uuid,
+            'quantity': 3.5,
+            'time': timezone.now()
+        }
+
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+
+        # if error, only the field is returned and an error corresponding
+        self.assertTrue('supplement_uuid' in data)
         self.assertEqual(len(data), 1)
