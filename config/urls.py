@@ -7,21 +7,19 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken import views
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='pages/coming_soon.html'), name='home'),
-    # url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'), bring me back!
+    # General
+    url(r'^$', TemplateView.as_view(template_name='pages/home/index.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, include(admin.site.urls)),
-
-    # User management
+    # User Management
     url(r'^users/', include('betterself.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
-
-    # include api urls - change later to subdomain
+    # API
     url(r'^api/', include('apis.urls')),
+]
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
