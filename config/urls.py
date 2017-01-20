@@ -8,8 +8,7 @@ from rest_framework.authtoken import views
 
 urlpatterns = [
     # General
-    url(r'^$', TemplateView.as_view(template_name='pages/coming_soon.html'), name='home'),
-    url(r'^replacement/$', TemplateView.as_view(template_name='pages/initial_home_page.html'), name='home'),
+    url(r'^$', TemplateView.as_view(template_name='pages/home/index.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, include(admin.site.urls)),
