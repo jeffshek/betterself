@@ -1,8 +1,9 @@
 BetterSelf
 ==============================
 
-[![Build Status](https://travis-ci.org/jeffshek/betterself.svg?branch=master)](https://travis-ci.org/jeffshek/betterself)
-
+.. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
+    :target: https://travis-ci.org/jeffshek/betterself
+    
 Figure out what works (and what doesn't) to be a better version of your self.
 
 - Track events in 10 seconds on your phone (iPhone and Android support)
