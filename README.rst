@@ -1,9 +1,11 @@
-BetterSelf
-==============================
+Master Build Status
 
 .. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
     :target: https://travis-ci.org/jeffshek/betterself
-    
+        
+BetterSelf
+==============================
+
 Figure out what works (and what doesn't) to be a better version of your self.
 
 - Track events in 10 seconds on your phone (iPhone and Android support)
@@ -15,8 +17,8 @@ Figure out what works (and what doesn't) to be a better version of your self.
 
 For the nerds ...
 
-- Full RESTful architecture. We eat our own dog food and use it to create all events you send us. Not dealing with half-baked APIs that are impossible to config.
-- Fully open sourced. Developer environments are easily deployed via Docker with pre/post commit hooks, tests + travis to maintain sanity. Pull Request friendly.
+- RESTful architecture (I'm just not convinced about Level 3). We eat our own dog food and use it to create all events you send us. All events and tracking is done through an API. Rest assured, it's meant to be developer friendly.
+- Fully open sourced. Developer environments are easily deployed via Vagrant with pre/post commit hooks, tests + travis to maintain sanity. Pull Request friendly. Probably switch to Docker, eventually, stage two ...
 
 Why are we (unfortunately, just me) doing this?
 
