@@ -7,6 +7,7 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
+    # add serializer_class!
 
     def get_serializer_class(self):
         request_method = self.request.method

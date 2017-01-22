@@ -29,5 +29,6 @@ class EventModelsFixturesGenerator(object):
             quantity = test_case[0]
             input_source = test_case[1]
             event_time = test_case[2]
-            SupplementEventFactory(quantity=quantity, source=input_source,
-                time=event_time, user=user, supplement=supplement)
+            if quantity > 0:
+                SupplementEventFactory(quantity=quantity, source=input_source,
+                    time=event_time, user=user, supplement=supplement)

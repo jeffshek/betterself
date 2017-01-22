@@ -10,6 +10,9 @@ from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 logger = logging.Logger(__name__)
 
 
+# python manage.py test apis.betterself.v1.tests.test_base
+
+
 # I'm such an idiot, refactor all of this to be good mixins
 # switch them to a template design Pattern ... that way you don't
 # have to super over and over like a fool
@@ -54,6 +57,17 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
 
         # don't do application/json for single key/value, issue with unpacking
         request = self.client_1.get(url, request_parameters)
+
+        for record in request.data:
+            # if we are using a get with request parameters, we want to be certain
+            # that it's correctly filtering on those request_parameters correctly
+            # ie. if I filter for anything with a quantity of 5.0, i only get
+            # 5.0 back! Build a dictionary containing only what was in the
+            # request parameters and compare that it's equal
+            record_values = {key: record[key] for key in request_parameters}
+
+            self.assertEqual(record_values, request_parameters)
+
         self.assertIsNotNone(request.data)
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)

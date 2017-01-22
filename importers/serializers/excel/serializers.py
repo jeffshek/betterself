@@ -165,8 +165,6 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             self.SUPPLEMENT_UUID_CACHE[column_name] = supplement['uuid']
 
     def save_results(self, dataframe):
-        # potentially consider making this into its own DataframeImporter file
-        # kind of seems like it should, but also kind of feels like overkill
         source = 'user_excel'
 
         self._create_supplements_from_dataframe(dataframe)
@@ -199,3 +197,5 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                 }
 
                 self.adapter.get_or_create_resource(SupplementEvent, supplement_event_parameters)
+                # ah, i forgot to add the filter_class!
+                # self.adapter.get_resource_data(SupplementEvent, supplement_event_parameters)
