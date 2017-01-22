@@ -9,10 +9,11 @@ class IngredientCompositionFilter(FilterSet):
     ingredient_uuid = django_filters.CharFilter(name='ingredient__uuid')
     measurement_uuid = django_filters.CharFilter(name='measurement__uuid')
     quantity = django_filters.NumberFilter(name='quantity')
+    uuid = django_filters.UUIDFilter(name='uuid')
 
     class Meta:
         model = IngredientComposition
-        fields = ['ingredient_uuid', 'quantity', 'measurement_uuid']
+        fields = ['ingredient_uuid', 'quantity', 'measurement_uuid', 'uuid']
 
 
 class SupplementFilter(FilterSet):

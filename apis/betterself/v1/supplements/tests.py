@@ -90,6 +90,15 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         key = 'ingredient'
         super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
+    def test_valid_get_with_uuid_params(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        data = self.client_1.get(url).data
+        valid_ingredient_composition = data[0]
+        valid_uuid = valid_ingredient_composition['uuid']
+
+        request_parameters = {'uuid': valid_uuid}
+        super().test_valid_get_request_with_params(request_parameters)
+
 
 class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.supplements.tests.SupplementV1Tests
