@@ -8,6 +8,7 @@ class IngredientCompositionFilter(FilterSet):
     # this is really ghetto please fix this, look into just using UUID
     ingredient_uuid = django_filters.CharFilter(name='ingredient__uuid')
     measurement_uuid = django_filters.CharFilter(name='measurement__uuid')
+    quantity = django_filters.NumberFilter(name='quantity')
 
     class Meta:
         model = IngredientComposition

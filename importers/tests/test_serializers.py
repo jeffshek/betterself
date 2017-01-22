@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.test import LiveServerTestCase
 from django.test import TestCase
 
 from events.models import SupplementEvent
@@ -11,8 +12,10 @@ from supplements.models import Ingredient, IngredientComposition, Measurement, S
 
 User = get_user_model()
 
+# python manage.py test importers.tests.test_serializers
 
-class ExcelImporterTests(TestCase):
+
+class ExcelImporterTests(LiveServerTestCase, TestCase):
     file_path = settings.ROOT_DIR.path('importers', 'fixtures', 'tests', 'supplement_log_fixtures.xlsx')
 
     @classmethod
@@ -60,8 +63,6 @@ class ExcelImporterTests(TestCase):
         # this is kind of a crappy test, but i'm just using implicit knowledge of fixtures
         # to test that the entries created are correct
         results = self.sanitizer.get_sanitized_dataframe()
-
-        # TODO - refactor this so it sucks less, ideally create it and then review individual data points
         self.sanitizer.save_results(results)
 
         supplement_events_exist = SupplementEvent.objects.all().exists()
@@ -69,15 +70,15 @@ class ExcelImporterTests(TestCase):
 
     def test_get_measurement_unit_and_quantity_from_name(self):
         test_name_1 = 'Snake Oil (200mg)'
-        result = ExcelSupplementFileSerializer._get_measurement_and_quantity_from_name(test_name_1)
+        result = ExcelSupplementFileSerializer._get_measurement_and_quantity_from_name(test_name_1, 'random_uuid')
 
         self.assertEqual(result['quantity'], 200)
 
         test_name_2 = 'Snake Oil'
-        result = ExcelSupplementFileSerializer._get_measurement_and_quantity_from_name(test_name_2)
+        result = ExcelSupplementFileSerializer._get_measurement_and_quantity_from_name(test_name_2, 'random_uuid')
         result_quantity = result.get('quantity')
 
-        self.assertEqual(result_quantity, None)
+        self.assertEqual(result_quantity, 1)
 
     def test_columns_with_spaces_in_excel(self):
         series = pd.Series([1, 2, 3])

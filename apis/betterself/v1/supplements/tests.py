@@ -7,6 +7,8 @@ from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
 
+#  python manage.py test apis.betterself.v1.supplements.tests
+
 class SupplementBaseTests(BaseAPIv1Tests):
     # maybe debate this might be better as a template design pattern ...
     # this inheritance chain is getting pretty long
@@ -80,7 +82,7 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         cls.DEFAULT_POST_PARAMS['measurement_uuid'] = Measurement.objects.all().first().uuid.__str__()
 
     def test_valid_get_request_with_params(self):
-        request_parameters = {'name': 'Glutamine'}
+        request_parameters = {'quantity': 1}
         super().test_valid_get_request_with_params(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
@@ -135,7 +137,8 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         super().test_post_request_changes_objects_for_right_user(request_parameters)
 
     def test_valid_get_request_with_params(self):
-        request_parameters = {'name': 'Glutamine'}
+        valid_name = Supplement.objects.all().first().name
+        request_parameters = {'name': valid_name}
         super().test_valid_get_request_with_params(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
