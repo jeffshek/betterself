@@ -64,7 +64,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
     def test_valid_get_request_with_params(self):
-        request_parameters = {'quantity': 5.0}
+        request_parameters = {'quantity': 4.0}
         super().test_valid_get_request_with_params(request_parameters)
 
     def test_event_invalid_supplement_post_request(self):
