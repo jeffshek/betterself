@@ -1,6 +1,7 @@
 import pandas as pd
 import pytz
 import re
+from decimal import Decimal
 from django.db.models import Q
 from numpy import dtype
 
@@ -90,13 +91,15 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
     """Take a raw historical excel of supplements, clean and save it"""
 
     TEMPLATE_SAVE_MODEL = SupplementEvent
-    SUPPLEMENT_CACHE = {}  # use it to match any supplement_name to a product
+    SUPPLEMENT_UUID_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
     def _get_measurement_and_quantity_from_name(name, ingredient_uuid):
         # figure out that Advil (200mg) means 200 mg
         result = {
-            'ingredient_uuid': ingredient_uuid
+            'ingredient_uuid': ingredient_uuid,
+            # throw a default quantity of 1 since that's that model has stored as default
+            'quantity': 1,
         }
 
         name_no_spaces = name.replace(' ', '')
@@ -159,7 +162,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
             # add to cache, so don't have to deal with flattening to search
             # when saving individual events
-            self.SUPPLEMENT_CACHE[column_name] = supplement['uuid']
+            self.SUPPLEMENT_UUID_CACHE[column_name] = supplement['uuid']
 
     def save_results(self, dataframe):
         # potentially consider making this into its own DataframeImporter file
@@ -176,17 +179,23 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
         for index, event in valid_dataframe.iterrows():
             for supplement_name, quantity in event.iteritems():
-                supplement = self.SUPPLEMENT_CACHE[supplement_name]
+                # don't include any zero events
+                if quantity == Decimal(0):
+                    continue
+
+                supplement_uuid = self.SUPPLEMENT_UUID_CACHE[supplement_name]
 
                 time = index
 
                 # localize and make as UTC time
-                time = pytz.utc.localize(time, pytz.UTC)
+                eastern_timezone = pytz.timezone('US/Eastern')
+                localized_time = eastern_timezone.localize(time)
 
-                self.TEMPLATE_SAVE_MODEL.objects.get_or_create(
-                    user=self.user,
-                    supplement=supplement,
-                    time=time,
-                    quantity=quantity,
-                    source=source
-                )
+                supplement_event_parameters = {
+                    'supplement_uuid': supplement_uuid,
+                    'time': localized_time,
+                    'source': source,
+                    'quantity': quantity
+                }
+
+                self.adapter.get_or_create_resource(SupplementEvent, supplement_event_parameters)

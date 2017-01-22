@@ -11,7 +11,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
-    uuid = serializers.UUIDField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
     @classmethod
     def validate_supplement_uuid(cls, value):

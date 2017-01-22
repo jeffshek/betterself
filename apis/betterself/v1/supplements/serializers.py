@@ -104,12 +104,13 @@ class SupplementCreateSerializer(serializers.Serializer):
     # really want to refactor all UUID looks ups to be serialized separately to do a lookup
     # to make sure that the UUID is valid before trying to create it
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
+
     model = Supplement
 
     def validate(self, validated_data):
         if 'vendor' in validated_data:
             vendor_details = validated_data.pop('vendor')
-            # vendor_details = validated_data['vendor']
             vendor_uuid = vendor_details['uuid']
 
             try:
@@ -121,11 +122,19 @@ class SupplementCreateSerializer(serializers.Serializer):
 
         if 'ingredient_compositions' in validated_data:
             ingredient_compositions_uuids = validated_data.pop('ingredient_compositions')
-            ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
 
-            if ingredient_compositions.count() != len(ingredient_compositions_uuids):
-                raise ValidationError('Not all ingredient composition UUIDs were found {}'.format(
-                    ingredient_compositions_uuids))
+            if isinstance(ingredient_compositions_uuids, list):
+                ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
+
+                if ingredient_compositions.count() != len(ingredient_compositions_uuids):
+                    raise ValidationError('Not all ingredient composition UUIDs were found {}'.format(
+                        ingredient_compositions_uuids))
+            else:
+                # TODO - add a test for this, this is because of the list
+                # or single situation
+                ing_comp = IngredientComposition.objects.get(uuid=ingredient_compositions_uuids)
+                ingredient_compositions = [ing_comp]
+
         else:
             ingredient_compositions = []
 
