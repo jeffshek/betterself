@@ -57,7 +57,8 @@ class IngredientCompositionReadOnlySerializer(serializers.Serializer):
 class IngredientCompositionCreateSerializer(serializers.Serializer):
     ingredient_uuid = serializers.UUIDField(source='ingredient.uuid')
     measurement_uuid = serializers.UUIDField(source='measurement.uuid', required=False)
-    quantity = serializers.FloatField()
+    quantity = serializers.FloatField(required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate(self, validated_data):
         ingredient_uuid = validated_data['ingredient']['uuid']

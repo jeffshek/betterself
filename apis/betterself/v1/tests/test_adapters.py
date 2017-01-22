@@ -213,6 +213,7 @@ class IngredientCompositionAdapterTests(AdapterTests, TestResourceMixin):
         self.assertEqual(data['measurement_uuid'], measurement['uuid'])
         self.assertEqual(data['ingredient_uuid'], ingredient['uuid'])
         self.assertEqual(data['quantity'], quantity)
+        self.assertIsNotNone(data['uuid'])
 
     def test_post_ingredient_composition_with_invalid_uuid(self):
         ingredients = self.adapter.get_resource_data(Ingredient)
