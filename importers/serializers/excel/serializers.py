@@ -1,11 +1,10 @@
-import re
 import pandas as pd
 import pytz
-
-from django.core.management import CommandError
+import re
 from django.db.models import Q
 from numpy import dtype
 
+from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from events.models import SupplementEvent
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
@@ -16,10 +15,15 @@ class ExcelFileSerializer(object):
         self.file_path = file_path
         # Sheet1 is default name for xlsx files
         self.sheet = sheet if sheet else 'Sheet1'
-        self.user = user
 
         ignore_columns = ignore_columns if ignore_columns else []
         self.ignore_columns = ignore_columns
+
+        # use an adapter instead to create / query all the get / post API
+        # seems like a huge pain considering we could just use native django save/create/query
+        # but using this and making sure there are no bugs is better than having
+        # real users face issues
+        self.adapter = BetterSelfAPIAdapter(user)
 
     def get_sanitized_dataframe(self, date_column='Date'):
         # ExcelFile does not handle file_paths very well, use native Python open
@@ -132,15 +136,6 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
         # when you have no idea what users will input, so we're going to
         # create everything if it doesn't exist and then let a user rename
         # on the site
-
-        # if you're putting more than 30 supplements from a spreadsheet
-        # i don't trust you. this prevents user error from uploading
-        # an absurd amount of supplements.
-        dataframe_col_count = len(dataframe.columns)
-        dataframe_col_limit = 150
-        if dataframe_col_count > dataframe_col_limit:
-            raise CommandError('Too many columns. {0} entered. Max is {1}'
-                               'Please contact an admin.'.format(dataframe_col_count, dataframe_col_limit))
 
         for column_name in dataframe:
             # go from Tyrosine (500mg) to Tyrosine
