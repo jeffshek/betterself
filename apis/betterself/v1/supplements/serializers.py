@@ -56,20 +56,31 @@ class IngredientCompositionReadOnlySerializer(serializers.Serializer):
 
 class IngredientCompositionCreateSerializer(serializers.Serializer):
     ingredient_uuid = serializers.UUIDField(source='ingredient.uuid')
-    measurement_uuid = serializers.UUIDField(source='measurement.uuid')
+    measurement_uuid = serializers.UUIDField(source='measurement.uuid', required=False)
     quantity = serializers.FloatField()
 
-    def create(self, validated_data):
-        user = self.context['request'].user
-        create_model = self.context['view'].model
-
+    def validate(self, validated_data):
         ingredient_uuid = validated_data['ingredient']['uuid']
         ingredient = Ingredient.objects.get(uuid=ingredient_uuid)
         validated_data['ingredient'] = ingredient
 
-        measurement_uuid = validated_data['measurement']['uuid']
-        measurement = Measurement.objects.get(uuid=measurement_uuid)
-        validated_data['measurement'] = measurement
+        if 'measurement' in validated_data:
+            measurement_details = validated_data.pop('measurement')
+            # measurement_details = validated_data['measurement']
+            measurement_uuid = measurement_details['uuid']
+
+            try:
+                measurement = Measurement.objects.get(uuid=measurement_uuid)
+            except Vendor.DoesNotExist:
+                raise ValidationError('Non-required measurement UUID doesn\'t exist'.format(measurement_uuid))
+
+            validated_data['measurement'] = measurement
+
+        return validated_data
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        create_model = self.context['view'].model
 
         obj, _ = create_model.objects.get_or_create(user=user, **validated_data)
         return obj

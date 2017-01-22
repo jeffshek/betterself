@@ -59,10 +59,9 @@ class ExcelFileSerializer(object):
         dataframe = dataframe.drop(date_column, axis=1)
         return dataframe
 
-    @classmethod
-    def _sanitize_sheet(cls, dataframe):
-        dataframe = cls.sanitize_dataframe_columns(dataframe)
-        dataframe = cls._sanitize_dataframe_values(dataframe)
+    def _sanitize_sheet(self, dataframe):
+        dataframe = self.sanitize_dataframe_columns(dataframe, ignore_columns=self.ignore_columns)
+        dataframe = self._sanitize_dataframe_values(dataframe)
         return dataframe
 
     @classmethod
@@ -80,8 +79,9 @@ class ExcelFileSerializer(object):
         revised_columns = cls._get_stripped_column_headers(dataframe)
         dataframe = dataframe.rename(columns=revised_columns)
 
-        for column in ignore_columns:
-            dataframe = dataframe.drop(column, axis=1)
+        # for all the ignore columns (ie. non - supplement event stuff
+        # disregard it)
+        dataframe = dataframe.drop(ignore_columns, axis=1)
 
         return dataframe
 
@@ -93,14 +93,16 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
     SUPPLEMENT_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
-    def get_measurement_and_quantity_from_name(name):
+    def _get_measurement_and_quantity_from_name(name, ingredient_uuid):
         # figure out that Advil (200mg) means 200 mg
         result = {
-            'measurement': None,
+            'ingredient_uuid': ingredient_uuid
         }
 
-        # make my regex life easier
         name_no_spaces = name.replace(' ', '')
+        # so for a value like Advil (200mg) anything with a parenthesis means
+        # it stores some type of meta information we want to extract. if
+        # we can't find anything like that, scrap it.
         regex_match_with_parenthesis = re.search('(?<=\()\w+', name_no_spaces)
         if not regex_match_with_parenthesis:
             return result
@@ -116,7 +118,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             measurement_query = Measurement.objects.filter(
                 Q(short_name=measurement_name) | Q(name=measurement_name))
             if measurement_query.exists():
-                result['measurement'] = measurement_query[0]
+                result['measurement_uuid'] = measurement_query[0].uuid
 
         return result
 
@@ -139,29 +141,25 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
         for column_name in dataframe:
             # go from Tyrosine (500mg) to Tyrosine
-            ingredient_parsed = self._parse_ingredient_from_column_entry(column_name)
+            ingredient_name_parsed = self._parse_ingredient_from_column_entry(column_name)
 
-            ingredient, _ = Ingredient.objects.get_or_create(
-                name=ingredient_parsed,
-                user=self.user
-            )
+            parameters = {'name': ingredient_name_parsed}
 
-            ingredient_comp_details = self.get_measurement_and_quantity_from_name(column_name)
+            ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
+            ingredient_uuid = ingredient['uuid']
 
-            ingredient_comp, _ = IngredientComposition.objects.get_or_create(
-                ingredient=ingredient, user=self.user, **ingredient_comp_details)
+            ingredient_comp_parameters = self._get_measurement_and_quantity_from_name(column_name, ingredient_uuid)
+            ingredient_composition = self.adapter.get_or_create_resource(
+                IngredientComposition, ingredient_comp_parameters)
 
-            supplement, _ = Supplement.objects.get_or_create(
-                name=ingredient_parsed,
-                user=self.user
-            )
+            # serializer is cool enough to take list or item
+            parameters['ingredient_compositions_uuids'] = ingredient_composition['uuid']
 
-            supplement.ingredient_composition = [ingredient_comp]
-            supplement.save()
+            supplement = self.adapter.get_or_create_resource(Supplement, parameters)
 
             # add to cache, so don't have to deal with flattening to search
             # when saving individual events
-            self.SUPPLEMENT_CACHE[column_name] = supplement
+            self.SUPPLEMENT_CACHE[column_name] = supplement['uuid']
 
     def save_results(self, dataframe):
         # potentially consider making this into its own DataframeImporter file

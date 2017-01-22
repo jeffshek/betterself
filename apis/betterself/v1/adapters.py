@@ -35,22 +35,37 @@ class BetterSelfAPIAdapter(object):
         url = reverse(resource.RESOURCE_NAME)
         return self.domain + url
 
-    def get_resource_response(self, resource, parameters=None):
+    def _get_resource_response(self, resource, parameters=None):
         resource_endpoint = self.fetch_resource_endpoint_url(resource)
         response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
         return response
 
     def get_resource_data(self, resource, parameters=None):
-        response = self.get_resource_response(resource, parameters)
+        response = self._get_resource_response(resource, parameters)
         data = json.loads(response.text)
         return data
 
-    def post_resource_response(self, resource, parameters):
+    def get_or_create_resource(self, resource, parameters=None):
+        # this is starting to feel really stupid to put another layer over
+        # django and im praying to god this pays off. try to get a resource, otherwise
+        # create it via a post. if more than one object exists, error.
+        data = self.get_resource_data(resource, parameters)
+
+        if len(data) > 1:
+            raise ValueError('Expected one object ... got two! {}'.format(data))
+        elif len(data) == 1:
+            serialized_data = data[0]
+        elif not data:
+            serialized_data = self.post_resource_data(resource, parameters)
+
+        return serialized_data
+
+    def _post_resource_response(self, resource, parameters):
         resource_endpoint = self.fetch_resource_endpoint_url(resource)
         response = requests.post(resource_endpoint, data=parameters, headers=self.headers)
         return response
 
     def post_resource_data(self, resource, parameters):
-        response = self.post_resource_response(resource, parameters)
+        response = self._post_resource_response(resource, parameters)
         data = json.loads(response.text)
         return data

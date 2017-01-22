@@ -70,7 +70,7 @@ class AdapterTests(LiveServerTestCase, TestCase):
 class GenericAdapterTests(AdapterTests):
     def test_resources_get_on_adapter(self):
         for resource in VALID_REST_RESOURCES:
-            response = self.adapter.get_resource_response(resource)
+            response = self.adapter._get_resource_response(resource)
             self.assertEqual(response.status_code, 200)
 
 
@@ -234,6 +234,23 @@ class IngredientCompositionAdapterTests(AdapterTests, TestResourceMixin):
         # {'measurement_uuid': ['"cake_is_lie" is not a valid UUID.']}
         self.assertIsNone(data.get('uuid'))
 
+    def test_post_ingredient_composition_measurement_isnt_required(self):
+        ingredients = self.adapter.get_resource_data(Ingredient)
+        ingredient = ingredients[0]
+        ingredient_uuid = ingredient['uuid']
+
+        quantity = 10
+
+        parameters = {
+            'ingredient_uuid': ingredient_uuid,
+            'quantity': quantity
+        }
+
+        data = self.adapter.post_resource_data(IngredientComposition, parameters)
+
+        self.assertEqual(data['ingredient_uuid'], ingredient['uuid'])
+        self.assertEqual(data['quantity'], quantity)
+
 
 class SupplementAdapterTests(AdapterTests, TestResourceMixin):
     model = Supplement
@@ -373,3 +390,13 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
         # if error, only the field is returned and an error corresponding
         self.assertTrue('supplement_uuid' in data)
         self.assertEqual(len(data), 1)
+
+    def test_get_or_create_response(self):
+        parameters = {'name': 'Chocolate'}
+        ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
+        uuid_first_pass = ingredient['uuid']
+
+        ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
+        uuid_second_pass = ingredient['uuid']
+
+        self.assertEqual(uuid_first_pass, uuid_second_pass)
