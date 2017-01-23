@@ -94,10 +94,9 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
     SUPPLEMENT_UUID_CACHE = {}  # use it to match any supplement_name to a product
 
     @staticmethod
-    def _get_measurement_and_quantity_from_name(name, ingredient_uuid):
+    def _get_measurement_and_quantity_from_name(name):
         # figure out that Advil (200mg) means 200 mg
         result = {
-            'ingredient_uuid': ingredient_uuid,
             # throw a default quantity of 1 since that's that model has stored as default
             'quantity': 1,
         }
@@ -151,7 +150,8 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
             ingredient_uuid = ingredient['uuid']
 
-            ingredient_comp_parameters = self._get_measurement_and_quantity_from_name(column_name, ingredient_uuid)
+            ingredient_comp_parameters = self._get_measurement_and_quantity_from_name(column_name)
+            ingredient_comp_parameters['ingredient_uuid'] = ingredient_uuid
             ingredient_composition = self.adapter.get_or_create_resource(
                 IngredientComposition, ingredient_comp_parameters)
 
