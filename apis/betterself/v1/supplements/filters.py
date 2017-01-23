@@ -23,4 +23,4 @@ class SupplementFilter(FilterSet):
 
     class Meta:
         model = Supplement
-        fields = ['ingredient_compositions_uuids', 'name', 'vendor']
+        fields = ['ingredient_compositions_uuids', 'name', 'vendor', 'uuid']

@@ -34,5 +34,15 @@ class SupplementModelsFixturesGenerator(object):
         )
 
         # factory boy is a little bit special for many to many
-        SupplementFactory.create(user=default_user, ingredient_composition=(
-            ingredient_composition_1, ingredient_composition_2, ingredient_composition_3))
+        SupplementFactory.create(
+            user=default_user,
+            ingredient_composition=(
+                ingredient_composition_1, ingredient_composition_2, ingredient_composition_3)
+        )
+
+        SupplementFactory.create(
+            name='Super Snake Oil',
+            user=default_user,
+            ingredient_composition=(
+                ingredient_composition_1, ingredient_composition_2, ingredient_composition_3)
+        )
