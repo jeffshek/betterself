@@ -17,7 +17,7 @@ so that users won't have access to models that are not the default or don't belo
 class VendorView(BaseGenericListCreateAPIViewV1):
     serializer_class = VendorSerializer
     model = Vendor
-    filter_fields = ('name',)
+    filter_fields = ('name', 'uuid')
 
 
 class MeasurementView(ListAPIView):

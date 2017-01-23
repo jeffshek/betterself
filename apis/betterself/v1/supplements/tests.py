@@ -3,6 +3,7 @@ from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, DEFAULT_INGREDIENT_HL_MINUTE_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
+from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
@@ -22,13 +23,22 @@ class SupplementBaseTests(BaseAPIv1Tests):
         super().setUpTestData()
 
 
-class VendorV1Tests(SupplementBaseTests, PostRequestsTestsMixin):
+class VendorV1Tests(SupplementBaseTests, PostRequestsTestsMixin, GetRequestsTestsMixin):
     TEST_MODEL = Vendor
     DEFAULT_POST_PARAMS = {
         'name': 'Poptarts',
         'email': 'general_hosptial@school.com',
         'url:': 'cool.com',
     }
+
+    def test_valid_get_request_with_params(self):
+        request_parameters = {'name': DEFAULT_VENDOR_NAME}
+        super().test_valid_get_request_with_params(request_parameters)
+
+    def test_valid_get_request_for_key_in_response(self):
+        request_parameters = {'name': DEFAULT_VENDOR_NAME}
+        key = 'name'
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
 
 class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
