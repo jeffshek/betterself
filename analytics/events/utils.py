@@ -37,7 +37,14 @@ class SupplementEventsDataframeBuilder(object):
 
         return df
 
-    # def build_dataframe_grouped_daily(self):
-    #     TODO - set grouping on the dataframes by day
-    #     df = self.build_dataframe()
-    #     return df
+    def build_dataframe_grouped_daily(self):
+        # can't really aggregrate source (str) over a day
+        df = self.build_dataframe()
+        df = df.drop(SOURCE_COLUMN_NAME, axis=1)
+
+        # first group by Supplement, ie. so that
+        # BCAA / Creatine are separately. Then resample
+        # the index to a Daily amount and sum it
+        daily_df = df.groupby('Supplement').resample('D').sum()
+
+        return daily_df

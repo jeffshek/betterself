@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME
+from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME, \
+    QUANTITY_COLUMN_NAME
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
@@ -35,13 +36,34 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         # really misleading, but this is assertItemsEqual
         self.assertCountEqual(column_labels, df.columns.tolist())
 
-    # def test_build_daily_dataframe(self):
-    #     """
-    #     Test that we can get dataframes that are grouped correctly by
-    #     day
-    #     """
-    #     queryset = SupplementEvent.objects.all()
-    #     builder = SupplementEventsDataframeBuilder(queryset)
-    #     df = builder.build_dataframe_grouped_daily()
-    #
-    #
+    def test_build_daily_dataframe_sums(self):
+        """
+        Test that we can get dataframes that are grouped correctly by day
+        """
+        queryset = SupplementEvent.objects.all()
+        builder = SupplementEventsDataframeBuilder(queryset)
+
+        df = builder.build_dataframe_grouped_daily()
+        quantity_sum = df[QUANTITY_COLUMN_NAME].sum()
+
+        quantities_values = SupplementEvent.objects.all().values_list('quantity', flat=True)
+        quantities_values = sum(quantities_values)
+
+        # if this is done correctly, the sum of the grouped by values
+        # should be the same as the databas
+        self.assertEqual(quantity_sum, quantities_values)
+
+    def test_build_daily_dataframe_groups_by_day(self):
+        """
+        Test that we can get dataframes that are grouped correctly by day
+        """
+        queryset = SupplementEvent.objects.all()
+        builder = SupplementEventsDataframeBuilder(queryset)
+
+        df = builder.build_dataframe_grouped_daily()
+
+        # get a list of all the "days" we have stored - ie. transform
+        # a datetime to just a date. then compare that the builder's grouped daily
+        times_values = SupplementEvent.objects.all().values_list('time', flat=True)
+        unique_dates = {item.date() for item in times_values}
+        self.assertEqual(len(unique_dates), df.count()[QUANTITY_COLUMN_NAME])
