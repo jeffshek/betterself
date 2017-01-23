@@ -3,7 +3,7 @@ import pandas as pd
 
 from django.test import TestCase
 
-# python manage.py test analytics.events.tests
+# python manage.py test analytics.events.tests.test_analytics
 from analytics.events.analytics import DataFrameEventsAnalyzer
 
 

@@ -22,7 +22,7 @@ class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
         # i don't know how much i like this after seeing this a while later
         # but the base_tests create user fixtures that are logged in for client 1 and client2
         # this becomes useful because there are a lot of fixtures created from the "default"
-        cls._create_user_fixtures()
+        cls.create_user_fixtures()
         super(BaseAPIv1Tests, cls).setUpTestData()
 
     def setUp(self):

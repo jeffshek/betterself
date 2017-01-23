@@ -35,7 +35,7 @@ class UsersTestsFixturesMixin(object):
         return client
 
     @classmethod
-    def _create_user_fixtures(cls):
+    def create_user_fixtures(cls):
         # setup the user once
         cls.user_1 = cls.create_user()
         # create some random fake user_2 to test duplicates
