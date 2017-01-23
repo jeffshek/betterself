@@ -38,8 +38,9 @@ class SupplementEventsDataframeBuilder(object):
         return df
 
     def build_dataframe_grouped_daily(self):
-        # can't really aggregrate source (str) over a day
         df = self.build_dataframe()
+        # can't really aggregate source (str) over a day, so drop it
+        # otherwise we see BCAABCAABCAABCAABCAABCAABCAABCAABCAABCAA
         df = df.drop(SOURCE_COLUMN_NAME, axis=1)
 
         # first group by Supplement, ie. so that
@@ -48,3 +49,16 @@ class SupplementEventsDataframeBuilder(object):
         daily_df = df.groupby('Supplement').resample('D').sum()
 
         return daily_df
+
+    # def build_flattened_daily_dataframe(self):
+    #     """
+    #     Construct a dataframe that's index is daily with the columns
+    #     being all the different Supplements that were taken.
+    #
+    #     This is the bread / butter of what powers a lot of the initial
+    #     analytics
+    #     """
+    #     df = self.build_dataframe()
+    #     df = df.drop(SOURCE_COLUMN_NAME, axis=1)
+    #     # TODO - not quite done yet
+    #     return df

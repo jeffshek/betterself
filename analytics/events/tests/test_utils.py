@@ -66,4 +66,18 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         # a datetime to just a date. then compare that the builder's grouped daily
         times_values = SupplementEvent.objects.all().values_list('time', flat=True)
         unique_dates = {item.date() for item in times_values}
-        self.assertEqual(len(unique_dates), df.count()[QUANTITY_COLUMN_NAME])
+
+        valid_supplement_name = SupplementEvent.objects.all().first().supplement.name
+        valid_supplement_timeseries = df[QUANTITY_COLUMN_NAME][valid_supplement_name]
+        valid_supplement_timeseries_count = valid_supplement_timeseries.count()
+
+        # regroup the dataframe by Supplement, (ie. how many record of BCAAs)
+        self.assertEqual(len(unique_dates), valid_supplement_timeseries_count)
+
+    # def test_build_flat_dataframe(self):
+    #     queryset = SupplementEvent.objects.all()
+    #     builder = SupplementEventsDataframeBuilder(queryset)
+    #
+    #     df = builder.build_flattened_daily_dataframe()
+    #
+    #     self.assertIsNotNone(df)
