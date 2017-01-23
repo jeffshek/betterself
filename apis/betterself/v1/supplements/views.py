@@ -25,14 +25,14 @@ class MeasurementView(ListAPIView):
     # whatever is on the default
     serializer_class = MeasurementReadOnlySerializer
     model = Measurement
-    filter_fields = ('name',)
+    filter_fields = ('name', 'uuid')
     queryset = Measurement.objects.all()
 
 
 class IngredientView(BaseGenericListCreateAPIViewV1):
     serializer_class = IngredientSerializer
     model = Ingredient
-    filter_fields = ('name', 'half_life_minutes', )
+    filter_fields = ('name', 'half_life_minutes', 'uuid')
 
 
 class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
