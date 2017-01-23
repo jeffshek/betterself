@@ -90,14 +90,33 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         key = 'ingredient'
         super().test_valid_get_request_for_key_in_response(request_parameters, key)
 
-    def test_valid_get_with_uuid_params(self):
+    def test_valid_get_with_ingredient_uuid(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        data = self.client_1.get(url).data
-        valid_ingredient_composition = data[0]
-        valid_uuid = valid_ingredient_composition['uuid']
+        # get the first valid data point
+        result = self.client_1.get(url).data[0]
+        result_ingredient_uuid = result['ingredient']['uuid']
 
-        request_parameters = {'uuid': valid_uuid}
-        super().test_valid_get_request_with_params(request_parameters)
+        parameters = {'ingredient_uuid': result_ingredient_uuid}
+        data = self.client_1.get(url, parameters).data
+        ingredient_uuids_found = [item['ingredient']['uuid'] for item in data]
+        ingredient_uuids_found = set(ingredient_uuids_found)
+
+        self.assertEqual(len(ingredient_uuids_found), 1)
+        self.assertEqual(result_ingredient_uuid, ingredient_uuids_found.pop())
+
+    def test_valid_get_with_measurement_uuid(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        # get the first valid data point
+        result = self.client_1.get(url).data[0]
+        result_measurement_uuid = result['measurement']['uuid']
+
+        parameters = {'measurement_uuid': result_measurement_uuid}
+        data = self.client_1.get(url, parameters).data
+        measurement_uuids_found = [item['measurement']['uuid'] for item in data]
+        measurement_uuids_found = set(measurement_uuids_found)
+
+        self.assertEqual(len(measurement_uuids_found), 1)
+        self.assertEqual(result_measurement_uuid, measurement_uuids_found.pop())
 
 
 class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):

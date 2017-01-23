@@ -106,7 +106,7 @@ class SupplementCreateSerializer(serializers.Serializer):
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
-    model = Supplement
+    # model = Supplement
 
     def validate(self, validated_data):
         if 'vendor' in validated_data:
