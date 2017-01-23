@@ -50,15 +50,18 @@ class SupplementEventsDataframeBuilder(object):
 
         return daily_df
 
-    # def build_flattened_daily_dataframe(self):
-    #     """
-    #     Construct a dataframe that's index is daily with the columns
-    #     being all the different Supplements that were taken.
-    #
-    #     This is the bread / butter of what powers a lot of the initial
-    #     analytics
-    #     """
-    #     df = self.build_dataframe()
-    #     df = df.drop(SOURCE_COLUMN_NAME, axis=1)
-    #     # TODO - not quite done yet
-    #     return df
+    def build_flattened_daily_dataframe(self):
+        """
+        Construct a dataframe that's index is daily with the columns
+        being all the different Supplements that were taken.
+
+        This is the bread / butter of what powers a lot of the initial
+        analytics
+        """
+        df = self.build_dataframe_grouped_daily()
+
+        # when doing a groupby, we create supplement grouped too ... dumb
+        df = df.drop(SUPPLEMENT_COLUMN_NAME, axis=1)
+        df = df.unstack(SUPPLEMENT_COLUMN_NAME)
+
+        return df

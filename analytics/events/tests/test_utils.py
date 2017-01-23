@@ -9,6 +9,7 @@ from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 
+# python manage.py test analytics.events.tests.test_utils
 class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
@@ -74,10 +75,10 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         # regroup the dataframe by Supplement, (ie. how many record of BCAAs)
         self.assertEqual(len(unique_dates), valid_supplement_timeseries_count)
 
-    # def test_build_flat_dataframe(self):
-    #     queryset = SupplementEvent.objects.all()
-    #     builder = SupplementEventsDataframeBuilder(queryset)
-    #
-    #     df = builder.build_flattened_daily_dataframe()
-    #
-    #     self.assertIsNotNone(df)
+    def test_build_flat_dataframe(self):
+        queryset = SupplementEvent.objects.all()
+        builder = SupplementEventsDataframeBuilder(queryset)
+
+        df = builder.build_flattened_daily_dataframe()
+
+        self.assertIsNotNone(df)
