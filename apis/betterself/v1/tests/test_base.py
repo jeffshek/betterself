@@ -86,6 +86,23 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         self.assertEqual(request.status_code, 200)
         self.assertTrue(len(key_check_items) > 0)
 
+    def test_valid_get_on_uuid(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        request_first_data_point = request.data[0]
+        first_data_point_uuid = request_first_data_point['uuid']
+
+        # now make another request, but specifically pick a uuid
+        # it should only return an object with that uuid
+        parameters = {'uuid': first_data_point_uuid}
+        second_request = self.client_1.get(url, parameters)
+        result = second_request.data[0]
+        result_uuid = result['uuid']
+
+        self.assertEqual(first_data_point_uuid, result_uuid)
+        # if we filter by uuid, it's unique there should only be one!
+        self.assertTrue(len(second_request.data), 1)
+
 
 class PostRequestsTestsMixin(GenericRESTMethodMixin):
     def test_post_request(self, parameters=None):
