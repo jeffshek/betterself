@@ -186,8 +186,8 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                 time = index
 
                 # localize and make as UTC time
-                eastern_timezone = pytz.timezone('US/Eastern')
-                localized_time = eastern_timezone.localize(time)
+                user_timezone = pytz.timezone(self.adapter.user.timezone)
+                localized_time = user_timezone.localize(time)
 
                 supplement_event_parameters = {
                     'supplement_uuid': supplement_uuid,
@@ -197,5 +197,3 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                 }
 
                 self.adapter.get_or_create_resource(SupplementEvent, supplement_event_parameters)
-                # ah, i forgot to add the filter_class!
-                # self.adapter.get_resource_data(SupplementEvent, supplement_event_parameters)

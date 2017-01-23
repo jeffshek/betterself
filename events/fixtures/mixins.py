@@ -30,5 +30,7 @@ class EventModelsFixturesGenerator(object):
             input_source = test_case[1]
             event_time = test_case[2]
             if quantity > 0:
+                # if the quantity is zero, it's kind of dumb to create fixtures
+                # that holds a zero value
                 SupplementEventFactory(quantity=quantity, source=input_source,
                     time=event_time, user=user, supplement=supplement)

@@ -175,8 +175,12 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         super().test_post_request_changes_objects_for_right_user(request_parameters)
 
     def test_valid_get_request_with_params(self):
-        valid_name = Supplement.objects.all().first().name
-        request_parameters = {'name': valid_name}
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        data = request.data
+        first_name = data[0]['name']
+
+        request_parameters = {'name': first_name}
         super().test_valid_get_request_with_params(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
