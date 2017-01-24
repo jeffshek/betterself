@@ -1,5 +1,4 @@
 from django.db import models
-from rest_framework.fields import UUIDField
 
 from betterself.base_models import BaseModelWithUserGeneratedContent
 from betterself.utils import create_django_choice_tuple_from_list
@@ -29,11 +28,11 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     supplement = models.ForeignKey(Supplement)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     # what time did the user take the five hour energy? use the time model
-    # so not pigeon holed and can do half_life analysis.
+    # so eventually (maybe never) can do half-life analysis
     time = models.DateTimeField()
-    uuid = UUIDField(required=False, read_only=True)
 
     class Meta:
+        unique_together = ('user', 'time', 'supplement')
         ordering = ['user', '-time']
         verbose_name = 'Supplement Event'
         verbose_name_plural = 'Supplement Events'

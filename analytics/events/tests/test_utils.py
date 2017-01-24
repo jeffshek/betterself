@@ -39,7 +39,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
 
     def test_build_daily_dataframe_sums(self):
         """
-        Test that we can get dataframes that are grouped correctly by day
+        Test that we can get DataFrames that are grouped correctly by day
         """
         queryset = SupplementEvent.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
