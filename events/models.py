@@ -61,3 +61,5 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
     # Odd debate, but what day does this event accurately represent?
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
     day = models.DateField()
+
+    # TODO Add Uniques here (are you missing Uniques on other models too??)
