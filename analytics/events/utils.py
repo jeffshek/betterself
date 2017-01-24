@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 SOURCE_COLUMN_NAME = 'Source'
@@ -28,7 +29,6 @@ class SupplementEventsDataframeBuilder(object):
     def build_dataframe(self):
         # Am I really a programmer or just a lego assembler?
         # Pandas makes my life at least 20 times easier.
-        # Easiest one liner ever.
         df = pd.DataFrame.from_records(self.values, index='time')
 
         # make the columns and labels prettier
@@ -38,30 +38,29 @@ class SupplementEventsDataframeBuilder(object):
         return df
 
     def build_dataframe_grouped_daily(self):
+        # I'm not sure how useful this really is ...
         df = self.build_dataframe()
+
         # can't really aggregate source (str) over a day, so drop it
         # otherwise we see BCAABCAABCAABCAABCAABCAABCAABCAABCAABCAA
         df = df.drop(SOURCE_COLUMN_NAME, axis=1)
 
-        # first group by Supplement, ie. so that
-        # BCAA / Creatine are separately. Then resample
+        # first group by Supplement, ie. so that BCAA / Creatine are separate. Then resample
         # the index to a Daily amount and sum it
         daily_df = df.groupby('Supplement').resample('D').sum()
 
         return daily_df
 
-    def build_flattened_daily_dataframe(self):
-        """
-        Construct a dataframe that's index is daily with the columns
-        being all the different Supplements that were taken.
+    def build_flat_dataframe(self):
+        df = self.build_dataframe()
 
-        This is the bread / butter of what powers a lot of the initial
-        analytics
-        """
-        df = self.build_dataframe_grouped_daily()
-
-        # when doing a groupby, we create supplement grouped too ... dumb
-        df = df.drop(SUPPLEMENT_COLUMN_NAME, axis=1)
-        df = df.unstack(SUPPLEMENT_COLUMN_NAME)
-
-        return df
+        # use a pivot_table and not a pivot because duplicates should be summed
+        # should there be duplicates though? ie. would anyone ever record
+        # taking two BCAAs at the same time??
+        flat_df = df.pivot_table(
+            index=df.index,
+            values=QUANTITY_COLUMN_NAME,
+            columns=SUPPLEMENT_COLUMN_NAME,
+            aggfunc=np.sum
+        )
+        return flat_df

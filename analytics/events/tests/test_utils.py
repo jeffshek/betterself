@@ -51,34 +51,19 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         quantities_values = sum(quantities_values)
 
         # if this is done correctly, the sum of the grouped by values
-        # should be the same as the databas
+        # should be the same as the database
         self.assertEqual(quantity_sum, quantities_values)
-
-    def test_build_daily_dataframe_groups_by_day(self):
-        """
-        Test that we can get dataframes that are grouped correctly by day
-        """
-        queryset = SupplementEvent.objects.all()
-        builder = SupplementEventsDataframeBuilder(queryset)
-
-        df = builder.build_dataframe_grouped_daily()
-
-        # get a list of all the "days" we have stored - ie. transform
-        # a datetime to just a date. then compare that the builder's grouped daily
-        times_values = SupplementEvent.objects.all().values_list('time', flat=True)
-        unique_dates = {item.date() for item in times_values}
-
-        valid_supplement_name = SupplementEvent.objects.all().first().supplement.name
-        valid_supplement_timeseries = df[QUANTITY_COLUMN_NAME][valid_supplement_name]
-        valid_supplement_timeseries_count = valid_supplement_timeseries.count()
-
-        # regroup the dataframe by Supplement, (ie. how many record of BCAAs)
-        self.assertEqual(len(unique_dates), valid_supplement_timeseries_count)
 
     def test_build_flat_dataframe(self):
         queryset = SupplementEvent.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
 
-        df = builder.build_flattened_daily_dataframe()
+        df = builder.build_flat_dataframe()
+        # get a list of all the "days" we have stored - ie. transform
+        # a datetime to just a date. then compare that the builder's grouped daily
+        times_values = SupplementEvent.objects.all().values_list('time', flat=True)
 
-        self.assertIsNotNone(df)
+        unique_dates = {item.date() for item in times_values}
+        df_dates = {item.date() for item in df.index}
+
+        self.assertSetEqual(unique_dates, df_dates)
