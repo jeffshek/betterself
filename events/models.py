@@ -62,4 +62,23 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
     day = models.DateField()
 
-    # TODO Add Uniques here (are you missing Uniques on other models too??)
+    class Meta:
+        unique_together = (('day', 'user'),)
+
+
+class DailyProductivityLog(BaseModelWithUserGeneratedContent):
+    """
+    Represents the daily over-view of how productive a user was on that day, mimics
+    RescueTime's concept of productive time, mildly productive, etc.
+    """
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
+    day = models.DateField()
+
+    very_productive_time_minutes = models.PositiveIntegerField()
+    productive_time_minutes = models.PositiveIntegerField()
+    neutral_time_minutes = models.PositiveIntegerField()
+    distracting_time_minutes = models.PositiveIntegerField()
+    very_distracting_time_minutes = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = (('day', 'user'),)
