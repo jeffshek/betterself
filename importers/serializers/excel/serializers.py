@@ -201,15 +201,12 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 class ExcelProductiveFileSerializer(ExcelFileSerializer):
     source = 'user_excel'
 
-    def save_results(self, dataframe):
-        # productivity (at least from RescueTime) is only measured in minutes, so these are automatically
-        # typecasted to int64
-        dataframe_dtypes_dict = dataframe.dtypes.to_dict()
-        valid_dataframe_columns = [k for k, v in dataframe_dtypes_dict.items() if v == dtype('int64')]
-        valid_dataframe = dataframe[valid_dataframe_columns]
-
-        distracting_time_col_key = 'Distracting Time (Minutes)'
-        productive_time_col_key = 'Productivity Time (Minutes)'
-
-        print(valid_dataframe[distracting_time_col_key])
-        print(valid_dataframe[productive_time_col_key])
+    # def save_results(self, dataframe):
+    #     # productivity (at least from RescueTime) is only measured in minutes, so these are automatically
+    #     # typecasted to int64
+    #     dataframe_dtypes_dict = dataframe.dtypes.to_dict()
+    #     valid_dataframe_columns = [k for k, v in dataframe_dtypes_dict.items() if v == dtype('int64')]
+    #     valid_dataframe = dataframe[valid_dataframe_columns]
+    #
+    #     distracting_time_col_key = 'Distracting Time (Minutes)'
+    #     productive_time_col_key = 'Productivity Time (Minutes)'

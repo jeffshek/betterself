@@ -3,7 +3,7 @@ import itertools
 
 from pytz import timezone
 
-from events.fixtures.factories import SupplementEventFactory
+from events.fixtures.factories import SupplementEventFactory, DailyProductivityLogFactory
 from events.models import INPUT_SOURCES
 from supplements.fixtures.factories import SupplementFactory
 
@@ -48,3 +48,12 @@ class EventModelsFixturesGenerator(object):
 
             SupplementEventFactory(quantity=quantity, source=input_source,
                 time=event_time, user=user, supplement=supplement)
+
+
+class ProductivityLogFixturesGenerator(object):
+    @classmethod
+    def create_fixtures(cls, user, days_back_amt=10):
+        start_date = datetime.date(2016, 1, 1)
+        for days_back in range(days_back_amt):
+            fixture_date = start_date - datetime.timedelta(days=days_back)
+            DailyProductivityLogFactory(user=user, day=fixture_date)

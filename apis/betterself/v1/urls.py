@@ -1,9 +1,9 @@
 from django.conf.urls import url
 
-from apis.betterself.v1.events.views import SupplementEventView
+from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView
 from apis.betterself.v1.supplements.views import SupplementView, VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView
-from events.models import SupplementEvent
+from events.models import SupplementEvent, DailyProductivityLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
@@ -16,6 +16,8 @@ urlpatterns = [
         name=IngredientComposition.RESOURCE_NAME),
     url(r'^{0}'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view(),
         name=SupplementEvent.RESOURCE_NAME),
+    url(r'^{0}'.format(DailyProductivityLog.RESOURCE_NAME), ProductivityLogView.as_view(),
+        name=DailyProductivityLog.RESOURCE_NAME),
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}'

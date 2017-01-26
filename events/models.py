@@ -71,14 +71,16 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
     Represents the daily over-view of how productive a user was on that day, mimics
     RescueTime's concept of productive time, mildly productive, etc.
     """
+    RESOURCE_NAME = 'productivity_log'
+
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     day = models.DateField()
 
-    very_productive_time_minutes = models.PositiveIntegerField()
-    productive_time_minutes = models.PositiveIntegerField()
-    neutral_time_minutes = models.PositiveIntegerField()
-    distracting_time_minutes = models.PositiveIntegerField()
-    very_distracting_time_minutes = models.PositiveIntegerField()
+    very_productive_time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    productive_time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    neutral_time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    very_distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = (('day', 'user'),)

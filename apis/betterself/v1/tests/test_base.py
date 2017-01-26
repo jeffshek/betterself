@@ -139,6 +139,7 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
         """
         # hard to dynamically set default post parameters for objects with heavy relationships
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
+
         request = self._make_get_request(self.client_1)
         data_items_count = len(request.data)
 

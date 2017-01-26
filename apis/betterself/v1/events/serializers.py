@@ -58,13 +58,13 @@ class SupplementEventReadOnlySerializer(serializers.Serializer):
 
 
 class ProductivityLogReadSerializer(serializers.Serializer):
+    very_productive_time_minutes = serializers.IntegerField(required=False)
+    productive_time_minutes = serializers.IntegerField(required=False)
+    neutral_time_minutes = serializers.IntegerField(required=False)
+    distracting_time_minutes = serializers.IntegerField(required=False)
+    very_distracting_time_minutes = serializers.IntegerField(required=False)
+    day = serializers.DateField()
     uuid = serializers.UUIDField()
-
-    very_productive_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
-    productive_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
-    neutral_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
-    distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
-    very_distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
 
 
 class ProductivityLogCreateSerializer(serializers.Serializer):
@@ -75,3 +75,16 @@ class ProductivityLogCreateSerializer(serializers.Serializer):
     neutral_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     very_distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
+    day = serializers.DateField()
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        create_model = self.context['view'].model
+        day = validated_data.pop('day')
+
+        obj, created = create_model.objects.get_or_create(
+            user=user,
+            day=day,
+            **validated_data)
+
+        return obj
