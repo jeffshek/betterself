@@ -4,7 +4,7 @@ from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, 
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
-from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1
+from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -35,29 +35,21 @@ class IngredientView(BaseGenericListCreateAPIViewV1):
     filter_fields = ('name', 'half_life_minutes', 'uuid')
 
 
-class IngredientCompositionView(BaseGenericListCreateAPIViewV1):
+class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
     read_serializer_class = IngredientCompositionReadOnlySerializer
     write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
     filter_class = IngredientCompositionFilter
 
     def get_serializer_class(self):
-        request_method = self.request.method
-        if request_method.lower() in ['list', 'get']:
-            return self.read_serializer_class
-        else:
-            return self.write_serializer_class
+        return self._get_read_or_write_serializer_class()
 
 
-class SupplementView(BaseGenericListCreateAPIViewV1):
+class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement
     filter_class = SupplementFilter
 
     def get_serializer_class(self):
-        request_method = self.request.method
-        if request_method.lower() in ['list', 'get']:
-            return self.read_serializer_class
-        else:
-            return self.write_serializer_class
+        return self._get_read_or_write_serializer_class()

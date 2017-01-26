@@ -4,7 +4,7 @@ import itertools
 from pytz import timezone
 
 from events.fixtures.factories import SupplementEventFactory
-from events.models import INPUT_SOURCES, SupplementEvent
+from events.models import INPUT_SOURCES
 from supplements.fixtures.factories import SupplementFactory
 
 VALID_QUANTITIES = range(1, 30)
@@ -48,5 +48,3 @@ class EventModelsFixturesGenerator(object):
 
             SupplementEventFactory(quantity=quantity, source=input_source,
                 time=event_time, user=user, supplement=supplement)
-
-        print (SupplementEvent.objects.all().count())

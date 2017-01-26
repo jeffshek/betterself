@@ -11,7 +11,6 @@ from supplements.models import Ingredient, IngredientComposition, Measurement, S
 
 
 class ExcelFileSerializer(object):
-
     def __init__(self, file_path, user, ignore_columns=None, sheet=None):
         self.file_path = file_path
         # Sheet1 is default name for xlsx files
@@ -92,6 +91,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
     TEMPLATE_SAVE_MODEL = SupplementEvent
     SUPPLEMENT_UUID_CACHE = {}  # use it to match any supplement_name to a product
+    source = 'user_excel'
 
     @staticmethod
     def _get_measurement_and_quantity_from_name(name):
@@ -165,7 +165,6 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             self.SUPPLEMENT_UUID_CACHE[column_name] = supplement['uuid']
 
     def save_results(self, dataframe):
-        source = 'user_excel'
 
         self._create_supplements_from_dataframe(dataframe)
 
@@ -192,8 +191,25 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                 supplement_event_parameters = {
                     'supplement_uuid': supplement_uuid,
                     'time': localized_time,
-                    'source': source,
+                    'source': self.source,
                     'quantity': quantity
                 }
 
                 self.adapter.get_or_create_resource(SupplementEvent, supplement_event_parameters)
+
+
+class ExcelProductiveFileSerializer(ExcelFileSerializer):
+    source = 'user_excel'
+
+    def save_results(self, dataframe):
+        # productivity (at least from RescueTime) is only measured in minutes, so these are automatically
+        # typecasted to int64
+        dataframe_dtypes_dict = dataframe.dtypes.to_dict()
+        valid_dataframe_columns = [k for k, v in dataframe_dtypes_dict.items() if v == dtype('int64')]
+        valid_dataframe = dataframe[valid_dataframe_columns]
+
+        distracting_time_col_key = 'Distracting Time (Minutes)'
+        productive_time_col_key = 'Productivity Time (Minutes)'
+
+        print(valid_dataframe[distracting_time_col_key])
+        print(valid_dataframe[productive_time_col_key])

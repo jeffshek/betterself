@@ -26,3 +26,15 @@ class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
 class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin):
     def get_queryset(self):
         return self._get_queryset()
+
+
+class ReadOrWriteViewInterfaceV1(object):
+    """
+    Mixin to decide read or write serializer class
+    """
+    def _get_read_or_write_serializer_class(self):
+        request_method = self.request.method
+        if request_method.lower() in ['list', 'get']:
+            return self.read_serializer_class
+        else:
+            return self.write_serializer_class
