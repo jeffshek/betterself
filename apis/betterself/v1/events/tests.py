@@ -1,8 +1,12 @@
 import datetime
 import json
+from unittest import TestCase
 
+import dateutil.parser
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 
+from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import EventModelsFixturesGenerator
@@ -10,10 +14,11 @@ from events.models import SupplementEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
-import dateutil.parser
 
 User = get_user_model()
 
+
+# python manage.py test apis.betterself.v1.events.tests
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
@@ -96,3 +101,16 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
         self.assertTrue(amount_of_events_post_request > amount_of_events)
         self.assertEqual(amount_of_events_post_request_repeated, amount_of_events_post_request)
+
+
+class TestSerializerUtils(TestCase):
+    def test_regular_max_minutes(self):
+        valid_daily_max_minutes(600)
+
+    def test_more_than_daily_max_minutes(self):
+        with self.assertRaises(serializers.ValidationError):
+            valid_daily_max_minutes(3601)
+
+    def test_less_than_zero_max_minutes(self):
+        with self.assertRaises(serializers.ValidationError):
+            valid_daily_max_minutes(-50)
