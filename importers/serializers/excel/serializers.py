@@ -6,7 +6,7 @@ from django.db.models import Q
 from numpy import dtype
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
-from events.models import SupplementEvent
+from events.models import SupplementEvent, DailyProductivityLog
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
@@ -201,12 +201,24 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 class ExcelProductiveFileSerializer(ExcelFileSerializer):
     source = 'user_excel'
 
-    # def save_results(self, dataframe):
-    #     # productivity (at least from RescueTime) is only measured in minutes, so these are automatically
-    #     # typecasted to int64
-    #     dataframe_dtypes_dict = dataframe.dtypes.to_dict()
-    #     valid_dataframe_columns = [k for k, v in dataframe_dtypes_dict.items() if v == dtype('int64')]
-    #     valid_dataframe = dataframe[valid_dataframe_columns]
-    #
-    #     distracting_time_col_key = 'Distracting Time (Minutes)'
-    #     productive_time_col_key = 'Productivity Time (Minutes)'
+    def save_results(self, dataframe):
+        # rename the timeseries to exactly the attribute name on the model
+        rename_columns = {
+            'Distracting Time (Minutes)': 'very_distracting_time_minutes',
+            'Productivity Time (Minutes)': 'very_productive_time_minutes',
+        }
+
+        valid_dataframe_columns = list(rename_columns.keys())
+        valid_dataframe = dataframe[valid_dataframe_columns]
+
+        renamed_dataframe = valid_dataframe.rename(columns=rename_columns)
+
+        for index in valid_dataframe.index:
+            result = renamed_dataframe.ix[index]
+
+            # creates a dictionary looking like
+            # {'very_productive_time_minutes': 159, 'very_distracting_time_minutes': 122}
+            productivity_results = result.to_dict()
+            productivity_results['day'] = index.date()
+
+            self.adapter.get_or_create_resource(DailyProductivityLog, productivity_results)
