@@ -84,3 +84,4 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = (('day', 'user'),)
+        ordering = ['-day']
