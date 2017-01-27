@@ -1,9 +1,10 @@
 from django.test import TestCase
 
-from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME
+from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME, \
+    ProductivityLogEventsDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
-from events.fixtures.mixins import EventModelsFixturesGenerator
-from events.models import SupplementEvent
+from events.fixtures.mixins import EventModelsFixturesGenerator, ProductivityLogFixturesGenerator
+from events.models import SupplementEvent, DailyProductivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
@@ -49,3 +50,53 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         df_dates = {item.date() for item in df.index}
 
         self.assertSetEqual(unique_dates, df_dates)
+
+
+# python manage.py test analytics.events.tests.test_utils.ProductivityLogEventsDataframeBuilderTests
+class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
+    @classmethod
+    def setUpTestData(cls):
+        cls.create_user_fixtures()
+        ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
+        super().setUpTestData()
+
+    def setUp(self):
+        super().setUp()
+
+    def test_build_dataframe(self):
+        queryset = DailyProductivityLog.objects.all()
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+
+        df = builder.build_dataframe()
+        valid_columns = ['Distracting Minutes', 'Neutral Minutes', 'Productive Minutes',
+            'Source', 'Very Distracting Minutes', 'Very Productive Minutes']
+
+        df_columns = df.keys().tolist()
+        self.assertCountEqual(valid_columns, df_columns)
+
+    def test_build_dataframe_has_no_missing_days(self):
+        queryset = DailyProductivityLog.objects.all()
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+
+        queryset_count = queryset.count()
+
+        df = builder.build_dataframe()
+        self.assertEqual(df.index.size, queryset_count)
+
+    def test_get_productive_timeseries(self):
+        queryset = DailyProductivityLog.objects.all()
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+
+        df = builder.build_dataframe()
+        first_event = df.iloc[0]
+        # change to a dictionary for easier looping
+        first_event_dict = first_event.to_dict()
+        first_productive_time = sum(
+            value for key, value in first_event_dict.items()
+            if 'Productive' in key
+        )
+
+        productive_ts = builder.get_productive_timeseries()
+
+        self.assertEqual(first_productive_time, productive_ts[0])
+        self.assertIsNotNone(productive_ts)
