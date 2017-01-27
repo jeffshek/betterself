@@ -21,7 +21,8 @@ User = get_user_model()
 # python manage.py test apis.betterself.v1.events.tests
 
 class TestSerializerUtils(TestCase):
-    def test_regular_max_minutes(self):
+    @staticmethod
+    def test_regular_max_minutes():
         valid_daily_max_minutes(600)
 
     def test_more_than_daily_max_minutes(self):
