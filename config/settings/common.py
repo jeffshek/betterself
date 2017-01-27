@@ -50,6 +50,7 @@ LOCAL_APPS = (
     'vendors',
     'apis',
     'events',
+    'analytics',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
