@@ -28,8 +28,8 @@ def generate_unique_index_per_supplements_and_time(supplements_used):
 
 
 class EventModelsFixturesGenerator(object):
-    @classmethod
-    def create_fixtures(cls, user):
+    @staticmethod
+    def create_fixtures(user):
         supplement_1 = SupplementFactory(user=user)
         supplement_2 = SupplementFactory(user=user, name='Snake Oil')
         supplement_3 = SupplementFactory(user=user, name='Truffle Oil')
@@ -43,7 +43,10 @@ class EventModelsFixturesGenerator(object):
         test_cases = generate_test_cases_for_events()
 
         for supplement, event_time in unique_index:
-            # use generator and get the next result (we can't do for loop because this is a unique constraint on table)
+            # use generator and get the next result
+            # we can't do for loop because this is a unique constraint on table
+            # here, we are just getting the next possible q/input ONCE versus
+            # in each of the for loops
             quantity, input_source = test_cases.__next__()
 
             SupplementEventFactory(quantity=quantity, source=input_source,
@@ -51,8 +54,8 @@ class EventModelsFixturesGenerator(object):
 
 
 class ProductivityLogFixturesGenerator(object):
-    @classmethod
-    def create_fixtures(cls, user, days_back_amt=10):
+    @staticmethod
+    def create_fixtures(user, days_back_amt=10):
         start_date = datetime.date(2016, 1, 1)
         for days_back in range(days_back_amt):
             fixture_date = start_date - datetime.timedelta(days=days_back)
