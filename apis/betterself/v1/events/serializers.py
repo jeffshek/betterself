@@ -63,7 +63,7 @@ class ProductivityLogReadSerializer(serializers.Serializer):
     neutral_time_minutes = serializers.IntegerField(required=False)
     distracting_time_minutes = serializers.IntegerField(required=False)
     very_distracting_time_minutes = serializers.IntegerField(required=False)
-    day = serializers.DateField()
+    date = serializers.DateField()
     uuid = serializers.UUIDField()
 
 
@@ -75,16 +75,16 @@ class ProductivityLogCreateSerializer(serializers.Serializer):
     neutral_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     very_distracting_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
-    day = serializers.DateField()
+    date = serializers.DateField()
 
     def create(self, validated_data):
         user = self.context['request'].user
         create_model = self.context['view'].model
-        day = validated_data.pop('day')
+        date = validated_data.pop('date')
 
         obj, created = create_model.objects.get_or_create(
             user=user,
-            day=day,
+            date=date,
             **validated_data)
 
         return obj

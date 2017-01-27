@@ -59,4 +59,4 @@ class ProductivityLogFixturesGenerator(object):
         start_date = datetime.date(2016, 1, 1)
         for days_back in range(days_back_amt):
             fixture_date = start_date - datetime.timedelta(days=days_back)
-            DailyProductivityLogFactory(user=user, day=fixture_date)
+            DailyProductivityLogFactory(user=user, date=fixture_date)

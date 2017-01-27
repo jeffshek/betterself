@@ -123,7 +123,7 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
 
     def setUp(self):
         self.DEFAULT_POST_PARAMS = {
-            'day': datetime.date.today().isoformat(),
+            'date': datetime.date.today().isoformat(),
             'very_productive_time_minutes': 10,
             'source': 'api',
         }

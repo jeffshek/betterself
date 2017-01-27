@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from events.models import DailyProductivityLog
 from supplements.models import Measurement, Ingredient, IngredientComposition, Supplement
 
 
@@ -49,18 +48,3 @@ class SupplementAdmin(admin.ModelAdmin):
 
         if ingredient_composition.exists():
             return ingredient_composition.values_list('ingredient__name', flat=True)
-
-
-@admin.register(DailyProductivityLog)
-class DailyProductivityLogAdmin(admin.ModelAdmin):
-    list_display = [
-        'day',
-        'very_productive_time_minutes',
-        'productive_time_minutes',
-        'neutral_time_minutes',
-        'distracting_time_minutes',
-        'very_distracting_time_minutes',
-    ]
-
-    class Meta:
-        model = DailyProductivityLog

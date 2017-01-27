@@ -60,10 +60,10 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
     sleep_time_minutes = models.IntegerField()  # always should be stored in minutes
     # Odd debate, but what day does this event accurately represent?
     # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
-    day = models.DateField()
+    date = models.DateField()
 
     class Meta:
-        unique_together = (('day', 'user'),)
+        unique_together = (('date', 'user'),)
 
 
 class DailyProductivityLog(BaseModelWithUserGeneratedContent):
@@ -74,7 +74,7 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'productivity_log'
 
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
-    day = models.DateField()
+    date = models.DateField()
 
     very_productive_time_minutes = models.PositiveIntegerField(null=True, blank=True)
     productive_time_minutes = models.PositiveIntegerField(null=True, blank=True)
@@ -83,5 +83,5 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
     very_distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        unique_together = (('day', 'user'),)
-        ordering = ['-day']
+        unique_together = (('date', 'user'),)
+        ordering = ['-date']
