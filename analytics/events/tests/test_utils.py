@@ -1,7 +1,6 @@
 from django.test import TestCase
 
-from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME, \
-    QUANTITY_COLUMN_NAME
+from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import EventModelsFixturesGenerator
 from events.models import SupplementEvent
@@ -36,23 +35,6 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
 
         # really misleading, but this is assertItemsEqual
         self.assertCountEqual(column_labels, df.columns.tolist())
-
-    def test_build_daily_dataframe_sums(self):
-        """
-        Test that we can get DataFrames that are grouped correctly by day
-        """
-        queryset = SupplementEvent.objects.all()
-        builder = SupplementEventsDataframeBuilder(queryset)
-
-        df = builder.build_dataframe_grouped_daily()
-        quantity_sum = df[QUANTITY_COLUMN_NAME].sum()
-
-        quantities_values = SupplementEvent.objects.all().values_list('quantity', flat=True)
-        quantities_values = sum(quantities_values)
-
-        # if this is done correctly, the sum of the grouped by values
-        # should be the same as the database
-        self.assertEqual(quantity_sum, quantities_values)
 
     def test_build_flat_dataframe(self):
         queryset = SupplementEvent.objects.all()

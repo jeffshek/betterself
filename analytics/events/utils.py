@@ -14,7 +14,20 @@ SupplementEventColumnMapping = {
 }
 
 
-class SupplementEventsDataframeBuilder(object):
+class DataFrameBuilder(object):
+    def build_dataframe(self):
+        # Am I really a programmer or just a lego assembler?
+        # Pandas makes my life at least 20 times easier.
+        df = pd.DataFrame.from_records(self.values, index=self.index_column)
+
+        # make the columns and labels prettier
+        df = df.rename(columns=self.column_mapping)
+        df.index.name = TIME_COLUMN_NAME
+
+        return df
+
+
+class SupplementEventsDataframeBuilder(DataFrameBuilder):
     """
     Builds a pandas dataframe from a SupplementEvent queryset ... once we get to a dataframe
     analytics are just super easy to work with and we can do a lot of complex analysis on top of it
@@ -27,31 +40,6 @@ class SupplementEventsDataframeBuilder(object):
         self.queryset = queryset
         values_columns = SupplementEventColumnMapping.keys()
         self.values = self.queryset.values(*values_columns)
-
-    def build_dataframe(self):
-        # Am I really a programmer or just a lego assembler?
-        # Pandas makes my life at least 20 times easier.
-        df = pd.DataFrame.from_records(self.values, index=self.index_column)
-
-        # make the columns and labels prettier
-        df = df.rename(columns=self.column_mapping)
-        df.index.name = TIME_COLUMN_NAME
-
-        return df
-
-    def build_dataframe_grouped_daily(self):
-        # I'm not sure how useful this really is ...
-        df = self.build_dataframe()
-
-        # can't really aggregate source (str) over a day, so drop it
-        # otherwise we see BCAABCAABCAABCAABCAABCAABCAABCAABCAABCAA
-        df = df.drop(SOURCE_COLUMN_NAME, axis=1)
-
-        # first group by Supplement, ie. so that BCAA / Creatine are separate. Then resample
-        # the index to a Daily amount and sum it
-        daily_df = df.groupby('Supplement').resample('D').sum()
-
-        return daily_df
 
     def build_flat_dataframe(self):
         """
