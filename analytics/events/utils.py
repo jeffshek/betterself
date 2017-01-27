@@ -19,6 +19,8 @@ class SupplementEventsDataframeBuilder(object):
     Builds a pandas dataframe from a SupplementEvent queryset ... once we get to a dataframe
     analytics are just super easy to work with and we can do a lot of complex analysis on top of it
     """
+    index_column = 'time'
+    column_mapping = SupplementEventColumnMapping
 
     def __init__(self, queryset):
         queryset = queryset.select_related('supplement')
@@ -29,10 +31,10 @@ class SupplementEventsDataframeBuilder(object):
     def build_dataframe(self):
         # Am I really a programmer or just a lego assembler?
         # Pandas makes my life at least 20 times easier.
-        df = pd.DataFrame.from_records(self.values, index='time')
+        df = pd.DataFrame.from_records(self.values, index=self.index_column)
 
         # make the columns and labels prettier
-        df = df.rename(columns=SupplementEventColumnMapping)
+        df = df.rename(columns=self.column_mapping)
         df.index.name = TIME_COLUMN_NAME
 
         return df
@@ -52,6 +54,9 @@ class SupplementEventsDataframeBuilder(object):
         return daily_df
 
     def build_flat_dataframe(self):
+        """
+        Return a flattened view of all the supplements that were taken
+        """
         df = self.build_dataframe()
 
         # use a pivot_table and not a pivot because duplicates should be summed
