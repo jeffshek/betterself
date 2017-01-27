@@ -41,7 +41,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         queryset = SupplementEvent.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
 
-        df = builder.build_flat_dataframe()
+        df = builder.get_flat_dataframe()
         # get a list of all the "days" we have stored - ie. transform
         # a datetime to just a date. then compare that the builder's grouped daily
         times_values = SupplementEvent.objects.all().values_list('time', flat=True)
@@ -99,4 +99,22 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
         productive_ts = builder.get_productive_timeseries()
 
         self.assertEqual(first_productive_time, productive_ts[0])
-        self.assertIsNotNone(productive_ts)
+
+    def test_get_unproductive_timeseries(self):
+        queryset = DailyProductivityLog.objects.all()
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+
+        df = builder.build_dataframe()
+        first_event = df.iloc[0]
+
+        # change to a dictionary for easier looping
+        first_event_dict = first_event.to_dict()
+        first_unproductive_time = sum(
+            value for key, value in first_event_dict.items()
+            if 'Productive' not in key
+            and 'Minutes' in key
+        )
+
+        unproductive_ts = builder.get_unproductive_timeseries()
+
+        self.assertEqual(first_unproductive_time, unproductive_ts[0])

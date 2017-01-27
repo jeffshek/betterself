@@ -59,7 +59,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         values_columns = self.column_mapping.keys()
         self.values = self.queryset.values(*values_columns)
 
-    def build_flat_dataframe(self):
+    def get_flat_dataframe(self):
         """
         Return a flattened view of all the supplements that were taken
         """
@@ -98,3 +98,19 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         productive_timeseries = productive_df.sum(axis=1)
 
         return productive_timeseries
+
+    def get_unproductive_timeseries(self):
+        df = self.build_dataframe()
+
+        # get a list of the columns that indicate productivity that isn't
+        unproductive_columns = [
+            item for item in df.keys()
+            if 'Productive' not in item
+            and 'Minutes' in item
+        ]
+        # exclude "source" too
+        unproductive_df = df[unproductive_columns]
+
+        # now sum all the columns together to get a sum of collective periods
+        unproductive_timeseries = unproductive_df.sum(axis=1)
+        return unproductive_timeseries

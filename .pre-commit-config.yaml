@@ -12,7 +12,7 @@
         files: \.(py|sh)$
     -   id: flake8
         files: \.py$
-        args: ['--ignore=E128']
+        args: ['--ignore=E128,W503']
         exclude: local\.py$  # ignore config settings
     -   id: name-tests-test
         files: tests/.+\.py$
