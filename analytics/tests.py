@@ -10,6 +10,7 @@ class TestUserProductivityViews(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
         cls.create_user_fixtures()
+        cls.url = reverse(UserProductivityAnalytics.namespace_url_name)
 
     def setUp(self):
         self.client = APIClient()
@@ -17,7 +18,11 @@ class TestUserProductivityViews(TestCase, UsersTestsFixturesMixin):
         super().setUp()
 
     def test_analytics_home(self):
-        url = reverse(UserProductivityAnalytics.namespace_url)
-
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+    def test_analytics_no_login(self):
+        new_client = APIClient()
+        response = new_client.get(self.url)
+        print(response.status_code)
+        self.assertEqual(response.status_code, 401)
