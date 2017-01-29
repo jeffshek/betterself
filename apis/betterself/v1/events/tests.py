@@ -9,7 +9,7 @@ from rest_framework import serializers
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from events.fixtures.mixins import EventModelsFixturesGenerator, ProductivityLogFixturesGenerator
+from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
 from events.models import SupplementEvent, DailyProductivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
@@ -56,7 +56,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         super().setUpTestData()
         SupplementModelsFixturesGenerator.create_fixtures()
         VendorModelsFixturesGenerator.create_fixtures()
-        EventModelsFixturesGenerator.create_fixtures(cls.user_1)
+        SupplementEventsFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_default_parameters_created_correctly(self):
         # this is a bit too much of an integration test, but realized that

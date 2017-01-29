@@ -3,7 +3,7 @@ from django.test import TestCase
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, \
     TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
-from events.fixtures.mixins import EventModelsFixturesGenerator, ProductivityLogFixturesGenerator
+from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
 from events.models import SupplementEvent, DailyProductivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -16,7 +16,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         cls.create_user_fixtures()
         SupplementModelsFixturesGenerator.create_fixtures()
         VendorModelsFixturesGenerator.create_fixtures()
-        EventModelsFixturesGenerator.create_fixtures(cls.user_1)
+        SupplementEventsFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_build_dataframe(self):
         queryset = SupplementEvent.objects.all()
@@ -52,7 +52,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         self.assertSetEqual(unique_dates, df_dates)
 
 
-# python manage.py test analytics.events.tests.test_utils.ProductivityLogEventsDataframeBuilderTests
+# python manage.py test analytics.events.tests.test_dataframe_builders.ProductivityLogEventsDataframeBuilderTests
 class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
@@ -118,3 +118,29 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
         unproductive_ts = builder.get_unproductive_timeseries()
 
         self.assertEqual(first_unproductive_time, unproductive_ts[0])
+
+
+class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
+    @classmethod
+    def setUpTestData(cls):
+        cls.create_user_fixtures()
+        SupplementModelsFixturesGenerator.create_fixtures()
+        VendorModelsFixturesGenerator.create_fixtures()
+        SupplementEventsFixturesGenerator.create_fixtures(cls.user_1)
+        ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
+
+    def _get_supplement_event_dataframe(self):
+        queryset = SupplementEvent.objects.all()
+        builder = SupplementEventsDataframeBuilder(queryset)
+        supplement_event_dataframe = builder.get_flat_dataframe()
+        return supplement_event_dataframe
+
+    def _get_productivity_log_dataframe(self):
+        queryset = DailyProductivityLog.objects.all()
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+        productivity_log_dataframe = builder.build_dataframe()
+        return productivity_log_dataframe
+
+    def test_hello(self):
+        supplement_dataframe = self._get_supplement_event_dataframe()
+        productivity_log_dataframe = self._get_productivity_log_dataframe()
