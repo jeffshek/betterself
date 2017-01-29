@@ -21,8 +21,7 @@ class TestUserProductivityViews(TestCase, UsersTestsFixturesMixin):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-    def test_analytics_no_login(self):
+    def test_analytics_no_login_and_redirected(self):
         new_client = APIClient()
         response = new_client.get(self.url)
-        print(response.status_code)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 302)
