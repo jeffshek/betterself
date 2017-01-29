@@ -14,7 +14,7 @@ class TestUserProductivityViews(TestCase, UsersTestsFixturesMixin):
 
     def setUp(self):
         self.client = APIClient()
-        self.client.force_authenticate(self.user_1)
+        self.client.force_login(self.user_1)
         super().setUp()
 
     def test_analytics_home(self):

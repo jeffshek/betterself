@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from analytics.events.utils import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, TIME_COLUMN_NAME, \
-    ProductivityLogEventsDataframeBuilder
+from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, \
+    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import EventModelsFixturesGenerator, ProductivityLogFixturesGenerator
 from events.models import SupplementEvent, DailyProductivityLog
@@ -9,7 +9,7 @@ from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 
-# python manage.py test analytics.events.tests.test_utils
+# python manage.py test analytics.events.tests.test_dataframe_builders
 class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
     @classmethod
     def setUpTestData(cls):
