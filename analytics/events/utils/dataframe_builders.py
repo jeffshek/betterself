@@ -106,7 +106,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         unproductive_columns = [
             item for item in df.keys()
             if 'Productive' not in item
-            and 'Minutes' in item
+               and 'Minutes' in item
         ]
         # exclude "source" too
         unproductive_df = df[unproductive_columns]
@@ -114,3 +114,46 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         # now sum all the columns together to get a sum of collective periods
         unproductive_timeseries = unproductive_df.sum(axis=1)
         return unproductive_timeseries
+
+
+class AggregateDataframeBuilder(object):
+    """
+    Really want to name this MasterBuilder from the Lego Movie
+
+    Combines multi querysets to build a complete dashboard
+    """
+
+    def __init__(self, supplement_event_queryset, productivity_log_queryset):
+        self.supplement_event_queryset = supplement_event_queryset
+        self.productivity_log_queryset = productivity_log_queryset
+
+    @staticmethod
+    def _get_supplement_event_dataframe(queryset):
+        builder = SupplementEventsDataframeBuilder(queryset)
+        supplement_event_dataframe = builder.get_flat_dataframe()
+        return supplement_event_dataframe
+
+    @staticmethod
+    def _get_productivity_log_dataframe(queryset):
+        builder = ProductivityLogEventsDataframeBuilder(queryset)
+        productivity_log_dataframe = builder.build_dataframe()
+        return productivity_log_dataframe
+
+    def build_dataframe(self):
+        productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
+        supplement_dataframe = self._get_supplement_event_dataframe(self.supplement_event_queryset)
+
+        # because productivity is measured daily, and supplements can be measured
+        # at any time, we have to realign them to be the right time frequencies
+        daily_supplement_dataframe = supplement_dataframe.resample('D').sum()
+
+        # we can't compare things not timezone aware and naive, so make the aware -- > naive.
+        # an easier simplification to deal with all of this is to force the index to be a date
+        supplement_date_index = daily_supplement_dataframe.index.date
+        daily_supplement_dataframe.index = supplement_date_index
+
+        # axis of zero means to align them based on column
+        # we want to align it based on matching index, so axis=1
+        # this seems kind of weird though for axis of 1 to mean the index, shrug
+        concat_df = pd.concat([daily_supplement_dataframe, productivity_log_dataframe], axis=1)
+        return concat_df

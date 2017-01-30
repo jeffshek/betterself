@@ -1,8 +1,7 @@
 from django.test import TestCase
-import pandas as pd
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, \
-    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder
+    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, AggregateDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
 from events.models import SupplementEvent, DailyProductivityLog
@@ -135,40 +134,19 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         SupplementEventsFixturesGenerator.create_fixtures(cls.user_1)
         ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
 
-    @staticmethod
-    def _get_supplement_event_dataframe():
-        queryset = SupplementEvent.objects.all()
-        builder = SupplementEventsDataframeBuilder(queryset)
-        supplement_event_dataframe = builder.get_flat_dataframe()
-        return supplement_event_dataframe
-
-    @staticmethod
-    def _get_productivity_log_dataframe():
-        queryset = DailyProductivityLog.objects.all()
-        builder = ProductivityLogEventsDataframeBuilder(queryset)
-        productivity_log_dataframe = builder.build_dataframe()
-        return productivity_log_dataframe
-
     def test_dataframe_composition(self):
-        productivity_log_dataframe = self._get_productivity_log_dataframe()
-        supplement_dataframe = self._get_supplement_event_dataframe()
+        supplement_event_queryset = SupplementEvent.objects.all()
+        productivity_log_queryset = DailyProductivityLog.objects.all()
+        builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
+        dataframe = builder.build_dataframe()
 
-        # because productivity is measured daily, and supplements can be measured
-        # at any time, we have to realign them to be the right time frequencies
-        daily_supplement_dataframe = supplement_dataframe.resample('D').sum()
+        distinct_supplement_event_times = supplement_event_queryset.values_list('time', flat=True).distinct()
+        distinct_supplement_event_dates = {item.date() for item in distinct_supplement_event_times}
 
-        # we can't compare things not timezone aware and naive, so make the aware -- > naive.
-        # an easier simplification to deal with all of this is to force the index to be a date
-        supplement_date_index = daily_supplement_dataframe.index.date
-        daily_supplement_dataframe.index = supplement_date_index
+        distinct_productivity_log_queryset_dates = productivity_log_queryset.values_list('date', flat=True).distinct()
+        distinct_productivity_log_queryset_dates = {item for item in distinct_productivity_log_queryset_dates}
 
-        # axis of zero means to align them based on column
-        # we want to align it based on matching index, so axis=1
-        # this seems kind of weird though for axis of 1 to mean the index, shrug
-        concat_df = pd.concat([daily_supplement_dataframe, productivity_log_dataframe], axis=1)
+        distinct_dates = distinct_supplement_event_dates.union(distinct_productivity_log_queryset_dates)
+        distinct_dates_count = len(distinct_dates)
 
-        productivity_log_dataframe_index = productivity_log_dataframe.index
-        combined_indices = productivity_log_dataframe_index | supplement_date_index
-
-        # the concat dataframe should contain the set of the both indices
-        self.assertEqual(combined_indices.size, concat_df.index.size)
+        self.assertEqual(distinct_dates_count, dataframe.index.size)
