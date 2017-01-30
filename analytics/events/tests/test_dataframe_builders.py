@@ -151,21 +151,24 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
 
     def test_dataframe_composition(self):
         productivity_log_dataframe = self._get_productivity_log_dataframe()
-
         supplement_dataframe = self._get_supplement_event_dataframe()
+
         # because productivity is measured daily, and supplements can be measured
         # at any time, we have to realign them to be the right time frequencies
         daily_supplement_dataframe = supplement_dataframe.resample('D').sum()
 
         # we can't compare things not timezone aware and naive, so make the aware -- > naive.
         # an easier simplification to deal with all of this is to force the index to be a date
-        date_index = daily_supplement_dataframe.index.date
-        daily_supplement_dataframe.index = date_index
+        supplement_date_index = daily_supplement_dataframe.index.date
+        daily_supplement_dataframe.index = supplement_date_index
 
         # axis of zero means to align them based on column
         # we want to align it based on matching index, so axis=1
         # this seems kind of weird though for axis of 1 to mean the index, shrug
         concat_df = pd.concat([daily_supplement_dataframe, productivity_log_dataframe], axis=1)
 
-        # this is a bs thing just to make pre-commit not yell
-        self.assertTrue(concat_df)
+        productivity_log_dataframe_index = productivity_log_dataframe.index
+        combined_indices = productivity_log_dataframe_index | supplement_date_index
+
+        # the concat dataframe should contain the set of the both indices
+        self.assertEqual(combined_indices.size, concat_df.index.size)
