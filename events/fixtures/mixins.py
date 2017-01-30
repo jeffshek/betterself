@@ -11,7 +11,7 @@ VALID_QUANTITIES = range(1, 30)
 STATIC_DATE = datetime.datetime(2016, 12, 31)
 eastern_tz = timezone('US/Eastern')
 STATIC_DATE = eastern_tz.localize(STATIC_DATE)
-GENERATED_DATES = [STATIC_DATE - datetime.timedelta(days=x) for x in range(0, 10)]
+GENERATED_DATES = [STATIC_DATE + datetime.timedelta(days=x) for x in range(0, 10)]
 
 
 def generate_test_cases_for_events():
@@ -56,7 +56,7 @@ class SupplementEventsFixturesGenerator(object):
 class ProductivityLogFixturesGenerator(object):
     @staticmethod
     def create_fixtures(user, days_back_amt=10):
-        start_date = datetime.date(2016, 1, 1)
-        for days_back in range(days_back_amt):
-            fixture_date = start_date - datetime.timedelta(days=days_back)
+        start_date = datetime.date(2016, 12, 31)
+        for days_fwd in range(days_back_amt):
+            fixture_date = start_date + datetime.timedelta(days=days_fwd)
             DailyProductivityLogFactory(user=user, date=fixture_date)
