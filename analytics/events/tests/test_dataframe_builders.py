@@ -22,6 +22,10 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
     def test_build_dataframe(self):
         queryset = SupplementEvent.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
+
+        # to prevent another brain fart moment, this is NOT the aggregated dataframe
+        # this merely represents all the values as a rows of data before any pivot_table
+        # or data transformations happen on it
         df = builder.build_dataframe()
 
         self.assertEqual(len(df.index), queryset.count())
