@@ -1,6 +1,6 @@
 # overlaps with test
-django-debug-toolbar==1.5
+django-debug-toolbar==1.6
 
 # local only specific
-ipdb==0.10.0
-pre-commit==0.8.2
+ipdb==0.10.2
+pre-commit==0.12.2
