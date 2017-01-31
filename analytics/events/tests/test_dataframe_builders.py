@@ -152,6 +152,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         self.assertEqual(distinct_dates_count, dataframe.index.size)
 
     def test_dataframe_composition_with_no_data(self):
+        # we always create fixtures per each test, so nothing really exists with 9000 fixtures
         supplement_event_queryset = SupplementEvent.objects.filter(id='9000')
         productivity_log_queryset = DailyProductivityLog.objects.filter(id='9000')
 

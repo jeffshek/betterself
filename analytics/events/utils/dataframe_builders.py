@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from events.models import SupplementEvent, DailyProductivityLog
+
 SOURCE_COLUMN_NAME = 'Source'
 QUANTITY_COLUMN_NAME = 'Quantity'
 SUPPLEMENT_COLUMN_NAME = 'Supplement'
@@ -145,6 +147,18 @@ class AggregateDataframeBuilder(object):
         builder = ProductivityLogEventsDataframeBuilder(queryset)
         productivity_log_dataframe = builder.build_dataframe()
         return productivity_log_dataframe
+
+    @classmethod
+    def get_aggregate_dataframe_for_user(cls, user):
+        supplement_events = SupplementEvent.objects.filter(user=user)
+        productivity_log = DailyProductivityLog.objects.filter(user=user)
+
+        aggregate_dataframe = cls(
+            supplement_event_queryset=supplement_events,
+            productivity_log_queryset=productivity_log,
+        )
+        dataframe = aggregate_dataframe.build_dataframe()
+        return dataframe
 
     def build_dataframe(self):
         productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
