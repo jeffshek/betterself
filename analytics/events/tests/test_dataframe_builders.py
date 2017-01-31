@@ -150,3 +150,12 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         distinct_dates_count = len(distinct_dates)
 
         self.assertEqual(distinct_dates_count, dataframe.index.size)
+
+    def test_dataframe_composition_with_no_data(self):
+        supplement_event_queryset = SupplementEvent.objects.filter(id='9000')
+        productivity_log_queryset = DailyProductivityLog.objects.filter(id='9000')
+
+        builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
+        dataframe = builder.build_dataframe()
+
+        self.assertTrue(dataframe.empty)
