@@ -152,7 +152,7 @@ class AggregateDataframeBuilder(object):
 
         # if we don't have any data for either or of these, just return an empty dataset
         if productivity_log_dataframe.empty or supplement_dataframe.empty:
-            return productivity_log_dataframe
+            return pd.DataFrame()
 
         # because productivity is measured daily, and supplements can be measured
         # at any time, we have to realign them to be the right time frequencies

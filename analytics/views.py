@@ -11,7 +11,8 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
     # if a user isn't logged in, redirect to exception
     redirect_field_name = 'account_login'
 
-    def _get_dataframe_raw_data(self, user):
+    @staticmethod
+    def _get_dataframe_raw_data(user):
         supplement_events = SupplementEvent.objects.filter(user=user)
         productivity_log = DailyProductivityLog.objects.filter(user=user)
 
@@ -21,7 +22,6 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
         )
 
         dataframe = aggregate_dataframe.build_dataframe()
-
         return dataframe
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,8 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
         user = self.request.user
         dataframe = self._get_dataframe_raw_data(user)
 
-        # pycharm, you so amazing
+        # pycharm, you so amazing, the fact that you know the dataframe's methods this many abstractions
+        # is kind of like MIND BLOWING
         context['dataframe_html'] = dataframe.to_html()
 
         return context
