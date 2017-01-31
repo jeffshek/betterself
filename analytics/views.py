@@ -16,14 +16,17 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
 
         user = self.request.user
         aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
-        analyzed_dataframe = DataFrameEventsAnalyzer(aggregate_dataframe)
 
         # pycharm, you so amazing, the fact that you know the dataframe's methods this many abstractions
         # is kind of like MIND BLOWING
         context['aggregate_dataframe'] = aggregate_dataframe
         context['aggregate_dataframe_html'] = aggregate_dataframe.to_html()
 
-        context['analyzed_dataframe'] = analyzed_dataframe
-        context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
+        if not aggregate_dataframe.empty:
+            analyzer = DataFrameEventsAnalyzer(aggregate_dataframe)
+            analyzed_dataframe = analyzer.get_correlation_across_summed_days_for_measurement('Productivity')
+
+            context['analyzed_dataframe'] = analyzed_dataframe
+            context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
 
         return context
