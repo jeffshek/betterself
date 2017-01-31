@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
+from analytics.events.analytics import DataFrameEventsAnalyzer
 from analytics.events.utils.dataframe_builders import AggregateDataframeBuilder
 
 
@@ -14,10 +15,15 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        analyzed_dataframe = DataFrameEventsAnalyzer(aggregate_dataframe)
 
         # pycharm, you so amazing, the fact that you know the dataframe's methods this many abstractions
         # is kind of like MIND BLOWING
-        context['dataframe_html'] = dataframe.to_html()
+        context['aggregate_dataframe'] = aggregate_dataframe
+        context['aggregate_dataframe_html'] = aggregate_dataframe.to_html()
+
+        context['analyzed_dataframe'] = analyzed_dataframe
+        context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
 
         return context
