@@ -29,6 +29,8 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
 
         user = self.request.user
         dataframe = self._get_dataframe_raw_data(user)
-        context['dataframe'] = dataframe
+
+        # pycharm, you so amazing
+        context['dataframe_html'] = dataframe.to_html()
 
         return context
