@@ -6,7 +6,7 @@ QUANTITY_COLUMN_NAME = 'Quantity'
 SUPPLEMENT_COLUMN_NAME = 'Supplement'
 TIME_COLUMN_NAME = 'Time'
 
-SupplementEventColumnMapping = {
+SUPPLEMENT_EVENT_COLUMN_MAP = {
     'source': SOURCE_COLUMN_NAME,
     'supplement__name': SUPPLEMENT_COLUMN_NAME,
     'quantity': QUANTITY_COLUMN_NAME,
@@ -20,7 +20,7 @@ DISTRACTING_TIME_LABEL = 'Distracting Minutes'
 VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Minutes'
 DATE_LABEL = 'Date'
 
-ProductivityLogEventColumnMapping = {
+PRODUCTIVITY_LOG_COLUMN_MAP = {
     'source': SOURCE_COLUMN_NAME,
     'date': DATE_LABEL,
     'very_productive_time_minutes': VERY_PRODUCTIVE_TIME_LABEL,
@@ -51,7 +51,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
     analytics are just super easy to work with and we can do a lot of complex analysis on top of it
     """
     index_column = 'time'
-    column_mapping = SupplementEventColumnMapping
+    column_mapping = SUPPLEMENT_EVENT_COLUMN_MAP
 
     def __init__(self, queryset):
         queryset = queryset.select_related('supplement')
@@ -79,7 +79,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
 
 class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
     index_column = 'date'
-    column_mapping = ProductivityLogEventColumnMapping
+    column_mapping = PRODUCTIVITY_LOG_COLUMN_MAP
 
     def __init__(self, queryset):
         self.queryset = queryset

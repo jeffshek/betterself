@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SupplementEventColumnMapping, \
+from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SUPPLEMENT_EVENT_COLUMN_MAP, \
     TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, AggregateDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
@@ -34,7 +34,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         builder = SupplementEventsDataframeBuilder(queryset)
         df = builder.build_dataframe()
 
-        column_labels = list(SupplementEventColumnMapping.values())
+        column_labels = list(SUPPLEMENT_EVENT_COLUMN_MAP.values())
         # time is an index location, so shouldn't be considered a column
         column_labels.remove(TIME_COLUMN_NAME)
 
