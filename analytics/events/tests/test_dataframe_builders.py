@@ -38,7 +38,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         # time is an index location, so shouldn't be considered a column
         column_labels.remove(TIME_COLUMN_NAME)
 
-        # really misleading, but this is assertItemsEqual
+        # really misleading, but this is the equivalent of what one would expect from "assertItemsEqual"
         self.assertCountEqual(column_labels, df.columns.tolist())
 
     def test_build_flat_dataframe(self):
@@ -64,9 +64,6 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
         ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
         super().setUpTestData()
 
-    def setUp(self):
-        super().setUp()
-
     def test_build_dataframe(self):
         queryset = DailyProductivityLog.objects.all()
         builder = ProductivityLogEventsDataframeBuilder(queryset)
@@ -90,8 +87,8 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
     def test_get_productive_timeseries(self):
         queryset = DailyProductivityLog.objects.all()
         builder = ProductivityLogEventsDataframeBuilder(queryset)
-
         df = builder.build_dataframe()
+
         first_event = df.iloc[0]
         # change to a dictionary for easier looping
         first_event_dict = first_event.to_dict()
@@ -105,6 +102,9 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
         self.assertEqual(first_productive_time, productive_ts[0])
 
     def test_get_unproductive_timeseries(self):
+        """
+        Kind of a simple test, not the greatest - compare the first result and make sure it's valid
+        """
         queryset = DailyProductivityLog.objects.all()
         builder = ProductivityLogEventsDataframeBuilder(queryset)
 
