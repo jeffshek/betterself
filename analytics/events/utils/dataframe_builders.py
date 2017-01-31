@@ -36,6 +36,9 @@ class DataFrameBuilder(object):
     def build_dataframe(self):
         # Am I really a programmer or just a lego assembler?
         # Pandas makes my life at least 20 times easier.
+        if not self.values.exists():
+            return pd.DataFrame()
+
         df = pd.DataFrame.from_records(self.values, index=self.index_column)
 
         # make the columns and labels prettier
@@ -57,6 +60,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         queryset = queryset.select_related('supplement')
         self.queryset = queryset
         values_columns = self.column_mapping.keys()
+        # tell the queryset to only specifically get a set of columns are about
         self.values = self.queryset.values(*values_columns)
 
     def get_flat_dataframe(self):
@@ -64,6 +68,9 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         Return a flattened view of all the supplements that were taken
         """
         df = self.build_dataframe()
+
+        if df.empty:
+            return df
 
         # use a pivot_table and not a pivot because duplicates should be summed
         # should there be duplicates though? ie. would anyone ever record
@@ -106,7 +113,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         unproductive_columns = [
             item for item in df.keys()
             if 'Productive' not in item
-               and 'Minutes' in item
+            and 'Minutes' in item
         ]
         # exclude "source" too
         unproductive_df = df[unproductive_columns]
@@ -142,6 +149,10 @@ class AggregateDataframeBuilder(object):
     def build_dataframe(self):
         productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
         supplement_dataframe = self._get_supplement_event_dataframe(self.supplement_event_queryset)
+
+        # if we don't have any data for either or of these, just return an empty dataset
+        if productivity_log_dataframe.empty or supplement_dataframe.empty:
+            return productivity_log_dataframe
 
         # because productivity is measured daily, and supplements can be measured
         # at any time, we have to realign them to be the right time frequencies
