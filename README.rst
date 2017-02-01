@@ -1,11 +1,10 @@
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
-
 .. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
     :target: https://travis-ci.org/jeffshek/betterself
-    
+
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
+
 
 
 
