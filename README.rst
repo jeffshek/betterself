@@ -1,5 +1,3 @@
-Master Build Status
-
 .. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
     :target: https://travis-ci.org/jeffshek/betterself
         
