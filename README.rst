@@ -1,5 +1,14 @@
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+
 .. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
     :target: https://travis-ci.org/jeffshek/betterself
+    
+.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
+     :target: https://github.com/pydanny/cookiecutter-django/
+     :alt: Built with Cookiecutter Django
+
+
+
         
 BetterSelf
 ==============================
@@ -27,9 +36,6 @@ Why are we (unfortunately, just me) doing this?
 - With enough data, we can build reports that show correlations across supplements, what is synergistic, what isn't.
 - I want a app that is more robust than Excel, allow me to choose different correlation methods to productivity (Simple / Exponential / whatever I can think of)
 
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
-     :target: https://github.com/pydanny/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
 
 
-LICENSE: MIT
+
