@@ -41,6 +41,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration TODO - find out what this is and remove
     'rest_framework',
+    'webpack_loader',
 )
 
 # Apps specific for this project go here.
@@ -175,6 +176,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     str(APPS_DIR.path('betterself', 'static')),
+    str(APPS_DIR.path('betterself', 'assets')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
