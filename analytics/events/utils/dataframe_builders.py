@@ -36,11 +36,11 @@ PRODUCTIVITY_LOG_COLUMN_MAP = {
 
 class DataFrameBuilder(object):
     def build_dataframe(self):
-        # Am I really a programmer or just a lego assembler?
-        # Pandas makes my life at least 20 times easier.
         if not self.values.exists():
             return pd.DataFrame()
 
+        # Am I really a programmer or just a lego assembler?
+        # Pandas makes my life at least 20 times easier.
         df = pd.DataFrame.from_records(self.values, index=self.index_column)
 
         # make the columns and labels prettier

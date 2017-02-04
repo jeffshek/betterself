@@ -1,3 +1,5 @@
+import pandas as pd
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
@@ -28,5 +30,9 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
 
             context['analyzed_dataframe'] = analyzed_dataframe
             context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
+        else:
+            empty_df = pd.DataFrame()
+            context['analyzed_dataframe'] = empty_df
+            context['analyzed_dataframe_html'] = empty_df.to_html()
 
         return context
