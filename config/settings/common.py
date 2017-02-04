@@ -176,7 +176,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     str(APPS_DIR.path('betterself', 'static')),
-    str(APPS_DIR.path('betterself', 'assets')),
+    str(APPS_DIR.path('assets')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders

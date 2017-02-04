@@ -11,7 +11,7 @@ django-filter==1.0.1
 django-floppyforms==1.7.0
 django-model-utils==2.6.1
 django-secure==1.0.1
-django-webpack-loader==0.4.13
+django-webpack-loader==0.4.1
 djangorestframework==3.5.
 drf-compound-fields==1.0.0
 factory-boy==2.8.1
