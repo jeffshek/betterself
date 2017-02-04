@@ -83,3 +83,5 @@ config/development/virtualenv/
 *local_dev_test_script*
 
 *output.csv*
+
+node_modules/
