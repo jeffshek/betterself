@@ -25,7 +25,8 @@ class ProductivityLogView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfa
         'neutral_time_minutes',
         'distracting_time_minutes',
         'very_distracting_time_minutes',
-        'uuid'
+        'uuid',
+        'date',
     )
 
     def get_serializer_class(self):
