@@ -219,6 +219,6 @@ class ExcelProductiveFileSerializer(ExcelFileSerializer):
             # creates a dictionary looking like
             # {'very_productive_time_minutes': 159, 'very_distracting_time_minutes': 122}
             productivity_results = result.to_dict()
-            productivity_results['day'] = index.date()
+            productivity_results['date'] = index.date()
 
             self.adapter.get_or_create_resource(DailyProductivityLog, productivity_results)
