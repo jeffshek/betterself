@@ -57,6 +57,8 @@ class BetterSelfAPIAdapter(object):
             serialized_data = data[0]
         elif not data:
             serialized_data = self.post_resource_data(resource, parameters)
+        else:
+            raise ValueError('Unexpected Resource Entity')
 
         return serialized_data
 
