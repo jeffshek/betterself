@@ -83,5 +83,7 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
     very_distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
+        verbose_name = 'Daily Productivity Log'
+        verbose_name_plural = 'Daily Productivity Logs'
         unique_together = (('date', 'user'),)
         ordering = ['-date']
