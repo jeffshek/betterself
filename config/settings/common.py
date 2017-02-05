@@ -21,6 +21,10 @@ env = environ.Env()
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
+# Useful template tags:
+# 'django.contrib.humanize',
+# ---
+
 DJANGO_APPS = (
     # Default Django apps:
     'django.contrib.auth',
@@ -29,9 +33,6 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Useful template tags:
-    # 'django.contrib.humanize',
-    # ---
     # Admin
     'django.contrib.admin',
     'rest_framework.authtoken',
@@ -57,7 +58,7 @@ LOCAL_APPS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-INSTALLED_APPS += ('django_extensions', )
+INSTALLED_APPS += ('django_extensions',)
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -112,7 +113,6 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='postgres:///betterself'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -254,9 +254,15 @@ LOGGING = {
         },
     },
     'loggers': {
+        # assuming this gets server side errors
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+        # have to do this because not nesting everything under "django"
+        '': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
         },
     },
 }
