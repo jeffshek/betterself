@@ -10,11 +10,15 @@ battle-tested API will make the eventual iOS / Android apps much easier to devel
 https://plus.google.com/+RipRowan/posts/eVeouesvaVX Steve Yegge's Platform Rant
 """
 import json
+
+import logging
 import requests
 
 from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 class BetterSelfAPIAdapter(object):
@@ -69,5 +73,9 @@ class BetterSelfAPIAdapter(object):
 
     def post_resource_data(self, resource, parameters):
         response = self._post_resource_response(resource, parameters)
+        #
+        # if response.status_code != 200:
+        #     logger.error(response.text)
+
         data = json.loads(response.text)
         return data
