@@ -165,7 +165,6 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
             self.SUPPLEMENT_UUID_CACHE[column_name] = supplement['uuid']
 
     def save_results(self, dataframe):
-
         self._create_supplements_from_dataframe(dataframe)
 
         # events should only consist of numeric values, ie. 1 serving of caffeine ...

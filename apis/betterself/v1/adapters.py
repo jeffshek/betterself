@@ -25,6 +25,7 @@ class BetterSelfAPIAdapter(object):
     """
     Takes a user, retrieves the token and fetches RESTful endpoints for that user
     """
+
     def __init__(self, user):
         self.user = user
         self.api_token, _ = Token.objects.get_or_create(user=user)
@@ -41,7 +42,11 @@ class BetterSelfAPIAdapter(object):
 
     def _get_resource_response(self, resource, parameters=None):
         resource_endpoint = self.fetch_resource_endpoint_url(resource)
+        # new_parameters = {'supplement_uuid': 'ba869beb-92cc-47ae-81d5-19f27e17b5e4'}
+        # there is an issue here when fetching here that datetime won't work correctly with UTC
+        # i'm not sure how to fix this just yet ....
         response = requests.get(resource_endpoint, params=parameters, headers=self.headers)
+
         return response
 
     def get_resource_data(self, resource, parameters=None):
@@ -49,11 +54,28 @@ class BetterSelfAPIAdapter(object):
         data = json.loads(response.text)
         return data
 
-    def get_or_create_resource(self, resource, parameters=None):
-        # this is starting to feel really stupid to put another layer over
-        # django and im praying to god this pays off. try to get a resource, otherwise
-        # create it via a post. if more than one object exists, error.
-        data = self.get_resource_data(resource, parameters)
+    def get_or_create_resource(self, resource, parameters=None, defaults=None):
+        """
+        this is starting to feel really stupid to put another layer over
+        django and im praying to god this pays off. try to get a resource, otherwise
+        create it via a post. if more than one object exists, error.
+        """
+        if not parameters:
+            parameters = []
+
+        if not defaults:
+            defaults = []
+
+        if defaults:
+            # if defaults are passed, try to get this resource based on the defaults this is prevent scenarios where
+            # we are trying to get a resource based on optional fields so the get will say we have no record where row
+            # with defaults A and optional argument B exist, but the check should really be JUST for the defaults
+            # (what will fail when trying to enter in the database)
+            get_parameters = {k: v for k, v in parameters.items() if k in defaults}
+            data = self.get_resource_data(resource, get_parameters)
+
+        else:
+            data = self.get_resource_data(resource, parameters)
 
         if len(data) > 1:
             raise ValueError('Expected one object ... got two! {}'.format(data))

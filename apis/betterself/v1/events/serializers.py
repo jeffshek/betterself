@@ -40,11 +40,12 @@ class SupplementEventCreateSerializer(serializers.Serializer):
         supplement = Supplement.objects.get(uuid=supplement_uuid)
         time = validated_data.pop('time')
 
-        obj, _ = create_model.objects.get_or_create(
+        obj, _ = create_model.objects.update_or_create(
             user=user,
             time=time,
             supplement=supplement,
-            **validated_data)
+            defaults=validated_data
+        )
 
         return obj
 
