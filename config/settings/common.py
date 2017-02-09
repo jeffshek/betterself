@@ -19,12 +19,6 @@ APPS_DIR = ROOT_DIR.path()
 
 env = environ.Env()
 
-# APP CONFIGURATION
-# ------------------------------------------------------------------------------
-# Useful template tags:
-# 'django.contrib.humanize',
-# ---
-
 DJANGO_APPS = (
     # Default Django apps:
     'django.contrib.auth',

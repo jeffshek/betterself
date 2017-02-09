@@ -95,9 +95,5 @@ class BetterSelfAPIAdapter(object):
     def post_resource_data(self, resource, parameters):
         response = self._post_resource_response(resource, parameters)
 
-        # some embarrassing testing to see why post requests are not working
-        # if response.status_code >= 400:
-        #     logger.error(response.text)
-
         data = json.loads(response.text)
         return data
