@@ -56,9 +56,8 @@ class BetterSelfAPIAdapter(object):
 
     def get_or_create_resource(self, resource, parameters=None, defaults=None):
         """
-        this is starting to feel really stupid to put another layer over
-        django and im praying to god this pays off. try to get a resource, otherwise
-        create it via a post. if more than one object exists, error.
+        TODO - This is being depreciated! Instead make sure that all resources that accept POST do the correct
+        update_or_create.
         """
         if not parameters:
             parameters = []
