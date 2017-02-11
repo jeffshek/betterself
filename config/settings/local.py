@@ -77,3 +77,5 @@ API_ENDPOINT = 'http://127.0.0.1:9000'
 # )
 # MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DEBUG = True

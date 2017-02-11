@@ -5,7 +5,8 @@ from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
 from events.fixtures.factories import SupplementEventFactory
-from events.models import SupplementEvent
+from events.fixtures.mixins import ProductivityLogFixturesGenerator
+from events.models import SupplementEvent, DailyProductivityLog
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -26,7 +27,7 @@ class TestResourceMixin(object):
         self.model.objects.all().delete()
 
         data = self.adapter.get_resource_data(self.model)
-        self.assertTrue(len(data) == 0)
+        self.assertTrue(len(data) == 0, data)
 
     def test_get_resource_if_none_belong_to_user(self):
         # because all user created objects have limited access to only
@@ -337,12 +338,33 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
         parameters = {
             'source': 'android',
             'supplement_uuid': supplement_uuid,
-            'quantity': 3.5,
+            'quantity': 6,
             'time': timezone.now()
         }
 
         data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
         self.assertEqual(supplement_uuid, data['supplement_uuid'])
+
+    def test_post_events_quantity_change(self):
+        supplement_uuid = self.adapter.get_resource_data(Supplement)[0]['uuid']
+
+        quantity_to_create = 6
+        parameters = {
+            'source': 'android',
+            'supplement_uuid': supplement_uuid,
+            'quantity': quantity_to_create,
+            'time': timezone.now()
+        }
+
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        self.assertEqual(data['quantity'], quantity_to_create)
+
+        # now change the quantity to something different
+        parameters['quantity'] = quantity_to_create + 1
+
+        # if the data is sent twice, ensure that the response is idempotent and has been updated
+        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        self.assertEqual(data['quantity'], quantity_to_create + 1)
 
     def test_post_events_with_invalid_uuid(self):
         supplement_uuid = 'woooopeeee'
@@ -394,10 +416,23 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
 
     def test_get_or_create_response(self):
         parameters = {'name': 'Chocolate'}
-        ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
-        uuid_first_pass = ingredient['uuid']
+        event = self.adapter.get_or_create_resource(SupplementEvent, parameters)
+        uuid_first_pass = event['uuid']
 
-        ingredient = self.adapter.get_or_create_resource(Ingredient, parameters)
-        uuid_second_pass = ingredient['uuid']
+        event = self.adapter.get_or_create_resource(SupplementEvent, parameters)
+        uuid_second_pass = event['uuid']
 
         self.assertEqual(uuid_first_pass, uuid_second_pass)
+
+
+class ProductivityLogAdaptersTests(AdapterTests, TestResourceMixin):
+    # annoys me when unit tests pass, but functional tests catch deeper issues
+    model = DailyProductivityLog
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        default, _ = User.objects.get_or_create(username='default')
+        SupplementEventFactory(user=default)
+        ProductivityLogFixturesGenerator.create_fixtures(default)
