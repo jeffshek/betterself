@@ -7,7 +7,7 @@ from analytics.events.analytics import DataFrameEventsAnalyzer
 from analytics.events.utils.dataframe_builders import AggregateDataframeBuilder
 
 
-class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
+class UserProductivityAnalyticsView(LoginRequiredMixin, TemplateView):
     template_name = 'analytics/productivity.html'
     namespace_url_name = 'user_productivity'
     # if a user isn't logged in, redirect to exception

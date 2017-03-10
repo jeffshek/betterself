@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
-from analytics.views import UserProductivityAnalytics
+from analytics.views import UserProductivityAnalyticsView
 
 
 urlpatterns = [
-    url(r'^$', UserProductivityAnalytics.as_view(), name=UserProductivityAnalytics.namespace_url_name),
+    url(r'^$', UserProductivityAnalyticsView.as_view(), name=UserProductivityAnalyticsView.namespace_url_name),
 ]
