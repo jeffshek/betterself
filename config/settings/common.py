@@ -174,6 +174,13 @@ STATICFILES_DIRS = (
     str(APPS_DIR.path('assets')),
 )
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': APPS_DIR.path('webpack-stats.json'),
+    }
+}
+
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
