@@ -12,9 +12,7 @@
   "bugs": {
     "url": "https://github.com/jeffshek/betterself/issues"
   },
-  "scripts": {
-    "build": "webpack"
-  },
+  "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress",
   "homepage": "https://github.com/jeffshek/betterself#readme",
   "dependencies": {
     "babel": "^6.5.2",
