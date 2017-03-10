@@ -1,21 +1,10 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Analytics</title>#}
-{#</head>#}
-{#<body>#}
-{#{{ aggregate_dataframe_html|safe }}#}
-{#</body>#}
-{#</html>#}
-{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Hello React</title>
-    </head>
-    <body>
-        <div id="container"></div>
-        {% render_bundle 'main' %}
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+</head>
+<body>
+{{ aggregate_dataframe_html|safe }}
+</body>
 </html>

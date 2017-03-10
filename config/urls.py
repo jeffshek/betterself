@@ -18,6 +18,7 @@ urlpatterns = [
     # API
     url(r'^api/', include('apis.urls')),
     url(r'^analytics/', include('analytics.urls')),
+    url(r'^react/$', TemplateView.as_view(template_name='react.html'), name='react'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
