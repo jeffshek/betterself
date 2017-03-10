@@ -55,7 +55,9 @@ class DataFrameEventsAnalyzer(object):
         if add_yesterday_lag:
             dataframe = self.add_yesterday_shifted_to_dataframe(dataframe)
 
-        dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
+        if dataframe.empty:
+            dataframe = self._remove_invalid_measurement_days(dataframe, measurement)
+
         return dataframe
 
     @staticmethod

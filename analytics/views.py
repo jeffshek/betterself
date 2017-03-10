@@ -26,10 +26,15 @@ class UserProductivityAnalytics(LoginRequiredMixin, TemplateView):
 
         if not aggregate_dataframe.empty:
             analyzer = DataFrameEventsAnalyzer(aggregate_dataframe)
-            analyzed_dataframe = analyzer.get_correlation_across_summed_days_for_measurement('Productivity')
 
-            context['analyzed_dataframe'] = analyzed_dataframe
-            context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
+            # not the prettiest, refactor to validate ahead of this
+            try:
+                analyzed_dataframe = analyzer.get_correlation_across_summed_days_for_measurement('Productivity')
+                context['analyzed_dataframe'] = analyzed_dataframe
+                context['analyzed_dataframe_html'] = analyzed_dataframe.to_html()
+            except KeyError:
+                # productivity columns might not exist, so skip it
+                pass
         else:
             empty_df = pd.DataFrame()
             context['analyzed_dataframe'] = empty_df
