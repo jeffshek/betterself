@@ -12,6 +12,9 @@
   "bugs": {
     "url": "https://github.com/jeffshek/betterself/issues"
   },
+  "scripts": {
+    "build": "webpack"
+  },
   "homepage": "https://github.com/jeffshek/betterself#readme",
   "dependencies": {
     "babel": "^6.5.2",
