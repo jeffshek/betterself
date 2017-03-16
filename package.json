@@ -28,5 +28,8 @@
     "react-dom": "^15.4.2",
     "webpack": "^2.2.1",
     "webpack-bundle-tracker": "^0.2.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.4.2"
   }
 }
