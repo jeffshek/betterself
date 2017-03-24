@@ -3,10 +3,15 @@ import { render } from "react-dom"
 
 
 class Dashboard extends React.Component {
+
+  fetchUserData () {
+    return 'Fetching User Data';
+  }
+
   render() {
     return (
       <h1>
-        Insert Dashboard Things.
+        { this.fetchUserData() }
       </h1>
     )
   }
