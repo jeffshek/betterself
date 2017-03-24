@@ -6,7 +6,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <h1>
-        Dashboard
+        Insert Dashboard Things.
       </h1>
     )
   }
