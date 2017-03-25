@@ -1,8 +1,8 @@
 var React = require('react')
-var auth = require('./auth')
+var auth = require('./auth/auth')
 
 module.exports = React.createClass({
-   getInitialState: function() {
+    getInitialState: function() {
         return {'user':[]}
     },
 
@@ -16,12 +16,13 @@ module.exports = React.createClass({
 
     logoutHandler: function() {
         auth.logout()
-        this.context.router.replace('/react/login/')
+        this.context.router.replace('/login/')
     },
 
     loadUserData: function() {
         $.ajax({
             method: 'GET',
+            // change this so this actually works
             url: '/api/users/i/',
             datatype: 'json',
             headers: {
