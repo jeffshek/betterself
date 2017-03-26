@@ -18,9 +18,11 @@ urlpatterns = [
     # API
     url(r'^api/', include('apis.urls')),
     url(r'^analytics/', include('analytics.urls')),
-    url(r'^react/$', TemplateView.as_view(template_name='react.html'), name='react'),
+    # PyCharm can dynamically understand template_names and rename them. I wish I had known PyCharm at the beginning.
+    url(r'^dashboard/$', TemplateView.as_view(template_name='dashboard/home.html'), name='react'),
+    # To test this ...
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
-    url(r'^api-token-auth/', views.obtain_auth_token, name='api_token'),
+    url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -33,6 +35,5 @@ if settings.DEBUG:
         url(r'^403/$', default_views.permission_denied, kwargs={'exception': Exception('Permission Denied')}),
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
-
     ]
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -7,7 +7,9 @@ from events.models import SupplementEvent, DailyProductivityLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
+
 urlpatterns = [
+    # page looks like 127.0.0.1:8001/{Supplement.RESOURCE_NAME}/
     url(r'^{0}'.format(Vendor.RESOURCE_NAME), VendorView.as_view(), name=Vendor.RESOURCE_NAME),
     url(r'^{0}'.format(Supplement.RESOURCE_NAME), SupplementView.as_view(), name=Supplement.RESOURCE_NAME),
     url(r'^{0}'.format(Ingredient.RESOURCE_NAME), IngredientView.as_view(), name=Ingredient.RESOURCE_NAME),

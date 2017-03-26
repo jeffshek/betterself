@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
 
+# note for api urls, even though app is plural, link is singular!
+# aka /api/v1, NOT /apis/v1
 urlpatterns = [
     # Include all the different version APIs
     # might be over-engineering, but I can't think

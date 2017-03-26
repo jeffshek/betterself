@@ -16,7 +16,7 @@ module.exports = React.createClass({
 
     logoutHandler: function() {
         auth.logout()
-        this.context.router.replace('/login/')
+        this.context.router.replace('/dashboard/login/')
     },
 
     loadUserData: function() {
