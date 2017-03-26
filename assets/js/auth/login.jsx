@@ -7,13 +7,14 @@ module.exports = React.createClass({
     },
 
     handleSubmit: function(e) {
+        console.log(e);
         e.preventDefault()
 
         var username = this.refs.username.value
         var pass = this.refs.pass.value
 
         auth.login(username, pass, (loggedIn) => {
-            this.context.router.replace('/react/')
+            this.context.router.replace('/dashboard/')
         })
     },
 

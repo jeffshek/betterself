@@ -1,7 +1,7 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var Router = require('react-router')
-var App = require('./app')
+var Dashboard = require('./dashboard')
 var Login = require('./auth/login')
 var auth = require('./auth/auth')
 
@@ -16,8 +16,8 @@ function requireAuth(nextState, replace) {
 
 ReactDOM.render(
     <Router.Router history={Router.browserHistory}>
-        <Router.Route path='/login/' component={Login} />
-        <Router.Route path='/react/' component={App} onEnter={requireAuth} />
+        <Router.Route path='/dashboard/login' component={Login} />
+        <Router.Route path='/dashboard/' component={Dashboard} onEnter={requireAuth} />
     </Router.Router>,
-    document.getElementById('app')
+    document.getElementById('dashboard')
 )

@@ -20,11 +20,13 @@ urlpatterns = [
     url(r'^analytics/', include('analytics.urls')),
     # PyCharm can dynamically understand template_names and rename them. I wish I had known PyCharm at the beginning.
     url(r'^dashboard/$', TemplateView.as_view(template_name='dashboard/home.html'), name='react'),
+    url(r'^dashboard/login/$', TemplateView.as_view(template_name='dashboard/home.html'), name='react'),
     # To test this ...
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
 ]
 
+# might have to double check this, not sure why MEDIA is so oddly pronounced
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
