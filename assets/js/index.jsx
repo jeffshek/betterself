@@ -1,9 +1,11 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
-var Router = require('react-router')
 var Dashboard = require('./dashboard')
 var Login = require('./auth/login')
 var auth = require('./auth/auth')
+var Router = require('react-router-dom').HashRouter
+var Route = require('react-router-dom').Route
+var browserHistory = require('react-router-dom').browserHistory
 
 function requireAuth(nextState, replace) {
     if (!auth.loggedIn()) {
@@ -15,9 +17,12 @@ function requireAuth(nextState, replace) {
 }
 
 ReactDOM.render(
-    <Router.Router history={Router.browserHistory}>
-        <Router.Route path='/dashboard/login' component={Login} />
-        <Router.Route path='/dashboard/' component={Dashboard} onEnter={requireAuth} />
-    </Router.Router>,
+    <Router history={browserHistory}>
+        <div>
+          <Route exact path="/" component={Login} />
+          <Route path='/dashboard/login' component={Login} />
+          <Route path='/dashboard/' component={Dashboard} onEnter={requireAuth} />
+        </div>
+    </Router>,
     document.getElementById('dashboard')
 )
