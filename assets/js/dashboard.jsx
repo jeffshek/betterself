@@ -1,5 +1,6 @@
 var React = require('react')
 var auth = require('./auth/auth')
+var browserHistory = require('react-router-dom').browserHistory
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -15,8 +16,7 @@ module.exports = React.createClass({
     },
 
     logoutHandler: function() {
-        auth.logout()
-        this.context.router.replace('/dashboard/login/')
+        browserHistory.push('/dashboard/login/')
     },
 
     loadUserData: function() {
