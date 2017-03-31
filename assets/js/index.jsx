@@ -8,12 +8,6 @@ import {
   withRouter
 } from 'react-router-dom'
 
-////////////////////////////////////////////////////////////
-// 1. Click the public page
-// 2. Click the protected page
-// 3. Log in
-// 4. Click the back button, note the URL each time
-
 const DASHBOARD_OVERVIEW = '/dashboard/overview/'
 const DASHBOARD_INDEX = '/dashboard/index'
 const LOGIN_PATH = '/dashboard/login'
@@ -35,21 +29,53 @@ const AuthExample = () => (
 )
 
 const Authenticator = {
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.token,
+
   login(username, password, cb) {
-    console.log(username, password, cb)
     if (localStorage.token) {
-      if (cb) cb(true)
+      this.isAuthenticated = true
       return
     }
 
-    this.isAuthenticated = true
-    setTimeout(cb, 100) // fake async
+    this.getToken(username, password, (res) => {
+      if (res.authenticated) {
+        this.isAuthenticated = true
+
+        localStorage.token = res.token
+        if (cb) cb(true)
+      } else {
+        console.log('Did Not Get Auth Token')
+        if (cb) cb(false)
+      }
+    })
   },
+
   logout(cb) {
+    delete localStorage.token
     this.isAuthenticated = false
-    setTimeout(cb, 100)
-  }
+  },
+
+  loggedIn() {
+    return this.isAuthenticated
+  },
+
+  getToken(username, pass, cb) {
+    $.ajax({
+      type: 'POST',
+      url: '/api-token-auth/',
+      data: {
+        username: username,
+        password: pass
+      },
+      success: function(res){
+        cb({
+          authenticated: true,
+          token: res.token
+        })
+      }
+    })
+  },
+
 }
 
 const AuthButton = withRouter(({ history }) => (
@@ -88,9 +114,16 @@ class Login extends React.Component {
     redirectToReferrer: false
   }
 
-  login = () => {
-    Authenticator.login(1, 2, () => {
-      this.setState({ redirectToReferrer: true })
+  handleSubmit = (e) => {
+    e.preventDefault()
+
+    let username = this.refs.username.value
+    let password = this.refs.password.value
+
+    Authenticator.login(username, password, (loggedIn) => {
+      if (loggedIn) {
+        this.setState({ redirectToReferrer: true })
+      }
     })
   }
 
@@ -98,9 +131,15 @@ class Login extends React.Component {
     const { from } = this.props.location.state || { from: { pathname: '/' } }
     const { redirectToReferrer } = this.state
 
+    if (Authenticator.isAuthenticated) {
+      return (
+        <Redirect to={DASHBOARD_OVERVIEW}/>
+      )
+    }
+
     if (redirectToReferrer) {
       return (
-        <Redirect to={from}/>
+        <Redirect to={DASHBOARD_OVERVIEW}/>
       )
     }
 
@@ -108,8 +147,8 @@ class Login extends React.Component {
       <div>
         <p>You must log in to view the page at {from.pathname}</p>
         <input type="text" placeholder="username" ref="username" />
-        <input type="password" placeholder="password" ref="pass" />
-        <button onClick={this.login}>Log in</button>
+        <input type="password" placeholder="password" ref="password" />
+        <button onClick={this.handleSubmit}>Log in</button>
       </div>
     )
   }
