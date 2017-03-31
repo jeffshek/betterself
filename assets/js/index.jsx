@@ -36,7 +36,13 @@ const AuthExample = () => (
 
 const Authenticator = {
   isAuthenticated: false,
-  login(cb) {
+  login(username, password, cb) {
+    console.log(username, password, cb)
+    if (localStorage.token) {
+      if (cb) cb(true)
+      return
+    }
+
     this.isAuthenticated = true
     setTimeout(cb, 100) // fake async
   },
@@ -83,7 +89,7 @@ class Login extends React.Component {
   }
 
   login = () => {
-    Authenticator.login(() => {
+    Authenticator.login(1, 2, () => {
       this.setState({ redirectToReferrer: true })
     })
   }
@@ -101,6 +107,8 @@ class Login extends React.Component {
     return (
       <div>
         <p>You must log in to view the page at {from.pathname}</p>
+        <input type="text" placeholder="username" ref="username" />
+        <input type="password" placeholder="password" ref="pass" />
         <button onClick={this.login}>Log in</button>
       </div>
     )
