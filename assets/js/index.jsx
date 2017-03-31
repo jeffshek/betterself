@@ -14,39 +14,47 @@ import {
 // 3. Log in
 // 4. Click the back button, note the URL each time
 
+const DASHBOARD_OVERVIEW = '/dashboard/overview/'
+const DASHBOARD_INDEX = '/dashboard/index'
+const LOGIN_PATH = '/dashboard/login'
+
 const AuthExample = () => (
   <Router>
     <div>
       <AuthButton/>
       <ul>
-        <li><Link to="/public">Public Page</Link></li>
-        <li><Link to="/protected">Protected Page</Link></li>
+        <li><Link to={DASHBOARD_OVERVIEW}>Overview Page</Link></li>
+        <li><Link to={DASHBOARD_INDEX}>Dashboard Index</Link></li>
       </ul>
-      <Route path="/public" component={Public}/>
-      <Route path="/login" component={Login}/>
-      <PrivateRoute path="/protected" component={Protected}/>
+      <Route path={DASHBOARD_OVERVIEW} component={Public}/>
+      <Route path={LOGIN_PATH} component={Login}/>
+      {/*Goal is to eventually wrap all Routes that should be protected under a component*/}
+      <PrivateRoute path={DASHBOARD_INDEX} component={Protected}/>
     </div>
   </Router>
 )
 
-const fakeAuth = {
+const Authenticator = {
   isAuthenticated: false,
-  authenticate(cb) {
+  login(cb) {
     this.isAuthenticated = true
     setTimeout(cb, 100) // fake async
   },
-  signout(cb) {
+  logout(cb) {
     this.isAuthenticated = false
     setTimeout(cb, 100)
   }
 }
 
 const AuthButton = withRouter(({ history }) => (
-  fakeAuth.isAuthenticated ? (
+  Authenticator.isAuthenticated ? (
     <p>
-      Welcome! <button onClick={() => {
-      fakeAuth.signout(() => history.push('/'))
-    }}>Sign out</button>
+      Welcome!
+      <button onClick={() => {
+        Authenticator.logout(() => history.push('/'))}
+      }>
+        Sign out
+      </button>
     </p>
   ) : (
     <p>You are not logged in.</p>
@@ -55,11 +63,11 @@ const AuthButton = withRouter(({ history }) => (
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route {...rest} render={props => (
-    fakeAuth.isAuthenticated ? (
+    Authenticator.isAuthenticated ? (
       React.createElement(component, props)
     ) : (
       <Redirect to={{
-        pathname: '/login',
+        pathname: LOGIN_PATH,
         state: { from: props.location }
       }}/>
     )
@@ -75,7 +83,7 @@ class Login extends React.Component {
   }
 
   login = () => {
-    fakeAuth.authenticate(() => {
+    Authenticator.login(() => {
       this.setState({ redirectToReferrer: true })
     })
   }
@@ -98,8 +106,6 @@ class Login extends React.Component {
     )
   }
 }
-
-export default AuthExample
 
 ReactDOM.render(
   <AuthExample />, document.getElementById('dashboard')
