@@ -81,7 +81,7 @@ const Authenticator = {
 const AuthButton = withRouter(({ history }) => (
   Authenticator.isAuthenticated ? (
     <p>
-      Welcome!
+      Welcome User!
       <button onClick={() => {
         Authenticator.logout(() => history.push('/'))}
       }>
