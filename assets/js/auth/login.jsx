@@ -1,65 +1,49 @@
-// var React = require('react')
-// var auth = require('./auth')
-// var browserHistory = require('react-router-dom').browserHistory
-//
-// module.exports = React.createClass({
-//     contextTypes: {
-//         router: React.PropTypes.object.isRequired
-//     },
-//
-//     handleSubmit: function(e) {
-//         e.preventDefault()
-//
-//         var username = this.refs.username.value
-//         var pass = this.refs.pass.value
-//
-//         auth.login(username, pass, (loggedIn) => {
-//             // console.log(browserHistory);
-//             this.context.router.transitionTo('/dashboard/')
-//             // browserHistory.push('/dashboard/')
-//         })
-//     },
-//
-//     render: function() {
-//         return (
-//             <form onSubmit={this.handleSubmit}>
-//                 <input type="text" placeholder="username" ref="username"/>
-//                 <input type="password" placeholder="password" ref="pass"/>
-//                 <input type="submit"/>
-//             </form>
-//         )
-//     }
-// })
+import React from 'react'
+import { Authenticator } from './auth'
+import { DASHBOARD_OVERVIEW } from '../urls/constants'
+import { Redirect } from 'react-router-dom'
 
-import { Component, PropTypes } from 'react';
+export default class Login extends React.Component {
+  state = {
+    redirectToReferrer: false
+  }
 
-class Login extends Component {
-    handleSubmit(e) {
-        e.preventDefault()
+  handleSubmit = (e) => {
+    e.preventDefault()
 
-        var username = this.refs.username.value
-        var pass = this.refs.pass.value
+    let username = this.refs.username.value
+    let password = this.refs.password.value
 
-        auth.login(username, pass, (loggedIn) => {
-            // console.log(browserHistory);
-            this.context.router.transitionTo('/dashboard/')
-            // browserHistory.push('/dashboard/')
-        })
-    };
+    Authenticator.login(username, password, (loggedIn) => {
+      if (loggedIn) {
+        this.setState({ redirectToReferrer: true })
+      }
+    })
+  }
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="username" ref="username"/>
-                <input type="password" placeholder="password" ref="pass"/>
-                <input type="submit"/>
-            </form>
-        )
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
+
+    if (Authenticator.isAuthenticated) {
+      return (
+        <Redirect to={DASHBOARD_OVERVIEW}/>
+      )
     }
+
+    if (redirectToReferrer) {
+      return (
+        <Redirect to={DASHBOARD_OVERVIEW}/>
+      )
+    }
+
+    return (
+      <div>
+        <p>You must log in to view the page at {from.pathname}</p>
+        <input type="text" placeholder="username" ref="username" />
+        <input type="password" placeholder="password" ref="password" />
+        <button onClick={this.handleSubmit}>Log In</button>
+      </div>
+    )
+  }
 }
-
-Login.contextTypes = {
-    router: PropTypes.object.isRequired
-};
-
-export default Login;
