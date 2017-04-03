@@ -1,6 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+const JSON_HEADERS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
 
@@ -28,21 +33,43 @@ export const Authenticator = {
   },
 
   getToken(username, pass, cb) {
-    // TODO - Switch this to fetch!
-    $.ajax({
-      type: 'POST',
-      url: '/api-token-auth/',
-      data: {
-        username: username,
-        password: pass
-      },
-      success: function(res){
+    let credentials = {
+      username : username,
+      password : pass
+    }
+    console.log("wtf 8")
+    fetch('/api-token-auth/', {
+      method: 'POST',
+      headers: JSON_HEADERS,
+      body: JSON.stringify(credentials)
+    }).then(function(res){
+        let json_result = res.json()
+
         cb({
           authenticated: true,
-          token: res.token
+          token: json_result.token
         })
-      }
-    })
+
+        console.log(json_result.token)
+
+    }).catch(function(err){
+      console.log("no work")
+      console.log(err)
+    });
+    // $.ajax({
+    //   type: 'POST',
+    //   url: '/api-token-auth/',
+    //   data: {
+    //     username: username,
+    //     password: pass
+    //   },
+    //   success: function(res){
+    //     cb({
+    //       authenticated: true,
+    //       token: res.token
+    //     })
+    //   }
+    // })
   },
 }
 

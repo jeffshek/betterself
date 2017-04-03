@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"main-c28f0dc7d3bab038171e.js","path":"/sites/betterself/assets/bundles/main-c28f0dc7d3bab038171e.js"}]}}
+{"status":"done","chunks":{"main":[{"name":"main-ac6e9de94f35d485c9c8.js","path":"/sites/betterself/assets/bundles/main-ac6e9de94f35d485c9c8.js"}]},"error":"ModuleBuildError","message":"Module build failed: SyntaxError: Unexpected token (9:0)\n\n   7 |   },\n   8 | \n>  9 | export const Authenticator = {\n     | ^\n  10 |   isAuthenticated: !!localStorage.token,\n  11 | \n  12 |   login(username, password, cb) {\n"}
