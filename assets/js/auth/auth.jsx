@@ -28,6 +28,7 @@ export const Authenticator = {
   },
 
   getToken(username, pass, cb) {
+    // TODO - Switch this to fetch!
     $.ajax({
       type: 'POST',
       url: '/api-token-auth/',
