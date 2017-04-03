@@ -8,9 +8,9 @@ import {
   withRouter
 } from 'react-router-dom'
 
-const DASHBOARD_OVERVIEW = '/dashboard/overview/'
-const DASHBOARD_INDEX = '/dashboard/index'
-const LOGIN_PATH = '/dashboard/login'
+import { DASHBOARD_OVERVIEW, DASHBOARD_INDEX, LOGIN_PATH } from './urls/constants'
+
+
 
 const AuthExample = () => (
   <Router>
@@ -40,7 +40,6 @@ const Authenticator = {
     this.getToken(username, password, (res) => {
       if (res.authenticated) {
         this.isAuthenticated = true
-
         localStorage.token = res.token
         if (cb) cb(true)
       } else {
