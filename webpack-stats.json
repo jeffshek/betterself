@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"main-5f415491638999120db5.js","path":"/sites/betterself/assets/bundles/main-5f415491638999120db5.js"}]},"error":"ModuleNotFoundError","message":"Module not found: Error: Can't resolve './urls/constants' in '/sites/betterself/assets/js/auth'"}
+{"status":"done","chunks":{"main":[{"name":"main-c28f0dc7d3bab038171e.js","path":"/sites/betterself/assets/bundles/main-c28f0dc7d3bab038171e.js"}]}}
