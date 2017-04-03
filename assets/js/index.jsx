@@ -44,7 +44,6 @@ const Authenticator = {
         localStorage.token = res.token
         if (cb) cb(true)
       } else {
-        console.log('Did Not Get Auth Token')
         if (cb) cb(false)
       }
     })
@@ -53,10 +52,7 @@ const Authenticator = {
   logout(cb) {
     delete localStorage.token
     this.isAuthenticated = false
-  },
-
-  loggedIn() {
-    return this.isAuthenticated
+    setTimeout(cb, 100)
   },
 
   getToken(username, pass, cb) {
@@ -79,18 +75,19 @@ const Authenticator = {
 }
 
 const AuthButton = withRouter(({ history }) => (
-  Authenticator.isAuthenticated ? (
-    <p>
-      Welcome User!
-      <button onClick={() => {
-        Authenticator.logout(() => history.push('/'))}
-      }>
-        Sign out
-      </button>
-    </p>
-  ) : (
-    <p>You are not logged in.</p>
-  )
+  Authenticator.isAuthenticated
+    ? (
+      <p>
+        Welcome User!
+        <button onClick={() => {
+          Authenticator.logout(() => history.push('/'))}
+        }>
+          Log out
+        </button>
+      </p>
+    ) : (
+      <p>You are not logged in.</p>
+    )
 ))
 
 const PrivateRoute = ({ component, ...rest }) => (
@@ -148,7 +145,7 @@ class Login extends React.Component {
         <p>You must log in to view the page at {from.pathname}</p>
         <input type="text" placeholder="username" ref="username" />
         <input type="password" placeholder="password" ref="password" />
-        <button onClick={this.handleSubmit}>Log in</button>
+        <button onClick={this.handleSubmit}>Log In</button>
       </div>
     )
   }
