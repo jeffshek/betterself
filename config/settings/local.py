@@ -5,7 +5,6 @@ Local settings
 - Run in Debug mode
 - Use console backend for emails
 - Add Django Debug Toolbar
-- Add django-extensions as app
 """
 print ('Using {} configurations'.format(__name__))
 

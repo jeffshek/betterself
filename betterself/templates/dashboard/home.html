@@ -1,9 +1,11 @@
 {% load render_bundle from webpack_loader %}
+{% load staticfiles i18n %}
 <base href="/dashboard" />
 <!DOCTYPE html>
 <html>
     <head>
         <title>Dashboard</title>
+        <link rel="shortcut icon" href="{% static 'images/logos/v1/favicon/favicon-16x16.png' %}">
     </head>
     <body>
         <div id="dashboard"></div>
