@@ -44,7 +44,7 @@ export const Authenticator = {
       {
         return response.json()
       })
-      .then((responseData) =>
+      .then((responseData) => // Because these are promises second then means data has arrived
       {
         if ('token' in responseData){
           cb({
