@@ -1,10 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-const JSON_HEADERS = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
+import { JSON_HEADERS } from '../constants'
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
@@ -37,39 +34,37 @@ export const Authenticator = {
       username : username,
       password : pass
     }
-    console.log("wtf 8")
+
     fetch('/api-token-auth/', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify(credentials)
-    }).then(function(res){
-        let json_result = res.json()
-
+    })
+      .then((response) =>
+      {
+        return response.json()
+      })
+      .then((responseData) =>
+      {
+        if ('token' in responseData){
+          cb({
+            authenticated: true,
+            token: responseData.token
+          })
+        }
+        else {
+          alert("Invalid Login Error")
+          cb({
+            authenticated: false
+          })
+        }
+      })
+      .catch((error) => {
+        alert("Network Issue Encountered")
         cb({
-          authenticated: true,
-          token: json_result.token
+          authenticated: false
         })
-
-        console.log(json_result.token)
-
-    }).catch(function(err){
-      console.log("no work")
-      console.log(err)
-    });
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/api-token-auth/',
-    //   data: {
-    //     username: username,
-    //     password: pass
-    //   },
-    //   success: function(res){
-    //     cb({
-    //       authenticated: true,
-    //       token: res.token
-    //     })
-    //   }
-    // })
+      })
   },
 }
 
