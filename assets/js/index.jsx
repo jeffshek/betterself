@@ -15,6 +15,20 @@ import Login from './auth/login'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
+// http://stackoverflow.com/questions/38510111/react-js-do-common-header
+//
+// import Header from './header.jsx';
+//
+// class App extends Component {
+//   render() {
+//     return (
+//       <div>
+//         <Header />
+//         {this.props.children}
+//       </div>
+//     );
+//   }
+// }
 
 const DashboardRouter = () => (
   <Router>
