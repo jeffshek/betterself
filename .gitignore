@@ -86,4 +86,5 @@ config/development/virtualenv/
 assets/bundles
 node_modules/
 
+webpack-stats.json
 

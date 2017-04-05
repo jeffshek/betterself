@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -15,24 +15,16 @@ import Login from './auth/login'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
-// http://stackoverflow.com/questions/38510111/react-js-do-common-header
-//
-// import Header from './header.jsx';
-//
-// class App extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <Header />
-//         {this.props.children}
-//       </div>
-//     );
-//   }
-// }
+class Header extends Component {
+  render () {
+    return <div>Sample Header Component</div>
+  }
+}
 
 const DashboardRouter = () => (
   <Router>
     <div>
+      <Header />
       <AuthButton/>
       <ul>
         <li><Link to={DASHBOARD_OVERVIEW}>Overview Page</Link></li>

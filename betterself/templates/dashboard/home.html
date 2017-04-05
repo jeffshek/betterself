@@ -5,7 +5,19 @@
 <html>
     <head>
         <title>Dashboard</title>
-        <link rel="shortcut icon" href="{% static 'images/logos/v1/favicon/favicon-16x16.png' %}">
+        <link rel="shortcut icon" href="{% static "images/logos/v1/favicon/favicon.ico" %}">
+
+        <!-- Latest compiled and minified CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+
+        <!-- Style Library / Review to figure out overlap between CSS Styles -->
+        <link href="{% static "css/style-library-1.css" %}" rel="stylesheet">
+        <link href="{% static "css/plugins.css" %}" rel="stylesheet">
+        <link href="{% static "css/blocks.css" %}" rel="stylesheet">
+        <link href="{% static "css/custom.css" %}" rel="stylesheet">
     </head>
     <body>
         <div id="dashboard"></div>
@@ -13,3 +25,4 @@
         {% render_bundle 'main' %}
     </body>
 </html>
+
