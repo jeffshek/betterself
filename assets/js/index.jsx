@@ -17,7 +17,7 @@ const Protected = () => <h3>Protected</h3>
 
 class Header extends Component {
   render () {
-    return <div>Sample Header Component</div>
+    return <div>Sample Header Component 2</div>
   }
 }
 
