@@ -15,7 +15,7 @@ import Login from './auth/login'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
-const logo_background = require('../images/logos/logojoy/png/white_logo_transparent_background.png')
+const logo_background = require('../../betterself/static/images/logos/logojoy/png/white_logo_transparent_background.png')
 
 const Header = React.createClass({
   render: function() {
