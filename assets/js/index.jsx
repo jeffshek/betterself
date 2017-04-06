@@ -15,11 +15,60 @@ import Login from './auth/login'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
-class Header extends Component {
-  render () {
-    return <div>Sample Header Component 2</div>
+const logo_background = require('../images/logos/logojoy/png/white_logo_transparent_background.png')
+
+const Header = React.createClass({
+  render: function() {
+    return (
+      <header id="header-1" className="soft-scroll header-1">
+        <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
+          <div className="container">
+            <div className="navbar-header">
+              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span className="sr-only">Toggle navigation</span>
+              </button>
+              <a href="#">
+                <img src={logo_background} className="brand-img img-responsive" />
+              </a>
+            </div>
+            <div className="collapse navbar-collapse">
+              <ul className="nav navbar-nav navbar-right">
+                <li className="active nav-item">
+                  <a href="#">Home</a>
+                </li>
+                <li className="nav-item">
+                  <a href="#">Features</a>
+                </li>
+                <li className="nav-item">
+                </li>
+                <li className="nav-item dropdown">
+                  <a className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay={0} data-close-others="false" href="#">Pages <i className="fa fa-angle-down" /></a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a href="#">Dropdown 1</a>
+                    </li>
+                    <li>
+                      <a href="#">Dropdown 2</a>
+                    </li>
+                    <li>
+                      <a href="#">Dropdown 3</a>
+                    </li>
+                    <li>
+                      <a href="#">Dropdown 4</a>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <a href="#">Contact</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+    );
   }
-}
+});
 
 const DashboardRouter = () => (
   <Router>

@@ -17,6 +17,7 @@ module.exports = {
         path: path.resolve('./assets/bundles/'),
         //naming convention webpack should use for your files
         filename: '[name]-[hash].js',
+        publicPath: '/static/bundles/',
     },
 
     plugins: [
@@ -32,10 +33,8 @@ module.exports = {
 
     module: {
         loaders: [
-            //a regexp that tells webpack use the following loaders on all
-            //.js and .jsx files
-            {
-              test: /\.jsx?/,
+            { // 'babel-loader',
+              test: /\.jsx?/, // include js and jsx
               exclude: /node_modules/,
               loader: 'babel-loader',
               query:
@@ -43,7 +42,16 @@ module.exports = {
                   // stage-0 is necessary for the crappy import styles that you have
                   presets: ['es2015','react','stage-0']
                 }
-            }
+            },
+            { // file-loader
+              test: /\.(jpg|png|svg)$/,
+              exclude: /node_modules/,
+              loader: 'file-loader',
+              // options: {
+              //   name: 'static/bundles/images/[name][hash].[ext]',
+              // },
+            },
+
         ]
     },
 
