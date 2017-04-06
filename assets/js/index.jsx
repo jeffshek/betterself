@@ -15,10 +15,10 @@ import Login from './auth/login'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
-const logo_background = require('../../betterself/static/images/logos/logojoy/png/white_logo_transparent_background.png')
+const header_logo_background = require('../../betterself/static/images/logos/logojoy/png/white_logo_transparent_background.png')
 
-const Header = React.createClass({
-  render: function() {
+class Header extends Component {
+  render() {
     return (
       <header id="header-1" className="soft-scroll header-1">
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
@@ -28,7 +28,7 @@ const Header = React.createClass({
                 <span className="sr-only">Toggle navigation</span>
               </button>
               <a href="#">
-                <img src={logo_background} className="brand-img img-responsive" />
+                <img src={header_logo_background} className="brand-img img-responsive" />
               </a>
             </div>
             <div className="collapse navbar-collapse">
@@ -68,7 +68,7 @@ const Header = React.createClass({
       </header>
     );
   }
-});
+}
 
 const DashboardRouter = () => (
   <Router>
