@@ -9,3 +9,9 @@ before_script:
 install:
   - pip install -r requirements/test.txt
 script: "python manage.py test"
+notifications:
+  email:
+    recipients:
+      - jeffshek@gmail.com
+    on_success: change # default: change
+    on_failure: always # default: always

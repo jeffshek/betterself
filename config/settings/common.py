@@ -37,6 +37,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration TODO - find out what this is and remove
     'rest_framework',
+    'django_extensions',
     'webpack_loader',
 )
 
@@ -53,7 +54,6 @@ LOCAL_APPS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-INSTALLED_APPS += ('django_extensions',)
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
