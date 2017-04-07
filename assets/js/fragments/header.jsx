@@ -1,10 +1,9 @@
 import React, { PropTypes, Component } from 'react'
-
-const header_logo_background = require('../../../betterself/static/images/logos/logojoy/png/white_logo_transparent_background.png')
+import { logo_background } from './image_paths'
 
 
 const MenuItem = (props) => (
-  <li className="nav-item">
+  <li className="nav-item" key={props.key}>
     <a href="#">{props.name}</a>
   </li>
 )
@@ -24,11 +23,9 @@ export default class Header extends Component {
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
           <div className="container">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span className="sr-only">Toggle navigation</span>
-              </button>
+              {/* TODO - Figure out how to use Routers to return href*/}
               <a href="#">
-                <img src={header_logo_background} className="brand-img img-responsive" />
+                <img src={logo_background} className="brand-img img-responsive" />
               </a>
             </div>
             <div className="collapse navbar-collapse">
