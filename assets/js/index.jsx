@@ -11,7 +11,8 @@ import {
 import { DASHBOARD_OVERVIEW, DASHBOARD_INDEX, LOGIN_PATH } from './urls/constants'
 import { Authenticator, AuthButton } from './authentication/auth'
 import Login from './authentication/login'
-import Header from './header/header'
+import Header from './fragments/header'
+import Footer from './fragments/footer'
 
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
@@ -30,6 +31,7 @@ const DashboardRouter = () => (
       <Route path={LOGIN_PATH} component={Login}/>
       {/*Goal is to eventually wrap all Routes that should be protected under a component*/}
       <PrivateRoute path={DASHBOARD_INDEX} component={Protected}/>
+      <Footer />
     </div>
   </Router>
 )
