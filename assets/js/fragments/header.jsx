@@ -14,7 +14,10 @@ export default class Header extends Component {
     {name:"Dashboard", key:"Dashboard"},
     {name:"Features", key:"Features"},
     {name:"About", key:"About"},
-    {name:"Contact", key:"Contact"}
+    {name:"Contact", key:"Contact"},
+    // Figure out how to use for login and logout
+    // or make another Component for just user settings
+    {name:"Settings", key:"Settings"}
   ]
 
   render() {

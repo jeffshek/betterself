@@ -20,7 +20,7 @@ urlpatterns = [
     #
     url(r'^analytics/', include('analytics.urls')),
     #
-    url(r'^dashboard.*/$', TemplateView.as_view(template_name='dashboard/home.html'), name='react'),
+    url(r'^dashboard.*/$', TemplateView.as_view(template_name='dashboard/index.html'), name='react'),
     # To test api-token-auth ...
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
