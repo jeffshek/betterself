@@ -37,13 +37,16 @@ export default class Login extends React.Component {
       )
     }
 
-    return (
-      <div>
-        <p>You must log in to view the page at {from.pathname}</p>
-        <input type="text" placeholder="username" ref="username" />
-        <input type="password" placeholder="password" ref="password" />
-        <button onClick={this.handleSubmit}>Log In</button>
-      </div>
-    )
+    return <div></div>
+
   }
 }
+
+// Auth Commented Out Code - Refactor Into Original
+//   <div>
+//     <p>You must log in to view the page at {from.pathname}</p>
+//     <input type="text" placeholder="username" ref="username" />
+//     <input type="password" placeholder="password" ref="password" />
+//     <button onClick={this.handleSubmit}>Log In</button>
+//   </div>
+// )
