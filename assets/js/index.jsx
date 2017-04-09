@@ -23,10 +23,11 @@ const DashboardRouter = () => (
     <div>
       <Header />
       <AuthButton/>
-      <ul>
-        <li><Link to={DASHBOARD_OVERVIEW}>Overview Page</Link></li>
-        <li><Link to={DASHBOARD_INDEX}>Dashboard Index</Link></li>
-      </ul>
+      {/*The below really don't matter and going to be removed*/}
+      {/*<ul>*/}
+        {/*<li><Link to={DASHBOARD_OVERVIEW}>Overview Page</Link></li>*/}
+        {/*<li><Link to={DASHBOARD_INDEX}>Dashboard Index</Link></li>*/}
+      {/*</ul>*/}
       <Route path={DASHBOARD_OVERVIEW} component={Public}/>
       <Route path={LOGIN_PATH} component={Login}/>
       {/*Goal is to eventually wrap all Routes that should be protected under a component*/}
