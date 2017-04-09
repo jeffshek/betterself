@@ -1,8 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-
 import { JSON_HEADERS } from '../constants'
-import {login_ledge_photo} from '../fragments/image_paths'
+import { login_ledge_photo } from '../fragments/image_paths'
+
+// TODO - You're probably mixing up too much login in this file
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
@@ -72,7 +73,6 @@ export const Authenticator = {
 const LoggedOutView = () => {
   return (
     <section id="promo-1" className="content-block promo-2 min-height-600px bg-black">
-      {/*<section id="promo-1" className="content-block promo-1 min-height-600px bg-offwhite">*/}
       <div className="container">
         <div className="row">
           <div className="col-md-5">
