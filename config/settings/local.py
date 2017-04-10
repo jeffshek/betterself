@@ -12,6 +12,12 @@ import sys
 
 from config.settings.common import *  # noqa
 
+try:
+    from config.settings.local_secret_settings import *
+except ImportError:
+    # if you have a secret API settings, import them, otherwise on your merry way
+    pass
+
 
 # DEBUG
 # ------------------------------------------------------------------------------
