@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -9,8 +10,9 @@ import {
 } from 'react-router-dom'
 
 import { DASHBOARD_OVERVIEW, DASHBOARD_INDEX, LOGIN_PATH } from './urls/constants'
-import { Authenticator, AuthButton } from './authentication/auth'
-import Login from './authentication/login'
+import { Authenticator } from './authentication/auth'
+
+import Login, { IsLoggedInWelcomeText } from './authentication/login'
 import Header from './fragments/header'
 import Footer from './fragments/footer'
 
@@ -22,12 +24,7 @@ const DashboardRouter = () => (
   <Router>
     <div>
       <Header />
-      <AuthButton/>
-      {/*The below really don't matter and going to be removed*/}
-      {/*<ul>*/}
-        {/*<li><Link to={DASHBOARD_OVERVIEW}>Overview Page</Link></li>*/}
-        {/*<li><Link to={DASHBOARD_INDEX}>Dashboard Index</Link></li>*/}
-      {/*</ul>*/}
+      <IsLoggedInWelcomeText/>
       <Route path={DASHBOARD_OVERVIEW} component={Public}/>
       <Route path={LOGIN_PATH} component={Login}/>
       {/*Goal is to eventually wrap all Routes that should be protected under a component*/}

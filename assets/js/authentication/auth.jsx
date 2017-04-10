@@ -1,9 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { JSON_HEADERS } from '../constants'
-import { login_ledge_photo } from '../fragments/image_paths'
-
-// TODO - You're probably mixing up too much login in this file
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
@@ -19,7 +16,8 @@ export const Authenticator = {
         this.isAuthenticated = true
         localStorage.token = res.token
         if (cb) cb(true)
-      } else {
+      }
+      else {
         if (cb) cb(false)
       }
     })
@@ -69,52 +67,3 @@ export const Authenticator = {
       })
   },
 }
-
-const LoggedOutView = () => {
-  return (
-    <section id="promo-1" className="content-block promo-2 min-height-600px bg-black">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-5">
-            <h2>Login, please!</h2>
-            <p><br /></p>
-            <form>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <input type="text" placeholder="Username" className="form-control" />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <input type="password" placeholder="Password" className="form-control" />
-                  </div>
-                </div>
-              </div>
-              <a className="btn btn-primary btn-block">Login</a>
-            </form>
-          </div>
-          <div className="col-md-6 col-md-offset-1">
-            <img src={login_ledge_photo} width="100%"/>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export const AuthButton = withRouter(({ history }) => (
-  Authenticator.isAuthenticated
-    ? (
-    <p>
-      Welcome User!
-      <button onClick={() => {
-        Authenticator.logout(() => history.push('/'))}
-      }>
-        Log out
-      </button>
-    </p>
-  ) : (
-    <LoggedOutView />
-  )
-))
