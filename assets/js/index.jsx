@@ -9,7 +9,7 @@ import {
   withRouter
 } from 'react-router-dom'
 
-import { DASHBOARD_OVERVIEW, DASHBOARD_INDEX, LOGIN_PATH } from './urls/constants'
+import { DASHBOARD_OVERVIEW_URL, DASHBOARD_INDEX_URL, LOGIN_URL } from './urls/constants'
 import { Authenticator } from './authentication/auth'
 
 import LoggedOutView, { IsLoggedInWelcomeText } from './authentication/login'
@@ -24,11 +24,11 @@ const DashboardRouter = () => (
   <Router>
     <div>
       <Header />
-      <IsLoggedInWelcomeText/>
-      <Route path={DASHBOARD_OVERVIEW} component={Public}/>
-      <Route path={LOGIN_PATH} component={LoggedOutView}/>
+      {/*<IsLoggedInWelcomeText/>*/}
+      <Route path={DASHBOARD_OVERVIEW_URL} component={Public}/>
+      <Route path={LOGIN_URL} component={LoggedOutView}/>
       {/*Goal is to eventually wrap all Routes that should be protected under a component*/}
-      <PrivateRoute path={DASHBOARD_INDEX} component={Protected}/>
+      <PrivateRoute path={DASHBOARD_INDEX_URL} component={Protected}/>
       <Footer />
     </div>
   </Router>
@@ -40,7 +40,7 @@ const PrivateRoute = ({ component, ...rest }) => (
       React.createElement(component, props)
     ) : (
       <Redirect to={{
-        pathname: LOGIN_PATH,
+        pathname: LOGIN_URL,
         state: { from: props.location }
       }}/>
     )

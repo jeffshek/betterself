@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Authenticator } from './auth'
-import { DASHBOARD_OVERVIEW } from '../urls/constants'
+import { DASHBOARD_OVERVIEW_URL } from '../urls/constants'
 import { Redirect, withRouter } from 'react-router-dom'
 import { login_ledge_photo } from '../fragments/image_paths'
 
@@ -28,10 +28,18 @@ class LoggedOutView extends Component {
         this.setState({ redirectToReferrer: true })
       }
     })
-
   }
 
   render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
+
+    if (redirectToReferrer) {
+      return (
+        <Redirect to={from}/>
+      )
+    }
+
     return (
       <section id="promo-1" className="content-block promo-2 min-height-600px bg-black">
         <div className="container">
@@ -75,7 +83,7 @@ export const IsLoggedInWelcomeText = withRouter(({ history }) => (
       ? (
       <p>
         Welcome User!
-        <button onClick={() => {Authenticator.logout(() => history.push('/'))}}>
+        <button onClick={() => { Authenticator.logout(() => history.push('/'))} }>
           Log out
         </button>
       </p>

@@ -1,3 +1,3 @@
-export const DASHBOARD_OVERVIEW = '/dashboard/overview/'
-export const DASHBOARD_INDEX = '/dashboard/index'
-export const LOGIN_PATH = '/dashboard/login'
+export const DASHBOARD_OVERVIEW_URL = '/dashboard/overview/'
+export const DASHBOARD_INDEX_URL = '/dashboard/index'
+export const LOGIN_URL = '/dashboard/login'
