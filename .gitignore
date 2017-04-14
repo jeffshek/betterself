@@ -87,3 +87,6 @@ assets/bundles
 node_modules/
 
 webpack-stats.json
+
+# secret api settings
+local_secret_settings.py
