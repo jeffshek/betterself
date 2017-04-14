@@ -41,7 +41,9 @@ class UserRescueTimeAnalyticsView(LoginRequiredMixin, TemplateView):
 
         aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
 
-        # default of zero means get full history
+        # default of zero means get full history, otherwise an amount of days back lets a user
+        # make more intelligence decisions about what effects and when ... some functionality
+        # that makes sense might be start_date and end_date ... instead of days back
         if days_back:
             aggregate_dataframe = aggregate_dataframe[-1 * days_back:]
 

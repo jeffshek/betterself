@@ -47,7 +47,7 @@ class DataFrameBuilder(object):
         df = df.rename(columns=self.column_mapping)
         df.index.name = TIME_COLUMN_NAME
 
-        # automatically to work with only numbers unless we have some rare string combinations
+        # cast them all as float64 if possible ... ideally want to stay with only numbers
         try:
             df = df.astype('float64')
         except ValueError:
