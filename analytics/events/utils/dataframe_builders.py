@@ -47,6 +47,12 @@ class DataFrameBuilder(object):
         df = df.rename(columns=self.column_mapping)
         df.index.name = TIME_COLUMN_NAME
 
+        # automatically to work with only numbers unless we have some rare string combinations
+        try:
+            df = df.astype('float64')
+        except ValueError:
+            pass
+
         return df
 
 
@@ -83,6 +89,11 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
             columns=SUPPLEMENT_COLUMN_NAME,
             aggfunc=np.sum
         )
+
+        # When doing a pivot, the dataframe type seems to convert from float64 back to object ... so here we force it
+        # back to float64
+        flat_df = flat_df.astype('float64')
+
         return flat_df
 
 
