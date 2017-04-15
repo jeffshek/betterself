@@ -28,7 +28,7 @@ class UserHistoricalAnalyticsView(LoginRequiredMixin, TemplateView):
 
 class UserRescueTimeAnalyticsView(LoginRequiredMixin, TemplateView):
     template_name = 'analytics/rescuetime_correlations.html'
-    namespace_url_name = 'user_productivity'
+    namespace_url_name = 'rescuetime_analytics_overview'
     # if a user isn't logged in, redirect to exception
     redirect_field_name = 'account_login'
 
