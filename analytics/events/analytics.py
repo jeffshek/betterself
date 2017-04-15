@@ -74,7 +74,6 @@ class DataFrameEventsAnalyzer(object):
         :param min_periods: see pandas documentation
         :return: correlation series
         """
-        # i love you pandas, you make my life so easy
         dataframe = self._get_cleaned_dataframe_copy(measurement, add_yesterday_lag=add_yesterday_lag, method=method)
         correlation_results_sorted = self._get_correlation_from_dataframe(dataframe, measurement, method, min_periods)
         return correlation_results_sorted

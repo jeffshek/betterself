@@ -220,4 +220,6 @@ class ExcelProductiveFileSerializer(ExcelFileSerializer):
             productivity_results = result.to_dict()
             productivity_results['date'] = index.date()
 
-            self.adapter.get_or_create_resource(DailyProductivityLog, productivity_results)
+            # for any conflicting results, overwrite it
+            self.adapter.get_or_create_resource(
+                DailyProductivityLog, productivity_results, defaults=['date', 'user'])
