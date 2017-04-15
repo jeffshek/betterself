@@ -4,7 +4,7 @@ import { DASHBOARD_OVERVIEW_URL } from '../urls/constants'
 import { Redirect, withRouter } from 'react-router-dom'
 import { login_ledge_photo } from '../fragments/image_paths'
 
-const LoginSidePhoto = () => {
+const LoginPageSideImage = () => {
   return (
     <div className="col-md-6 col-md-offset-1">
       <img src={login_ledge_photo} width="100%"/>
@@ -68,7 +68,7 @@ class LoggedOutView extends Component {
 
               </form>
             </div>
-            <LoginSidePhoto />
+            <LoginPageSideImage />
           </div>
         </div>
       </section>

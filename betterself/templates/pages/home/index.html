@@ -1,194 +1,44 @@
-{% load static %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles i18n %}
+
+<base href="/" />
+
 <!DOCTYPE html>
-<html lang="en" style="height:100%;">
-    <head>
-        <meta charset="utf-8">
-        <title>BetterSelf - Your Body's Dashboard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="betterself, health, analytics" />
-        <meta name="description" content="Your Body's dashboard" />
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BetterSelf - Your Body's Dashboard</title>
 
-        <link rel="shortcut icon" href="{% static "images/logos/logojoy/favicon.png" %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="betterself, health, analytics" />
+  <meta name="description" content="Your Body's dashboard" />
 
-        <!-- Core CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static "images/logos/logojoy/favicon.png" %}">
 
-        <!-- Style Library -->
-        <link href="{% static "css/style-library-1.css" %}" rel="stylesheet">
-        <link href="{% static "css/plugins.css" %}" rel="stylesheet">
-        <link href="{% static "css/blocks.css" %}" rel="stylesheet">
-        <link href="{% static "css/custom.css" %}" rel="stylesheet">
-    </head>
-    <body data-spy="scroll" data-target="nav">
-        <header id="header-1" class="soft-scroll header-1">
-            <nav class="main-nav navbar-fixed-top headroom headroom--pinned">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a href="#">
-                            <img src="{% static "images/logos/logojoy/png/white_logo_transparent_background.png" %}" class="brand-img img-responsive">
-                        </a>
-                    </div>
-                    <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="active nav-item">
-                                <a href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#">Features</a>
-                            </li>
-                            <li class="nav-item">
-</li>
-                            <li class="nav-item dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Pages <i class="fa fa-angle-down"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Dropdown 1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Dropdown 2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Dropdown 3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Dropdown 4</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <section id="content-1-4" class="content-block-nopad content-1-4">
-            <div class="image-container col-md-5 col-sm-3 pull-left">
-              <div class="background-image-holder"></div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-4 content clearfix">
-                        <h1>Your body's dashboard</h1>
-                        <p class="lead">Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.<br></p>
-                        <a href="/dashboard/" class="btn btn-outline btn-outline-lg outline-dark">Try the demo</a>
-                        <div class="row pad45">
-                            <div class="col-sm-6">
-                                <h5>Compound Improvements.</h5>
-                                <p>Small improvements move glaciers. Track what's working for you (and what's not). We can text or email reminders to keep your medications and supplements on track. Comes with beautiful personalized analytics from best-in-class algorithms.</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h5>Privacy First.</h5>
-                                <p>We're not here to sell your contact info to anyone else. We don't want your name or address. All we care about is improving health and productivity for our anonymous users. Open-sourced on GitHub.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="content-1-5 content-block bg-deepocean">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <h1>Your Personalized Analytics</h1>
-                        <p class="lead white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec consectetur dui eget massa iaculis placerat. Cras posuere dictum mauris, porta posuere urna elementum id. Donec scelerisque placerat quam sed varius. Phasellus dolor mi, molestie sed lorem at, interdum dapibus sem. Phasellus lorem mauris, eleifend quis metus et, accumsan dapibus elit. Morbi ut nibh eget orci pharetra cursus non eget massa. Morbi sed libero sodales, dignissim elit ac, elementum leo.</p>
-                    </div>
-                    <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-12">
-                        <br />
-                        <a href="">
-                            <img class="img-responsive" src="{% static 'images/dashboard/dashboard_example.png' %}">
-                        </a>
-                    </div>
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container -->
-        </section>
-        <section id="content-3-5" class="content-block content-3-5">
-            <div class="container">
-                <div class="row">
-                    <!-- Feature Box 1 -->
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <div class="feature-box">
-                            <div class="icon">
-                                <span class="fa fa-pencil"></span>
-                            </div>
-                            <h3>Simple</h3>
-                            <p>Integrates with all major fitness trackers. Automatically gets data to give the most accurate snapshot of &nbsp;you.</p>
-                        </div>
-                    </div>
-                    <!-- Feature Box 2 -->
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <div class="feature-box">
-                            <div class="icon">
-                                <span class="fa fa-code"></span>
-                            </div>
-                            <h3>Privacy</h3>
-                            <p>We respect privacy. Your data is confidential and we don't store names or emails. Comes with a "purge data" option. &nbsp;</p>
-                        </div>
-                    </div>
-                    <!-- Feature Box 3 -->
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <div class="feature-box">
-                            <div class="icon">
-                                <span class="fa fa-search"></span>
-                            </div>
-                            <h3>Analytics</h3>
-                            <p>How many hours of sleep do you really need? Does fish oil actually help? We help you eliminate truth from placebo.</p>
-                        </div>
-                    </div>
-                    <!-- Feature Box 4 -->
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <div class="feature-box">
-                            <div class="icon">
-                                <span class="fa fa-mobile"></span>
-                            </div>
-                            <h3>Integrations</h3>
-                            <p>Track supplement usage in seven seconds or less from your phone. Available on iOS and
-                                Android.&nbsp;</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Row Ends -->
-            </div>
-            <!-- Container Ends -->
-        </section>
-        <section id="content-2-1" class="content-block content-2-1 bg-deepocean">
-            <div class="container text-center">
-                <a href="https://github.com/jeffshek/betterself" class="btn btn-outline btn-outline-xl outline-light">Made with <span class="fa fa-heart pomegranate"></span> on GitHUb</a>
-                <h2>Track your progress on <b>iOS</b> or <b>Android</b>&nbsp;devices.</h2>
-            </div>
-            <!-- /.container -->
-        </section>
-        <section class="content-block-nopad bg-deepocean footer-wrap-1-3">
-            <div class="container footer-1-3">
-                <div class="col-md-4 pull-left">
-                    <img src="{% static "images/logos/logojoy/png/white_logo_transparent_background.png" %}" class="brand-img img-responsive">
-                    <!-- /.social -->
-                </div>
-                <div class="col-md-3 pull-right">
-                    <p class="address-bold-line">We <i class="fa fa-heart pomegranate"></i>&nbsp;analytics</p>
-                    <p class="address small">BetterHealth, Inc.<br>99 St Marks, 3D<br>New York, NY, 10009</p>
-                </div>
-                <div class="col-xs-12 footer-text">
-                    <p>Please take a few minutes to read our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a></p>
-                </div>
-            </div>
-            <!-- /.container -->
-        </section>
-        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
-        <script src="{% static "js/plugins.js" %}"></script>
-        <script src="{% static "js/bskit-scripts.js" %}"></script>
-    </body>
+  <!-- Core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+
+  <!-- Style Library -->
+  <link href="{% static "css/style-library-1.css" %}" rel="stylesheet">
+  <link href="{% static "css/plugins.css" %}" rel="stylesheet">
+  <link href="{% static "css/blocks.css" %}" rel="stylesheet">
+  <link href="{% static "css/custom.css" %}" rel="stylesheet">
+
+</head>
+
+<body>
+  <div id="root"></div>
+  {# render_bundle needs to be under div! Otherwise won't render #}
+  {% render_bundle 'main' %}
+
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  <script src="{% static "js/plugins.js" %}"></script>
+  <script src="{% static "js/bskit-scripts.js" %}"></script>
+
+</body>
 </html>
+

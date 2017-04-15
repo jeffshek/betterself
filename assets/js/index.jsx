@@ -19,11 +19,13 @@ import Footer from './fragments/footer'
 const Public = () => <h3>Public</h3>
 const Protected = () => <h3>Protected</h3>
 
+import { HomePage } from './home/home'
 
-const DashboardRouter = () => (
+const BetterSelfRouter = () => (
   <Router>
     <div>
       <Header />
+      <HomePage />
       {/*<IsLoggedInWelcomeText/>*/}
       <Route path={DASHBOARD_OVERVIEW_URL} component={Public}/>
       <Route path={LOGIN_URL} component={LoggedOutView}/>
@@ -48,5 +50,5 @@ const PrivateRoute = ({ component, ...rest }) => (
 )
 
 ReactDOM.render(
-  <DashboardRouter />, document.getElementById('dashboard')
+  <BetterSelfRouter />, document.getElementById('root')
 )
