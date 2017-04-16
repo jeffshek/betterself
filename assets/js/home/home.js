@@ -1,5 +1,8 @@
 import React, {PropTypes, Component} from 'react'
 import { dashboard_example } from '../fragments/image_paths'
+import { DASHBOARD_INDEX_URL } from '../urls/constants'
+
+import { Link } from 'react-router-dom'
 
 export const FontAwesomeIconBox = (props) => {
   return (
@@ -8,7 +11,7 @@ export const FontAwesomeIconBox = (props) => {
         <div className="icon">
           {/*Don't know how to style this correctly, putting a space is good enough*/}
           &nbsp;
-          <span className={props.icon}></span>
+          <span className={props.icon}/>
           &nbsp;
         </div>
         <h3>{props.header}</h3>
@@ -29,7 +32,7 @@ export const HomePageDescriptionSection = () => {
           <div className="col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-4 content clearfix">
             <h1>Your body's dashboard</h1>
             <p className="lead">Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.<br /></p>
-            <a href="/dashboard/" className="btn btn-outline btn-outline-lg outline-dark">Try the demo</a>
+            <Link to={DASHBOARD_INDEX_URL} className="btn btn-outline btn-outline-lg outline-dark">Try the demo</Link>
             <div className="row pad45">
               <div className="col-sm-6">
                 <h5>Compound Improvements.</h5>
@@ -73,12 +76,10 @@ const HomePageFeaturesShortDescriptionSection = () => {
     <section id="content-3-5" className="content-block content-3-5">
       <div className="container">
         <div className="row">
-
           <FontAwesomeIconBox icon="fa fa-pencil" header="Simple" description="Integrates with all major fitness trackers. Automatically gets data to give the most accurate snapshot of &nbsp;you."/>
           <FontAwesomeIconBox icon="fa fa-code" header="Privacy" description="We respect privacy. Your data is confidential and we don't store names or emails. Comes with a purge data option. &nbsp;"/>
           <FontAwesomeIconBox icon="fa fa-search" header="Analytics" description="How many hours of sleep do you really need? Does fish oil actually help? We help you eliminate truth from placebo."/>
           <FontAwesomeIconBox icon="fa fa-mobile" header="Integrations" description="Track supplement or medication usage in seven seconds or less. Available on iOS and Android."/>
-
         </div>
       </div>
     </section>

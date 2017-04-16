@@ -12,7 +12,7 @@ const LoginPageSideImage = () => {
   )
 }
 
-class LoggedOutView extends Component {
+export default class LoggedOutView extends Component {
   state = {
     redirectToReferrer: false
   }
@@ -75,21 +75,4 @@ class LoggedOutView extends Component {
     )
   }
 }
-
-
-export const IsLoggedInWelcomeText = withRouter(({ history }) => (
-    // If a user isAuthenticated, show the correct view, otherwise give LoginPage
-    Authenticator.isAuthenticated
-      ? (
-      <p>
-        Welcome User!
-        <button onClick={() => { Authenticator.logout(() => history.push('/'))} }>
-          Log out
-        </button>
-      </p>
-    ) : (
-      <LoggedOutView />
-    )
-  )
-)
 
