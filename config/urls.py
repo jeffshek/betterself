@@ -19,8 +19,9 @@ urlpatterns = [
     url(r'^api/', include('apis.urls')),
     #
     url(r'^analytics/', include('analytics.urls')),
-    #
+    # All React should redirect to the same-ish pages
     url(r'^dashboard.*/$', TemplateView.as_view(template_name='dashboard/index.html'), name='react'),
+    url(r'^login/$', TemplateView.as_view(template_name='pages/home/index.html'), name='home'),
     # To test api-token-auth ...
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),

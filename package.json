@@ -13,9 +13,16 @@
     "url": "https://github.com/jeffshek/betterself/issues"
   },
   "scripts": {
-    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress",
+    "precommit": "lint-staged"
   },
-  "homepage": "https://github.com/jeffshek/betterself#readme",
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "homepage": "https://betterself.io",
   "dependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.24.0",
@@ -25,7 +32,10 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
     "file-loader": "^0.11.1",
+    "husky": "^0.13.3",
     "jquery": "^3.2.1",
+    "lint-staged": "^3.4.0",
+    "prettier": "^1.1.0",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
     "react-dom": "^15.4.2",

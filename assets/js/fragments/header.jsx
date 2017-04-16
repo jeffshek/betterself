@@ -1,10 +1,12 @@
 import React, { PropTypes, Component } from 'react'
 import { logo_background } from './image_paths'
+import {HOME_URL} from "../urls/constants"
+import { Link } from 'react-router-dom'
 
 
 const MenuItem = (props) => (
   <li className="nav-item" key={props.key}>
-    <a href="#">{props.name}</a>
+    <Link to={HOME_URL}>{props.name}</Link>
   </li>
 )
 
@@ -15,8 +17,6 @@ export default class Header extends Component {
     {name:"Features", key:"Features"},
     {name:"About", key:"About"},
     {name:"Contact", key:"Contact"},
-    // Figure out how to use for login and logout
-    // or make another Component for just user settings
     {name:"Settings", key:"Settings"}
   ]
 
@@ -27,9 +27,9 @@ export default class Header extends Component {
           <div className="container">
             <div className="navbar-header">
               {/* TODO - Figure out how to use Routers to return href*/}
-              <a href="#">
+              <Link to={HOME_URL}>
                 <img src={logo_background} className="brand-img img-responsive" />
-              </a>
+              </Link>
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav navbar-right">
