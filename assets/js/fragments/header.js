@@ -1,24 +1,23 @@
-import React, { PropTypes, Component } from 'react'
-import { logo_background } from './image_paths'
-import {HOME_URL} from "../urls/constants"
-import { Link } from 'react-router-dom'
+import React, { PropTypes, Component } from "react";
+import { logo_background } from "./image_paths";
+import { HOME_URL } from "../urls/constants";
+import { Link } from "react-router-dom";
 
-
-const MenuItem = (props) => (
+const MenuItem = props => (
   <li className="nav-item" key={props.key}>
     <Link to={HOME_URL}>{props.name}</Link>
   </li>
-)
+);
 
 export default class Header extends Component {
   menuItems = [
-    {name:"Home", key:"Home"},
-    {name:"Dashboard", key:"Dashboard"},
-    {name:"Features", key:"Features"},
-    {name:"About", key:"About"},
-    {name:"Contact", key:"Contact"},
-    {name:"Settings", key:"Settings"}
-  ]
+    { name: "Home", key: "Home" },
+    { name: "Dashboard", key: "Dashboard" },
+    { name: "Features", key: "Features" },
+    { name: "About", key: "About" },
+    { name: "Contact", key: "Contact" },
+    { name: "Settings", key: "Settings" }
+  ];
 
   render() {
     return (
@@ -28,7 +27,10 @@ export default class Header extends Component {
             <div className="navbar-header">
               {/* TODO - Figure out how to use Routers to return href*/}
               <Link to={HOME_URL}>
-                <img src={logo_background} className="brand-img img-responsive" />
+                <img
+                  src={logo_background}
+                  className="brand-img img-responsive"
+                />
               </Link>
             </div>
             <div className="collapse navbar-collapse">
