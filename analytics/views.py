@@ -27,7 +27,7 @@ class UserHistoricalAnalyticsView(LoginRequiredMixin, TemplateView):
 
 
 class UserRescueTimeAnalyticsView(LoginRequiredMixin, TemplateView):
-    template_name = 'analytics/rescuetime_correlations.html'
+    template_name = 'analytics/rescuetime_dataframe.html'
     namespace_url_name = 'rescuetime_analytics_overview'
     # if a user isn't logged in, redirect to exception
     redirect_field_name = 'account_login'
@@ -54,13 +54,44 @@ class UserRescueTimeAnalyticsView(LoginRequiredMixin, TemplateView):
             analyzed_series = analyzer.get_correlation_across_summed_days_for_measurement(
                 'Very Productive Minutes')
             analyzed_dataframe = analyzed_series.to_frame()
-
-            context['dataframe'] = analyzed_dataframe
-            context['dataframe_html'] = analyzed_dataframe.to_html()
-
         else:
-            empty_df = pd.DataFrame()
-            context['analyzed_dataframe'] = empty_df
-            context['analyzed_dataframe_html'] = empty_df.to_html()
+            # otherwise, just return an empty dataframe
+            analyzed_dataframe = pd.DataFrame()
+
+        context['dataframe'] = analyzed_dataframe
+        context['dataframe_html'] = analyzed_dataframe.to_html()
+
+        return context
+
+
+class UserRescueTimeMostProductiveDaysView(LoginRequiredMixin, TemplateView):
+    template_name = 'analytics/rescuetime_dataframe.html'
+    namespace_url_name = 'rescuetime_best_days_dataframe'
+    # if a user isn't logged in, redirect to exception
+    redirect_field_name = 'account_login'
+
+    def get_context_data(self, **kwargs):
+        """
+        TODO - This needs a little bit more thought as to how one should
+        filter (by how many days) and how does one include previous supplements
+        from the night before to add as a useful metric.
+        """
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        productive_days = aggregate_dataframe['Very Productive Minutes'].copy().dropna()
+        productive_days = productive_days[productive_days > 1]  # don't want zero days either
+
+        # sort them by the most productive
+        productive_days.sort(ascending=False)
+
+        # just get the top 30 most productive days
+        productive_days = productive_days[0:30]
+
+        aggregate_dataframe = aggregate_dataframe.ix[productive_days.ix]
+
+        context['dataframe'] = aggregate_dataframe
+        context['dataframe_html'] = aggregate_dataframe.to_html()
 
         return context

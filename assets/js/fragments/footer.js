@@ -1,7 +1,11 @@
-import React, { PropTypes, Component } from 'react'
-import { logo_background } from './image_paths'
+import React, { PropTypes, Component } from "react";
+import { logo_background } from "./image_paths";
 
-const BetterSelfAddress = () => <p className="address small">BetterHealth, Inc.<br />99 St Marks, 3D<br />New York, NY, 10009</p>
+const BetterSelfAddress = () => (
+  <p className="address small">
+    BetterHealth, Inc.<br />99 St Marks, 3D<br />New York, NY, 10009
+  </p>
+);
 
 export default class Footer extends Component {
   render() {
@@ -12,11 +16,21 @@ export default class Footer extends Component {
             <img src={logo_background} className="brand-img img-responsive" />
           </div>
           <div className="col-md-3 pull-right">
-            <p className="address-bold-line">We <i className="fa fa-heart pomegranate" />&nbsp;analytics</p>
-            <BetterSelfAddress/>
+            <p className="address-bold-line">
+              We <i className="fa fa-heart pomegranate" />&nbsp;analytics
+            </p>
+            <BetterSelfAddress />
           </div>
           <div className="col-xs-12 footer-text">
-            <p>Please take a few minutes to read our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a></p>
+            <p>
+              Please take a few minutes to read our
+              {" "}
+              <a href="#">Terms & Conditions</a>
+              {" "}
+              and
+              {" "}
+              <a href="#">Privacy Policy</a>
+            </p>
           </div>
         </div>
       </section>
