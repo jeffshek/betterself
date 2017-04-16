@@ -11,7 +11,7 @@ const LoginPageSideImage = () => {
   );
 };
 
-export default class LoggedOutView extends Component {
+export default class LoginView extends Component {
   state = {
     redirectToReferrer: false
   };

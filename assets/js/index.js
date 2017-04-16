@@ -13,15 +13,15 @@ import {
   DASHBOARD_INDEX_URL,
   LOGIN_URL,
   HOME_URL,
-  SETTINGS_URL
+  SETTINGS_URL, LOGOUT_URL
 } from "./urls/constants";
 import { Authenticator } from "./authentication/auth";
 import LoggedOutView from "./authentication/login";
 import Header from "./fragments/header";
 import Footer from "./fragments/footer";
 import { HomePage } from "./home/home";
-
-const Protected = () => <h3>Protected</h3>;
+import {Dashboard} from "./dashboard";
+import {LogoutView} from "./authentication/logout";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -32,9 +32,11 @@ const BetterSelfRouter = () => (
       <Route exact path={HOME_URL} component={HomePage} />
       <Route path={DASHBOARD_OVERVIEW_URL} component={LoggedOutView} />
       <Route path={LOGIN_URL} component={LoggedOutView} />
+      <Route path={LOGOUT_URL} component={LogoutView} />
+
       <Route path={SETTINGS_URL} component={LoggedOutView} />
       {/*Private Routes*/}
-      <PrivateRoute path={DASHBOARD_INDEX_URL} component={Protected} />
+      <PrivateRoute path={DASHBOARD_INDEX_URL} component={Dashboard} />
 
       <Footer />
     </div>
