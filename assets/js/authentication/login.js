@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Authenticator } from "./auth";
 import { Redirect, withRouter } from "react-router-dom";
-import { login_ledge_photo } from "../fragments/image_paths";
+import { LOGIN_LEDGE_PHOTO_PATH } from "../fragments/image_paths";
 
 const LoginPageSideImage = () => {
   return (
     <div className="col-md-6 col-md-offset-1">
-      <img src={login_ledge_photo} width="100%" />
+      <img src={LOGIN_LEDGE_PHOTO_PATH} width="100%" />
     </div>
   );
 };

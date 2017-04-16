@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react'
-import { dashboard_example } from '../fragments/image_paths'
+import { DASHBOARD_EXAMPLE_PATH } from '../fragments/image_paths'
 import { DASHBOARD_INDEX_URL } from '../urls/constants'
 
 import { Link } from 'react-router-dom'
@@ -62,7 +62,7 @@ const HomePageAnalyticsDescriptionSection = () => {
           <div className="col-lg-5 col-lg-offset-1 col-md-6 col-sm-12">
             <br />
             <a href="https://www.betterself.io">
-              <img className="img-responsive" src={dashboard_example} />
+              <img className="img-responsive" src={DASHBOARD_EXAMPLE_PATH} />
             </a>
           </div>
         </div>

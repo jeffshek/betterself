@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { logo_background } from "./image_paths";
+import { LOGO_BACKGROUND_PATH } from "./image_paths";
 import { HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,7 @@ export default class Header extends Component {
               {/* TODO - Figure out how to use Routers to return href*/}
               <Link to={HOME_URL}>
                 <img
-                  src={logo_background}
+                  src={LOGO_BACKGROUND_PATH}
                   className="brand-img img-responsive"
                 />
               </Link>
