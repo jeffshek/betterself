@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { DASHBOARD_EXAMPLE_PATH } from "../fragments/image_paths";
 import { DASHBOARD_INDEX_URL } from "../urls/constants";
-
 import { Link } from "react-router-dom";
 
 export const FontAwesomeIconBox = props => {
@@ -9,7 +8,7 @@ export const FontAwesomeIconBox = props => {
     <div className="col-md-3 col-sm-6 col-xs-12">
       <div className="feature-box">
         <div className="icon">
-          {/*Don't know how to style this correctly, putting a space is good enough*/}
+          {/*Don't know how to style this correctly, putting a space is good enough, slightly embarrassed. */}
           &nbsp;
           <span className={props.icon} />
           &nbsp;

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { LOGO_BACKGROUND_PATH } from "./image_paths";
+import {HEADER_BRAIN_PATH,HEADER_HEART_PATH,  LOGO_BACKGROUND_PATH} from "./image_paths";
 import { HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 
@@ -25,7 +25,6 @@ export default class Header extends Component {
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
           <div className="container">
             <div className="navbar-header">
-              {/* TODO - Figure out how to use Routers to return href*/}
               <Link to={HOME_URL}>
                 <img
                   src={LOGO_BACKGROUND_PATH}
@@ -33,11 +32,13 @@ export default class Header extends Component {
                 />
               </Link>
             </div>
+            {/*Menu Dropdown Items*/}
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav navbar-right">
                 {this.menuItems.map(MenuItem)}
               </ul>
             </div>
+            {/*TODO - Use a proper settings logo, but right now CSS is pain.*/}
           </div>
         </nav>
       </header>
