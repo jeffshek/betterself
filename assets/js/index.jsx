@@ -8,7 +8,7 @@ import {
   withRouter
 } from 'react-router-dom'
 
-import { DASHBOARD_OVERVIEW_URL, DASHBOARD_INDEX_URL, LOGIN_URL, HOME_URL } from './urls/constants'
+import { DASHBOARD_OVERVIEW_URL, DASHBOARD_INDEX_URL, LOGIN_URL, HOME_URL, SETTINGS_URL } from './urls/constants'
 import { Authenticator } from './authentication/auth'
 import LoggedOutView from './authentication/login'
 import Header from './fragments/header'
@@ -26,6 +26,7 @@ const BetterSelfRouter = () => (
       <Route exact path={HOME_URL} component={HomePage}/>
       <Route path={DASHBOARD_OVERVIEW_URL} component={LoggedOutView}/>
       <Route path={LOGIN_URL} component={LoggedOutView}/>
+      <Route path={SETTINGS_URL} component={LoggedOutView}/>
       {/*Private Routes*/}
       <PrivateRoute path={DASHBOARD_INDEX_URL} component={Protected}/>
 
