@@ -9,19 +9,18 @@ import {
 } from "react-router-dom";
 
 import {
-  DASHBOARD_OVERVIEW_URL,
   DASHBOARD_INDEX_URL,
   LOGIN_URL,
   HOME_URL,
-  SETTINGS_URL, LOGOUT_URL
+  LOGOUT_URL
 } from "./urls/constants";
 import { Authenticator } from "./authentication/auth";
 import LoginView from "./authentication/login";
 import Header from "./fragments/header";
 import Footer from "./fragments/footer";
 import { HomePage } from "./home/home";
-import {Dashboard} from "./dashboard";
-import {LogoutView} from "./authentication/logout";
+import { Dashboard } from "./dashboard";
+import { LogoutView } from "./authentication/logout";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -34,6 +33,7 @@ const BetterSelfRouter = () => (
       <Route path={LOGIN_URL} component={LoginView} />
       <Route path={LOGOUT_URL} component={LogoutView} />
 
+      {/* TODO Routes and Components */}
       {/*<Route path={SETTINGS_URL} component={LoggedOutView} />*/}
       {/*<Route path={DASHBOARD_OVERVIEW_URL} component={LoggedOutView} />*/}
 
