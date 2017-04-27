@@ -30,12 +30,12 @@ const BetterSelfRouter = () => (
       {/*Public Routes*/}
       <Route exact path={HOME_URL} component={HomePage} />
 
-      <Route path={LOGIN_URL} component={LoginView} />
-      <Route path={LOGOUT_URL} component={LogoutView} />
+      <Route exact path={LOGIN_URL} component={LoginView} />
+      <Route exact path={LOGOUT_URL} component={LogoutView} />
 
       {/* TODO Routes and Components */}
-      {/*<Route path={SETTINGS_URL} component={LoggedOutView} />*/}
-      {/*<Route path={DASHBOARD_OVERVIEW_URL} component={LoggedOutView} />*/}
+      {/*<Route exact path={SETTINGS_URL} component={LoggedOutView} />*/}
+      {/*<Route exact path={DASHBOARD_OVERVIEW_URL} component={LoggedOutView} />*/}
 
       {/*Private Routes*/}
       <PrivateRoute path={DASHBOARD_INDEX_URL} component={Dashboard} />
