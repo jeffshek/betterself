@@ -13,7 +13,10 @@ export default class Footer extends Component {
       <section className="content-block-nopad bg-deepocean footer-wrap-1-3">
         <div className="container footer-1-3">
           <div className="col-md-4 pull-left">
-            <img src={LOGO_BACKGROUND_PATH} className="brand-img img-responsive" />
+            <img
+              src={LOGO_BACKGROUND_PATH}
+              className="brand-img img-responsive"
+            />
           </div>
           <div className="col-md-3 pull-right">
             <p className="address-bold-line">
