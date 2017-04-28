@@ -36,6 +36,7 @@
     "jquery": "^3.2.1",
     "lint-staged": "^3.4.0",
     "prettier": "^1.1.0",
+    "radium": "^0.18.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
     "react-dom": "^15.4.2",
