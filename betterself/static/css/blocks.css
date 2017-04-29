@@ -1,5 +1,3 @@
-
-
 /*
 Template Name: Bootstrap Starter Kit - Header 1
 Description: Business Startup & Prototyping HTML Framework
@@ -9,26 +7,20 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-
-/*	HEADER 1
+/*  HEADER 1
 /*----------------------------------------------------*/
 
-#header-1
-{
+#header-1 {
     width: 100%;
     background: none;
     height: 80px;
 }
-
-#header-1 .main-nav
-{
+#header-1 .main-nav {
     background-color: #193441;
     border: 0;
     height: 80px;
 }
-
-#header-1 .main-nav .navbar-toggle
-{
+#header-1 .main-nav .navbar-toggle {
     margin-right: 0;
     margin-top: 0;
     background: none;
@@ -36,69 +28,47 @@ Version: 1.0
     right: 20px;
     top: 20px;
 }
-
-#header-1 .main-nav .navbar-toggle:focus
-{
+#header-1 .main-nav .navbar-toggle:focus {
     outline: none;
 }
-
-#header-1 .main-nav .navbar-toggle .icon-bar
-{
+#header-1 .main-nav .navbar-toggle .icon-bar {
     background-color: rgba(255, 255, 255, 0.6);
     height: 3px;
 }
-
-#header-1 .main-nav .navbar-toggle:hover .icon-bar
-{
+#header-1 .main-nav .navbar-toggle:hover .icon-bar {
     background-color: #fff;
 }
-
-#header-1 .main-nav .nav
-{
+#header-1 .main-nav .nav {
     margin-top: 12px;
 }
-
 #header-1 .main-nav .navbar-nav > li a {
-	font-family: 'Lato', sans-serif;
-	font-weight: 700;
-	text-transform: uppercase;
-	font-size: 15px;
-	color: #fff;
-	color: rgba(255, 255, 255, 0.8);
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 15px;
+    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
 }
-
-#header-1 .main-nav .navbar-nav > li.active a
-{
+#header-1 .main-nav .navbar-nav > li.active a {
     color: #3498DB;
     background: none;
 }
-
-
-#header-1 .main-nav .navbar-nav > li a:hover
-{
+#header-1 .main-nav .navbar-nav > li a:hover {
     color: #3498DB;
     background: none;
 }
-
-#header-1 .main-nav .navbar-nav > li a:focus
-{
+#header-1 .main-nav .navbar-nav > li a:focus {
     outline: none;
     background: none;
 }
-
-#header-1 .main-nav .navbar-nav > li a:active
-{
+#header-1 .main-nav .navbar-nav > li a:active {
     outline: none;
     background: none;
 }
-
-#header-1 .main-nav .navbar-nav > li.active
-{
+#header-1 .main-nav .navbar-nav > li.active {
     color: #333;
 }
-
-#header-1 .main-nav .nav .dropdown-menu
-{
+#header-1 .main-nav .nav .dropdown-menu {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
@@ -113,9 +83,7 @@ Version: 1.0
     min-width: 180px;
     background: #3E606F;
 }
-
-#header-1 .main-nav .nav .dropdown-menu:before
-{
+#header-1 .main-nav .nav .dropdown-menu:before {
     content: "";
     display: block;
     width: 0;
@@ -127,71 +95,52 @@ Version: 1.0
     right: 35px;
     top: -10px;
 }
-
-#header-1 .main-nav .nav .dropdown-menu a
-{
+#header-1 .main-nav .nav .dropdown-menu a {
     padding: 8px 20px;
     color: #fff;
     -webkit-opacity: 1;
     -moz-opacity: 1;
     opacity: 1;
 }
-
-#header-1 .main-nav .nav .dropdown-menu a:hover
-{
+#header-1 .main-nav .nav .dropdown-menu a:hover {
     background: #193441;
     color: #fff;
 }
-
-#header-1 .brand-img
-{
+#header-1 .brand-img {
     max-width: 150px;
     padding: 20px 0;
 }
-
-.headroom
-{
+.headroom {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     transition: all .2s ease-in-out;
 }
-
-
-.headroom--pinned
-{
+.headroom--pinned {
     top: 0;
 }
-
 /* Override bootstrap default */
 
 .nav .open > a,
 .nav .open > a:hover,
-.nav .open > a:focus
-{
+.nav .open > a:focus {
     background: none;
 }
-
-/*	HEADER 1 MEDIA QUERIES
+/*  HEADER 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Extra small devices (phones, less than 768px) */
 
-@media (max-width: 767px)
-{
-    #header-1 .brand-img
-    {
+@media (max-width: 767px) {
+    #header-1 .brand-img {
         float: none;
         margin: 0 auto;
         text-align: center;
     }
-    #header-1 .navbar-fixed-top
-    {
+    #header-1 .navbar-fixed-top {
         position: relative;
     }
-    #header-1 .navbar-collapse
-    {
+    #header-1 .navbar-collapse {
         border-top: none;
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
@@ -202,38 +151,23 @@ Version: 1.0
         background: #193441;
         z-index: 999;
     }
-    #header-1 .navbar-collapse .nav
-    {
+    #header-1 .navbar-collapse .nav {
         margin: 0;
     }
-    #header-1 .main-nav .nav .dropdown-menu:before
-    {
+    #header-1 .main-nav .nav .dropdown-menu:before {
         display: none;
     }
     #header-1 .navbar-fixed-top .navbar-collapse,
-	#header-1 .navbar-fixed-bottom .navbar-collapse
-    {
+    #header-1 .navbar-fixed-bottom .navbar-collapse {
         max-height: inherit;
     }
 }
-
 /* Small devices (tablets, 768px and up) */
 
-@media (min-width: 768px){
-  
-	
-  
-  
-}
-
+@media (min-width: 768px) {}
 /* Medium devices (desktops, 992px and up) */
 
-@media (min-width: 992px){
-  
-	
-  
-  
-}
+@media (min-width: 992px) {}
 /*
 Template Name: Bootstrap Starter Kit - Header 2
 Description: Business Startup & Prototyping HTML Framework
@@ -243,24 +177,16 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-/*	HEADER 2
+/*  HEADER 2
 /*----------------------------------------------------*/
 
-
-#header-2 .main-nav .nav
-{
+#header-2 .main-nav .nav {
     margin-top: 25px;
 }
-
-
-#header-2 .main-nav .navbar-nav > li.active a
-{
+#header-2 .main-nav .navbar-nav > li.active a {
     color: #3498DB;
 }
-
-
-#header-2 .main-nav .nav .dropdown-menu
-{
+#header-2 .main-nav .nav .dropdown-menu {
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
@@ -270,40 +196,30 @@ Version: 1.0
     min-width: 180px;
     background: #3E606F;
 }
-
-#header-2 .main-nav .nav .dropdown-menu a
-{
+#header-2 .main-nav .nav .dropdown-menu a {
     padding: 8px 20px;
     color: #666;
     -webkit-opacity: 1;
     -moz-opacity: 1;
     opacity: 1;
 }
-
-#header-2 .main-nav .nav .dropdown-menu a:hover
-{
+#header-2 .main-nav .nav .dropdown-menu a:hover {
     background: #3498DB;
     color: #fff;
 }
-
 /* Override bootstrap default */
 
 #header-2 .main-nav .nav .open > a,
 #header-2 .main-nav .nav .open > a:hover,
-#header-2 .main-nav .nav .open > a:focus
-{
+#header-2 .main-nav .nav .open > a:focus {
     background: none;
 }
-
-/*	Header 2 MEDIA QUERIES
+/*  Header 2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px)
-{
-    #header-2 .main-nav .nav .dropdown-menu
-    {
+@media only screen and (min-width: 768px) {
+    #header-2 .main-nav .nav .dropdown-menu {
         -webkit-border-radius: 4px;
         -moz-border-radius: 4px;
         -ms-border-radius: 4px;
@@ -318,8 +234,7 @@ Version: 1.0
         min-width: 180px;
         background: #3E606F;
     }
-    #header-2 .main-nav .nav .dropdown-menu:before
-    {
+    #header-2 .main-nav .nav .dropdown-menu:before {
         content: "";
         display: block;
         width: 0;
@@ -331,36 +246,24 @@ Version: 1.0
         right: 35px;
         top: -10px;
     }
-    #header-2 .main-nav .nav .dropdown-menu a
-    {
+    #header-2 .main-nav .nav .dropdown-menu a {
         padding: 8px 20px;
         color: #fff;
         -webkit-opacity: 1;
         -moz-opacity: 1;
         opacity: 1;
     }
-    #header-2 .main-nav .nav .dropdown-menu a:hover
-    {
+    #header-2 .main-nav .nav .dropdown-menu a:hover {
         background: #193441;
         color: #fff;
     }
 }
-
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
+@media only screen and (min-width: 1200px) {}
 /*
 Template Name: Bootstrap Starter Kit - Header 3
 Description: Business Startup & Prototyping HTML Framework
@@ -370,35 +273,22 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-/*	HEADER 3
+/*  HEADER 3
 /*----------------------------------------------------*/
 
-
 #header-3 .hero .lead {
-	font-weight: 600;
-	color: #723147;
+    font-weight: 600;
+    color: #723147;
 }
-
-
-
 /* Extra small devices (phones, less than 768px) */
-@media (max-width: 767px) {
-  
-	
-  
-}
+
+@media (max-width: 767px) {}
 /* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-  
-	
-  
-}
+
+@media (min-width: 768px) {}
 /* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-  
-	
-	  
-}
+
+@media (min-width: 992px) {}
 /*
 Template Name: Bootstrap Starter Kit - Promo Blocks
 Description: Business Startup & Prototyping HTML Framework
@@ -408,177 +298,87 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-
-
-
-
-
-
-/*	PROMO BLOCK 1
+/*  PROMO BLOCK 1
 /*----------------------------------------------------*/
 
 .promo-1 {
-	background: url("../images/water-bg.jpg") center top no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	padding: 140px 0;
+    background: url("../images/water-bg.jpg") center top no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 140px 0;
 }
-
 .promo-1 .video-wrapper {
-	max-width: 600px;
-	margin: 20px auto 0 auto;
+    max-width: 600px;
+    margin: 20px auto 0 auto;
 }
-
-
-/*	PROMO BLOCK 1 MEDIA QUERIES
+/*  PROMO BLOCK 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
-/*	PROMO BLOCK 2
+
+@media only screen and (min-width: 1200px) {}
+/*  PROMO BLOCK 2
 /*----------------------------------------------------*/
 
-
-.promo-2 h1, .promo-2 h2 {
-	color: #ffffff;
+.promo-2 h1,
+.promo-2 h2 {
+    color: #ffffff;
 }
-
-
-/*	PROMO BLOCK 2 MEDIA QUERIES
+/*  PROMO BLOCK 2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	PROMO BLOCK 3 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  PROMO BLOCK 3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-.content-1-1 .container
-{
+@media only screen and (min-width: 1200px) {} .content-1-1 .container {
     margin-top: 380px;
 }
-
-/*	CONTENT BLOCK 1-1 MEDIA QUERIES
+/*  CONTENT BLOCK 1-1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-		
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	CONTENT BLOCK 1-2
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 1-2
 /*----------------------------------------------------*/
-
-/*	CONTENT BLOCK 1-2 MEDIA QUERIES
+/*  CONTENT BLOCK 1-2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-		
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-
-.content-1-3 .services-wrapper .icon
-{
+@media only screen and (min-width: 1200px) {} .content-1-3 .services-wrapper .icon {
     height: 175px;
     width: 175px;
     max-width: 100%;
@@ -592,60 +392,36 @@ Version: 1.0
     position: relative;
     margin: 0 auto 50px;
 }
-
-.content-1-3 .services-wrapper .icon span
-{
+.content-1-3 .services-wrapper .icon span {
     line-height: 175px;
     color: #fff;
     font-size: 55px;
 }
-
-/*	CONTENT BLOCK 1-3 MEDIA QUERIES
+/*  CONTENT BLOCK 1-3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-		
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	CONTENT BLOCK 1-4
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 1-4
 /*----------------------------------------------------*/
 
-.content-1-4
-{
+.content-1-4 {
     padding: 0px;
     position: relative;
 }
-
-.content-1-4 .image-container
-{
+.content-1-4 .image-container {
     position: absolute;
     height: 100%;
     padding: 0px;
     top: 0px;
 }
-
-.content-1-4 .image-container .background-image-holder
-{
+.content-1-4 .image-container .background-image-holder {
     background: #cccccc url('../images/dark-logs-bg.jpg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -653,167 +429,83 @@ Version: 1.0
     background-size: cover;
     height: 100%;
 }
-
-.content-1-4 .content
-{
+.content-1-4 .content {
     padding-top: 80px;
     padding-bottom: 80px;
 }
-
-.content-1-4 h1
-{
+.content-1-4 h1 {
     margin-bottom: 32px;
 }
-
-.content-1-4 p.lead
-{
+.content-1-4 p.lead {
     margin-bottom: 20px;
 }
-
-/*	CONTENT BLOCK 1-4 MEDIA QUERIES
+/*  CONTENT BLOCK 1-4 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Extra small devices (phones, less than 768px) */
 
-@media (max-width: 767px)
-{
-    .content-1-4 .image-container
-    {
+@media (max-width: 767px) {
+    .content-1-4 .image-container {
         display: none;
     }
 }
-
-/*	CONTENT BLOCK 1-5
+/*  CONTENT BLOCK 1-5
 /*----------------------------------------------------*/
 
-.content-1-5 h1
-{
+.content-1-5 h1 {
     color: #3498DB;
 }
-
-/*	CONTENT BLOCK 1-3 MEDIA QUERIES
+/*  CONTENT BLOCK 1-3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-/*	CONTENT BLOCK 1-6
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 1-6
 /*----------------------------------------------------*/
-
-/*	CONTENT BLOCK 1-6 MEDIA QUERIES
+/*  CONTENT BLOCK 1-6 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Extra small devices (phones, less than 768px) */
 
-@media (max-width: 767px)
-{
-}
-
+@media (max-width: 767px) {}
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px)
-{
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	CONTENT BLOCK 1-7 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 1-7 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Extra small devices (phones, less than 768px) */
 
-@media (max-width: 767px){
-	
-	
-	
-}
-
+@media (max-width: 767px) {}
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	CONTENT BLOCK 1-9 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 1-9 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-
+@media only screen and (min-width: 1200px) {}
 /*
 Template Name: Bootstrap Starter Kit - Content Blocks 2
 Description: Business Startup & Prototyping HTML Framework
@@ -823,411 +515,202 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-
-
-
-
-
-
-/*	CONTENT BLOCK 2-1
+/*  CONTENT BLOCK 2-1
 /*----------------------------------------------------*/
 
 .content-2-1 .btn-outline {
-	margin-bottom: 30px;
+    margin-bottom: 30px;
 }
-
 .content-2-1 h2 {
-	color: #ffffff;
+    color: #ffffff;
 }
-
-
-/*	CONTENT BLOCK 2-1 MEDIA QUERIES
+/*  CONTENT BLOCK 2-1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
-/*	CONTENT BLOCK 2-2
+
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-2
 /*----------------------------------------------------*/
-
-
-/*	CONTENT BLOCK 2-2 MEDIA QUERIES
+/*  CONTENT BLOCK 2-2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-/*	CONTENT BLOCK 2-3 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-/*	CONTENT BLOCK 2-4 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-4 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 2-5 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-5 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 2-6 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-6 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 2-7 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-7 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} .content-2-8 .image-container .background-image-holder {
+    background: url('../images/gold-iphone.png') no-repeat bottom center;
+    height: 100%;
 }
-
-
-.content-2-8 .image-container .background-image-holder {
-	background: url('../images/gold-iphone.png') no-repeat bottom center;
-	
-	height: 100%;
+.content-2-8 h1,
+.content-2-8 h3,
+.content-2-8 .lead,
+.content-2-8 p,
+.content-2-8 span {
+    color: #ffffff;
 }
-
-
-.content-2-8 h1, .content-2-8 h3, .content-2-8 .lead, .content-2-8 p, .content-2-8 span {
-	color: #ffffff;
-}
-
-
-/*	CONTENT BLOCK 2-8 MEDIA QUERIES
+/*  CONTENT BLOCK 2-8 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
-/*	CONTENT BLOCK 2-9
-/*----------------------------------------------------*/
 
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-9
+/*----------------------------------------------------*/
 
 .content-2-9 .project .background-image-holder {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	background-size: cover !important;
-	z-index: 0;
-	background-position: 50% 50% !important;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover !important;
+    z-index: 0;
+    background-position: 50% 50% !important;
 }
-
-
-/*	CONTENT BLOCK 2-9 MEDIA QUERIES
+/*  CONTENT BLOCK 2-9 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-/*	CONTENT BLOCK 2-10 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 2-10 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 3-1 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 3-2 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 3-3 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-/*	CONTENT BLOCK 3-4
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-4
 /*----------------------------------------------------*/
-
-
-
-
-
-
-/*	CONTENT BLOCK 3-4 MEDIA QUERIES
+/*  CONTENT BLOCK 3-4 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-
-/*	CONTENT BLOCK 3-5
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-5
 /*----------------------------------------------------*/
 
 .content-3-5 .feature-box {
     /*background: #723147;*/
+    
     background: #193441;
     margin: 20px 0;
     padding: 35px 30px;
@@ -1238,11 +721,9 @@ Version: 1.0
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
 }
-
 .content-3-5 .feature-box:hover {
     background-color: #31152B;
 }
-
 .content-3-5 .icon {
     margin: 0 auto;
     background-color: #ffffff;
@@ -1258,54 +739,37 @@ Version: 1.0
     -o-border-radius: 50%;
     -ms-border-radius: 50%;
 }
-
 .content-3-5 .feature-box p {
     line-height: 25px;
     color: #ffffff;
     opacity: 0.5;
 }
-
 .content-3-5 .feature-box h3 {
     padding: 15px 0px 0px;
     color: #ffffff;
 }
-
-.content-3-5 .feature-box, .content-3-5 .feature-box:hover, .content-3-5 .feature-icon, .content-3-5 .feature-box:hover .feature-icon {
+.content-3-5 .feature-box,
+.content-3-5 .feature-box:hover,
+.content-3-5 .feature-icon,
+.content-3-5 .feature-box:hover .feature-icon {
     transition: all 0.4s ease-in 0s;
     -moz-transition: all 0.4s ease-in 0s;
     -webkit-transition: all 0.4s ease-in 0s;
     -o-transition: all 0.4s ease-in 0s;
     -ms-transition: all 0.4s ease-in 0s;
 }
-
-
-/*	CONTENT BLOCK 3-5 MEDIA QUERIES
+/*  CONTENT BLOCK 3-5 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-/*	CONTENT BLOCK 3-6
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-6
 /*----------------------------------------------------*/
 
 .content-3-6 .feature-box {
@@ -1319,8 +783,6 @@ Version: 1.0
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
 }
-
-
 .content-3-6 .icon {
     margin: 0 auto;
     background-color: #ffffff;
@@ -1336,497 +798,258 @@ Version: 1.0
     -o-border-radius: 50%;
     -ms-border-radius: 50%;
 }
-
 .content-3-6 .feature-box p {
     line-height: 25px;
     color: #ffffff;
     opacity: 0.5;
 }
-
 .content-3-6 .feature-box h3 {
     padding: 15px 0px 0px;
     color: #ffffff;
 }
-
-.content-3-6 .feature-box, .content-3-6 .feature-box:hover, .content-3-6 .feature-icon, .content-3-6 .feature-box:hover .feature-icon {
+.content-3-6 .feature-box,
+.content-3-6 .feature-box:hover,
+.content-3-6 .feature-icon,
+.content-3-6 .feature-box:hover .feature-icon {
     transition: all 0.4s ease-in 0s;
     -moz-transition: all 0.4s ease-in 0s;
     -webkit-transition: all 0.4s ease-in 0s;
     -o-transition: all 0.4s ease-in 0s;
     -ms-transition: all 0.4s ease-in 0s;
 }
-
-
-/*	CONTENT BLOCK 3-6 MEDIA QUERIES
+/*  CONTENT BLOCK 3-6 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
-/*	CONTENT BLOCK 3-7
+
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-7
 /*----------------------------------------------------*/
-
-
-
-
-/*	CONTENT BLOCK 3-7 MEDIA QUERIES
+/*  CONTENT BLOCK 3-7 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 3-8 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-8 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	CONTENT BLOCK 3-9 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  CONTENT BLOCK 3-9 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} .content-3-10 .image-container .background-image-holder {
+    background: url('../images/low-poly-1.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
 }
-
-
-.content-3-10 .image-container .background-image-holder {
-	background: url('../images/low-poly-1.jpg') no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	height: 100%;
-}
-
-
-
-/*	CONTENT BLOCK 3-10 MEDIA QUERIES
+/*  CONTENT BLOCK 3-10 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} .content-3-11 .image-container .background-image-holder {
+    background: url('../images/low-poly-2.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
 }
-
-
-.content-3-11 .image-container .background-image-holder {
-	background: url('../images/low-poly-2.jpg') no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	height: 100%;
-}
-
-
-
-/*	CONTENT BLOCK 3-11 MEDIA QUERIES
+/*  CONTENT BLOCK 3-11 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} *,
+*:after,
+*:before {
+    box-sizing: border-box;
 }
-
-
-*, *:after, *:before { box-sizing: border-box; }
-
-
-
-
-
-
-
-/*	Gallery 1 MEDIA QUERIES
+/*  Gallery 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-.filter li a:hover,
+@media only screen and (min-width: 1200px) {} .filter li a:hover,
 .filter li a:focus,
-.filter li a.active
-{
+.filter li a.active {
     color: #1ABC9C;
     text-decoration: none;
 }
 /* Isotope Animating
  * -------------------------- */
-
-/*	Gallery 1 MEDIA QUERIES
+/*  Gallery 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-		
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	Team 1 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  Team 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-	
-	
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
-/*	Team 2 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  Team 2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px)
-{
-
-    .team-2 .col-sm-6 .team-item .team-thumb .team-link
-    {
+@media only screen and (min-width: 768px) {
+    .team-2 .col-sm-6 .team-item .team-thumb .team-link {
         left: 43.4%;
     }
-    .team-2 .col-sm-6 .team-item:hover .team-thumb .team-link
-    {
+    .team-2 .col-sm-6 .team-item:hover .team-thumb .team-link {
         top: 60%;
         left: 43.4%;
     }
 }
-
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px)
-{
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px)
-{
+@media only screen and (min-width: 1200px) {} .pricing-table-1 .features {
+    background: #e6e6e6;
+    color: #555555;
+    padding: 0;
+    margin: 0;
 }
-
-
-.pricing-table-1 .features {
-	background: #e6e6e6;
-	color: #555555;
-	padding: 0;
-	margin: 0;
-}
-
 .pricing-table-1 .features li {
-	padding: 8px 15px;
-	border-bottom: 1px solid #ccc;
-	list-style-type: none;
+    padding: 8px 15px;
+    border-bottom: 1px solid #ccc;
+    list-style-type: none;
 }
-
-
-
-/*	Pricing Tables 1 MEDIA QUERIES
+/*  Pricing Tables 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
-
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} .pricing-table-2 .price-block .features {
+    background: #F5F7FA;
+    padding: 25px 35px;
+    border: 1px solid #E6E9ED;
+    border-top: none;
+    border-bottom-width: 2px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-top: 0 !important;
 }
-
-
-.pricing-table-2 .price-block .features {
-	background: #F5F7FA;
-	padding: 25px 35px;
-	border: 1px solid #E6E9ED;
-	border-top: none;
-	border-bottom-width: 2px;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	margin-top: 0 !important;
-}
-
 .pricing-table-2 .price-block .features li {
-	padding: 15px 0;
- 	border-top: 1px solid #BCC7D1;
-	list-style: none;
+    padding: 15px 0;
+    border-top: 1px solid #BCC7D1;
+    list-style: none;
 }
-
 .pricing-table-2 .price-block .features li:first-child {
-	border: none;
+    border: none;
 }
-
 .pricing-table-2 .price-block .features li i {
-	margin-right: 10px;
+    margin-right: 10px;
 }
-
-
 .pricing-table-2 .col-4 .price-block .features {
-	padding: 20px 30px;
+    padding: 20px 30px;
 }
 /* Ribbon & Colors */
-
-
-
-/*	Pricing Table 2 MEDIA QUERIES
+/*  Pricing Table 2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-#map {
+@media only screen and (min-width: 1200px) {} #map {
     width:100%;
     height:350px;
 }
-
 #contact span.required {
-	font-size: 13px;
-	color: #ff0000;
+    font-size: 13px;
+    color: #ff0000;
 }
-
-
-/*	CONTACT 1 MEDIA QUERIES
+/*  CONTACT 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
+
+@media only screen and (min-width: 1200px) {} #contact span.required {
+    font-size: 13px;
+    color: #ff0000;
 }
-
-
-#contact span.required {
-	font-size: 13px;
-	color: #ff0000;
-}
-
-
-/*	CONTACT 3 MEDIA QUERIES
+/*  CONTACT 3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
+@media only screen and (min-width: 1200px) {}
 /*
 Template Name: Bootstrap Starter Kit - Blog 1
 Description: Business Startup & Prototyping HTML Framework
@@ -1836,53 +1059,27 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-
-
-
-
-
-
-/*	Blog 1
+/*  Blog 1
 /*----------------------------------------------------*/
 
 .blog-1 .post {
-	text-align: center;
-	padding: 10px 0;
+    text-align: center;
+    padding: 10px 0;
 }
-
 .blog-1 .post img {
-	margin: 30px 0;
+    margin: 30px 0;
 }
-
-
-
-
-
-
-
-/*	Blog 1 MEDIA QUERIES
+/*  Blog 1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
-	
-	
-}
 
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
+
+@media only screen and (min-width: 1200px) {}
 /*
 Template Name: Bootstrap Starter Kit - Footers 1
 Description: Business Startup & Prototyping HTML Framework
@@ -1892,150 +1089,84 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-/*	FOOTER 1-1
+/*  FOOTER 1-1
 /*----------------------------------------------------*/
 
-
-.footer-1-1 h3, .footer-1-1 h4, .footer-1-1 .lead, .footer-1-1 li {
-	color: #ffffff;
+.footer-1-1 h3,
+.footer-1-1 h4,
+.footer-1-1 .lead,
+.footer-1-1 li {
+    color: #ffffff;
 }
-
-
-/*	FOOTER 1-1 MEDIA QUERIES
+/*  FOOTER 1-1 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-/*	FOOTER 1-2 MEDIA QUERIES
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-2 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
 
-
-
-
-
-/*	FOOTER 1-3
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-3
 /*----------------------------------------------------*/
 
 .footer-1-3 {
-	padding-top: 40px;
-	padding-bottom: 10px;
+    padding-top: 40px;
+    padding-bottom: 10px;
 }
-
 .footer-1-3 .brand-img {
-	width: 180px;
+    width: 180px;
 }
-
-
 .footer-1-3 .address-bold-line {
-	font-weight: 700;
-	margin: 0;
-	color: #ffffff;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
 }
-
 .footer-1-3 .address {
-	color: #ffffff;
+    color: #ffffff;
 }
-
 .footer-1-3 .footer-text {
-	border-top: #ecf0f1 1px solid;
-	text-align: center;
-	margin-top: 10px;
+    border-top: #ecf0f1 1px solid;
+    text-align: center;
+    margin-top: 10px;
 }
-
 .footer-1-3 .footer-text p {
-	color: #ecf0f1;
-	
+    color: #ecf0f1;
 }
-
-
-/*	FOOTER 1-3 MEDIA QUERIES
+/*  FOOTER 1-3 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
-/*	FOOTER 1-4
+
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-4
 /*----------------------------------------------------*/
-
-
-/*	FOOTER 1-4 MEDIA QUERIES
+/*  FOOTER 1-4 MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-	
-		
-	
-}
 
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-	
 
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-	
-	
-	
-}
+
+@media only screen and (min-width: 1200px) {}

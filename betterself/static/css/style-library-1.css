@@ -1,5 +1,3 @@
-
-
 /*
 Template Name: Bootstrap Starter Kit - Style Library 1
 Description: Business Startup & Prototyping HTML Framework
@@ -9,146 +7,134 @@ Author URI: http://www.creativemarket.com/theme_spirit
 Version: 1.0
 
 */
-
-/*	PATTERN LIBRARY STYLES
+/*  PATTERN LIBRARY STYLES
 /*----------------------------------------------------*/
 
-body
-{
+body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
     color: #333333;
     background: #ffffff;
     overflow-x: hidden;
     /*text-rendering: optimizeLegibility;*/
+    
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 /* BACKGROUND COLORS */
 
-
-.bg-black
-{
+.bg-black {
     background-color: #111111 !important;
 }
-
-
-.bg-deepocean
-{
+.bg-deepocean {
     background-color: #193441 !important;
 }
-
-
-.white
-{
+.white {
     color: #FFFFFF !important;
 }
-
-
-.pomegranate
-{
+.pomegranate {
     color: #C0392B !important;
 }
-
-
-.pad45
-{
+.pad45 {
     padding-top: 45px !important;
 }
-
-
-.min-height-600px
-{
+.min-height-600px {
     min-height: 600px !important;
 }
-
-@media only screen and (max-width : 767px){
-
-}
-
-
+@media only screen and (max-width: 767px) {}
 /** TYPOGRAPHY **/
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
-{
-    font-family: 'Lato', Helvetica, Arial, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Lato',
+    Helvetica,
+    Arial,
+    sans-serif;
     line-height: 1.1;
 }
-
-h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small
-{
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small,
+.h1 small,
+.h2 small,
+.h3 small,
+.h4 small,
+.h5 small,
+.h6 small {
     color: #e5e5e5;
 }
-
-h1, h2, h3
-{
+h1,
+h2,
+h3 {
     margin-bottom: 20px;
     font-weight: 300;
 }
-
-h4, h5, h6
-{
+h4,
+h5,
+h6 {
     margin-bottom: 15px;
     font-weight: 400;
 }
-
-h1, .h1
-{
+h1,
+.h1 {
     font-size: 44px;
 }
-
-h2, .h2
-{
+h2,
+.h2 {
     font-size: 37px;
 }
-
-h3, .h3
-{
+h3,
+.h3 {
     font-size: 27px;
 }
-
-h4, .h4
-{
+h4,
+.h4 {
     font-size: 23px;
 }
-
-h5, .h5
-{
+h5,
+.h5 {
     font-size: 18px;
 }
-
-h6, .h6
-{
+h6,
+.h6 {
     font-size: 16px;
 }
-
-p
-{
+p {
     /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+    
     font-size: 14px;
     line-height: 1.6;
     margin: 15px 0;
     color: #515157;
 }
-
-.lead
-{
+.lead {
     margin-bottom: 30px;
     font-size: 20px;
     line-height: 1.4;
     font-weight: 300;
 }
-
-small, .small
-{
+small,
+.small {
     font-size: 80%;
     line-height: 2;
 }
-
-
 /* LINKS */
 
-a { color: #1abc9c; }
-
+a {
+    color: #1abc9c;
+}
 a:hover {
     color: #16a085;
     text-decoration: none;
@@ -159,25 +145,20 @@ a:hover {
 }
 /* LISTS */
 
-
-ul
-{
+ul {
     list-style: none;
     position: relative;
     padding-left: 22px;
 }
-
 ul li,
-ol li
-{
+ol li {
     /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+    
     font-size: 14px;
     color: #515157;
     margin-bottom: 5px;
 }
-
-ul.circle li:before
-{
+ul.circle li:before {
     font-family: 'fontawesome';
     content: '\f10c';
     font-size: 12px;
@@ -187,25 +168,19 @@ ul.circle li:before
     position: absolute;
 }
 /* TITLES */
-
-
 /* IMAGES */
 
-img
-{
-}
-
+img {}
+/*===================================================================================*/
+/*  BUTTONS
 /*===================================================================================*/
 
-/*	BUTTONS
-/*===================================================================================*/
-
-.btn
-{
+.btn {
     color: #FFF;
     padding: 10px 20px;
     margin: 15px 0;
     /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+    
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -216,31 +191,24 @@ img
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
-
-
 /* Button PRIMARY */
 
-.btn.btn-primary
-{
+.btn.btn-primary {
     background: #1abc9c;
     box-shadow: 0 2px #16a085;
 }
-
-.btn.btn-primary:hover
-{
+.btn.btn-primary:hover {
     background: #16a085;
 }
 /* Button WARNING */
-
-
 /* Outline Buttons */
 
-.btn-outline
-{
+.btn-outline {
     color: #FFF;
     padding: 12px 20px;
     margin: 15px 0;
     /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+    
     font-weight: 600;
     font-size: 14px;
     text-align: center;
@@ -252,58 +220,41 @@ img
     -webkit-border-radius: 25px;
     -moz-border-radius: 25px;
 }
-
-.btn-outline:hover
-{
+.btn-outline:hover {
     text-decoration: none;
     color: #ffffff;
 }
-
-
-.btn-outline-lg
-{
+.btn-outline-lg {
     padding: 14px 26px;
     font-size: 15px;
 }
-
-.btn-outline-xl
-{
+.btn-outline-xl {
     padding: 18px 30px;
     font-size: 24px;
 }
-
 .btn-outline.outline-light,
-.icon.outline-light
-{
+.icon.outline-light {
     color: #ffffff;
     background: none;
     border: 2px solid #ffffff;
 }
-
 .btn-outline.outline-light:hover,
-.icon.outline-light:hover
-{
+.icon.outline-light:hover {
     color: #2c3e50;
     background: #ffffff;
 }
-
 .btn-outline.outline-dark,
-.icon.outline-dark
-{
+.icon.outline-dark {
     color: #2c3e50;
     background: none;
     border: 2px solid #2c3e50;
 }
-
 .btn-outline.outline-dark:hover,
-.icon.outline-dark:hover
-{
+.icon.outline-dark:hover {
     color: #ffffff;
     background: #2c3e50;
 }
-
-button:hover
-{
+button:hover {
     text-decoration: none;
     -moz-transition: all 0.3s ease;
     -webkit-transition: all 0.3s ease;
@@ -311,15 +262,14 @@ button:hover
     transition: all 0.3s ease;
 }
 /*===================================================================================*/
-/*	SOCIAL ICONS
+/*  SOCIAL ICONS
 /*===================================================================================*/
 
-
-.form-control
-{
+.form-control {
     border: 2px solid #ecf0f1;
     color: #34495e;
     /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+    
     font-size: 14px;
     line-height: 1.467;
     padding: 8px 12px;
@@ -331,26 +281,20 @@ button:hover
     -webkit-transition: border .25s linear, color .25s linear, background-color .25s linear;
     transition: border .25s linear, color .25s linear, background-color .25s linear;
 }
-
-.form-group
-{
+.form-group {
     position: relative;
     margin-bottom: 20px;
 }
-
 .form-group.focus .form-control,
-.form-control:focus
-{
+.form-control:focus {
     border-color: #1abc9c;
     outline: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
 .form-control[disabled],
 .form-control[readonly],
-fieldset[disabled] .form-control
-{
+fieldset[disabled] .form-control {
     background-color: #f4f6f6;
     border-color: #d5dbdb;
     color: #d5dbdb;
@@ -358,39 +302,27 @@ fieldset[disabled] .form-control
     opacity: 0.7;
     filter: alpha(opacity=70);
 }
-
-
-.has-success .form-control
-{
+.has-success .form-control {
     color: #2ecc71;
     border-color: #2ecc71;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
-
-.has-warning .form-control
-{
+.has-warning .form-control {
     color: #f1c40f;
     border-color: #f1c40f;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
-
-.has-error .form-control
-{
+.has-error .form-control {
     color: #e74c3c;
     border-color: #e74c3c;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
-
 /* FORM - INPUT ICON */
 
-.form-control + .input-icon
-{
+.form-control + .input-icon {
     position: absolute;
     top: 2px;
     right: 2px;
@@ -402,112 +334,69 @@ fieldset[disabled] .form-control
     padding: 0 12px 0 0;
     border-radius: 6px;
 }
-
-
-.text-right .panel-title > a span
-{
+.text-right .panel-title > a span {
     padding-left: 25px;
     padding-right: 0;
 }
-
-.text-center .panel-title > a span
-{
+.text-center .panel-title > a span {
     padding-left: 0;
     padding-right: 0;
 }
-
-
-.text-center .panel-title > a:hover span
-{
+.text-center .panel-title > a:hover span {
     top: .5em;
     color: transparent;
 }
-
-
-.text-right .panel-title > a span:after
-{
+.text-right .panel-title > a span:after {
     left: 0;
     right: auto;
 }
-
-.text-center .panel-title > a span:after
-{
+.text-center .panel-title > a span:after {
     top: -.75em;
     left: 0;
     opacity: 0;
 }
-
-
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus
-{
+.nav-tabs > li.active > a:focus {
     background-color: transparent;
     border-bottom: 4px solid #85d6de !important;
 }
-
 .nav > li > a:hover,
-.nav > li > a:focus
-{
+.nav > li > a:focus {
     outline: 0;
 }
-
-
 .pagination > .active > a,
 .pagination > .active > span,
 .pagination > .active > a:hover,
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
-.pagination > .active > span:focus
-{
+.pagination > .active > span:focus {
     background-color: #1ABC9C;
     border-color: #16A085;
 }
-
-
 /* CONTENT BLOCK HOLDERS */
 
-.content-block
-{
+.content-block {
     width: 100%;
     padding: 60px 0 60px 0;
     z-index: 100;
     position: relative;
     background-color: #ffffff;
 }
-
-.content-block-nopad
-{
+.content-block-nopad {
     width: 100%;
     z-index: 100;
     position: relative;
     background-color: #ffffff;
 }
-
-/*	PATTERN LIBRARY MEDIA QUERIES
+/*  PATTERN LIBRARY MEDIA QUERIES
 /*----------------------------------------------------*/
-
 /* Small Devices, Tablets */
 
-@media only screen and (min-width : 768px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 768px) {}
 /* Medium Devices, Desktops */
 
-@media only screen and (min-width : 992px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 992px) {}
 /* Large Devices, Wide Screens */
 
-@media only screen and (min-width : 1200px){
-	
-	
-	
-}
-
+@media only screen and (min-width: 1200px) {}
