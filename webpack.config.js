@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const BundleTracker = require('webpack-bundle-tracker')
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // TODO - this is a really simple version of webpack.config.js that will eventually need to grow
 
