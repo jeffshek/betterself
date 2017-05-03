@@ -29,7 +29,6 @@ const BetterSelfRouter = () => (
 
       {/*Public Routes*/}
       <Route exact path={HOME_URL} component={HomePage} />
-
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
