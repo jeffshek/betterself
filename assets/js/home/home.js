@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { DASHBOARD_EXAMPLE_PATH } from "../fragments/image_paths";
 import { DASHBOARD_INDEX_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
+import styles from "./home.css"
 
 export const FontAwesomeIconBox = props => {
   return (
