@@ -2,13 +2,10 @@ import React, { PropTypes, Component } from "react";
 import { DASHBOARD_EXAMPLE_PATH } from "../fragments/image_paths";
 import { DASHBOARD_INDEX_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
-import styles from "./home.css"
-import featureBox from "./feature_box.css"
 
 export const FontAwesomeIconBox = props => {
   return (
     <div className="col-md-3 col-sm-6 col-xs-12">
-      {/*<div className = { featureBox.feature }>*/}
       <div className="feature-box">
         <div className="icon">
           {/*Don't know how to style this correctly, putting a space is good enough, slightly embarrassed. */}

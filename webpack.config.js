@@ -29,6 +29,10 @@ module.exports = {
       $: "jquery",
       jQuery: "jquery",
       "window.jQuery": "jquery"
+    }),
+    new ExtractTextPlugin({
+      filename: 'app.css',
+      allChunks: true
     })
   ],
 
@@ -55,7 +59,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: [ 'style-loader', 'css-loader']
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?modules,localIdentName="[name]-[local]-[hash:base64:6]"'
+        }),
       }
     ]
   },

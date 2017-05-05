@@ -302,7 +302,7 @@ Version: 1.0
 /*----------------------------------------------------*/
 
 .promo-1 {
-    background: url("../images/water-bg.jpg") center top no-repeat;
+    background: url("../../images/water-bg.jpg") center top no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -422,7 +422,7 @@ Version: 1.0
     top: 0px;
 }
 .content-1-4 .image-container .background-image-holder {
-    background: #cccccc url('../images/dark-logs-bg.jpg') no-repeat center center;
+    background: #cccccc url('../../images/dark-logs-bg.jpg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -603,7 +603,7 @@ Version: 1.0
 /* Large Devices, Wide Screens */
 
 @media only screen and (min-width: 1200px) {} .content-2-8 .image-container .background-image-holder {
-    background: url('../images/gold-iphone.png') no-repeat bottom center;
+    background: url('../../images/gold-iphone.png') no-repeat bottom center;
     height: 100%;
 }
 .content-2-8 h1,
@@ -710,7 +710,7 @@ Version: 1.0
 
 .content-3-5 .feature-box {
     /*background: #723147;*/
-    
+
     background: #193441;
     margin: 20px 0;
     padding: 35px 30px;
@@ -863,7 +863,7 @@ Version: 1.0
 /* Large Devices, Wide Screens */
 
 @media only screen and (min-width: 1200px) {} .content-3-10 .image-container .background-image-holder {
-    background: url('../images/low-poly-1.jpg') no-repeat center center;
+    background: url('../../images/low-poly-1.jpg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -881,7 +881,7 @@ Version: 1.0
 /* Large Devices, Wide Screens */
 
 @media only screen and (min-width: 1200px) {} .content-3-11 .image-container .background-image-holder {
-    background: url('../images/low-poly-2.jpg') no-repeat center center;
+    background: url('../../images/low-poly-2.jpg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
