@@ -6,11 +6,12 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken import views
 
-react_template = 'react.html'
+react_home_template = 'react/home.html'
+react_dashboard_template = 'react/dashboard.html'
 
 urlpatterns = [
     # General
-    url(r'^$', TemplateView.as_view(template_name='react.html'), name='home'),
+    url(r'^$', TemplateView.as_view(template_name=react_home_template), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
@@ -24,10 +25,10 @@ urlpatterns = [
     url(r'^analytics/', include('analytics.urls')),
 
     # All React should redirect to the same pages
-    url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_template), name='react'),
-    url(r'^login/$', TemplateView.as_view(template_name=react_template), name='react-login'),
-    url(r'^logout/$', TemplateView.as_view(template_name=react_template), name='react-logout'),
-    url(r'^settings/$', TemplateView.as_view(template_name=react_template), name='react-settings'),
+    url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
+    url(r'^login/$', TemplateView.as_view(template_name=react_home_template), name='react-login'),
+    url(r'^logout/$', TemplateView.as_view(template_name=react_home_template), name='react-logout'),
+    url(r'^settings/$', TemplateView.as_view(template_name=react_home_template), name='react-settings'),
 
     # To test api-token-auth ...
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/

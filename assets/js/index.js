@@ -16,8 +16,6 @@ import {
 } from "./urls/constants";
 import { Authenticator } from "./authentication/auth";
 import LoginView from "./authentication/login";
-import Header from "./fragments/header";
-import Footer from "./fragments/footer";
 import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
@@ -25,8 +23,6 @@ import { LogoutView } from "./authentication/logout";
 const BetterSelfRouter = () => (
   <Router>
     <div>
-      <Header />
-
       {/*Public Routes*/}
       <Route exact path={HOME_URL} component={HomePage} />
       <Route exact path={LOGIN_URL} component={LoginView} />
@@ -34,8 +30,6 @@ const BetterSelfRouter = () => (
 
       {/*Private Routes*/}
       <PrivateRoute path={DASHBOARD_INDEX_URL} component={Dashboard} />
-
-      <Footer />
     </div>
   </Router>
 );
