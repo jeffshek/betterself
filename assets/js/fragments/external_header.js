@@ -9,7 +9,7 @@ const MenuItem = props => (
   </li>
 );
 
-export default class Header extends Component {
+export default class LoggedOutHeader extends Component {
   menuItems = [
     { name: "Home", key: "Home" },
     { name: "Dashboard", key: "Dashboard" },
