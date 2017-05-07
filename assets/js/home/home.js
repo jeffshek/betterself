@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { DASHBOARD_EXAMPLE_PATH } from "../fragments/image_paths";
 import { DASHBOARD_INDEX_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
-import LoggedOutHeader from "../fragments/external_header";
+import LoggedOutHeader from "../header/external_header";
 import Footer from "../fragments/footer";
 
 export const FontAwesomeIconBox = props => {

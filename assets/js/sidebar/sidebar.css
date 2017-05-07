@@ -1,0 +1,123 @@
+.sidebar-background {
+  background: #193441;
+}
+.main_menu_side {
+  padding: 5px
+}
+
+.main_menu .fa {
+  width: 26px;
+  opacity: .99;
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+.main_menu span.fa {
+  float: right;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 10px;
+  min-width: inherit;
+  color: #C4CFDA
+}
+.active a span.fa {
+  text-align: right !important;
+  margin-right: 4px
+}
+.menu_section {
+  margin-bottom: 35px
+}
+.menu_section h3 {
+  padding-left: 15px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: bold;
+  font-size: 11px;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-shadow: 1px 1px #000
+}
+.menu_section>ul {
+  margin-top: 10px
+}
+.nav-side-menu-selection {
+  margin: 0
+}
+
+.nav-sm span.fa,
+.nav-sm .menu_section h3 {
+  display: none
+}
+.nav.side-menu>li {
+  position: relative;
+  display: block;
+  cursor: pointer
+}
+.nav.side-menu>li>a {
+  margin-bottom: 6px
+}
+.nav.side-menu>li>a:hover {
+  color: #F2F5F7 !important
+}
+.nav.side-menu>li>a:hover,
+.nav>li>a:focus {
+  text-decoration: none;
+  background: transparent
+}
+.nav.child_menu {
+  display: none
+}
+.nav.child_menu li:hover,
+.nav.child_menu li.active {
+  background-color: rgba(255, 255, 255, 0.06)
+}
+.nav.child_menu li {
+  padding-left: 36px
+}
+.nav-md ul.nav.child_menu li:before {
+  background: #425668;
+  bottom: auto;
+  content: "";
+  height: 8px;
+  left: 23px;
+  margin-top: 15px;
+  position: absolute;
+  right: auto;
+  width: 8px;
+  z-index: 1;
+  border-radius: 50%
+}
+.nav-md ul.nav.child_menu li:after {
+  border-left: 1px solid #425668;
+  bottom: 0;
+  content: "";
+  left: 27px;
+  position: absolute;
+  top: 0
+}
+.nav.side-menu>li>a,
+.nav.child_menu>li>a {
+  color: #E7E7E7;
+  font-weight: 500
+}
+.nav.child_menu li li:hover,
+.nav.child_menu li li.active {
+  background: none
+}
+.nav.child_menu li li a:hover,
+.nav.child_menu li li a.active {
+  color: #fff
+}
+.main_menu span.fa {
+  float: right;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 10px;
+  min-width: inherit;
+  color: #C4CFDA
+}

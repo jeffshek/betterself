@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { LOGO_BACKGROUND_PATH } from "./image_paths";
+import { LOGO_BACKGROUND_PATH } from "../fragments/image_paths";
 import { HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 
