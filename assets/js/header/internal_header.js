@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
-import styles from './css/internal_header.css'
 
 const AVATAR_IMG = require('../../img/avatars/6.jpg')
 

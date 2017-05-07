@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Sidebar from "./sidebar/sidebar"
+import Sidebar from "./sidebar/sidebar.js"
 import LoggedInHeader from "./header/internal_header"
 
 export class Dashboard extends Component {
   render() {
     return (
-      <div>
+      <div className="app">
         <LoggedInHeader />
-        <Sidebar/>
+        <Sidebar />
       </div>
     )
   }
