@@ -7,8 +7,8 @@ class Sidebar extends Component {
   render() {
     return (
       <div styleName="sidebar-background">
-        <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
-          <div className="menu_section">
+        <div styleName="main_menu_side">
+          <div styleName="menu_section">
             <h3>General</h3>
             <ul className="nav side-menu">
               <li>
