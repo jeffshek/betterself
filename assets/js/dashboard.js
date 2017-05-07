@@ -7,7 +7,9 @@ export class Dashboard extends Component {
     return (
       <div className="app">
         <LoggedInHeader />
-        <Sidebar />
+        <div className="app-body">
+          <Sidebar />
+        </div>
       </div>
     )
   }
