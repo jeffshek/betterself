@@ -49,7 +49,7 @@ module.exports = {
       },
       {
         // file-loader
-        test: /\.(jpg|png|svg|jpeg)$/,
+        test: /\.(jpg|png|svg|gif|jpeg)$/,
         exclude: /node_modules/,
         loader: "file-loader"
         // options: {

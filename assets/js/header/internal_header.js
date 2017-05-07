@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
+import styles from './css/internal_header.css'
 
 class LoggedInHeader extends Component {
 
