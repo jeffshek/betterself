@@ -5,7 +5,7 @@ const line = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
-      label: 'Jeff Shek was here!',
+      label: 'Average Monthly Productivity Score',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -32,7 +32,7 @@ const bar = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Average Caffeine Intake',
       backgroundColor: 'rgba(255,99,132,0.2)',
       borderColor: 'rgba(255,99,132,1)',
       borderWidth: 1,
@@ -45,9 +45,9 @@ const bar = {
 
 const doughnut = {
   labels: [
-    'Red',
-    'Green',
-    'Yellow'
+    'Productive',
+    'Sleeping',
+    'Unproductive'
   ],
   datasets: [{
     data: [300, 50, 100],
@@ -68,7 +68,7 @@ const radar = {
   labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'January',
       backgroundColor: 'rgba(179,181,198,0.2)',
       borderColor: 'rgba(179,181,198,1)',
       pointBackgroundColor: 'rgba(179,181,198,1)',
@@ -78,7 +78,7 @@ const radar = {
       data: [65, 59, 90, 81, 56, 55, 40]
     },
     {
-      label: 'My Second dataset',
+      label: 'April',
       backgroundColor: 'rgba(255,99,132,0.2)',
       borderColor: 'rgba(255,99,132,1)',
       pointBackgroundColor: 'rgba(255,99,132,1)',
@@ -92,9 +92,9 @@ const radar = {
 
 const pie = {
   labels: [
-    'Red',
-    'Green',
-    'Yellow'
+    'Sleep',
+    'Supplements',
+    'Mood'
   ],
   datasets: [{
     data: [300, 50, 100],
@@ -145,7 +145,7 @@ class Charts extends Component {
         <div className="card-columns cols-2">
           <div className="card">
             <div className="card-header">
-              Line Chart
+              Productivity
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>
@@ -162,7 +162,7 @@ class Charts extends Component {
           </div>
           <div className="card">
             <div className="card-header">
-              Bar Chart
+              Supplements Measurement
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>
@@ -179,7 +179,7 @@ class Charts extends Component {
           </div>
           <div className="card">
             <div className="card-header">
-              Doughnut Chart
+              Yearly Breakdown
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>
@@ -192,7 +192,7 @@ class Charts extends Component {
           </div>
           <div className="card">
             <div className="card-header">
-              Radar Chart
+              Desired Time Breakdowns
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>
@@ -205,7 +205,7 @@ class Charts extends Component {
           </div>
           <div className="card">
             <div className="card-header">
-              Pie Chart
+              Productivity Drivers
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>

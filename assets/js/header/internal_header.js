@@ -54,7 +54,7 @@ class LoggedInHeader extends Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <img src={AVATAR_IMG} className="img-avatar" width="50px" height="50px"/>
-                <span className="hidden-md-down">admin</span>
+                <span className="hidden-md-down">jeffshek</span>
               </a>
 
               <DropdownMenu className="dropdown-menu-right">

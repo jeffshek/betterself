@@ -17,18 +17,16 @@ class Sidebar extends Component {
                 <i className="icon-speedometer" />
                 Dashboard
                 <span className="badge badge-info">
-                  NEW
-                </span>
+        NEW
+        </span>
               </Link>
             </li>
             <li className="nav-title">
               Log
             </li>
-
             <li className="nav-item nav-dropdown">
               <a className="nav-link"><i className="icon-note" /> Events</a>
             </li>
-
             <li className="nav-item nav-dropdown">
               <a
                 className="nav-link nav-dropdown-toggle"
@@ -55,7 +53,6 @@ class Sidebar extends Component {
                 </li>
               </ul>
             </li>
-
             <li className="nav-item nav-dropdown">
               <a className="nav-link"><i className="icon-note" /> Heart Rate</a>
               <a className="nav-link">
@@ -65,13 +62,11 @@ class Sidebar extends Component {
               <a className="nav-link">
                 <i className="icon-note" /> Supplements
               </a>
-
             </li>
             <li className="divider" />
             <li className="nav-title">
               Analytics
             </li>
-
             <li className="nav-item nav-dropdown">
               <a
                 className="nav-link nav-dropdown-toggle"
@@ -103,7 +98,6 @@ class Sidebar extends Component {
                 <i className="icon-calculator" /> Productivity{" "}
               </Link>
             </li>
-
             <li className="divider" />
             <li className="nav-title">
               Data Sources
