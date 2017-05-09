@@ -4,7 +4,6 @@ import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 const AVATAR_IMG = require('../../img/avatars/6.jpg')
 
 class LoggedInHeader extends Component {
-
   constructor(props) {
     super(props);
 
@@ -41,29 +40,15 @@ class LoggedInHeader extends Component {
         <button className="navbar-toggler mobile-sidebar-toggler hidden-lg-up" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
         <a className="navbar-brand" href="#"></a>
         <ul className="nav navbar-nav hidden-md-down">
+          {/*Toggles the sidebar*/}
           <li className="nav-item">
             <a className="nav-link navbar-toggler sidebar-toggler" onClick={this.sidebarToggle} href="#">&#9776;</a>
           </li>
           <li className="nav-item px-1">
             <a className="nav-link" href="#">Dashboard</a>
           </li>
-          <li className="nav-item px-1">
-            <a className="nav-link" href="#">Users</a>
-          </li>
-          <li className="nav-item px-1">
-            <a className="nav-link" href="#">Settings</a>
-          </li>
         </ul>
         <ul className="nav navbar-nav ml-auto">
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#"><i className="icon-bell"></i><span className="badge badge-pill badge-danger">5</span></a>
-          </li>
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#"><i className="icon-list"></i></a>
-          </li>
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link" href="#"><i className="icon-location-pin"></i></a>
-          </li>
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
@@ -92,9 +77,8 @@ class LoggedInHeader extends Component {
               </DropdownMenu>
             </Dropdown>
           </li>
-          <li className="nav-item hidden-md-down">
-            <a className="nav-link navbar-toggler aside-menu-toggler" onClick={this.asideToggle} href="#">&#9776;</a>
-          </li>
+          {/*Use some minor spacing for new, fix when CSS is improved*/}
+          <div>&nbsp;&nbsp;</div>
         </ul>
       </header>
     )
