@@ -2831,10 +2831,10 @@ header.navbar {
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #141519;
-    background-image: url("../img/logo.png");
+    background-image: url("../img/logos/white_logo_transparent_background_small.png");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 70px auto;
+    background-size: 120px auto;
     border-bottom: 1px solid #141519; }
   header.navbar .navbar-nav {
     flex-direction: row;

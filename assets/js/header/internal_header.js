@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 
-const AVATAR_IMG = require('../../img/avatars/6.jpg')
+const AVATAR_IMG = require('../../img/icons/small_brain.svg')
 
 class LoggedInHeader extends Component {
   constructor(props) {
@@ -13,7 +13,8 @@ class LoggedInHeader extends Component {
     };
   }
 
-  toggle() {
+  toggle(e) {
+    e.preventDefault()
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
@@ -45,14 +46,14 @@ class LoggedInHeader extends Component {
             <a className="nav-link navbar-toggler sidebar-toggler" onClick={this.sidebarToggle} href="#">&#9776;</a>
           </li>
           <li className="nav-item px-1">
-            <a className="nav-link" href="#">Dashboard</a>
+            <a className="nav-link">Dashboard</a>
           </li>
         </ul>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-              <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
-                <img src={AVATAR_IMG} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+              <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
+                <img src={AVATAR_IMG} className="img-avatar" width="50px" height="50px"/>
                 <span className="hidden-md-down">admin</span>
               </a>
 
