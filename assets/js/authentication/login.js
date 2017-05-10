@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Authenticator } from "./auth";
 import { Redirect, withRouter } from "react-router-dom";
 import { LOGIN_LEDGE_PHOTO_PATH } from "../fragments/image_paths";
+import LoggedOutHeader from "../header/external_header"
+import Footer from "../fragments/footer"
 
 const LoginPageSideImage = () => {
   return (
@@ -38,6 +40,8 @@ export default class LoginView extends Component {
     }
 
     return (
+      <div>
+      <LoggedOutHeader />
       <section
         id="promo-1"
         className="content-block promo-2 min-height-600px bg-black"
@@ -88,6 +92,8 @@ export default class LoginView extends Component {
           </div>
         </div>
       </section>
+      <Footer/>
+      </div>
     );
   }
 }
