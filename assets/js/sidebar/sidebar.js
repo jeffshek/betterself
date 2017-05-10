@@ -78,7 +78,7 @@ class Sidebar extends Component {
           <li className="divider" />
 
           <NavigationTitle title="Analytics"/>
-          <NavigationLink iconName="icon-magic-wand" label="Productivity"/>
+          <NavigationLink iconName="icon-chart" label="Productivity"/>
 
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)}/>
