@@ -162,7 +162,7 @@ class Charts extends Component {
           </div>
           <div className="card">
             <div className="card-header">
-              Supplements Measurement
+              Caffeine Measurement
               <div className="card-actions">
                 <a href="http://www.chartjs.org"><small className="text-muted">docs</small></a>
               </div>

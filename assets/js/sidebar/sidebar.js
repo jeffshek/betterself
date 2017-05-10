@@ -1,6 +1,58 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+const DashboardButton = () => (
+  <li className="nav-item">
+    <Link to={"/dashboard"} className="nav-link">
+      <i className="icon-speedometer" />
+      Dashboard
+      <NewStatus/>
+    </Link>
+  </li>
+)
+
+const NewStatus = () => (
+  <span className="badge badge-info">NEW</span>
+)
+
+const NavigationTitle = props => (
+  <li className="nav-title">
+    {props.title}
+  </li>
+)
+
+const NavigationLink = props => (
+  <li className="nav-item">
+    <a className="nav-link">
+      <i className={props.iconName} /> {props.label}
+      </a>
+  </li>
+)
+
+const ExternalDataMenu = props => (
+  <div>
+    <NavigationTitle title="Data Sources"/>
+    <ExternalVendorsLinks />
+  </div>
+)
+
+const ExternalVendorsLinks = () => (
+  <div>
+    <NavigationLink iconName="icon-earphones" label="Bose"/>
+    <NavigationLink iconName="icon-rocket" label="FitBit"/>
+    <NavigationLink iconName="icon-chart" label="Garmin"/>
+    <NavigationLink iconName="icon-social-github" label="GitHub"/>
+    <NavigationLink iconName="icon-target" label="RescueTime"/>
+  </div>
+)
+
+const ExportSidebar = () => (
+  <div>
+    <NavigationTitle title="Export Data"/>
+    <NavigationLink iconName="icon-cloud-download" label="All Data"/>
+  </div>
+)
+
 class Sidebar extends Component {
   handleClick(e) {
     e.preventDefault();
@@ -9,131 +61,30 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div className="sidebar">
-        <nav className="sidebar-nav">
-          <ul className="nav">
-            <li className="nav-item">
-              <Link to={"/dashboard"} className="nav-link">
-                <i className="icon-speedometer" />
-                Dashboard
-                <span className="badge badge-info">
-        NEW
-        </span>
-              </Link>
-            </li>
-            <li className="nav-title">
-              Log
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a className="nav-link"><i className="icon-note" /> Events</a>
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-puzzle" /> Fitness & Exercise
-              </a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <Link to={"/components/buttons"} className="nav-link">
-                    <i className="icon-puzzle" /> Cardio
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/components/social-buttons"} className="nav-link">
-                    <i className="icon-puzzle" /> Strength
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/components/cards"} className="nav-link">
-                    <i className="icon-puzzle" /> Heart Rate
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a className="nav-link"><i className="icon-note" /> Heart Rate</a>
-              <a className="nav-link">
-                <i className="icon-note" /> Productivity
-              </a>
-              <a className="nav-link"><i className="icon-note" /> Sleep</a>
-              <a className="nav-link">
-                <i className="icon-note" /> Supplements
-              </a>
-            </li>
-            <li className="divider" />
-            <li className="nav-title">
-              Analytics
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-energy" /> Health & Fitness
-              </a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Strength
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Heart Rate
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Sleep
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item">
-              <Link to={"/widgets"} className="nav-link">
-                <i className="icon-calculator" /> Productivity{" "}
-              </Link>
-            </li>
-            <li className="divider" />
-            <li className="nav-title">
-              Data Sources
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-star" /> External
-              </a>
-              <ul className="nav-dropdown-items">
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> Bose
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> FitBit
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> Garmin
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> GitHub
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> RescueTime
-                </Link>
-              </ul>
-              <li className="nav-item nav-dropdown">
-                <a className="nav-link"><i className="icon-note" /> Export</a>
-              </li>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <nav className="sidebar sidebar-nav">
+        <ul className="nav">
+          <DashboardButton />
+
+          <NavigationTitle title="Log"/>
+          <NavigationLink iconName="icon-note" label="Events"/>
+          <NavigationLink iconName="icon-heart" label="Heart Rate"/>
+          <NavigationLink iconName="icon-graph" label="Productivity"/>
+          <NavigationLink iconName="icon-volume-off" label="Sleep"/>
+          <NavigationLink iconName="icon-chemistry" label="Supplements"/>
+
+          <li className="divider" />
+
+          <NavigationTitle title="Analytics"/>
+          <NavigationLink iconName="icon-chart" label="Productivity"/>
+
+          <li className="divider" />
+          <ExternalDataMenu onClick={this.handleClick.bind(this)}/>
+
+          <li className="divider" />
+          <ExportSidebar/>
+
+        </ul>
+      </nav>
     );
   }
 }
