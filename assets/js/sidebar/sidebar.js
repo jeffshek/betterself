@@ -1,6 +1,35 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+const DashboardButton = () => (
+  <li className="nav-item">
+    <Link to={"/dashboard"} className="nav-link">
+      <i className="icon-speedometer" />
+      Dashboard
+      <NewStatus/>
+    </Link>
+  </li>
+)
+
+const NewStatus = () => (
+  <span className="badge badge-info">NEW</span>
+)
+
+const NavigationTitle = props => (
+  <li className="nav-title">
+    {props.title}
+  </li>
+)
+
+const NavigationLink = props => (
+  <li className="nav-item">
+    <a className="nav-link">
+      <i className="icon-note" /> {props.label}
+      </a>
+  </li>
+)
+
+
 class Sidebar extends Component {
   handleClick(e) {
     e.preventDefault();
@@ -12,44 +41,23 @@ class Sidebar extends Component {
       <div className="sidebar">
         <nav className="sidebar-nav">
           <ul className="nav">
-            <li className="nav-item">
-              <Link to={"/dashboard"} className="nav-link">
-                <i className="icon-speedometer" />
-                Dashboard
-                <span className="badge badge-info">
-        NEW
-        </span>
-              </Link>
-            </li>
-            <li className="nav-title">
-              Log
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a className="nav-link"><i className="icon-note" /> Events</a>
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a className="nav-link"><i className="icon-note" /> Heart Rate</a>
-              <a className="nav-link">
-                <i className="icon-note" /> Productivity
-              </a>
-              <a className="nav-link"><i className="icon-note" /> Sleep</a>
-              <a className="nav-link">
-                <i className="icon-note" /> Supplements
-              </a>
-            </li>
+            <DashboardButton />
+
+            <NavigationTitle title="Log"/>
+            <NavigationLink label="Events"/>
+            <NavigationLink label="Heart Rate"/>
+            <NavigationLink label="Productivity"/>
+            <NavigationLink label="Sleep"/>
+            <NavigationLink label="Supplements"/>
+
             <li className="divider" />
-            <li className="nav-title">
-              Analytics
-            </li>
-            <li className="nav-item">
-              <Link to={"/widgets"} className="nav-link">
-                <i className="icon-calculator" /> Productivity{" "}
-              </Link>
-            </li>
+
+            <NavigationTitle title="Analytics"/>
+            <NavigationLink label="Productivity"/>
+
             <li className="divider" />
-            <li className="nav-title">
-              Data Sources
-            </li>
+            <NavigationTitle title="Data Sources"/>
+
             <li className="nav-item nav-dropdown">
               <a
                 className="nav-link nav-dropdown-toggle"
@@ -58,26 +66,17 @@ class Sidebar extends Component {
               >
                 <i className="icon-star" /> External
               </a>
-              <ul className="nav-dropdown-items">
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> Bose
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> FitBit
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> Garmin
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> GitHub
-                </Link>
-                <Link to={"/plugins/loading-buttons"} className="nav-link">
-                  <i className="icon-cursor" /> RescueTime
-                </Link>
-              </ul>
-              <li className="nav-item nav-dropdown">
-                <a className="nav-link"><i className="icon-note" /> Export</a>
-              </li>
+
+            <ul className="nav-dropdown-items">
+              <NavigationLink label="Bose"/>
+              <NavigationLink label="FitBit"/>
+              <NavigationLink label="Garmin"/>
+              <NavigationLink label="GitHub"/>
+              <NavigationLink label="RescueTime"/>
+            </ul>
+
+              <NavigationLink label="Export"/>
+
             </li>
           </ul>
         </nav>
