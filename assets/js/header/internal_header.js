@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Link, Redirect } from "react-router-dom";
+import {LOGOUT_URL} from "../urls/constants";
 
 const AVATAR_IMG = require('../../img/icons/small_brain.svg')
 
@@ -51,7 +53,11 @@ class LoggedInHeader extends Component {
               </a>
 
               <DropdownMenu className="dropdown-menu-right">
-                <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+
+                  <DropdownItem><i className="fa fa-lock"/>
+                    <Link to={LOGOUT_URL}>Logout</Link>
+                  </DropdownItem>
+
               </DropdownMenu>
             </Dropdown>
           </li>
