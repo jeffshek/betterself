@@ -35,13 +35,12 @@ class LoggedInHeader extends Component {
         <button className="navbar-toggler mobile-sidebar-toggler hidden-lg-up" onClick={this.mobileSidebarToggle} type="button">&#9776;</button>
         <a className="navbar-brand" href="/"/>
         <ul className="nav navbar-nav hidden-md-down">
+
           {/*Toggles the sidebar*/}
           <li className="nav-item">
             <a className="nav-link navbar-toggler sidebar-toggler" onClick={this.sidebarToggle} href="#">&#9776;</a>
           </li>
-          <li className="nav-item px-1">
-            <a className="nav-link">Dashboard</a>
-          </li>
+
         </ul>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item">

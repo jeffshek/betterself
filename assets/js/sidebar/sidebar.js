@@ -24,7 +24,7 @@ const NavigationTitle = props => (
 const NavigationLink = props => (
   <li className="nav-item">
     <a className="nav-link">
-      <i className="icon-note" /> {props.label}
+      <i className={props.iconName} /> {props.label}
       </a>
   </li>
 )
@@ -40,18 +40,18 @@ const ExternalDataMenu = props => (
         ><i className="icon-star" /> External</a>
     </li>
     <ExternalVendorsLinks />
-    <NavigationLink label="Export"/>
+    <NavigationLink iconName="icon-folder" label="Export"/>
   </div>
 )
 
 const ExternalVendorsLinks = () => (
   <div>
     <ul className="nav-dropdown-items">
-      <NavigationLink label="Bose"/>
-      <NavigationLink label="FitBit"/>
-      <NavigationLink label="Garmin"/>
-      <NavigationLink label="GitHub"/>
-      <NavigationLink label="RescueTime"/>
+      <NavigationLink iconName="icon-earphones" label="Bose"/>
+      <NavigationLink iconName="icon-rocket" label="FitBit"/>
+      <NavigationLink iconName="icon-chart" label="Garmin"/>
+      <NavigationLink iconName="icon-social-github" label="GitHub"/>
+      <NavigationLink iconName="icon-target" label="RescueTime"/>
     </ul>
   </div>
 )
@@ -69,16 +69,16 @@ class Sidebar extends Component {
           <DashboardButton />
 
           <NavigationTitle title="Log"/>
-          <NavigationLink label="Events"/>
-          <NavigationLink label="Heart Rate"/>
-          <NavigationLink label="Productivity"/>
-          <NavigationLink label="Sleep"/>
-          <NavigationLink label="Supplements"/>
+          <NavigationLink iconName="icon-note" label="Events"/>
+          <NavigationLink iconName="icon-heart" label="Heart Rate"/>
+          <NavigationLink iconName="icon-graph" label="Productivity"/>
+          <NavigationLink iconName="icon-volume-off" label="Sleep"/>
+          <NavigationLink iconName="icon-chemistry" label="Supplements"/>
 
           <li className="divider" />
 
           <NavigationTitle title="Analytics"/>
-          <NavigationLink label="Productivity"/>
+          <NavigationLink iconName="icon-magic-wand" label="Productivity"/>
 
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)}/>
