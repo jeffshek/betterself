@@ -29,6 +29,34 @@ const NavigationLink = props => (
   </li>
 )
 
+const ExternalDataMenu = props => (
+  <div>
+    <NavigationTitle title="Data Sources"/>
+    <li className="nav-item nav-dropdown">
+        <a
+        className="nav-link nav-dropdown-toggle"
+        href="#"
+        onClick={props.onClick}
+        ><i className="icon-star" /> External</a>
+
+    <ExternalVendorsLinks />
+    {/*<NavigationLink label="Export"/>*/}
+    </li>
+
+  </div>
+)
+
+const ExternalVendorsLinks = () => (
+  <div>
+    <ul className="nav-dropdown-items">
+      <NavigationLink label="Bose"/>
+      <NavigationLink label="FitBit"/>
+      <NavigationLink label="Garmin"/>
+      <NavigationLink label="GitHub"/>
+      <NavigationLink label="RescueTime"/>
+    </ul>
+  </div>
+)
 
 class Sidebar extends Component {
   handleClick(e) {
@@ -38,49 +66,27 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div className="sidebar">
-        <nav className="sidebar-nav">
-          <ul className="nav">
-            <DashboardButton />
+      <nav className="sidebar sidebar-nav">
+        <ul className="nav">
+          <DashboardButton />
 
-            <NavigationTitle title="Log"/>
-            <NavigationLink label="Events"/>
-            <NavigationLink label="Heart Rate"/>
-            <NavigationLink label="Productivity"/>
-            <NavigationLink label="Sleep"/>
-            <NavigationLink label="Supplements"/>
+          <NavigationTitle title="Log"/>
+          <NavigationLink label="Events"/>
+          <NavigationLink label="Heart Rate"/>
+          <NavigationLink label="Productivity"/>
+          <NavigationLink label="Sleep"/>
+          <NavigationLink label="Supplements"/>
 
-            <li className="divider" />
+          <li className="divider" />
 
-            <NavigationTitle title="Analytics"/>
-            <NavigationLink label="Productivity"/>
+          <NavigationTitle title="Analytics"/>
+          <NavigationLink label="Productivity"/>
 
-            <li className="divider" />
-            <NavigationTitle title="Data Sources"/>
+          <li className="divider" />
+          <ExternalDataMenu onClick={this.handleClick.bind(this)}/>
 
-            <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-star" /> External
-              </a>
-
-            <ul className="nav-dropdown-items">
-              <NavigationLink label="Bose"/>
-              <NavigationLink label="FitBit"/>
-              <NavigationLink label="Garmin"/>
-              <NavigationLink label="GitHub"/>
-              <NavigationLink label="RescueTime"/>
-            </ul>
-
-              <NavigationLink label="Export"/>
-
-            </li>
-          </ul>
-        </nav>
-      </div>
+        </ul>
+      </nav>
     );
   }
 }
