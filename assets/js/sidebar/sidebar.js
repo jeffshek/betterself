@@ -28,32 +28,6 @@ class Sidebar extends Component {
               <a className="nav-link"><i className="icon-note" /> Events</a>
             </li>
             <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-puzzle" /> Fitness & Exercise
-              </a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <Link to={"/components/buttons"} className="nav-link">
-                    <i className="icon-puzzle" /> Cardio
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/components/social-buttons"} className="nav-link">
-                    <i className="icon-puzzle" /> Strength
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/components/cards"} className="nav-link">
-                    <i className="icon-puzzle" /> Heart Rate
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item nav-dropdown">
               <a className="nav-link"><i className="icon-note" /> Heart Rate</a>
               <a className="nav-link">
                 <i className="icon-note" /> Productivity
@@ -66,32 +40,6 @@ class Sidebar extends Component {
             <li className="divider" />
             <li className="nav-title">
               Analytics
-            </li>
-            <li className="nav-item nav-dropdown">
-              <a
-                className="nav-link nav-dropdown-toggle"
-                href="#"
-                onClick={this.handleClick.bind(this)}
-              >
-                <i className="icon-energy" /> Health & Fitness
-              </a>
-              <ul className="nav-dropdown-items">
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Strength
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Heart Rate
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/plugins/loading-buttons"} className="nav-link">
-                    <i className="icon-cursor" /> Sleep
-                  </Link>
-                </li>
-              </ul>
             </li>
             <li className="nav-item">
               <Link to={"/widgets"} className="nav-link">
