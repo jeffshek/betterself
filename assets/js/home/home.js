@@ -36,12 +36,8 @@ export const HomePageDescriptionSection = () => {
               Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.
               <br />
             </p>
-            <Link
-              to={DASHBOARD_INDEX_URL}
-              className="btn btn-outline btn-outline-lg outline-dark"
-            >
-              Try the demo
-            </Link>
+            {/*Force redirect to take a different CSS, aka why we don't use Link*/}
+            <a href={DASHBOARD_INDEX_URL} className="btn btn-outline btn-outline-lg outline-dark">Try the demo</a>
             <div className="row pad45">
               <div className="col-sm-6">
                 <h5>Compound Improvements.</h5>
