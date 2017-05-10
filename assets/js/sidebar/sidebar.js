@@ -32,27 +32,24 @@ const NavigationLink = props => (
 const ExternalDataMenu = props => (
   <div>
     <NavigationTitle title="Data Sources"/>
-    <li className="nav-item nav-dropdown">
-        <a
-        className="nav-link nav-dropdown-toggle"
-        href="#"
-        onClick={props.onClick}
-        ><i className="icon-star" /> External</a>
-    </li>
     <ExternalVendorsLinks />
-    <NavigationLink iconName="icon-folder" label="Export"/>
   </div>
 )
 
 const ExternalVendorsLinks = () => (
   <div>
-    <ul className="nav-dropdown-items">
-      <NavigationLink iconName="icon-earphones" label="Bose"/>
-      <NavigationLink iconName="icon-rocket" label="FitBit"/>
-      <NavigationLink iconName="icon-chart" label="Garmin"/>
-      <NavigationLink iconName="icon-social-github" label="GitHub"/>
-      <NavigationLink iconName="icon-target" label="RescueTime"/>
-    </ul>
+    <NavigationLink iconName="icon-earphones" label="Bose"/>
+    <NavigationLink iconName="icon-rocket" label="FitBit"/>
+    <NavigationLink iconName="icon-chart" label="Garmin"/>
+    <NavigationLink iconName="icon-social-github" label="GitHub"/>
+    <NavigationLink iconName="icon-target" label="RescueTime"/>
+  </div>
+)
+
+const ExportSidebar = () => (
+  <div>
+    <NavigationTitle title="Export Data"/>
+    <NavigationLink iconName="icon-cloud-download" label="All Data"/>
   </div>
 )
 
@@ -82,6 +79,9 @@ class Sidebar extends Component {
 
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)}/>
+
+          <li className="divider" />
+          <ExportSidebar/>
 
         </ul>
       </nav>
