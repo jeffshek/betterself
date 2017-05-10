@@ -38,11 +38,9 @@ const ExternalDataMenu = props => (
         href="#"
         onClick={props.onClick}
         ><i className="icon-star" /> External</a>
-
-    <ExternalVendorsLinks />
-    {/*<NavigationLink label="Export"/>*/}
     </li>
-
+    <ExternalVendorsLinks />
+    <NavigationLink label="Export"/>
   </div>
 )
 
