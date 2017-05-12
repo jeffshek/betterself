@@ -1,11 +1,9 @@
 import React, { PropTypes, Component } from "react";
 import CSSModules from 'react-css-modules';
-import styles from './css/HomePageDescription.css'
+import styles from '../css/HomePageDescription.css'
 
-import { DASHBOARD_INDEX_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL } from "../../urls/constants";
 
-{/*<section id="content-1-4" className="content-block-description">*/}
-{/*<section id="content-1-4" className="content-block-nopad content-1-4">*/}
 class HomePageDescriptionSection extends React.Component {
   render() {
     return (
@@ -18,7 +16,7 @@ class HomePageDescriptionSection extends React.Component {
           <div className="row">
             <div className="col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-4 content clearfix">
               <h1>Your body's dashboard</h1>
-              <p className="lead">
+              <p styleName="content-1-4-lead">
                 Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.
                 <br />
               </p>

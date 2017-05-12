@@ -1,0 +1,16 @@
+.description-block {
+  background-color: #193441 !important;
+  width: 100%;
+  padding: 60px 0 60px 0;
+  z-index: 100;
+  position: relative;
+  color: #3498DB;
+
+}
+.lead-white {
+  margin-bottom: 30px;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 300;
+  color: #FFFFFF !important;
+}

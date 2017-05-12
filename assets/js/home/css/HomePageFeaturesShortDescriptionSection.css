@@ -1,0 +1,15 @@
+.content-format {
+  width: 100%;
+  z-index: 100;
+  position: relative;
+  background: #ffffff;
+  margin: 20px 0;
+  padding: 35px 30px;
+  text-align: center;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+}
+
