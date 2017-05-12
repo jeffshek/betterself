@@ -512,3 +512,13 @@ button:hover {
     max-width: 600px;
     margin: 20px auto 0 auto;
 }
+
+/*  PROMO BLOCK 2
+/*----------------------------------------------------*/
+
+.promo-2 h1,
+.promo-2 h2 {
+    margin: 20px auto 0 auto;
+    top: 40px;
+    color: #ffffff;
+}

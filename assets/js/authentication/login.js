@@ -49,8 +49,9 @@ export default class LoginView extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-5">
+              <br />
 
-              <h2>Please Enter User Login</h2>
+              <h2>Please Login</h2>
 
               <p><br /></p>
 
