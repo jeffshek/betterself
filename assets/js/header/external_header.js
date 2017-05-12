@@ -14,7 +14,6 @@ const MenuItem = props => (
 class LoggedOutHeader extends Component {
   menuItems = [
     { name: "Home", key: "Home" },
-    { name: "Cool", key: "Cool" },
     { name: "Dashboard", key: "Dashboard" },
     { name: "Features", key: "Features" },
     { name: "About", key: "About" },
@@ -24,7 +23,7 @@ class LoggedOutHeader extends Component {
 
   render() {
     return (
-      <header id="header-1" styleName="header-1" className="soft-scroll">
+      <header id="header-1" styleName="the-header" className="soft-scroll">
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
           <div className="container">
             <div className="navbar-header">

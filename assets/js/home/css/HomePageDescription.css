@@ -11,10 +11,11 @@
     height: 100%;
     padding: 0px;
     top: 0px;
+    bottom: 20px;
 }
 .content-block-description {
   padding: 0px;
-  padding-top: 40px;
+  padding-top: 100px;
   padding-bottom: 40px;
   position: relative;
   width: 100%;

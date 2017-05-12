@@ -1,4 +1,3 @@
-// HomePageFeaturesShortDescriptionSection
 import React, { PropTypes, Component } from "react";
 import CSSModules from 'react-css-modules';
 import FontAwesomeIconBox from "./FontAwesomeIconBox"

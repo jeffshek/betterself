@@ -1,0 +1,43 @@
+/*.bg-deepocean {*/
+    /*background-color: #193441 !important;*/
+/*}*/
+.content-2-1 .btn-outline {
+    margin-bottom: 30px;
+}
+.content-2-1 h2 {
+    color: #ffffff;
+}
+.content-block {
+    width: 100%;
+    padding: 60px 0 60px 0;
+    z-index: 100;
+    position: relative;
+    background-color: #ffffff;
+}
+.content-block-nopad {
+    width: 100%;
+    z-index: 100;
+    position: relative;
+    background-color: #ffffff;
+}
+
+.content-deep-ocean {
+  background-color: #193441 !important;
+  width: 100%;
+  padding: 60px 0 60px 0;
+  z-index: 100;
+  position: relative;
+  color: #ffffff;
+}
+
+.text-center .panel-title > a span:after {
+    top: -.75em;
+    left: 0;
+    opacity: 0;
+}
+.text-center-title {
+  top: -.75em;
+  left: 0;
+  opacity: 0;
+
+}

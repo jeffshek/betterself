@@ -1,3 +1,25 @@
+/*Don't know how to unpack this CSS - too mested'*/
+
+.the-header {
+  width: 100%;
+  background: none;
+  height: 80px;
+  background-color: #193441;
+  border: 0;
+  margin-right: 0;
+  margin-top: 0;
+  position: absolute;
+  right: 20px;
+  border-top: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  width: 100%;
+  position: absolute;
+  background: #193441;
+  z-index: 999;
+}
+
 #header-1 {
     width: 100%;
     background: none;
@@ -98,61 +120,6 @@
     max-width: 150px;
     padding: 20px 0;
 }
-.headroom {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    transition: all .2s ease-in-out;
-}
-.headroom--pinned {
-    top: 0;
-}
-/* Override bootstrap default */
-
-.nav .open > a,
-.nav .open > a:hover,
-.nav .open > a:focus {
-    background: none;
-}
-
-@media (max-width: 767px) {
-    #header-1 .brand-img {
-        float: none;
-        margin: 0 auto;
-        text-align: center;
-    }
-    #header-1 .navbar-fixed-top {
-        position: relative;
-    }
-    #header-1 .navbar-collapse {
-        border-top: none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        width: 100%;
-        top: 80px;
-        position: absolute;
-        background: #193441;
-        z-index: 999;
-    }
-    #header-1 .navbar-collapse .nav {
-        margin: 0;
-    }
-    #header-1 .main-nav .nav .dropdown-menu:before {
-        display: none;
-    }
-    #header-1 .navbar-fixed-top .navbar-collapse,
-    #header-1 .navbar-fixed-bottom .navbar-collapse {
-        max-height: inherit;
-    }
-}
-
-.content-1-3 .services-wrapper .icon span {
-    line-height: 175px;
-    color: #fff;
-    font-size: 55px;
-}
 
 .content-1-4 {
     padding: 0px;
@@ -182,71 +149,55 @@
 .content-1-4 p.lead {
     margin-bottom: 20px;
 }
-
-/*  CONTENT BLOCK 3-5
+/*  CONTENT BLOCK 1-4 MEDIA QUERIES
 /*----------------------------------------------------*/
-.content-3-5 .feature-box {
-    background: #193441;
-    margin: 20px 0;
-    padding: 35px 30px;
-    text-align: center;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -o-border-radius: 4px;
-    -ms-border-radius: 4px;
+/* Extra small devices (phones, less than 768px) */
+
+@media (max-width: 767px) {
+    .content-1-4 .image-container {
+        display: none;
+    }
 }
 
-.content-3-5 .feature-box:hover {
-    background-color: #31152B;
+.content-2-1 .btn-outline {
+    margin-bottom: 30px;
 }
-.content-3-5 .icon {
-    margin: 0 auto;
-    background-color: #ffffff;
-    text-align: center;
-    color: #723147;
-    font-size: 60px;
-    height: 140px;
-    width: 140px;
-    line-height: 130px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -o-border-radius: 50%;
-    -ms-border-radius: 50%;
-}
-.content-3-5 .feature-box p {
-    line-height: 25px;
-    color: #ffffff;
-    opacity: 0.5;
-}
-.content-3-5 .feature-box h3 {
-    padding: 15px 0px 0px;
+.content-2-1 h2 {
     color: #ffffff;
 }
-.content-3-5 .feature-box,
-.content-3-5 .feature-box:hover,
-.content-3-5 .feature-icon,
-.content-3-5 .feature-box:hover .feature-icon {
-    transition: all 0.4s ease-in 0s;
-    -moz-transition: all 0.4s ease-in 0s;
-    -webkit-transition: all 0.4s ease-in 0s;
-    -o-transition: all 0.4s ease-in 0s;
-    -ms-transition: all 0.4s ease-in 0s;
-}
 
-.filter li a:focus,
-.filter li a.active {
-    color: #1ABC9C;
-    text-decoration: none;
-}
 
+/*need this too*/
 .footer-1-1 h3,
 .footer-1-1 h4,
 .footer-1-1 .lead,
 .footer-1-1 li {
     color: #ffffff;
 }
+/*  FOOTER 1-1 MEDIA QUERIES
+/*----------------------------------------------------*/
+/* Small Devices, Tablets */
+
+@media only screen and (min-width: 768px) {}
+/* Medium Devices, Desktops */
+
+@media only screen and (min-width: 992px) {}
+/* Large Devices, Wide Screens */
+
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-2 MEDIA QUERIES
+/*----------------------------------------------------*/
+/* Small Devices, Tablets */
+
+@media only screen and (min-width: 768px) {}
+/* Medium Devices, Desktops */
+
+@media only screen and (min-width: 992px) {}
+/* Large Devices, Wide Screens */
+
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-3
+/*----------------------------------------------------*/
 
 .footer-1-3 {
     padding-top: 40px;
@@ -271,18 +222,32 @@
 .footer-1-3 .footer-text p {
     color: #ecf0f1;
 }
-/*
-Template Name: Bootstrap Starter Kit - Style Library 1
-Description: Business Startup & Prototyping HTML Framework
-Author: Theme Spirit
-Author URI: http://www.creativemarket.com/theme_spirit
-
-Version: 1.0
-
-*/
-/*  PATTERN LIBRARY STYLES
+/*  FOOTER 1-3 MEDIA QUERIES
 /*----------------------------------------------------*/
+/* Small Devices, Tablets */
 
+@media only screen and (min-width: 768px) {}
+/* Medium Devices, Desktops */
+
+@media only screen and (min-width: 992px) {}
+/* Large Devices, Wide Screens */
+
+@media only screen and (min-width: 1200px) {}
+/*  FOOTER 1-4
+/*----------------------------------------------------*/
+/*  FOOTER 1-4 MEDIA QUERIES
+/*----------------------------------------------------*/
+/* Small Devices, Tablets */
+
+@media only screen and (min-width: 768px) {}
+/* Medium Devices, Desktops */
+
+@media only screen and (min-width: 992px) {}
+/* Large Devices, Wide Screens */
+
+@media only screen and (min-width: 1200px) {}
+
+/*Really Need this*/
 body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
     color: #333333;
@@ -313,6 +278,7 @@ body {
 .min-height-600px {
     min-height: 600px !important;
 }
+@media only screen and (max-width: 767px) {}
 /** TYPOGRAPHY **/
 
 h1,
@@ -384,6 +350,8 @@ h6,
     font-size: 16px;
 }
 p {
+    /*font-family: "Open Sans", Helvetica, Arial, sans-serif;*/
+
     font-size: 14px;
     line-height: 1.6;
     margin: 15px 0;
@@ -486,17 +454,4 @@ button:hover {
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
-}
-.content-block {
-    width: 100%;
-    padding: 60px 0 60px 0;
-    z-index: 100;
-    position: relative;
-    background-color: #ffffff;
-}
-.content-block-nopad {
-    width: 100%;
-    z-index: 100;
-    position: relative;
-    background-color: #ffffff;
 }
