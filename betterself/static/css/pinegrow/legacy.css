@@ -500,3 +500,15 @@ button:hover {
     position: relative;
     background-color: #ffffff;
 }
+.promo-1 {
+    background: url("../../images/water-bg.jpg") center top no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 140px 0;
+}
+.promo-1 .video-wrapper {
+    max-width: 600px;
+    margin: 20px auto 0 auto;
+}
