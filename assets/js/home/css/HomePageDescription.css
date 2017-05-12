@@ -1,0 +1,23 @@
+.background-image-holder {
+    background: #cccccc url('../img/dark-logs-bg.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+}
+.image-container {
+    position: absolute;
+    height: 100%;
+    padding: 0px;
+    top: 0px;
+}
+.content-block-description {
+  padding: 0px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  position: relative;
+  width: 100%;
+  z-index: 100;
+  background-color: #ffffff;
+}

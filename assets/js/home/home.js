@@ -1,63 +1,15 @@
 import React, { PropTypes, Component } from "react";
 import { DASHBOARD_EXAMPLE_PATH } from "../fragments/image_paths";
-import { DASHBOARD_INDEX_URL } from "../urls/constants";
+
 import { Link } from "react-router-dom";
 import LoggedOutHeader from "../header/external_header";
+
 import Footer from "../fragments/footer";
+import FontAwesomeIconBox from "./FontAwesomeIconBox"
+import HomePageDescriptionSection from "./HomePageDescription"
+import CSSModules from 'react-css-modules';
 
-export const FontAwesomeIconBox = props => {
-  return (
-    <div className="col-md-3 col-sm-6 col-xs-12">
-      <div className="feature-box">
-        <div className="icon">
-          {/*Don't know how to style this correctly, putting a space is good enough, slightly embarrassed. */}
-          &nbsp;
-          <span className={props.icon} />
-          &nbsp;
-        </div>
-        <h3>{props.header}</h3>
-        <p>{props.description}</p>
-      </div>
-    </div>
-  );
-};
-
-export const HomePageDescriptionSection = () => {
-  return (
-    <section id="content-1-4" className="content-block-nopad content-1-4">
-      <div className="image-container col-md-5 col-sm-3 pull-left">
-        <div className="background-image-holder" />
-      </div>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-4 content clearfix">
-            <h1>Your body's dashboard</h1>
-            <p className="lead">
-              Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.
-              <br />
-            </p>
-            {/*Force redirect to take a different CSS, aka why we don't use Link*/}
-            <a href={DASHBOARD_INDEX_URL} className="btn btn-outline btn-outline-lg outline-dark">Try the demo</a>
-            <div className="row pad45">
-              <div className="col-sm-6">
-                <h5>Compound Improvements.</h5>
-                <p>
-                  Small improvements move glaciers. Track what's working for you (and what's not). We can text or email reminders to keep your medications and supplements on track. Comes with beautiful personalized analytics from best-in-class algorithms.
-                </p>
-              </div>
-              <div className="col-sm-6">
-                <h5>Privacy First.</h5>
-                <p>
-                  We're not here to sell your contact info to anyone else. We don't want your name or address. All we care about is improving health and productivity for our anonymous users. Open-sourced on GitHub.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+import styles from '../../../betterself/static/css/pinegrow/legacy.css'
 
 const HomePageAnalyticsDescriptionSection = () => {
   return (

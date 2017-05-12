@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from "react";
 import { LOGO_BACKGROUND_PATH } from "../fragments/image_paths";
 import { HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
+import CSSModules from 'react-css-modules';
+import styles from './css/external_header.css'
 
 const MenuItem = props => (
   <li className="nav-item" key={props.key}>
@@ -9,9 +11,10 @@ const MenuItem = props => (
   </li>
 );
 
-export default class LoggedOutHeader extends Component {
+class LoggedOutHeader extends Component {
   menuItems = [
     { name: "Home", key: "Home" },
+    { name: "Cool", key: "Cool" },
     { name: "Dashboard", key: "Dashboard" },
     { name: "Features", key: "Features" },
     { name: "About", key: "About" },
@@ -21,7 +24,7 @@ export default class LoggedOutHeader extends Component {
 
   render() {
     return (
-      <header id="header-1" className="soft-scroll header-1">
+      <header id="header-1" styleName="header-1" className="soft-scroll">
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
           <div className="container">
             <div className="navbar-header">
@@ -45,3 +48,5 @@ export default class LoggedOutHeader extends Component {
     );
   }
 }
+
+export default CSSModules(LoggedOutHeader, styles)
