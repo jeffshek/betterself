@@ -40,7 +40,6 @@ class LoggedOutHeader extends Component {
                 {this.menuItems.map(MenuItem)}
               </ul>
             </div>
-            {/*TODO - Use a proper settings logo, but right now CSS is pain.*/}
           </div>
         </nav>
       </header>

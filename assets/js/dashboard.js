@@ -14,7 +14,7 @@ export class Dashboard extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <SupplementsLogView/>
+            <this.props.view/>
           </main>
         </div>
       </div>
