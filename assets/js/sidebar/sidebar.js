@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import {DASHBOARD_INDEX_URL, DASHBOARD_CHARTS_URL, DASHBOARD_SUPPLEMENT_LOGS_URL} from "../urls/constants";
+import {DASHBOARD_INDEX_URL, DASHBOARD_CHARTS_URL, DASHBOARD_SUPPLEMENT_LOGS_URL, DASHBOARD_HEART_RATE_LOGS_URL} from "../urls/constants";
 
 const DashboardButton = () => (
   <li className="nav-item">
@@ -68,7 +68,7 @@ class Sidebar extends Component {
 
           <NavigationTitle title="Log"/>
           <NavigationLink iconName="icon-note" label="Events" link={DASHBOARD_CHARTS_URL}/>
-          <NavigationLink iconName="icon-heart" label="Heart Rate" link={DASHBOARD_CHARTS_URL}/>
+          <NavigationLink iconName="icon-heart" label="Heart Rate" link={DASHBOARD_HEART_RATE_LOGS_URL}/>
           <NavigationLink iconName="icon-graph" label="Productivity" link={DASHBOARD_CHARTS_URL}/>
           <NavigationLink iconName="icon-volume-off" label="Sleep" link={DASHBOARD_CHARTS_URL}/>
           <NavigationLink iconName="icon-chemistry" label="Supplements" link={DASHBOARD_SUPPLEMENT_LOGS_URL}/>

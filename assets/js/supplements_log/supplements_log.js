@@ -124,21 +124,22 @@ class SupplementsLogView extends Component {
             <div className="col-sm-12">
               <div className="form-group">
                 <label>Supplement</label>
-                <input type="text" className="form-control" id="name" placeholder="Select Supplement"/>
+                <input type="text" className="form-control" placeholder="Select Supplement"/>
               </div>
             </div>
           </div>
+
           <div className="row">
             <div className="form-group col-sm-4">
               <label>Serving Size</label>
-              <select className="form-control" id="ccmonth">
+              <select className="form-control">
                 <option>1</option>
               </select>
             </div>
 
             <div className="form-group col-sm-4">
               <label>Time</label>
-              <select className="form-control" id="ccyear">
+              <select className="form-control">
                 <option>2014</option>
               </select>
             </div>
@@ -146,10 +147,9 @@ class SupplementsLogView extends Component {
             <div className="col-sm-4">
               <div className="form-group">
                 <label>Duration (Minutes)</label>
-                <input type="text" className="form-control" id="cvv" placeholder="123"/>
+                <input type="text" className="form-control" placeholder="123"/>
               </div>
             </div>
-
           </div>
         </div>
 
