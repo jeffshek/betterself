@@ -4,7 +4,7 @@ import LoggedInHeader from "./header/internal_header"
 import Charts from './charts/charts'
 import SupplementsLogView from './supplements/supplements'
 
-// <Charts/>
+// <ChartsView/>
 
 export class Dashboard extends Component {
   render() {
@@ -14,7 +14,7 @@ export class Dashboard extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <SupplementsLogView/>
+            <this.props.view/>
           </main>
         </div>
       </div>

@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {DASHBOARD_INDEX_URL, DASHBOARD_CHARTS_URL, DASHBOARD_SUPPLEMENT_LOGS_URL} from "../urls/constants";
 
 const DashboardButton = () => (
   <li className="nav-item">
-    <Link to={"/dashboard"} className="nav-link">
+    <Link to={DASHBOARD_INDEX_URL} className="nav-link">
       <i className="icon-speedometer" />
       Dashboard
       <NewStatus/>
@@ -23,9 +24,9 @@ const NavigationTitle = props => (
 
 const NavigationLink = props => (
   <li className="nav-item">
-    <a className="nav-link">
+    <Link className="nav-link" to={props.link}>
       <i className={props.iconName} /> {props.label}
-      </a>
+    </Link>
   </li>
 )
 
@@ -38,18 +39,18 @@ const ExternalDataMenu = props => (
 
 const ExternalVendorsLinks = () => (
   <div>
-    <NavigationLink iconName="icon-earphones" label="Bose"/>
-    <NavigationLink iconName="icon-rocket" label="FitBit"/>
-    <NavigationLink iconName="icon-chart" label="Garmin"/>
-    <NavigationLink iconName="icon-social-github" label="GitHub"/>
-    <NavigationLink iconName="icon-target" label="RescueTime"/>
+    <NavigationLink iconName="icon-earphones" label="Bose" link={DASHBOARD_CHARTS_URL}/>
+    <NavigationLink iconName="icon-rocket" label="FitBit" link={DASHBOARD_CHARTS_URL}/>
+    <NavigationLink iconName="icon-chart" label="Garmin" link={DASHBOARD_CHARTS_URL}/>
+    <NavigationLink iconName="icon-social-github" label="GitHub" link={DASHBOARD_CHARTS_URL}/>
+    <NavigationLink iconName="icon-target" label="RescueTime" link={DASHBOARD_CHARTS_URL}/>
   </div>
 )
 
 const ExportSidebar = () => (
   <div>
     <NavigationTitle title="Export Data"/>
-    <NavigationLink iconName="icon-cloud-download" label="All Data"/>
+    <NavigationLink iconName="icon-cloud-download" label="All Data" link={DASHBOARD_CHARTS_URL}/>
   </div>
 )
 
@@ -66,16 +67,16 @@ class Sidebar extends Component {
           <DashboardButton />
 
           <NavigationTitle title="Log"/>
-          <NavigationLink iconName="icon-note" label="Events"/>
-          <NavigationLink iconName="icon-heart" label="Heart Rate"/>
-          <NavigationLink iconName="icon-graph" label="Productivity"/>
-          <NavigationLink iconName="icon-volume-off" label="Sleep"/>
-          <NavigationLink iconName="icon-chemistry" label="Supplements"/>
+          <NavigationLink iconName="icon-note" label="Events" link={DASHBOARD_CHARTS_URL}/>
+          <NavigationLink iconName="icon-heart" label="Heart Rate" link={DASHBOARD_CHARTS_URL}/>
+          <NavigationLink iconName="icon-graph" label="Productivity" link={DASHBOARD_CHARTS_URL}/>
+          <NavigationLink iconName="icon-volume-off" label="Sleep" link={DASHBOARD_CHARTS_URL}/>
+          <NavigationLink iconName="icon-chemistry" label="Supplements" link={DASHBOARD_SUPPLEMENT_LOGS_URL}/>
 
           <li className="divider" />
 
           <NavigationTitle title="Analytics"/>
-          <NavigationLink iconName="icon-chart" label="Productivity"/>
+          <NavigationLink iconName="icon-chart" label="Productivity" link={DASHBOARD_CHARTS_URL}/>
 
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)}/>

@@ -12,13 +12,20 @@ import {
   LOGIN_URL,
   HOME_URL,
   LOGOUT_URL,
-  DASHBOARD_SUPPLEMENTS_LOG
+  DASHBOARD_CHARTS_URL,
+  DASHBOARD_SUPPLEMENT_LOGS_URL
 } from "./urls/constants";
+
 import { Authenticator } from "./authentication/auth";
 import LoginView from "./authentication/login";
 import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
+import SupplementsLogView from './supplements/supplements'
+import ChartsView from './charts/charts'
+
+const DashboardSupplementLogView = () => <Dashboard view={SupplementsLogView}/>
+const DashboardChartsView = () => <Dashboard view={ChartsView}/>
 
 const BetterSelfRouter = () => (
   <Router>
@@ -28,10 +35,11 @@ const BetterSelfRouter = () => (
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
-      <Route exact path={DASHBOARD_SUPPLEMENTS_LOG} component={LogoutView} />
-
       {/*Private Routes*/}
-      <PrivateRoute path={DASHBOARD_INDEX_URL} component={Dashboard} />
+      <PrivateRoute path={DASHBOARD_INDEX_URL} component={DashboardChartsView} />
+      <PrivateRoute path={DASHBOARD_CHARTS_URL} component={DashboardChartsView} />
+      <PrivateRoute path={DASHBOARD_SUPPLEMENT_LOGS_URL} component={DashboardSupplementLogView} />
+
     </div>
   </Router>
 );
