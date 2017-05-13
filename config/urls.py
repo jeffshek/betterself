@@ -26,8 +26,8 @@ urlpatterns = [
 
     # All React should redirect to the same pages
     url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
-    url(r'^login/$', TemplateView.as_view(template_name=react_home_template), name='react-login'),
-    url(r'^logout/$', TemplateView.as_view(template_name=react_home_template), name='react-logout'),
+    url(r'^login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
+    url(r'^logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
     url(r'^settings/$', TemplateView.as_view(template_name=react_home_template), name='react-settings'),
 
     # To test api-token-auth ...

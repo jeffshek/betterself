@@ -27,12 +27,12 @@ class LoggedOutHeader extends Component {
         <nav className="main-nav navbar-fixed-top headroom headroom--pinned">
           <div className="container">
             <div className="navbar-header">
-              <Link to={HOME_URL}>
-                <img
-                  src={LOGO_BACKGROUND_PATH}
-                  className="brand-img img-responsive"
-                />
-              </Link>
+              <a href={HOME_URL}>
+              <img
+                src={LOGO_BACKGROUND_PATH}
+                className="brand-img img-responsive"
+              />
+              </a>
             </div>
             {/*Menu Dropdown Items*/}
             <div className="collapse navbar-collapse">

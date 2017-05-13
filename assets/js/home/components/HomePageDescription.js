@@ -8,7 +8,6 @@ class HomePageDescriptionSection extends React.Component {
   render() {
     return (
       <section id="content-1-4" styleName="content-block-description">
-
         <div className="col-md-5 col-sm-3 pull-left" styleName="image-container">
           <div styleName="background-image-holder" />
         </div>

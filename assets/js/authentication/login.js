@@ -82,11 +82,9 @@ export default class LoginView extends Component {
                     </div>
                   </div>
                 </div>
-
                 <button className="btn btn-primary btn-block" type="submit">
                   Login
                 </button>
-
               </form>
             </div>
             <br/>
@@ -94,11 +92,7 @@ export default class LoginView extends Component {
           </div>
         </div>
       </section>
-        <div>
-          <Footer/>
-        </div>
       </div>
-
     );
   }
 }
