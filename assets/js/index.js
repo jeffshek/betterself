@@ -11,7 +11,8 @@ import {
   DASHBOARD_INDEX_URL,
   LOGIN_URL,
   HOME_URL,
-  LOGOUT_URL
+  LOGOUT_URL,
+  DASHBOARD_SUPPLEMENTS_LOG
 } from "./urls/constants";
 import { Authenticator } from "./authentication/auth";
 import LoginView from "./authentication/login";
@@ -26,6 +27,8 @@ const BetterSelfRouter = () => (
       <Route exact path={HOME_URL} component={HomePage} />
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
+
+      <Route exact path={DASHBOARD_SUPPLEMENTS_LOG} component={LogoutView} />
 
       {/*Private Routes*/}
       <PrivateRoute path={DASHBOARD_INDEX_URL} component={Dashboard} />

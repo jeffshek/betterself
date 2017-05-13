@@ -9,5 +9,6 @@ export class LogoutView extends Component {
     Authenticator.logout(cb);
     // This is pretty subpar, but there's a few CSS issues I need to work out
     window.location.assign("https://www.betterself.io");
+    // window.location.reload()
   }
 }

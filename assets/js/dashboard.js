@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Sidebar from "./sidebar/sidebar.js"
 import LoggedInHeader from "./header/internal_header"
 import Charts from './charts/charts'
+import SupplementsLogView from './supplements/supplements'
+
+// <Charts/>
 
 export class Dashboard extends Component {
   render() {
@@ -11,7 +14,7 @@ export class Dashboard extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <Charts/>
+            <SupplementsLogView/>
           </main>
         </div>
       </div>
