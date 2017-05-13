@@ -89,12 +89,16 @@ export default class LoginView extends Component {
 
               </form>
             </div>
+            <br/>
             <LoginPageSideImage />
           </div>
         </div>
       </section>
-      <Footer/>
+        <div>
+          <Footer/>
+        </div>
       </div>
+
     );
   }
 }
