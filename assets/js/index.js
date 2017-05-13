@@ -22,9 +22,11 @@ import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 import SupplementsLogView from './supplements/supplements'
-import Charts from './charts/charts'
+import ChartsView from './charts/charts'
 
-const SupplementLogView = () => <Dashboard view={SupplementsLogView}/>
+const DashboardSupplementLogView = () => <Dashboard view={SupplementsLogView}/>
+const DashboardChartsView = () => <Dashboard view={ChartsView}/>
+
 const BetterSelfRouter = () => (
   <Router>
     <div>
@@ -34,15 +36,13 @@ const BetterSelfRouter = () => (
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
       {/*Private Routes*/}
-      <PrivateRoute path={DASHBOARD_INDEX_URL} component={ChartsView} />
-      <PrivateRoute path={DASHBOARD_CHARTS_URL} component={ChartsView} />
-      <PrivateRoute path={DASHBOARD_SUPPLEMENT_LOGS_URL} component={SupplementLogView} />
+      <PrivateRoute path={DASHBOARD_INDEX_URL} component={DashboardChartsView} />
+      <PrivateRoute path={DASHBOARD_CHARTS_URL} component={DashboardChartsView} />
+      <PrivateRoute path={DASHBOARD_SUPPLEMENT_LOGS_URL} component={DashboardSupplementLogView} />
 
     </div>
   </Router>
 );
-
-const ChartsView = () => <Dashboard view={Charts}/>
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
