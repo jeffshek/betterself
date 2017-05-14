@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter, Redirect } from "react-router-dom";
-import { JSON_HEADERS } from "../constants";
+import { JSON_HEADERS } from "../constants/util_constants";
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,

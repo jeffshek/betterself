@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { LOGO_BACKGROUND_PATH } from "./image_paths";
+import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
 
 const BetterSelfAddress = () => (
   <p className="address small">
