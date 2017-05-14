@@ -118,11 +118,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Productivity
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
@@ -138,11 +134,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Caffeine Measurement
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
@@ -158,11 +150,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Yearly Breakdown
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
@@ -173,11 +161,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Desired Time Breakdowns
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
@@ -188,11 +172,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Productivity Drivers
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
@@ -203,11 +183,7 @@ class Charts extends Component {
           <div className="card">
             <div className="card-header">
               Polar Area Chart
-              <div className="card-actions">
-                <a href="http://www.chartjs.org">
-                  <small className="text-muted">docs</small>
-                </a>
-              </div>
+              <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
