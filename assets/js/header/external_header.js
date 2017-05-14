@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from "react";
-import { LOGO_BACKGROUND_PATH } from "../fragments/image_paths";
+import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
 import { HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
-import CSSModules from 'react-css-modules';
-import styles from './css/external_header.css'
+import CSSModules from "react-css-modules";
+import styles from "./css/external_header.css";
 
 const MenuItem = props => (
   <li className="nav-item" key={props.key}>
@@ -28,10 +28,10 @@ class LoggedOutHeader extends Component {
           <div className="container">
             <div className="navbar-header">
               <a href={HOME_URL}>
-              <img
-                src={LOGO_BACKGROUND_PATH}
-                className="brand-img img-responsive"
-              />
+                <img
+                  src={LOGO_BACKGROUND_PATH}
+                  className="brand-img img-responsive"
+                />
               </a>
             </div>
             {/*Menu Dropdown Items*/}
@@ -47,4 +47,4 @@ class LoggedOutHeader extends Component {
   }
 }
 
-export default CSSModules(LoggedOutHeader, styles)
+export default CSSModules(LoggedOutHeader, styles);
