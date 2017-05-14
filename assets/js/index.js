@@ -13,7 +13,8 @@ import {
   HOME_URL,
   LOGOUT_URL,
   DASHBOARD_CHARTS_URL,
-  DASHBOARD_SUPPLEMENT_LOGS_URL
+  DASHBOARD_SUPPLEMENT_LOGS_URL,
+  DASHBOARD_HEART_RATE_LOGS_URL
 } from "./urls/constants";
 
 import { Authenticator } from "./authentication/auth";
@@ -21,11 +22,14 @@ import LoginView from "./authentication/login";
 import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
-import SupplementsLogView from './supplements/supplements'
+
+import SupplementsLogView from './supplements_log/supplements_log'
 import ChartsView from './charts/charts'
+import HeartRateLogView from './heart_rate_log/heart_rate_log'
 
 const DashboardSupplementLogView = () => <Dashboard view={SupplementsLogView}/>
 const DashboardChartsView = () => <Dashboard view={ChartsView}/>
+const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView}/>
 
 const BetterSelfRouter = () => (
   <Router>
@@ -39,6 +43,7 @@ const BetterSelfRouter = () => (
       <PrivateRoute path={DASHBOARD_INDEX_URL} component={DashboardChartsView} />
       <PrivateRoute path={DASHBOARD_CHARTS_URL} component={DashboardChartsView} />
       <PrivateRoute path={DASHBOARD_SUPPLEMENT_LOGS_URL} component={DashboardSupplementLogView} />
+      <PrivateRoute path={DASHBOARD_HEART_RATE_LOGS_URL} component={DashboardHeartRateView} />
 
     </div>
   </Router>

@@ -20,3 +20,8 @@
     -   id: trailing-whitespace
         files: \.(py|sh|yaml|txt)$
     -   id: requirements-txt-fixer
+-   repo: https://github.com/awebdeveloper/pre-commit-prettier
+    sha: "acd6976eb1f632daae277c01bf9ea9faf94c015d"
+    hooks:
+    -   id: prettier
+        additional_dependencies: ['prettier@1.1.0']
