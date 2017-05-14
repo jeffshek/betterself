@@ -98,9 +98,9 @@ const heartRateData = [
 // const AddHeartRate
 
 const HeartRateRowHistory = props => {
-  const {time, input} = props.object
-  const heartRate = props.object.heart_rate
-  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a")
+  const { time, input } = props.object;
+  const heartRate = props.object.heart_rate;
+  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
 
   return (
     <tr>
@@ -108,12 +108,12 @@ const HeartRateRowHistory = props => {
       <td>{heartRate}</td>
       <td>{input}</td>
     </tr>
-  )
-}
+  );
+};
 
 class HeartRateLogTableView extends Component {
   render() {
-    const heartRateDataKeys = Object.keys(heartRateData)
+    const heartRateDataKeys = Object.keys(heartRateData);
 
     return (
       <div className="card">
@@ -124,23 +124,21 @@ class HeartRateLogTableView extends Component {
         <div className="card-block">
           <table className="table table-bordered table-striped table-condensed">
             <thead>
-            <tr>
-              <th>Time</th>
-              <th>Heart Rate</th>
-              <th>Input</th>
-            </tr>
+              <tr>
+                <th>Time</th>
+                <th>Heart Rate</th>
+                <th>Input</th>
+              </tr>
             </thead>
             <tbody>
-            {
-              heartRateDataKeys.map(key =>
-                <HeartRateRowHistory key={key} object={heartRateData[key]}/>
-              )
-            }
+              {heartRateDataKeys.map(key => (
+                <HeartRateRowHistory key={key} object={heartRateData[key]} />
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-    )
+    );
   }
 }
 const AddHeartRateLog = () => {
@@ -187,8 +185,8 @@ const AddHeartRateLog = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 class HeartRateLogView extends Component {
   render() {
@@ -204,7 +202,7 @@ class HeartRateLogView extends Component {
             />
           </div>
         </div>
-        <AddHeartRateLog/>
+        <AddHeartRateLog />
         <HeartRateLogTableView />
       </div>
     );
