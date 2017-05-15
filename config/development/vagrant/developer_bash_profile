@@ -14,7 +14,7 @@ cd /betterself
 
 # use alias like dXXXXX to reprsent django do X"
 alias dtest="python manage.py test"
-alias drun="python manage.py runserver [::]:9000"
+alias drun="python manage.py runserver [::]:8001"
 alias dplus="python manage.py shell_plus"
 alias dstatic="python manage.py collectstatic --noinput"
 
