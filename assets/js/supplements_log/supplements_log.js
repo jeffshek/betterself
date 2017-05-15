@@ -122,6 +122,7 @@ const AddSupplementLog = () => {
           <div className="col-sm-12">
             <div className="form-group">
               <label>Supplement</label>
+              {/* TODO - Need to do a fetch query for all possible options*/}
               <input
                 type="text"
                 className="form-control"
@@ -130,7 +131,6 @@ const AddSupplementLog = () => {
             </div>
           </div>
         </div>
-
         <div className="row">
           <div className="form-group col-sm-4">
             <label>Serving Size</label>
@@ -138,17 +138,17 @@ const AddSupplementLog = () => {
               <option>1</option>
             </select>
           </div>
-
           <div className="form-group col-sm-4">
             <label>Time</label>
             <select className="form-control">
+              {/* TODO - Need to do a fetch query for all possible options*/}
               <option>2014</option>
             </select>
           </div>
-
           <div className="col-sm-4">
             <div className="form-group">
               <label>Duration (Minutes)</label>
+              {/* TODO - Need to do a fetch query for all possible options*/}
               <input type="text" className="form-control" placeholder="123" />
             </div>
           </div>
