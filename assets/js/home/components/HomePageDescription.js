@@ -33,13 +33,13 @@ class HomePageDescriptionSection extends React.Component {
                 <div className="col-sm-6">
                   <h5>Compound Improvements.</h5>
                   <p>
-                    Small improvements move glaciers. Track what's working for you (and what's not). We can text or email reminders to keep your medications and supplements on track. Comes with beautiful personalized analytics from best-in-class algorithms.
+                    Small improvements move glaciers. Track what's working for you (and what's not). Beautiful personalized analytics from best-in-class algorithms.
                   </p>
                 </div>
                 <div className="col-sm-6">
                   <h5>Privacy First.</h5>
                   <p>
-                    We're not here to sell your contact info to anyone else. We don't want your name or address. All we care about is improving health and productivity for our anonymous users. Open-sourced on GitHub.
+                    We're not here to sell your contact info. We don't want your name or address. All we care about is improving health and productivity for our anonymous users. Open-sourced on GitHub.
                   </p>
                 </div>
               </div>

@@ -16,6 +16,7 @@ cd /betterself
 alias dtest="python manage.py test"
 alias drun="python manage.py runserver [::]:9000"
 alias dplus="python manage.py shell_plus"
+alias dstatic="python manage.py collectstatic --noinput"
 
 # always show what's the git status
 git status
