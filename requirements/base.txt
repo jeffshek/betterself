@@ -13,6 +13,7 @@ django-model-utils==2.6.1
 django-secure==1.0.1
 django-webpack-loader==0.4.1
 djangorestframework==3.5.3
+# TODO - remove drf-compound-fields
 drf-compound-fields==1.0.0
 factory-boy==2.8.1
 ipython==4.2

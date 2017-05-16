@@ -16,6 +16,7 @@ urlpatterns = [
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, include(admin.site.urls)),
+
     # User Management
     url(r'^users/', include('betterself.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
