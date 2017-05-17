@@ -56,6 +56,22 @@ const supplementHistory = {
   ]
 };
 
+const LoadingStyle = () => (
+  <div>
+    <div className="sk-cube-grid">
+      <div className="sk-cube sk-cube1" />
+      <div className="sk-cube sk-cube2" />
+      <div className="sk-cube sk-cube3" />
+      <div className="sk-cube sk-cube4" />
+      <div className="sk-cube sk-cube5" />
+      <div className="sk-cube sk-cube6" />
+      <div className="sk-cube sk-cube7" />
+      <div className="sk-cube sk-cube8" />
+      <div className="sk-cube sk-cube9" />
+    </div>
+  </div>
+);
+
 const SupplementRowHistory = props => {
   const data = props.object;
 
@@ -97,7 +113,8 @@ class SupplementsHistoryTableList extends Component {
           time: null,
           source: "Loading ... "
         }
-      ]
+      ],
+      loadedSupplementHistory: false
     };
   }
 
@@ -115,6 +132,7 @@ class SupplementsHistoryTableList extends Component {
       })
       .then(responseData => {
         this.setState({ supplementHistory: responseData });
+        this.setState({ loadedSupplementHistory: true });
       });
   }
 
@@ -128,24 +146,30 @@ class SupplementsHistoryTableList extends Component {
           <i className="fa fa-align-justify" />
           <strong>Supplement History</strong>
         </div>
-        <div className="card-block">
-          <table className="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th>Supplement</th>
-                <th>Serving Size</th>
-                <th>Supplement Time</th>
-                <th>Duration (Minutes)</th>
-                <th>Source</th>
-              </tr>
-            </thead>
-            <tbody>
-              {historicalDataKeys.map(key => (
-                <SupplementRowHistory key={key} object={historicalData[key]} />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/*This kind of looks like crap with the Loading Style */}
+        {!this.state.loadedSupplementHistory
+          ? <LoadingStyle />
+          : <div className="card-block">
+              <table className="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Supplement</th>
+                    <th>Serving Size</th>
+                    <th>Supplement Time</th>
+                    <th>Duration (Minutes)</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {historicalDataKeys.map(key => (
+                    <SupplementRowHistory
+                      key={key}
+                      object={historicalData[key]}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>}
       </div>
     );
   }
