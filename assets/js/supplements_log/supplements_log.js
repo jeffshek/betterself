@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
+import Datetime from "react-datetime";
 
-// Reuse this data later for prototype test site
 const supplementHistory = {
   data: [
     {
@@ -174,6 +174,7 @@ class AddSupplementLog extends Component {
         <div className="card-header">
           <strong>Add Supplement Entry</strong>
         </div>
+
         <div className="card-block">
           <div className="row">
             <div className="col-sm-12">
@@ -194,9 +195,7 @@ class AddSupplementLog extends Component {
             </div>
             <div className="form-group col-sm-4">
               <label>Date / Time of Ingestion</label>
-              <select className="form-control">
-                <option>2014</option>
-              </select>
+              <Datetime />
             </div>
             <div className="col-sm-4">
               <div className="form-group">
