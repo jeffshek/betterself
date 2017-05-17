@@ -77,7 +77,7 @@ const SupplementRowHistory = props => {
   );
 };
 
-class SupplementsTableList extends Component {
+class SupplementsHistoryTableList extends Component {
   render() {
     const historicalData = supplementHistory.data;
     const historicalDataKeys = Object.keys(historicalData);
@@ -163,7 +163,7 @@ class SupplementsLogView extends Component {
     return (
       <div>
         <AddSupplementLog />
-        <SupplementsTableList />
+        <SupplementsHistoryTableList />
       </div>
     );
   }
