@@ -72,7 +72,7 @@ const LoadingStyle = () => (
   </div>
 );
 
-const SupplementRowHistory = props => {
+const SupplementHistoryRow = props => {
   const data = props.object;
 
   const supplementName = data.supplement_name;
@@ -100,6 +100,18 @@ const SupplementRowHistory = props => {
 const JSON_AUTHORIZATION_HEADERS = {
   Authorization: `Token ${localStorage.token}`
 };
+
+const SupplementHistoryTableHeader = () => (
+  <thead>
+    <tr>
+      <th>Supplement</th>
+      <th>Serving Size</th>
+      <th>Supplement Time</th>
+      <th>Duration (Minutes)</th>
+      <th>Source</th>
+    </tr>
+  </thead>
+);
 
 class SupplementsHistoryTableList extends Component {
   constructor() {
@@ -151,18 +163,10 @@ class SupplementsHistoryTableList extends Component {
           ? <LoadingStyle />
           : <div className="card-block">
               <table className="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Supplement</th>
-                    <th>Serving Size</th>
-                    <th>Supplement Time</th>
-                    <th>Duration (Minutes)</th>
-                    <th>Source</th>
-                  </tr>
-                </thead>
+                <SupplementHistoryTableHeader />
                 <tbody>
                   {historicalDataKeys.map(key => (
-                    <SupplementRowHistory
+                    <SupplementHistoryRow
                       key={key}
                       object={historicalData[key]}
                     />
