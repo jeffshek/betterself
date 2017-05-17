@@ -51,5 +51,8 @@ class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1)
     model = Supplement
     filter_class = SupplementFilter
 
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related('ingredient_compositions')
+
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
