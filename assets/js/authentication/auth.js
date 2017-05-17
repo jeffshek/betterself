@@ -4,6 +4,7 @@ import { JSON_HEADERS } from "../constants/util_constants";
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
+  token: localStorage.token,
 
   login(username, password, cb) {
     if (localStorage.token) {
