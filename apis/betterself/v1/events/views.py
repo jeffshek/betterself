@@ -11,6 +11,9 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfa
     write_serializer_class = SupplementEventCreateSerializer
     filter_class = SupplementEventFilter
 
+    def get_queryset(self):
+        return super().get_queryset().select_related('supplement')
+
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
