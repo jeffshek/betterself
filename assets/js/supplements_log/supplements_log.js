@@ -1,72 +1,77 @@
 import React, { Component } from "react";
 import moment from "moment";
 
+// Reuse this data later for prototype test site
 const supplementHistory = {
   data: [
     {
-      name: "Caffeine",
-      serving_size: 5,
-      supplement_time: Date.now(),
+      supplement_name: "Caffeine",
+      quantity: 5,
+      time: Date.now(),
       duration: 0,
       source: "Excel"
     },
     {
-      name: "Piracetam",
-      serving_size: 10,
-      supplement_time: moment(Date.now()).subtract(6, "days"),
+      supplement_name: "Piracetam",
+      quantity: 10,
+      time: moment(Date.now()).subtract(6, "days"),
       duration: 0,
       source: "Web"
     },
     {
-      name: "Piracetam",
-      serving_size: 2,
-      supplement_time: Date.now(),
+      supplement_name: "Piracetam",
+      quantity: 2,
+      time: Date.now(),
       duration: 0,
       source: "Web"
     },
     {
-      name: "Oxiracetam",
-      serving_size: 5,
-      supplement_time: Date.now(),
+      supplement_name: "Oxiracetam",
+      quantity: 5,
+      time: Date.now(),
       duration: 11,
       source: "Web"
     },
     {
-      name: "Piracetam",
-      serving_size: 1,
-      supplement_time: Date.now(),
+      supplement_name: "Piracetam",
+      quantity: 1,
+      time: Date.now(),
       duration: 11,
       source: "Web"
     },
     {
-      name: "Theanine",
-      serving_size: 10,
-      supplement_time: Date.now(),
+      supplement_name: "Theanine",
+      quantity: 10,
+      time: Date.now(),
       duration: 11,
       source: "Web"
     },
     {
-      name: "Alpha GPC",
-      serving_size: 2,
+      supplement_name: "Alpha GPC",
+      quantity: 2,
       duration: 30,
-      supplement_time: Date.now(),
+      time: Date.now(),
       source: "Web"
     }
   ]
 };
 
 const SupplementRowHistory = props => {
-  const { name, source, duration } = props.object;
-  // Remap this from backend style to frontend
-  const servingSize = props.object.serving_size;
-  const supplementTime = props.object.supplement_time;
+  // console.log(props.object)
+  const data = props.object;
+
+  const supplementName = data.supplement_name;
+  const servingSize = data.quantity;
+  const source = data.source;
+  const supplementTime = data.time;
+  const duration = 0;
   const timeFormatted = moment(supplementTime).format(
     "dddd, MMMM Do YYYY, h:mm:ss a"
   );
 
   return (
     <tr>
-      <td>{name}</td>
+      <td>{supplementName}</td>
       <td>{servingSize}</td>
       <td>{timeFormatted}</td>
       <td>{duration}</td>
@@ -77,9 +82,35 @@ const SupplementRowHistory = props => {
   );
 };
 
+const JSON_AUTHORIZATION_HEADERS = {
+  Authorization: `Token ${localStorage.token}`
+};
+
 class SupplementsHistoryTableList extends Component {
+  constructor() {
+    super();
+    this.state = { supplementHistory: [] };
+  }
+
+  componentDidMount() {
+    this.getSupplementHistory();
+  }
+
+  getSupplementHistory() {
+    fetch("api/v1/supplement_events", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.setState({ supplementHistory: responseData });
+      });
+  }
+
   render() {
-    const historicalData = supplementHistory.data;
+    const historicalData = this.state.supplementHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
@@ -119,14 +150,10 @@ class AddSupplementLog extends Component {
     };
   }
 
-  JSON_HEADERS = {
-    Authorization: `Token ${localStorage.token}`
-  };
-
   getPossibleSupplements() {
     fetch("/api/v1/supplements", {
       method: "GET",
-      headers: this.JSON_HEADERS
+      headers: JSON_AUTHORIZATION_HEADERS
     })
       .then(response => {
         return response.json();
