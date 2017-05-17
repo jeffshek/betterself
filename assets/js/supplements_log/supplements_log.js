@@ -213,7 +213,18 @@ class AddSupplementLog extends Component {
               </div>
             </div>
           </div>
+          <button
+            type="submit"
+            id="supplement-dashboard-submit"
+            className="btn btn-sm btn-success"
+          >
+            <i className="fa fa-dot-circle-o" /> Submit
+          </button>&nbsp;
+          <button type="reset" className="btn btn-sm btn-danger">
+            <i className="fa fa-ban" /> Reset
+          </button>&nbsp;
         </div>
+
       </div>
     );
   }
