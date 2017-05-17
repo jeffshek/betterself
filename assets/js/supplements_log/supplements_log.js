@@ -57,7 +57,6 @@ const supplementHistory = {
 };
 
 const SupplementRowHistory = props => {
-  // console.log(props.object)
   const data = props.object;
 
   const supplementName = data.supplement_name;
@@ -89,7 +88,17 @@ const JSON_AUTHORIZATION_HEADERS = {
 class SupplementsHistoryTableList extends Component {
   constructor() {
     super();
-    this.state = { supplementHistory: [] };
+    this.state = {
+      supplementHistory: [
+        {
+          supplement_name: "Loading ... ",
+          quantity: "Loading ... ",
+          duration: "Loading ... ",
+          time: null,
+          source: "Loading ... "
+        }
+      ]
+    };
   }
 
   componentDidMount() {
