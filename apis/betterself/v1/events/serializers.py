@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from rest_framework.fields import CharField
 
-from apis.betterself.v1.supplements.serializers import SupplementReadOnlySerializer
 from events.models import INPUT_SOURCES_TUPLES
 from supplements.models import Supplement
 
@@ -51,7 +51,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
 
 
 class SupplementEventReadOnlySerializer(serializers.Serializer):
-    supplement = SupplementReadOnlySerializer()
+    supplement_name = CharField(source='supplement.name')
     quantity = serializers.FloatField()
     time = serializers.DateTimeField()
     source = serializers.CharField()
