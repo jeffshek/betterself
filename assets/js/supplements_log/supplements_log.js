@@ -6,6 +6,12 @@ const JSON_AUTHORIZATION_HEADERS = {
   Authorization: `Token ${localStorage.token}`
 };
 
+const JSON_POST_AUTHORIZATION_HEADERS = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+  Authorization: `Token ${localStorage.token}`
+};
+
 const LoadingStyle = () => (
   <div>
     <div className="sk-cube-grid">
@@ -23,7 +29,7 @@ const LoadingStyle = () => (
 );
 
 const SupplementHistoryRow = props => {
-  // Set the data point for easier reference
+  // Used to render the data from the API
   const data = props.object;
 
   const supplementName = data.supplement_name;
@@ -61,42 +67,12 @@ const SupplementHistoryTableHeader = () => (
 );
 
 class SupplementsHistoryTableList extends Component {
-  constructor() {
+  constructor(props) {
     super();
-    this.state = {
-      supplementHistory: [
-        {
-          supplement_name: "Loading ... ",
-          quantity: "Loading ... ",
-          duration: "Loading ... ",
-          time: null,
-          source: "Loading ... "
-        }
-      ],
-      loadedSupplementHistory: false
-    };
-  }
-
-  componentDidMount() {
-    this.getSupplementHistory();
-  }
-
-  getSupplementHistory() {
-    fetch("api/v1/supplement_events", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({ supplementHistory: responseData });
-        // this.setState({ loadedSupplementHistory: true });
-      });
   }
 
   render() {
-    const historicalData = this.state.supplementHistory;
+    const historicalData = this.props.supplementHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
@@ -105,8 +81,8 @@ class SupplementsHistoryTableList extends Component {
           <i className="fa fa-align-justify" />
           <strong>Supplement History</strong>
         </div>
-        {/*This kind of looks like crap with the Loading Style */}
-        {!this.state.loadedSupplementHistory
+        {/*This conditional loading looks slightly weird.*/}
+        {!this.props.renderReady
           ? <LoadingStyle />
           : <div className="card-block">
               <table className="table table-bordered table-striped table-condensed">
@@ -131,7 +107,8 @@ class AddSupplementLog extends Component {
     super(props);
     this.state = {
       supplementNames: [],
-      formSupplementDateTime: moment()
+      formSupplementDateTime: moment(),
+      supplements: []
     };
 
     this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
@@ -148,6 +125,7 @@ class AddSupplementLog extends Component {
       })
       .then(responseData => {
         const supplementNames = responseData.map(object => object.name);
+        this.setState({ supplements: responseData });
         this.setState({ supplementNames: supplementNames });
       });
   }
@@ -158,14 +136,43 @@ class AddSupplementLog extends Component {
 
   submitSupplementEvent(e) {
     e.preventDefault();
+
+    const supplementLocation = this.supplementNameKey.value;
+    const supplementSelected = this.state.supplements[supplementLocation];
+
+    // api parameters used to send
+    const supplementUUID = supplementSelected.uuid;
+    const quantity = this.servingSize.value;
+    const time = this.state.formSupplementDateTime.toISOString();
+    const source = "web";
+
+    let postParams = {
+      supplement_uuid: supplementUUID,
+      quantity: quantity,
+      time: time,
+      source: source
+    };
+
+    fetch("/api/v1/supplement_events", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(postParams)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.props.addSupplementEntry(responseData);
+      });
   }
 
   handleChange(moment) {
-    console.log(moment);
     this.setState({ formSupplementDateTime: moment });
   }
 
   render() {
+    const supplementsKeys = Object.keys(this.state.supplements);
+
     return (
       <div className="card">
         <div className="card-header">
@@ -177,13 +184,16 @@ class AddSupplementLog extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <div className="form-group">
-                  <label>Supplement</label>
+                  <label className="add-supplement-label">Supplement</label>
                   <select
                     className="form-control"
-                    ref={input => this.supplementName = input}
+                    ref={input => this.supplementNameKey = input}
                   >
-                    {this.state.supplementNames.map(object => (
-                      <option key={object}>{object}</option>
+                    {/*List out all the possible supplements, use the index as the key*/}
+                    {supplementsKeys.map(key => (
+                      <option value={key} key={key}>
+                        {this.state.supplements[key].name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -191,16 +201,21 @@ class AddSupplementLog extends Component {
             </div>
             <div className="row">
               <div className="form-group col-sm-4">
-                <label>Quantity (Serving Size)</label>
+                <label className="add-supplement-label">
+                  Quantity (Serving Size)
+                </label>
                 <input
                   type="text"
                   className="form-control"
-                  defaultValue="3"
+                  defaultValue="1"
                   ref={input => this.servingSize = input}
                 />
               </div>
               <div className="form-group col-sm-4">
-                <label>Date / Time of Ingestion</label>
+                <label className="add-supplement-label">
+                  Date / Time of Ingestion
+                </label>
+                {/*Use the current datetime as a default */}
                 <Datetime
                   onChange={this.handleChange}
                   value={this.state.formSupplementDateTime}
@@ -208,7 +223,9 @@ class AddSupplementLog extends Component {
               </div>
               <div className="col-sm-4">
                 <div className="form-group">
-                  <label>Duration (Minutes)</label>
+                  <label className="add-supplement-label">
+                    Duration (Minutes)
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -236,11 +253,58 @@ class AddSupplementLog extends Component {
 }
 
 class SupplementsLogView extends Component {
+  constructor() {
+    super();
+    this.state = {
+      supplementHistory: [
+        {
+          supplement_name: "Loading ... ",
+          quantity: "Loading ... ",
+          duration: "Loading ... ",
+          time: null,
+          source: "Loading ... "
+        }
+      ],
+      loadedSupplementHistory: false
+    };
+    this.addSupplementEntry = this.addSupplementEntry.bind(this);
+  }
+
+  componentDidMount() {
+    this.getSupplementHistory();
+  }
+
+  getSupplementHistory() {
+    fetch("api/v1/supplement_events", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.setState({ supplementHistory: responseData });
+        // To render for the rest of the data
+        this.setState({ loadedSupplementHistory: true });
+      });
+  }
+  addSupplementEntry(entry) {
+    let updatedSupplementHistory = [
+      entry,
+      ...this.state.supplementHistory.slice()
+    ];
+    this.setState({
+      supplementHistory: updatedSupplementHistory
+    });
+  }
   render() {
     return (
       <div>
-        <AddSupplementLog />
-        <SupplementsHistoryTableList />
+        <AddSupplementLog addSupplementEntry={this.addSupplementEntry} />
+        <SupplementsHistoryTableList
+          supplementHistory={this.state.supplementHistory}
+          renderReady={this.state.loadedSupplementHistory}
+        />
       </div>
     );
   }

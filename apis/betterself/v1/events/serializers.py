@@ -20,6 +20,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     uuid = serializers.UUIDField(required=False, read_only=True)
+    supplement_name = CharField(source='supplement.name', read_only=True, required=False)
 
     @classmethod
     def validate_supplement_uuid(cls, value):
