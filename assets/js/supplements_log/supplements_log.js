@@ -2,58 +2,8 @@ import React, { Component } from "react";
 import moment from "moment";
 import Datetime from "react-datetime";
 
-const supplementHistory = {
-  data: [
-    {
-      supplement_name: "Caffeine",
-      quantity: 5,
-      time: Date.now(),
-      duration: 0,
-      source: "Excel"
-    },
-    {
-      supplement_name: "Piracetam",
-      quantity: 10,
-      time: moment(Date.now()).subtract(6, "days"),
-      duration: 0,
-      source: "Web"
-    },
-    {
-      supplement_name: "Piracetam",
-      quantity: 2,
-      time: Date.now(),
-      duration: 0,
-      source: "Web"
-    },
-    {
-      supplement_name: "Oxiracetam",
-      quantity: 5,
-      time: Date.now(),
-      duration: 11,
-      source: "Web"
-    },
-    {
-      supplement_name: "Piracetam",
-      quantity: 1,
-      time: Date.now(),
-      duration: 11,
-      source: "Web"
-    },
-    {
-      supplement_name: "Theanine",
-      quantity: 10,
-      time: Date.now(),
-      duration: 11,
-      source: "Web"
-    },
-    {
-      supplement_name: "Alpha GPC",
-      quantity: 2,
-      duration: 30,
-      time: Date.now(),
-      source: "Web"
-    }
-  ]
+const JSON_AUTHORIZATION_HEADERS = {
+  Authorization: `Token ${localStorage.token}`
 };
 
 const LoadingStyle = () => (
@@ -73,6 +23,7 @@ const LoadingStyle = () => (
 );
 
 const SupplementHistoryRow = props => {
+  // Set the data point for easier reference
   const data = props.object;
 
   const supplementName = data.supplement_name;
@@ -95,10 +46,6 @@ const SupplementHistoryRow = props => {
       </td>
     </tr>
   );
-};
-
-const JSON_AUTHORIZATION_HEADERS = {
-  Authorization: `Token ${localStorage.token}`
 };
 
 const SupplementHistoryTableHeader = () => (
@@ -144,7 +91,7 @@ class SupplementsHistoryTableList extends Component {
       })
       .then(responseData => {
         this.setState({ supplementHistory: responseData });
-        this.setState({ loadedSupplementHistory: true });
+        // this.setState({ loadedSupplementHistory: true });
       });
   }
 
@@ -183,8 +130,12 @@ class AddSupplementLog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      supplementNames: []
+      supplementNames: [],
+      formSupplementDateTime: moment()
     };
+
+    this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   getPossibleSupplements() {
@@ -205,6 +156,15 @@ class AddSupplementLog extends Component {
     this.getPossibleSupplements();
   }
 
+  submitSupplementEvent(e) {
+    e.preventDefault();
+  }
+
+  handleChange(moment) {
+    console.log(moment);
+    this.setState({ formSupplementDateTime: moment });
+  }
+
   render() {
     return (
       <div className="card">
@@ -213,46 +173,63 @@ class AddSupplementLog extends Component {
         </div>
 
         <div className="card-block">
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="form-group">
-                <label>Supplement</label>
-                <select className="form-control">
-                  {this.state.supplementNames.map(object => (
-                    <option key={object}>{object}</option>
-                  ))}
-                </select>
+          <form onSubmit={e => this.submitSupplementEvent(e)}>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <label>Supplement</label>
+                  <select
+                    className="form-control"
+                    ref={input => this.supplementName = input}
+                  >
+                    {this.state.supplementNames.map(object => (
+                      <option key={object}>{object}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="form-group col-sm-4">
-              <label>Quantity (Serving Size)</label>
-              <input type="text" className="form-control" placeholder="1" />
-            </div>
-            <div className="form-group col-sm-4">
-              <label>Date / Time of Ingestion</label>
-              <Datetime />
-            </div>
-            <div className="col-sm-4">
-              <div className="form-group">
-                <label>Duration (Minutes)</label>
-                <input type="text" className="form-control" placeholder="0" />
+            <div className="row">
+              <div className="form-group col-sm-4">
+                <label>Quantity (Serving Size)</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  defaultValue="3"
+                  ref={input => this.servingSize = input}
+                />
+              </div>
+              <div className="form-group col-sm-4">
+                <label>Date / Time of Ingestion</label>
+                <Datetime
+                  onChange={this.handleChange}
+                  value={this.state.formSupplementDateTime}
+                />
+              </div>
+              <div className="col-sm-4">
+                <div className="form-group">
+                  <label>Duration (Minutes)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    defaultValue="0"
+                    ref={input => this.durationMinutes = input}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            id="supplement-dashboard-submit"
-            className="btn btn-sm btn-success"
-          >
-            <i className="fa fa-dot-circle-o" /> Submit
-          </button>&nbsp;
-          <button type="reset" className="btn btn-sm btn-danger">
-            <i className="fa fa-ban" /> Reset
-          </button>&nbsp;
+            <div className="float-right">
+              <button
+                type="submit"
+                id="supplement-dashboard-submit"
+                className="btn btn-sm btn-success"
+                onClick={e => this.submitSupplementEvent(e)}
+              >
+                <i className="fa fa-dot-circle-o" /> Submit
+              </button>
+            </div>
+          </form>
         </div>
-
       </div>
     );
   }
