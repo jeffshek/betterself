@@ -146,7 +146,7 @@ class AddSupplementLog extends Component {
     const time = this.state.formSupplementDateTime.toISOString();
     const source = "web";
 
-    let postParams = {
+    const postParams = {
       supplement_uuid: supplementUUID,
       quantity: quantity,
       time: time,
