@@ -36,7 +36,7 @@ const SupplementHistoryRow = props => {
   const servingSize = data.quantity;
   const source = data.source;
   const supplementTime = data.time;
-  const duration = 0;
+  const duration = data.duration;
   const timeFormatted = moment(supplementTime).format(
     "dddd, MMMM Do YYYY, h:mm:ss a"
   );
@@ -145,12 +145,14 @@ class AddSupplementLog extends Component {
     const quantity = this.servingSize.value;
     const time = this.state.formSupplementDateTime.toISOString();
     const source = "web";
+    const durationMinutes = this.durationMinutes.value;
 
     const postParams = {
       supplement_uuid: supplementUUID,
       quantity: quantity,
       time: time,
-      source: source
+      source: source,
+      duration: durationMinutes
     };
 
     fetch("/api/v1/supplement_events", {
