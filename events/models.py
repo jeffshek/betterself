@@ -30,6 +30,8 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     # what time did the user take the five hour energy? use the time model
     # so eventually (maybe never) can do half-life analysis
     time = models.DateTimeField()
+    # how long in minutes was the supplement consumed
+    duration = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('user', 'time', 'supplement')
