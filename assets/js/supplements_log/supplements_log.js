@@ -69,11 +69,22 @@ const SupplementHistoryTableHeader = () => (
 class SupplementsHistoryTableList extends Component {
   constructor(props) {
     super();
+    this.getPageResults = this.getPageResults.bind(this);
+  }
+
+  getPageResults(page) {
+    if (page === 0 || page > this.props.lastPageNumber) {
+      return;
+    }
+
+    this.props.getSupplementHistory(page);
   }
 
   render() {
     const historicalData = this.props.supplementHistory;
     const historicalDataKeys = Object.keys(historicalData);
+    const currentPageNumber = this.props.currentPageNumber;
+    const lastPageNumber = this.props.lastPageNumber;
 
     return (
       <div className="card">
@@ -95,8 +106,61 @@ class SupplementsHistoryTableList extends Component {
                     />
                   ))}
                 </tbody>
+
               </table>
+              {/*This entire code is embarrassing*/}
+              <nav>
+                <ul className="pagination">
+                  <li className="page-item">
+                    <a
+                      className="page-link"
+                      onClick={e => {
+                        this.getPageResults(1);
+                      }}
+                    >
+                      First
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a
+                      className="page-link"
+                      onClick={e => {
+                        this.getPageResults(currentPageNumber - 1);
+                      }}
+                    >
+                      Prev
+                    </a>
+                  </li>
+                  <li className="page-item active">
+                    <a className="page-link">{currentPageNumber}</a>
+                  </li>
+                  <li className="page-item">
+                    <a
+                      className="page-link"
+                      onClick={e => {
+                        this.getPageResults(currentPageNumber + 1);
+                      }}
+                    >
+                      {currentPageNumber + 1}
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link">...</a>
+                  </li>
+                  <li className="page-item">
+                    <a
+                      className="page-link"
+                      onClick={e => {
+                        this.getPageResults(lastPageNumber);
+                      }}
+                    >
+                      Last
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>}
+
       </div>
     );
   }
@@ -270,14 +334,18 @@ class SupplementsLogView extends Component {
       loadedSupplementHistory: false
     };
     this.addSupplementEntry = this.addSupplementEntry.bind(this);
+    this.getSupplementHistory = this.getSupplementHistory.bind(this);
   }
 
   componentDidMount() {
     this.getSupplementHistory();
   }
 
-  getSupplementHistory() {
-    fetch("api/v1/supplement_events", {
+  getSupplementHistory(page = 5) {
+    this.setState({ loadedSupplementHistory: false });
+
+    // Fetch the specific page we want, defaulting at 1
+    fetch(`api/v1/supplement_events/?page=${page}`, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -285,8 +353,10 @@ class SupplementsLogView extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.setState({ supplementHistory: responseData });
-        // To render for the rest of the data
+        this.setState({ supplementHistory: responseData.results });
+        this.setState({ currentPageNumber: responseData.current_page });
+        this.setState({ lastPageNumber: responseData.last_page });
+        // After we've gotten the data, now safe to render
         this.setState({ loadedSupplementHistory: true });
       });
   }
@@ -305,7 +375,10 @@ class SupplementsLogView extends Component {
         <AddSupplementLog addSupplementEntry={this.addSupplementEntry} />
         <SupplementsHistoryTableList
           supplementHistory={this.state.supplementHistory}
+          currentPageNumber={this.state.currentPageNumber}
+          lastPageNumber={this.state.lastPageNumber}
           renderReady={this.state.loadedSupplementHistory}
+          getSupplementHistory={this.getSupplementHistory}
         />
       </div>
     );
