@@ -143,7 +143,6 @@ export class SupplementsHistoryTableList extends Component {
                 {this.getNavPaginationControlRender()}
               </div>
               {this.getTableRender()}
-
               {this.getNavPaginationControlRender()}
             </div>}
 
