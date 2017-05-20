@@ -50,7 +50,7 @@ class SupplementEventsFixturesGenerator(object):
             quantity, input_source = test_cases.__next__()
 
             SupplementEventFactory(quantity=quantity, source=input_source,
-                time=event_time, user=user, supplement=supplement)
+                                   time=event_time, user=user, supplement=supplement)
 
 
 class ProductivityLogFixturesGenerator(object):

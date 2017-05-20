@@ -37,6 +37,7 @@ class TestSerializerUtils(TestCase):
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
     TEST_MODEL = SupplementEvent
+    PAGINATION = True
 
     def setUp(self):
         self.DEFAULT_POST_PARAMS = {

@@ -52,6 +52,11 @@ class BetterSelfAPIAdapter(object):
     def get_resource_data(self, resource, parameters=None):
         response = self._get_resource_response(resource, parameters)
         data = json.loads(response.text)
+
+        # if results are in data, it means its paginated, so just get the actual data
+        if 'results' in data:
+            data = data['results']
+
         return data
 
     def get_or_create_resource(self, resource, parameters=None, defaults=None):
