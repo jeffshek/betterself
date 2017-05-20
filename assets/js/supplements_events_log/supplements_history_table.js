@@ -70,6 +70,31 @@ export class SupplementsHistoryTableList extends Component {
     );
   }
 
+  getPaginationPageLinkRender(page, page_verbose_name) {
+    return (
+      <li className="page-item">
+        <a
+          className="page-link"
+          onClick={e => {
+            this.getPageResults(page);
+          }}
+        >
+          {page_verbose_name}
+        </a>
+      </li>
+    );
+  }
+
+  getPaginationActivePageLinkRender() {
+    const currentPageNumber = this.props.currentPageNumber;
+
+    return (
+      <li className="page-item active">
+        <a className="page-link">{currentPageNumber}</a>
+      </li>
+    );
+  }
+
   getNavPaginationControlRender() {
     const currentPageNumber = this.props.currentPageNumber;
     const lastPageNumber = this.props.lastPageNumber;
@@ -77,52 +102,19 @@ export class SupplementsHistoryTableList extends Component {
     return (
       <nav>
         <ul className="pagination">
-          <li className="page-item">
-            <a
-              className="page-link"
-              onClick={e => {
-                this.getPageResults(1);
-              }}
-            >
-              First
-            </a>
-          </li>
-          <li className="page-item">
-            <a
-              className="page-link"
-              onClick={e => {
-                this.getPageResults(currentPageNumber - 1);
-              }}
-            >
-              Prev
-            </a>
-          </li>
-          <li className="page-item active">
-            <a className="page-link">{currentPageNumber}</a>
-          </li>
-          <li className="page-item">
-            <a
-              className="page-link"
-              onClick={e => {
-                this.getPageResults(currentPageNumber + 1);
-              }}
-            >
-              {currentPageNumber + 1}
-            </a>
-          </li>
+          {this.getPaginationPageLinkRender(1, "First")}
+          {this.getPaginationPageLinkRender(currentPageNumber - 1, "Prev")}
+          {this.getPaginationActivePageLinkRender()}
+          {this.getPaginationPageLinkRender(
+            currentPageNumber + 1,
+            currentPageNumber + 1
+          )}
+          {/*Some placeholder to make the pagination table look cool*/}
           <li className="page-item">
             <a className="page-link">...</a>
           </li>
-          <li className="page-item">
-            <a
-              className="page-link"
-              onClick={e => {
-                this.getPageResults(lastPageNumber);
-              }}
-            >
-              Last
-            </a>
-          </li>
+          {this.getPaginationPageLinkRender(lastPageNumber, "Last")}
+
         </ul>
       </nav>
     );
