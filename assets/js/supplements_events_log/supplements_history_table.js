@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-import { LoadingStyle } from "../animations/LoadingStyle";
+import { CubeLoadingStyle } from "../animations/LoadingStyle";
 
 const SupplementHistoryRow = props => {
   // Used to render the data from the API
@@ -137,7 +137,7 @@ export class SupplementsHistoryTableList extends Component {
         </div>
         {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady
-          ? <LoadingStyle />
+          ? <CubeLoadingStyle />
           : <div className="card-block">
               <div className="float-right">
                 {this.getNavPaginationControlRender()}

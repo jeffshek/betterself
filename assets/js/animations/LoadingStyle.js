@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 
-export const LoadingStyle = () => (
+export const CubeLoadingStyle = () => (
   <div>
     <div className="sk-cube-grid">
       <div className="sk-cube sk-cube1" />

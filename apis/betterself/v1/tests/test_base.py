@@ -17,6 +17,8 @@ logger = logging.Logger(__name__)
 # switch them to a template design Pattern ... that way you don't
 # have to super over and over like a fool
 class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
+    # pagination means does the serializer return results
+    # paginated or not, if paginated, the results display slightly different
     PAGINATION = False
 
     @classmethod
@@ -60,7 +62,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         # don't do application/json for single key/value, issue with unpacking
         request = self.client_1.get(url, request_parameters)
 
-        # pagination views puts data in "results
+        # pagination views puts data in "results"
         if self.PAGINATION:
             request_data = request.data['results']
         else:
