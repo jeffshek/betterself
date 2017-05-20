@@ -28,7 +28,7 @@ class SupplementFixtureCreationTests(TestCase, SupplementModelsFixturesGenerator
         self.assertTrue(saved_ingredients > 0)
 
 
-class SupplementEvents(TestCase):
+class SupplementEventsTests(TestCase):
     def test_cannot_create_obj_without_user(self):
         with self.assertRaises(IntegrityError):
             Supplement.objects.create(name='pop')

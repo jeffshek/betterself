@@ -2,6 +2,7 @@ from apis.betterself.v1.events.filters import SupplementEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer
 from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1
+from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog
 
 
@@ -10,6 +11,7 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfa
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
     filter_class = SupplementEventFilter
+    pagination_class = ModifiedPageNumberPagination
 
     def get_queryset(self):
         return super().get_queryset().select_related('supplement')

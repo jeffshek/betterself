@@ -23,7 +23,8 @@ import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
-import SupplementsLogView from "./supplements_log/supplements_log";
+import SupplementsLogView
+  from "./supplements_events_log/supplements_events_log_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
 

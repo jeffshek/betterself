@@ -17,6 +17,10 @@ logger = logging.Logger(__name__)
 # switch them to a template design Pattern ... that way you don't
 # have to super over and over like a fool
 class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
+    # pagination means does the serializer return results
+    # paginated or not, if paginated, the results display slightly different
+    PAGINATION = False
+
     @classmethod
     def setUpTestData(cls):
         # i don't know how much i like this after seeing this a while later
@@ -58,7 +62,13 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         # don't do application/json for single key/value, issue with unpacking
         request = self.client_1.get(url, request_parameters)
 
-        for record in request.data:
+        # pagination views puts data in "results"
+        if self.PAGINATION:
+            request_data = request.data['results']
+        else:
+            request_data = request.data
+
+        for record in request_data:
             # if we are using a get with request parameters, we want to be certain
             # that it's correctly filtering on those request_parameters correctly
             # ie. if I filter for anything with a quantity of 5.0, i only get
@@ -68,8 +78,8 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
 
             self.assertEqual(record_values, request_parameters)
 
-        self.assertIsNotNone(request.data)
-        self.assertTrue(len(request.data) > 0)
+        self.assertIsNotNone(request_data)
+        self.assertTrue(len(request_data) > 0)
         self.assertEqual(request.status_code, 200)
 
     def test_valid_get_request_for_key_in_response(self, request_parameters, key_check):
@@ -78,8 +88,14 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 
-        contains_ids = [item['uuid'] for item in request.data]
-        key_check_items = [item[key_check] for item in request.data]
+        # pagination views puts data in "results
+        if self.PAGINATION:
+            request_data = request.data['results']
+        else:
+            request_data = request.data
+
+        contains_ids = [item['uuid'] for item in request_data]
+        key_check_items = [item[key_check] for item in request_data]
 
         # cannot use assertNone
         self.assertTrue(len(contains_ids) > 0)
@@ -90,24 +106,37 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 
+        # pagination views puts data in "results
+        if self.PAGINATION:
+            request_data = request.data['results']
+        else:
+            request_data = request.data
+
+        self.assertTrue(len(request_data) > 1)
+
         # if this isn't true, we'll blindly say this test is passing
         # when once the amount of objects is greater than 1 in real use cases
         # it'll be returning the wrong objects instantly
-        self.assertTrue(len(request.data) > 1)
-
-        request_first_data_point = request.data[0]
+        request_first_data_point = request_data[0]
         first_data_point_uuid = request_first_data_point['uuid']
 
         # now make another request, but specifically pick a uuid
         # it should only return an object with that uuid
         parameters = {'uuid': first_data_point_uuid}
         second_request = self.client_1.get(url, parameters)
-        result = second_request.data[0]
+
+        # pagination views puts data in "results
+        if self.PAGINATION:
+            second_request_data = second_request.data['results']
+        else:
+            second_request_data = second_request.data
+
+        result = second_request_data[0]
         result_uuid = result['uuid']
 
         self.assertEqual(first_data_point_uuid, result_uuid)
         # if we filter by uuid, it's unique there should only be one!
-        self.assertEqual(len(second_request.data), 1)
+        self.assertEqual(len(second_request_data), 1)
 
 
 class PostRequestsTestsMixin(GenericRESTMethodMixin):
@@ -141,11 +170,23 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
         request = self._make_get_request(self.client_1)
-        data_items_count = len(request.data)
+
+        # pagination views puts data in "results
+        if self.PAGINATION:
+            data_items_count = request.data['count']
+        else:
+            request_data = request.data
+            data_items_count = len(request_data)
 
         self._make_post_request(self.client_1, post_parameters)
         second_request = self._make_get_request(self.client_1)
-        updated_data_items_count = len(second_request.data)
+
+        # pagination views puts data in "results
+        if self.PAGINATION:
+            updated_data_items_count = second_request.data['count']
+        else:
+            second_request_data = second_request.data
+            updated_data_items_count = len(second_request_data)
 
         # since you did only one post, should go up by one
         self.assertEqual(data_items_count + 1, updated_data_items_count)
@@ -154,16 +195,28 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS
 
         client_1_starting_get_request = self._make_get_request(self.client_1)
-        client_1_starting_data_items_count = len(client_1_starting_get_request.data)
         client_2_starting_get_request = self._make_get_request(self.client_2)
+
+        client_1_starting_data_items_count = len(client_1_starting_get_request.data)
         client_2_starting_data_items_count = len(client_2_starting_get_request.data)
 
         self._make_post_request(self.client_2, post_parameters)
 
         client_1_second_get_request = self._make_get_request(self.client_1)
-        client_1_second_data_items_count = len(client_1_second_get_request.data)
-        client_2_second_request = self._make_get_request(self.client_2)
-        client_2_second_data_items_count = len(client_2_second_request.data)
+        client_2_second_get_request = self._make_get_request(self.client_2)
+
+        if self.PAGINATION:
+            client_1_starting_data_items_count = client_1_starting_get_request.data['count']
+            client_1_second_data_items_count = client_1_second_get_request.data['count']
+
+            client_2_starting_data_items_count = client_2_starting_get_request.data['count']
+            client_2_second_data_items_count = client_2_second_get_request.data['count']
+        else:
+            client_1_starting_data_items_count = len(client_1_starting_get_request.data)
+            client_1_second_data_items_count = len(client_1_second_get_request.data)
+
+            client_2_starting_data_items_count = len(client_2_starting_get_request.data)
+            client_2_second_data_items_count = len(client_2_second_get_request.data)
 
         self.assertEqual(client_1_starting_data_items_count, client_1_second_data_items_count)
         self.assertNotEquals(client_2_starting_data_items_count, client_2_second_data_items_count)
