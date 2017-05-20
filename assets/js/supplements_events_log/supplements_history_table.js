@@ -114,7 +114,6 @@ export class SupplementsHistoryTableList extends Component {
             <a className="page-link">...</a>
           </li>
           {this.getPaginationPageLinkRender(lastPageNumber, "Last")}
-
         </ul>
       </nav>
     );
