@@ -41,7 +41,7 @@ const SupplementHistoryTableHeader = () => (
 );
 
 export class SupplementsHistoryTableList extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.getPageResults = this.getPageResults.bind(this);
   }
@@ -54,7 +54,26 @@ export class SupplementsHistoryTableList extends Component {
     this.props.getSupplementHistory(page);
   }
 
-  getNavPaginationControl() {
+  getTableRender() {
+    const historicalData = this.props.supplementHistory;
+    const historicalDataKeys = Object.keys(historicalData);
+
+    return (
+      <table className="table table-bordered table-striped table-condensed">
+        <SupplementHistoryTableHeader />
+        <tbody>
+          {historicalDataKeys.map(key => (
+            <SupplementHistoryRow key={key} object={historicalData[key]} />
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  getNavPaginationControlRender() {
+    const currentPageNumber = this.props.currentPageNumber;
+    const lastPageNumber = this.props.lastPageNumber;
+
     return (
       <nav>
         <ul className="pagination">
@@ -110,84 +129,22 @@ export class SupplementsHistoryTableList extends Component {
   }
 
   render() {
-    const historicalData = this.props.supplementHistory;
-    const historicalDataKeys = Object.keys(historicalData);
-    const currentPageNumber = this.props.currentPageNumber;
-    const lastPageNumber = this.props.lastPageNumber;
-
     return (
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
           <strong>Supplement History</strong>
         </div>
-        {/*This conditional loading looks slightly weird.*/}
+        {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady
           ? <LoadingStyle />
           : <div className="card-block">
-              <table className="table table-bordered table-striped table-condensed">
-                <SupplementHistoryTableHeader />
-                <tbody>
-                  {historicalDataKeys.map(key => (
-                    <SupplementHistoryRow
-                      key={key}
-                      object={historicalData[key]}
-                    />
-                  ))}
-                </tbody>
+              <div className="float-right">
+                {this.getNavPaginationControlRender()}
+              </div>
+              {this.getTableRender()}
 
-              </table>
-              {/*This entire code is embarrassing*/}
-              <nav>
-                <ul className="pagination">
-                  <li className="page-item">
-                    <a
-                      className="page-link"
-                      onClick={e => {
-                        this.getPageResults(1);
-                      }}
-                    >
-                      First
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a
-                      className="page-link"
-                      onClick={e => {
-                        this.getPageResults(currentPageNumber - 1);
-                      }}
-                    >
-                      Prev
-                    </a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link">{currentPageNumber}</a>
-                  </li>
-                  <li className="page-item">
-                    <a
-                      className="page-link"
-                      onClick={e => {
-                        this.getPageResults(currentPageNumber + 1);
-                      }}
-                    >
-                      {currentPageNumber + 1}
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link">...</a>
-                  </li>
-                  <li className="page-item">
-                    <a
-                      className="page-link"
-                      onClick={e => {
-                        this.getPageResults(lastPageNumber);
-                      }}
-                    >
-                      Last
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+              {this.getNavPaginationControlRender()}
             </div>}
 
       </div>
