@@ -1,4 +1,4 @@
-/*Super embarassed by the state of CSS*/
+/*This file is testament to my inadequacy at CSS*/
 
 #supplement-dashboard-submit {
   background-color: #193441;
@@ -13,8 +13,13 @@
 #create-new-supplement-button {
   margin-bottom: 0;
   background-color: #c80032;
+  color: white;
 }
 
 #add-supplement-entry-text {
   line-height: 2;
+}
+
+#white-text {
+  color:white
 }

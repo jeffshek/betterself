@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {
   DASHBOARD_INDEX_URL,
   DASHBOARD_CHARTS_URL,
-  DASHBOARD_SUPPLEMENT_LOGS_URL,
+  DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL
 } from "../urls/constants";
 
@@ -107,7 +107,7 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-chemistry"
             label="Supplements"
-            link={DASHBOARD_SUPPLEMENT_LOGS_URL}
+            link={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
           />
 
           <li className="divider" />

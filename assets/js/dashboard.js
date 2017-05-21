@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Sidebar from "./sidebar/sidebar.js"
-import LoggedInHeader from "./header/internal_header"
-
-// <ChartsView/>
+import Sidebar from "./sidebar/sidebar.js";
+import LoggedInHeader from "./header/internal_header";
 
 export class Dashboard extends Component {
   render() {
@@ -12,10 +10,10 @@ export class Dashboard extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <this.props.view/>
+            <this.props.view />
           </main>
         </div>
       </div>
-    )
+    );
   }
 }

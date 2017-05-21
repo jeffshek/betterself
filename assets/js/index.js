@@ -13,8 +13,9 @@ import {
   HOME_URL,
   LOGOUT_URL,
   DASHBOARD_CHARTS_URL,
-  DASHBOARD_SUPPLEMENT_LOGS_URL,
-  DASHBOARD_HEART_RATE_LOGS_URL
+  DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
+  DASHBOARD_HEART_RATE_LOGS_URL,
+  DASHBOARD_SUPPLEMENTS_URL
 } from "./urls/constants";
 
 import { Authenticator } from "./authentication/auth";
@@ -52,11 +53,16 @@ const BetterSelfRouter = () => (
         component={DashboardChartsView}
       />
       <PrivateRoute
-        path={DASHBOARD_SUPPLEMENT_LOGS_URL}
+        path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
         component={DashboardSupplementLogView}
       />
       <PrivateRoute
         path={DASHBOARD_HEART_RATE_LOGS_URL}
+        component={DashboardHeartRateView}
+      />
+
+      <PrivateRoute
+        path={DASHBOARD_SUPPLEMENTS_URL}
         component={DashboardHeartRateView}
       />
 
