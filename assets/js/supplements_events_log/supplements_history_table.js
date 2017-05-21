@@ -115,17 +115,12 @@ export class SupplementsHistoryTableList extends Component {
           {this.getPaginationPageLinkRender(1, "First")}
           {this.getPaginationPageLinkRender(currentPageNumber - 1, "Prev")}
           {this.getPaginationActivePageLinkRender()}
-          {/*{this.getPaginationPageLinkRender(*/}
-          {/*currentPageNumber + 1,*/}
-          {/*currentPageNumber + 1*/}
-          {/*)}*/}
           {this.checkCurrentPageIsLastName()
             ? ""
             : this.getPaginationPageLinkRender(
                 currentPageNumber + 1,
                 currentPageNumber + 1
               )}
-          {/*Some placeholder to make the pagination table look cool*/}
           <li className="page-item">
             <a className="page-link">...</a>
           </li>
