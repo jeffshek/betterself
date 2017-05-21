@@ -65,12 +65,18 @@ var options = [
   { value: "WY", label: "Wyoming" }
 ];
 
-export class SupplementsView extends Component {
+class IngredientView extends Component {
+  render() {
+    return <div>Hello</div>;
+  }
+}
+
+class AddSupplementView extends Component {
   render() {
     return (
       <div className="card">
         <div className="card-header">
-          <strong>Add Supplement</strong>
+          <strong>Create Supplement</strong> (Per Serving)
         </div>
         <div className="card-block">
           <div className="row">
@@ -79,7 +85,7 @@ export class SupplementsView extends Component {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Caffeine"
+                placeholder="Black Tea"
               />
             </div>
           </div>
@@ -87,20 +93,63 @@ export class SupplementsView extends Component {
           <div className="row">
             <div className="form-group col-sm-4">
               <label><strong>Vendor</strong></label>
-              <select className="form-control">
-                <option>1</option>
-              </select>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Lipton"
+              />
+
             </div>
           </div>
 
           <div className="row">
             <div className="form-group col-sm-4">
-              <label><strong>Ingredient Composition</strong></label>
-              <Select name="form-field-name2" value={5} options={options} />
+              <label><strong>Supplement Composition</strong></label>
+              <select className="form-control">
+                <option>Caffeine</option>
+              </select>
+              <select className="form-control">
+                <option>Theanine</option>
+              </select>
             </div>
+            <div className="form-group col-sm-4">
+              <label><strong>Quantity</strong></label>
+              <select className="form-control">
+                <option>75</option>
+              </select>
+              <select className="form-control">
+                <option>150</option>
+              </select>
+
+            </div>
+            <div className="form-group col-sm-4">
+              <label><strong>Measurement</strong></label>
+              <select className="form-control">
+                <option>mg</option>
+              </select>
+              <select className="form-control">
+                <option>mg</option>
+              </select>
+            </div>
+
           </div>
 
         </div>
+      </div>
+    );
+  }
+}
+
+{
+  /*<Select name="form-field-name2" value={5} options={options} />*/
+}
+
+export class SupplementView extends Component {
+  render() {
+    return (
+      <div>
+        {/*<IngredientView/>*/}
+        <AddSupplementView />
       </div>
     );
   }
