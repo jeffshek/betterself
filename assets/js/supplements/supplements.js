@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 const SupplementHistoryTableHeader = () => (
   <thead>
@@ -7,16 +8,17 @@ const SupplementHistoryTableHeader = () => (
       <th>Vendor</th>
       <th>Date Added</th>
       <th>Ingredients</th>
-      <th>Edit</th>
+      <th>Actions</th>
     </tr>
   </thead>
 );
 
 const SupplementRow = props => {
   const data = props.object;
+  console.log(data);
 
   const name = data.name;
-  const vendorName = data.vendor_name;
+  const vendorName = data.vendor;
   const dateAdded = data.create_date;
   const ingredientsFormatted = data.ingredients;
   const timeFormatted = moment(dateAdded).format(
@@ -34,20 +36,59 @@ const SupplementRow = props => {
 };
 
 class SupplementTable extends Component {
+  constructor() {
+    super();
+    this.state = {
+      ready: false
+    };
+  }
+
+  componentDidMount() {
+    this.getSupplements();
+  }
+
+  getSupplements() {
+    // Fetch the specific page we want, defaulting at 1
+    fetch(`api/v1/supplements/`, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.setState({
+          supplements: responseData
+        });
+        this.setState({ ready: true });
+        console.log(this.state.ready);
+      });
+  }
+
+  renderTable() {
+    const supplements = this.state.supplements;
+    const supplementsKeys = Object.keys(supplements);
+
+    return (
+      <table className="table table-bordered table-striped table-condensed">
+        <SupplementHistoryTableHeader />
+        <tbody>
+          {supplementsKeys.map(key => (
+            <SupplementRow key={key} object={supplements[key]} />
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   render() {
     return (
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
           <strong>Supplements</strong>
+          {this.state.ready ? this.renderTable() : ""}
         </div>
-
-        <table className="table table-bordered table-striped table-condensed">
-          <SupplementHistoryTableHeader />
-          <tbody>
-            Hello
-          </tbody>
-        </table>
       </div>
     );
   }

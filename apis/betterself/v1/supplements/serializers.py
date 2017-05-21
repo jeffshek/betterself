@@ -92,6 +92,7 @@ class SupplementReadOnlySerializer(serializers.Serializer):
     ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
     vendor = VendorSerializer()
     uuid = serializers.UUIDField(required=False, read_only=True)
+    created = serializers.DateTimeField()
 
 
 class SupplementCreateSerializer(serializers.Serializer):
@@ -105,6 +106,7 @@ class SupplementCreateSerializer(serializers.Serializer):
     # to make sure that the UUID is valid before trying to create it
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
+    created = serializers.DateTimeField(required=False)
 
     def validate(self, validated_data):
         if 'vendor' in validated_data:
