@@ -6,7 +6,7 @@ import {
 } from "../constants/util_constants";
 import moment from "moment";
 
-export class AddSupplementLog extends Component {
+export class AddSupplementEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,16 +81,33 @@ export class AddSupplementLog extends Component {
 
     return (
       <div className="card">
+
         <div className="card-header">
-          <strong>Add Supplement Entry</strong>
+          <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
+
+          <div className="float-right">
+            <button
+              type="submit"
+              id="create-new-supplement-button"
+              className="btn btn-sm btn-success"
+              onClick={e => this.submitSupplementEvent(e)}
+            >
+              <i className="fa fa-dot-circle-o" /> Create Supplement
+            </button>
+          </div>
+
         </div>
 
         <div className="card-block">
+
           <form onSubmit={e => this.submitSupplementEvent(e)}>
             <div className="row">
+
               <div className="col-sm-12">
+
                 <div className="form-group">
                   <label className="add-supplement-label">Supplement</label>
+
                   <select
                     className="form-control"
                     ref={input => this.supplementNameKey = input}
@@ -102,7 +119,9 @@ export class AddSupplementLog extends Component {
                       </option>
                     ))}
                   </select>
+
                 </div>
+
               </div>
             </div>
             <div className="row">
@@ -148,7 +167,7 @@ export class AddSupplementLog extends Component {
                 className="btn btn-sm btn-success"
                 onClick={e => this.submitSupplementEvent(e)}
               >
-                <i className="fa fa-dot-circle-o" /> Submit
+                <i className="fa fa-dot-circle-o" /> Add Supplement Log
               </button>
             </div>
           </form>

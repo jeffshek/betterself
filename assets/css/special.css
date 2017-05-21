@@ -2,8 +2,24 @@
 
 #supplement-dashboard-submit {
   background-color: #193441;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .add-supplement-label {
   font-weight: bold;
+}
+
+#create-new-supplement-button {
+  margin-bottom: 0;
+  background-color: #c80032;
+}
+
+#add-supplement-entry-text {
+  line-height: 2;
+}
+
+.background-supplement-logs {
+  background-color: #193441;
+
 }
