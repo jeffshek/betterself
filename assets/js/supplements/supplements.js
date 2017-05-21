@@ -105,7 +105,7 @@ class AddSupplementView extends Component {
 
             <div className="row">
               <div className="form-group col-sm-4">
-                <label><strong>Supplement Composition</strong></label>
+                <label><strong>Ingredients</strong><sup>1</sup></label>
                 <select className="form-control">
                   <option>Caffeine</option>
                 </select>
@@ -145,6 +145,7 @@ class AddSupplementView extends Component {
               </button>
             </div>
           </form>
+          <sup>1. Ingredients are optional inputs.</sup>
         </div>
       </div>
     );
