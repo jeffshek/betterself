@@ -23,3 +23,7 @@
 #white-text {
   color:white
 }
+
+.dashboard-label-text{
+  font-weight: bold;
+}
