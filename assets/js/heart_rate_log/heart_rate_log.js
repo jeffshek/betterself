@@ -95,8 +95,6 @@ const heartRateData = [
   }
 ];
 
-// const AddHeartRate
-
 const HeartRateRowHistory = props => {
   const { time, input } = props.object;
   const heartRate = props.object.heart_rate;

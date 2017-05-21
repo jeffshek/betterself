@@ -28,12 +28,14 @@ import SupplementsLogView
   from "./supplements_events_log/supplements_events_log_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
+import { SupplementsView } from "./supplements/supplements";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
 );
 const DashboardChartsView = () => <Dashboard view={ChartsView} />;
 const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView} />;
+const DashboardSupplementsView = () => <Dashboard view={SupplementsView} />;
 
 const BetterSelfRouter = () => (
   <Router>
@@ -63,7 +65,7 @@ const BetterSelfRouter = () => (
 
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}
-        component={DashboardHeartRateView}
+        component={DashboardSupplementsView}
       />
 
     </div>
