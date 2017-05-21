@@ -8,7 +8,7 @@ import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 
-export class AddSupplementEntry extends Component {
+export class AddSupplementEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
