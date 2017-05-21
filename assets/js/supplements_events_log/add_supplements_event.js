@@ -5,8 +5,10 @@ import {
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/util_constants";
 import moment from "moment";
+import { DASHBOARD_SUPPLEMENTS_URL } from "../urls/constants";
+import { Link } from "react-router-dom";
 
-export class AddSupplementEntry extends Component {
+export class AddSupplementEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,16 +85,19 @@ export class AddSupplementEntry extends Component {
       <div className="card">
         <div className="card-header">
           <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="create-new-supplement-button"
-              className="btn btn-sm btn-success"
-              onClick={e => this.submitSupplementEvent(e)}
-            >
-              <i className="fa fa-dot-circle-o" /> Create Supplement
-            </button>
-          </div>
+          <Link to={DASHBOARD_SUPPLEMENTS_URL}>
+            <div className="float-right">
+              <button
+                type="submit"
+                id="create-new-supplement-button"
+                className="btn btn-sm btn-success"
+              >
+                <div id="white-text">
+                  <i className="fa fa-dot-circle-o" /> Create Supplement
+                </div>
+              </button>
+            </div>
+          </Link>
         </div>
 
         <div className="card-block">

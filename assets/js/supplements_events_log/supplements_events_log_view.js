@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
-import { AddSupplementEntry } from "./add_supplements_entry";
+import { AddSupplementEvent } from "./add_supplements_event";
 import { SupplementsHistoryTableList } from "./supplements_history_table";
 
 class SupplementsLogView extends Component {
@@ -61,7 +61,7 @@ class SupplementsLogView extends Component {
   render() {
     return (
       <div>
-        <AddSupplementEntry addSupplementEntry={this.addSupplementEntry} />
+        <AddSupplementEvent addSupplementEntry={this.addSupplementEntry} />
         <SupplementsHistoryTableList
           supplementHistory={this.state.supplementHistory}
           currentPageNumber={this.state.currentPageNumber}

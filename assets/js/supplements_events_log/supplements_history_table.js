@@ -70,7 +70,8 @@ export class SupplementsHistoryTableList extends Component {
     );
   }
 
-  getPaginationPageLinkRender(page, page_verbose_name) {
+  getPaginationPageLinkRender(page, page_link_verbose_title) {
+    // page_link_verbose_title might be "Last", "First" or just a number
     return (
       <li className="page-item">
         <a
@@ -79,7 +80,7 @@ export class SupplementsHistoryTableList extends Component {
             this.getPageResults(page);
           }}
         >
-          {page_verbose_name}
+          {page_link_verbose_title}
         </a>
       </li>
     );
@@ -95,6 +96,15 @@ export class SupplementsHistoryTableList extends Component {
     );
   }
 
+  checkCurrentPageIsLastName() {
+    const currentPageNumber = this.props.currentPageNumber;
+    const lastPageNumber = this.props.lastPageNumber;
+
+    if (currentPageNumber === lastPageNumber) {
+      return true;
+    }
+  }
+
   getNavPaginationControlRender() {
     const currentPageNumber = this.props.currentPageNumber;
     const lastPageNumber = this.props.lastPageNumber;
@@ -105,11 +115,12 @@ export class SupplementsHistoryTableList extends Component {
           {this.getPaginationPageLinkRender(1, "First")}
           {this.getPaginationPageLinkRender(currentPageNumber - 1, "Prev")}
           {this.getPaginationActivePageLinkRender()}
-          {this.getPaginationPageLinkRender(
-            currentPageNumber + 1,
-            currentPageNumber + 1
-          )}
-          {/*Some placeholder to make the pagination table look cool*/}
+          {this.checkCurrentPageIsLastName()
+            ? ""
+            : this.getPaginationPageLinkRender(
+                currentPageNumber + 1,
+                currentPageNumber + 1
+              )}
           <li className="page-item">
             <a className="page-link">...</a>
           </li>
