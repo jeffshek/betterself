@@ -81,10 +81,8 @@ export class AddSupplementEntry extends Component {
 
     return (
       <div className="card">
-
         <div className="card-header">
           <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
-
           <div className="float-right">
             <button
               type="submit"
@@ -95,19 +93,14 @@ export class AddSupplementEntry extends Component {
               <i className="fa fa-dot-circle-o" /> Create Supplement
             </button>
           </div>
-
         </div>
 
         <div className="card-block">
-
           <form onSubmit={e => this.submitSupplementEvent(e)}>
             <div className="row">
-
               <div className="col-sm-12">
-
                 <div className="form-group">
                   <label className="add-supplement-label">Supplement</label>
-
                   <select
                     className="form-control"
                     ref={input => this.supplementNameKey = input}
@@ -121,7 +114,6 @@ export class AddSupplementEntry extends Component {
                   </select>
 
                 </div>
-
               </div>
             </div>
             <div className="row">
