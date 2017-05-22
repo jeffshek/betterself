@@ -7,9 +7,9 @@ const SupplementHistoryTableHeader = () => (
     <tr>
       <th>Name</th>
       <th>Vendor</th>
-      <th>Date Added</th>
       <th>Ingredients</th>
       <th>Actions</th>
+      <th>Date Added</th>
     </tr>
   </thead>
 );
@@ -31,7 +31,6 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
 
     // Describe it as 150 mg Caffeine
     let formatted_label = `${quantity}${measurement_size} ${ingredient_name}`;
-    console.log(formatted_label);
 
     ingredientLabels.push(formatted_label);
   }
@@ -48,15 +47,15 @@ const SupplementRow = props => {
   const ingredientsFormatted = getIngredientsCompositionsLabels(
     data.ingredient_compositions
   );
-  const timeFormatted = moment(dateCreated).format("MMMM Do YYYY, h:mm:ss a");
+  const timeFormatted = moment(dateCreated).format("l - h:mm:ss a");
 
   return (
     <tr>
       <td>{name}</td>
       <td>{vendorName}</td>
-      <td>{timeFormatted}</td>
       <td>{ingredientsFormatted}</td>
       <td />
+      <td>{timeFormatted}</td>
     </tr>
   );
 };
@@ -86,7 +85,6 @@ export class SupplementTable extends Component {
           supplements: responseData
         });
         this.setState({ ready: true });
-        console.log(this.state.ready);
       });
   }
 
