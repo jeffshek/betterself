@@ -272,23 +272,6 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
         data = self.adapter.post_resource_data(Supplement, parameters=parameters)
         self.assertEqual(data['name'], supplement_name)
 
-    def test_post_supplements_with_invalid_uuid(self):
-        supplement_name = 'cheese'
-        parameters = {
-            'name': supplement_name,
-            'ingredient_compositions_uuids': [1, 2],
-        }
-
-        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
-
-        # if this errors (ie. something along the lines of
-        # {'ingredient_compositions_uuids': ['"2" is not a valid UUID.']}
-        self.assertTrue('ingredient_compositions_uuids' in data)
-        # when django errors out, it does it by returning the key field with an error
-        # and includes nothing else
-        self.assertFalse('name' in data)
-        self.assertEqual(len(data), 1)
-
     def test_post_supplements_with_invalid_vendor_uuid(self):
         supplement_name = 'cheese'
         parameters = {
@@ -317,7 +300,7 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
         data = self.adapter.post_resource_data(Supplement, parameters=parameters)
 
         # when django errors out, it does it by returning the key field with an error and description
-        self.assertTrue('non_field_errors' in data)
+        self.assertTrue('vendor_uuid' in data)
         self.assertEqual(len(data), 1)
         self.assertFalse('name' in data)
 

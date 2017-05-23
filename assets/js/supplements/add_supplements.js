@@ -1,21 +1,95 @@
 import React, { PropTypes, Component } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import {
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 
 export class AddSupplementView extends Component {
   constructor() {
     super();
     this.state = { ready: false };
-    this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
+    this.createSupplement = this.createSupplement.bind(this);
+    this.createIngredientComposition = this.createIngredientComposition.bind(
+      this
+    );
   }
 
   componentDidMount() {
     this.getPossibleSupplements();
   }
 
-  submitSupplementEvent(e) {
+  createIngredient(ingredientName) {
+    const params = {
+      name: ingredientName
+    };
+    return fetch("/api/v1/ingredients", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        return responseData;
+      });
+  }
+
+  createIngredientComposition(
+    ingredient,
+    ingredientQuantity,
+    ingredientMeasurement
+  ) {
+    const params = {
+      ingredient_uuid: ingredient.uuid,
+      measurement_uuid: ingredientMeasurement.uuid,
+      quantity: ingredientQuantity
+    };
+
+    return fetch("/api/v1/ingredient_compositions", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        return responseData;
+      });
+  }
+
+  createSupplement(e) {
     e.preventDefault();
-    console.log(this.supplementName.value);
-    console.log(this.vendorName.value);
+
+    // First thing we have to do is create any ingredient compositions
+    // if necessary. So let's check the 3 possible ingredients and see if
+    // they're filled in. If so, create them
+    if (this.ingredientName1.value && this.ingredientQuantity1.value) {
+      const ingredientName = this.ingredientName1.value;
+      const ingredientQuantity = this.ingredientQuantity1.value;
+      const ingredientMeasurement = this.ingredientMeasurement1;
+
+      // Create or get an ingredient named off of the name input
+      const ingredient = this.createIngredient(ingredientName);
+      // This comes back as a promise, so use a then to do what we want
+      const ingredientComposition = ingredient.then(
+        function(ingredientResult) {
+          return this.createIngredientComposition(
+            ingredientResult,
+            ingredientQuantity,
+            ingredientMeasurement
+          );
+        }.bind(this)
+      );
+      ingredientComposition.then(function(data) {
+        console.log(data);
+      });
+    }
+
+    // let ingredientMeasurement = this.state.measurements[this.ingredientMeasurement1.value]
+
+    // this.createIngredientComposition(this.ingredientName1, this.ingredientQuantity1, ingredientMeasurement)
   }
 
   getPossibleSupplements() {
@@ -40,7 +114,7 @@ export class AddSupplementView extends Component {
         <label><strong>Measurement</strong></label>
         <select
           className="form-control"
-          ref={input => this.supplementNameKey = input}
+          ref={input => this.ingredientMeasurement1 = input}
         >
           {measurementKeys.map(key => (
             <option value={key} key={key}>
@@ -51,7 +125,7 @@ export class AddSupplementView extends Component {
 
         <select
           className="form-control"
-          ref={input => this.supplementNameKey = input}
+          ref={input => this.ingredientMeasurement2 = input}
         >
           {measurementKeys.map(key => (
             <option value={key} key={key}>
@@ -70,7 +144,7 @@ export class AddSupplementView extends Component {
           <strong>Create Supplement</strong> (Per Serving)
         </div>
         <div className="card-block">
-          <form onSubmit={e => this.submitSupplementEvent(e)}>
+          <form onSubmit={e => this.createSupplement(e)}>
             <div className="row">
               <div className="form-group col-sm-4">
                 <label><strong>Supplement Name</strong></label>
@@ -103,13 +177,13 @@ export class AddSupplementView extends Component {
                   type="text"
                   className="form-control"
                   placeholder="Caffeine"
-                  ref={input => this.vendorName = input}
+                  ref={input => this.ingredientName1 = input}
                 />
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Theanine"
-                  ref={input => this.vendorName = input}
+                  ref={input => this.ingredientName2 = input}
                 />
               </div>
               <div className="form-group col-sm-4">
@@ -118,14 +192,14 @@ export class AddSupplementView extends Component {
                   type="text"
                   className="form-control"
                   placeholder="50"
-                  ref={input => this.vendorName = input}
+                  ref={input => this.ingredientQuantity1 = input}
                 />
 
                 <input
                   type="text"
                   className="form-control"
                   placeholder="75"
-                  ref={input => this.vendorName = input}
+                  ref={input => this.ingredientQuantity2 = input}
                 />
               </div>
 
@@ -137,7 +211,7 @@ export class AddSupplementView extends Component {
                 type="submit"
                 id="supplement-dashboard-submit"
                 className="btn btn-sm btn-success"
-                onClick={e => this.submitSupplementEvent(e)}
+                onClick={e => this.createSupplement(e)}
               >
                 <i className="fa fa-dot-circle-o" /> Add Supplement
               </button>

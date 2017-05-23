@@ -1,4 +1,3 @@
-from drf_compound_fields.fields import ListOrItemField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -73,7 +72,7 @@ class IngredientCompositionCreateSerializer(serializers.Serializer):
             try:
                 measurement = Measurement.objects.get(uuid=measurement_uuid)
             except Vendor.DoesNotExist:
-                raise ValidationError('Non-required measurement UUID doesn\'t exist'.format(measurement_uuid))
+                raise ValidationError('Non-required Measurement UUID doesn\'t exist'.format(measurement_uuid))
 
             validated_data['measurement'] = measurement
 
@@ -95,45 +94,42 @@ class SupplementReadOnlySerializer(serializers.Serializer):
     created = serializers.DateTimeField()
 
 
+class SimpleIngredientCompositionSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+
+
 class SupplementCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    # TODO - this ListOrItemField is a hack just to make many to many associations
-    # serialize. don't love it, but don't know a clean way around it just yet
-    ingredient_compositions_uuids = ListOrItemField(
-        serializers.UUIDField(), required=False, source='ingredient_compositions'
-    )
-    # really want to refactor all UUID looks ups to be serialized separately to do a lookup
-    # to make sure that the UUID is valid before trying to create it
+    ingredient_compositions = SimpleIngredientCompositionSerializer(many=True)
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
     created = serializers.DateTimeField(required=False)
+
+    def validate_vendor_uuid(self, instance):
+        try:
+            Vendor.objects.get(uuid=instance)
+        except Vendor.DoesNotExist:
+            raise ValidationError('Non-required Vendor! UUID doesn\'t exist'.format(instance))
+
+        return instance
 
     def validate(self, validated_data):
         if 'vendor' in validated_data:
             vendor_details = validated_data.pop('vendor')
             vendor_uuid = vendor_details['uuid']
-
-            try:
-                vendor = Vendor.objects.get(uuid=vendor_uuid)
-            except Vendor.DoesNotExist:
-                raise ValidationError('Non-required vendor UUID doesn\'t exist'.format(vendor_uuid))
+            vendor = Vendor.objects.get(uuid=vendor_uuid)
 
             validated_data['vendor'] = vendor
 
         if 'ingredient_compositions' in validated_data:
-            ingredient_compositions_uuids = validated_data.pop('ingredient_compositions')
+            ingredient_compositions = validated_data.pop('ingredient_compositions')
+            ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 
-            if isinstance(ingredient_compositions_uuids, list):
-                ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
+            ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
 
-                if ingredient_compositions.count() != len(ingredient_compositions_uuids):
-                    raise ValidationError('Not all ingredient composition UUIDs were found {}'.format(
-                        ingredient_compositions_uuids))
-            else:
-                # TODO - add a test for this, this is because of the list
-                # or single situation
-                ing_comp = IngredientComposition.objects.get(uuid=ingredient_compositions_uuids)
-                ingredient_compositions = [ing_comp]
+            if ingredient_compositions.count() != len(ingredient_compositions_uuids):
+                raise ValidationError('Not all ingredient composition UUIDs were found {}'.format(
+                    ingredient_compositions_uuids))
 
         else:
             ingredient_compositions = []
