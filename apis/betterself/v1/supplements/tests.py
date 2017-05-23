@@ -141,26 +141,31 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         # when serializing
         ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
         ingr_comps_uuids = ingr_comps.values_list('uuid', flat=True)
-        ingr_comps_uuids = [str(item) for item in ingr_comps_uuids]
+        ingr_comps_uuids = [{'uuid': str(item)} for item in ingr_comps_uuids]
 
         request_parameters = {
             'name': 'Glutamine',
             'vendor_uuid': vendor_id,
-            'ingredient_compositions_uuids': ingr_comps_uuids
+            'ingredient_compositions': ingr_comps_uuids
         }
         return request_parameters
 
     def test_default_parameters_recorded_correctly(self):
         request_parameters = self._get_default_post_parameters()
+
         self._make_post_request(self.client_1, request_parameters)
 
         supplement = Supplement.objects.get(name=request_parameters['name'])
-        vendor_uuid = supplement.vendor.uuid.__str__()
+        vendor_uuid = str(supplement.vendor.uuid)
+
         ingr_comps_uuids = supplement.ingredient_compositions.values_list('uuid', flat=True)
-        ingr_comps_uuids = [str(item) for item in ingr_comps_uuids]
+        ingr_comps_uuids = set(str(uuid) for uuid in ingr_comps_uuids)
+
+        request_ingredient_compositions = request_parameters['ingredient_compositions']
+        request_ingredient_compositions_uuids = set(item['uuid'] for item in request_ingredient_compositions)
 
         self.assertEqual(vendor_uuid, request_parameters['vendor_uuid'])
-        self.assertSetEqual(set(ingr_comps_uuids), set(request_parameters['ingredient_compositions_uuids']))
+        self.assertSetEqual(request_ingredient_compositions_uuids, ingr_comps_uuids)
 
     def test_post_request(self):
         request_parameters = self._get_default_post_parameters()

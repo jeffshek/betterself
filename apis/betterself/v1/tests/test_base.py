@@ -197,9 +197,6 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
         client_1_starting_get_request = self._make_get_request(self.client_1)
         client_2_starting_get_request = self._make_get_request(self.client_2)
 
-        client_1_starting_data_items_count = len(client_1_starting_get_request.data)
-        client_2_starting_data_items_count = len(client_2_starting_get_request.data)
-
         self._make_post_request(self.client_2, post_parameters)
 
         client_1_second_get_request = self._make_get_request(self.client_1)

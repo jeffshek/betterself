@@ -7,7 +7,7 @@ from django.db.models import Q
 
 
 class BaseModel(models.Model):
-    created = models.DateField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     uuid = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False, unique=True)
 
