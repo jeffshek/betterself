@@ -55,6 +55,7 @@ export class AddSupplementView extends Component {
         return response.json();
       })
       .then(responseData => {
+        console.log("just got created");
         return responseData;
       });
   }
@@ -156,18 +157,6 @@ export class AddSupplementView extends Component {
                 />
               </div>
 
-            </div>
-
-            <div className="row">
-              <div className="form-group col-sm-4">
-                <label><strong>Vendor</strong></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Lipton"
-                  ref={input => this.vendorName = input}
-                />
-              </div>
             </div>
 
             <div className="row">
