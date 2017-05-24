@@ -163,37 +163,26 @@ export class AddSupplementView extends Component {
 
   addSupplementFormData(e) {
     e.preventDefault();
-    const supplement = this.createSupplement(this.supplementName.value);
-    supplement.then(
-      function(supplementDetails) {
-        const supplementUUID = supplementDetails.uuid;
+    const ingredientComposition1 = this.createIngredientComposition1();
+    const ingredientComposition2 = this.createIngredientComposition2();
+    const ingredientComposition3 = this.createIngredientComposition3();
+    Promise.all([
+      ingredientComposition1,
+      ingredientComposition2,
+      ingredientComposition3
+    ]).then(result => {
+      // Not all ingredients may have been entered
+      const validCompositions = result.filter(function(element) {
+        return element !== undefined;
+      });
+      const validCompositionsUUIDs = validCompositions.map(function(obj) {
+        return { uuid: obj.uuid };
+      });
+      // In case there are duplicates, try not to mess up the data
+      const uniqueCompositionUUIDs = [...new Set(validCompositionsUUIDs)];
 
-        const ingredientComposition1 = this.createIngredientComposition1();
-        const ingredientComposition2 = this.createIngredientComposition2();
-        const ingredientComposition3 = this.createIngredientComposition3();
-
-        Promise.all([
-          ingredientComposition1,
-          ingredientComposition2,
-          ingredientComposition3
-        ]).then(result => {
-          // Not all ingredients may have been entered
-          const validCompositions = result.filter(function(element) {
-            return element !== undefined;
-          });
-          const validCompositionsUUIDs = validCompositions.map(function(obj) {
-            return { uuid: obj.uuid };
-          });
-          // In case there are duplicates, try not to mess up the data
-          const uniqueCompositionUUIDs = [...new Set(validCompositionsUUIDs)];
-
-          this.createSupplement(
-            this.supplementName.value,
-            uniqueCompositionUUIDs
-          );
-        });
-      }.bind(this)
-    );
+      this.createSupplement(this.supplementName.value, uniqueCompositionUUIDs);
+    });
   }
 
   getPossibleSupplements() {
