@@ -114,6 +114,7 @@ class SupplementCreateSerializer(serializers.Serializer):
         return instance
 
     def validate(self, validated_data):
+        print (validated_data)
         if 'vendor' in validated_data:
             vendor_details = validated_data.pop('vendor')
             vendor_uuid = vendor_details['uuid']
@@ -122,7 +123,9 @@ class SupplementCreateSerializer(serializers.Serializer):
             validated_data['vendor'] = vendor
 
         if 'ingredient_compositions' in validated_data:
+
             ingredient_compositions = validated_data.pop('ingredient_compositions')
+            print (ingredient_compositions)
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 
             ingredient_compositions = IngredientComposition.objects.filter(uuid__in=ingredient_compositions_uuids)
@@ -149,5 +152,7 @@ class SupplementCreateSerializer(serializers.Serializer):
 
         for composition in ingredient_compositions:
             supplement.ingredient_compositions.add(composition)
+
+        supplement.save()
 
         return supplement

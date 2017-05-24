@@ -72,10 +72,14 @@ export class AddSupplementView extends Component {
       });
   }
 
-  createSupplement(supplementName) {
-    const params = {
+  createSupplement(supplementName, ingredientCompositions) {
+    let params = {
       name: supplementName
     };
+    if (ingredientCompositions) {
+      params["ingredient_compositions"] = ingredientCompositions;
+    }
+
     return fetch("/api/v1/supplements", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
@@ -85,6 +89,7 @@ export class AddSupplementView extends Component {
         return response.json();
       })
       .then(function(responseData) {
+        console.log(responseData);
         return responseData;
       });
   }
@@ -172,15 +177,20 @@ export class AddSupplementView extends Component {
           ingredientComposition2,
           ingredientComposition3
         ]).then(result => {
+          // Not all ingredients may have been entered
           const validCompositions = result.filter(function(element) {
             return element !== undefined;
           });
-
           const validCompositionsUUIDs = validCompositions.map(function(obj) {
-            return obj.uuid;
+            return { uuid: obj.uuid };
           });
-
+          // In case there are duplicates, try not to mess up the data
           const uniqueCompositionUUIDs = [...new Set(validCompositionsUUIDs)];
+
+          this.createSupplement(
+            this.supplementName.value,
+            uniqueCompositionUUIDs
+          );
         });
       }.bind(this)
     );
