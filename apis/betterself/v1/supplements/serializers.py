@@ -100,7 +100,7 @@ class SimpleIngredientCompositionSerializer(serializers.Serializer):
 
 class SupplementCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    ingredient_compositions = SimpleIngredientCompositionSerializer(many=True)
+    ingredient_compositions = SimpleIngredientCompositionSerializer(many=True, required=False)
     vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
     created = serializers.DateTimeField(required=False)

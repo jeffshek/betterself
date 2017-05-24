@@ -8,8 +8,21 @@ export class AddSupplementView extends Component {
   constructor() {
     super();
     this.state = { ready: false };
+    this.addSupplementFormData = this.addSupplementFormData.bind(this);
+    this.postIngredientComposition = this.postIngredientComposition.bind(this);
+
     this.createSupplement = this.createSupplement.bind(this);
     this.createIngredientComposition = this.createIngredientComposition.bind(
+      this
+    );
+
+    this.createIngredientComposition1 = this.createIngredientComposition1.bind(
+      this
+    );
+    this.createIngredientComposition2 = this.createIngredientComposition2.bind(
+      this
+    );
+    this.createIngredientComposition3 = this.createIngredientComposition3.bind(
       this
     );
   }
@@ -35,7 +48,7 @@ export class AddSupplementView extends Component {
       });
   }
 
-  createIngredientComposition(
+  postIngredientComposition(
     ingredient,
     ingredientQuantity,
     ingredientMeasurement
@@ -55,42 +68,97 @@ export class AddSupplementView extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log("just got created");
         return responseData;
       });
   }
 
-  createSupplement(e) {
-    e.preventDefault();
+  createSupplement(supplementName) {
+    const params = {
+      name: supplementName
+    };
+    return fetch("/api/v1/supplements", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(function(responseData) {
+        return responseData;
+      });
+  }
 
-    // First thing we have to do is create any ingredient compositions
-    // if necessary. So let's check the 3 possible ingredients and see if
-    // they're filled in. If so, create them
+  createIngredientComposition(
+    ingredientName,
+    ingredientQuantity,
+    ingredientMeasurement
+  ) {
+    // Create or get an ingredient named off of the name input
+    const ingredient = this.createIngredient(ingredientName);
+
+    // ingredient comes back as a promise, so use a then to do what we want
+    const ingredientComposition = ingredient.then(
+      function(ingredientResult) {
+        return this.postIngredientComposition(
+          ingredientResult,
+          ingredientQuantity,
+          ingredientMeasurement
+        );
+      }.bind(this)
+    );
+
+    console.log("Created" + ingredientName);
+
+    return ingredientComposition;
+  }
+
+  createIngredientComposition1(supplementUUID) {
+    // Embarrassing function, but create an ingredient if inputs are passed
     if (this.ingredientName1.value && this.ingredientQuantity1.value) {
       const ingredientName = this.ingredientName1.value;
       const ingredientQuantity = this.ingredientQuantity1.value;
       const ingredientMeasurement = this.ingredientMeasurement1;
 
-      // Create or get an ingredient named off of the name input
-      const ingredient = this.createIngredient(ingredientName);
-      // This comes back as a promise, so use a then to do what we want
-      const ingredientComposition = ingredient.then(
-        function(ingredientResult) {
-          return this.createIngredientComposition(
-            ingredientResult,
-            ingredientQuantity,
-            ingredientMeasurement
-          );
-        }.bind(this)
+      return this.createIngredientComposition(
+        ingredientName,
+        ingredientQuantity,
+        ingredientMeasurement
       );
-      ingredientComposition.then(function(data) {
-        console.log(data);
-      });
     }
+  }
 
-    // let ingredientMeasurement = this.state.measurements[this.ingredientMeasurement1.value]
+  createIngredientComposition2(supplementUUID) {
+    // Embarrassing function, but create an ingredient if inputs are passed
+    if (this.ingredientName2.value && this.ingredientQuantity2.value) {
+      const ingredientName = this.ingredientName2.value;
+      const ingredientQuantity = this.ingredientQuantity2.value;
+      const ingredientMeasurement = this.ingredientMeasurement2;
 
-    // this.createIngredientComposition(this.ingredientName1, this.ingredientQuantity1, ingredientMeasurement)
+      return this.createIngredientComposition(
+        ingredientName,
+        ingredientQuantity,
+        ingredientMeasurement
+      );
+    }
+  }
+
+  createIngredientComposition3(supplementUUID) {
+    // Embarrassing function, but create an ingredient if inputs are passed
+  }
+
+  addSupplementFormData(e) {
+    e.preventDefault();
+    const supplement = this.createSupplement(this.supplementName.value);
+    supplement.then(
+      function(supplementDetails) {
+        const supplementUUID = supplementDetails.uuid;
+
+        this.createIngredientComposition1(supplementUUID);
+        this.createIngredientComposition2(supplementUUID);
+        this.createIngredientComposition3(supplementUUID);
+      }.bind(this)
+    );
   }
 
   getPossibleSupplements() {
@@ -145,7 +213,7 @@ export class AddSupplementView extends Component {
           <strong>Create Supplement</strong> (Per Serving)
         </div>
         <div className="card-block">
-          <form onSubmit={e => this.createSupplement(e)}>
+          <form onSubmit={e => this.addSupplementFormData(e)}>
             <div className="row">
               <div className="form-group col-sm-4">
                 <label><strong>Supplement Name</strong></label>
@@ -200,7 +268,7 @@ export class AddSupplementView extends Component {
                 type="submit"
                 id="supplement-dashboard-submit"
                 className="btn btn-sm btn-success"
-                onClick={e => this.createSupplement(e)}
+                onClick={e => this.addSupplementFormData(e)}
               >
                 <i className="fa fa-dot-circle-o" /> Add Supplement
               </button>
