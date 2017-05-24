@@ -63,15 +63,8 @@ const SupplementRow = props => {
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
       <td>
-        <div
-          onClick={e => {
-            confirmDelete(data.uuid);
-          }}
-        >
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
-
-          </div>
+        <div className="remove-icon">
+          <i className="fa fa-remove" />
         </div>
       </td>
       <td>{timeFormatted}</td>
