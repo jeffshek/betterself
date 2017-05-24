@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const SupplementHistoryTableHeader = () => (
   <thead>
@@ -37,6 +38,15 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
   return ingredientLabels.join(", ");
 };
 
+const confirmDelete = () => {
+  const answer = confirm("Delete data point?");
+  if (answer) {
+    // return
+  } else {
+    // return
+  }
+};
+
 const SupplementRow = props => {
   const data = props.object;
 
@@ -51,7 +61,20 @@ const SupplementRow = props => {
     <tr>
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
-      <td />
+      <td>
+        {/*<Link to="www.google.com">*/}
+        <div
+          onClick={e => {
+            confirmDelete();
+          }}
+        >
+          <div className="remove-icon">
+            <i className="fa fa-remove" />
+
+          </div>
+        </div>
+        {/*</Link>*/}
+      </td>
       <td>{timeFormatted}</td>
     </tr>
   );

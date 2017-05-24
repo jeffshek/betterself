@@ -27,3 +27,8 @@
 .dashboard-label-text{
   font-weight: bold;
 }
+
+.remove-icon{
+  color: darkred;
+  text-align: center;
+}
