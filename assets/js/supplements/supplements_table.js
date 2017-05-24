@@ -8,7 +8,7 @@ const SupplementHistoryTableHeader = () => (
     <tr>
       <th>Name</th>
       <th>Ingredients</th>
-      <th>Actions</th>
+      <th><center>Actions</center></th>
       <th>Date Added</th>
     </tr>
   </thead>
@@ -38,7 +38,8 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
   return ingredientLabels.join(", ");
 };
 
-const confirmDelete = () => {
+const confirmDelete = uuid => {
+  console.log(uuid);
   const answer = confirm("Delete data point?");
   if (answer) {
     // return
@@ -62,10 +63,9 @@ const SupplementRow = props => {
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
       <td>
-        {/*<Link to="www.google.com">*/}
         <div
           onClick={e => {
-            confirmDelete();
+            confirmDelete(data.uuid);
           }}
         >
           <div className="remove-icon">
@@ -73,7 +73,6 @@ const SupplementRow = props => {
 
           </div>
         </div>
-        {/*</Link>*/}
       </td>
       <td>{timeFormatted}</td>
     </tr>
