@@ -80,9 +80,6 @@ class Supplement(BaseModelWithUserGeneratedContent):
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
     # quantity is an event type of attribute, so its not here.
 
-    def wonder(self):
-        return 5
-
     class Meta:
         unique_together = ('user', 'name', 'vendor')
         ordering = ['user', 'name']

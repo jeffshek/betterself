@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const SupplementHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Name</th>
-      <th>Vendor</th>
       <th>Ingredients</th>
-      <th>Actions</th>
+      <th><center>Actions</center></th>
       <th>Date Added</th>
     </tr>
   </thead>
@@ -38,11 +38,20 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
   return ingredientLabels.join(", ");
 };
 
+const confirmDelete = uuid => {
+  console.log(uuid);
+  const answer = confirm("Delete data point?");
+  if (answer) {
+    // return
+  } else {
+    // return
+  }
+};
+
 const SupplementRow = props => {
   const data = props.object;
 
   const name = data.name;
-  const vendorName = data.vendor;
   const dateCreated = data.created;
   const ingredientsFormatted = getIngredientsCompositionsLabels(
     data.ingredient_compositions
@@ -52,9 +61,12 @@ const SupplementRow = props => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{vendorName}</td>
       <td>{ingredientsFormatted}</td>
-      <td />
+      <td>
+        <div className="remove-icon">
+          <i className="fa fa-remove" />
+        </div>
+      </td>
       <td>{timeFormatted}</td>
     </tr>
   );
