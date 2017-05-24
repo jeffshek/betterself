@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import {
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -39,12 +42,14 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
 };
 
 const confirmDelete = uuid => {
-  console.log(uuid);
   const answer = confirm("Delete data point?");
   if (answer) {
-    // return
-  } else {
-    // return
+    // Doesn't work yet. Need to add URLs/Serializers
+    fetch("/api/v1/supplements/" + uuid, {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    });
   }
 };
 
@@ -63,8 +68,10 @@ const SupplementRow = props => {
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
       <td>
-        <div className="remove-icon">
-          <i className="fa fa-remove" />
+        <div onClick={e => confirmDelete()}>
+          <div className="remove-icon">
+            <i className="fa fa-remove" />
+          </div>
         </div>
       </td>
       <td>{timeFormatted}</td>

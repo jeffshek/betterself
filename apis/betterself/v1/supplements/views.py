@@ -1,4 +1,5 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
@@ -45,7 +46,7 @@ class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewI
         return self._get_read_or_write_serializer_class()
 
 
-class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
+class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1, RetrieveUpdateDestroyAPIView):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement
@@ -56,3 +57,8 @@ class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1)
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
+
+    def delete(self, request, *args, **kwargs):
+        data = self.model.objects.get(uuid=request.data['uuid'], user=self.request.user)
+        data.delete()
+        return Response({}, status=202)
