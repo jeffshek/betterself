@@ -108,12 +108,10 @@ export class AddSupplementView extends Component {
       }.bind(this)
     );
 
-    console.log("Created" + ingredientName);
-
     return ingredientComposition;
   }
 
-  createIngredientComposition1(supplementUUID) {
+  createIngredientComposition1() {
     // Embarrassing function, but create an ingredient if inputs are passed
     if (this.ingredientName1.value && this.ingredientQuantity1.value) {
       const ingredientName = this.ingredientName1.value;
@@ -124,11 +122,11 @@ export class AddSupplementView extends Component {
         ingredientName,
         ingredientQuantity,
         ingredientMeasurement
-      );
+      ).then();
     }
   }
 
-  createIngredientComposition2(supplementUUID) {
+  createIngredientComposition2() {
     // Embarrassing function, but create an ingredient if inputs are passed
     if (this.ingredientName2.value && this.ingredientQuantity2.value) {
       const ingredientName = this.ingredientName2.value;
@@ -143,8 +141,19 @@ export class AddSupplementView extends Component {
     }
   }
 
-  createIngredientComposition3(supplementUUID) {
+  createIngredientComposition3() {
     // Embarrassing function, but create an ingredient if inputs are passed
+    if (this.ingredientName3.value && this.ingredientQuantity3.value) {
+      const ingredientName = this.ingredientName3.value;
+      const ingredientQuantity = this.ingredientQuantity3.value;
+      const ingredientMeasurement = this.ingredientMeasurement3;
+
+      return this.createIngredientComposition(
+        ingredientName,
+        ingredientQuantity,
+        ingredientMeasurement
+      );
+    }
   }
 
   addSupplementFormData(e) {
@@ -154,9 +163,25 @@ export class AddSupplementView extends Component {
       function(supplementDetails) {
         const supplementUUID = supplementDetails.uuid;
 
-        this.createIngredientComposition1(supplementUUID);
-        this.createIngredientComposition2(supplementUUID);
-        this.createIngredientComposition3(supplementUUID);
+        const ingredientComposition1 = this.createIngredientComposition1();
+        const ingredientComposition2 = this.createIngredientComposition2();
+        const ingredientComposition3 = this.createIngredientComposition3();
+
+        Promise.all([
+          ingredientComposition1,
+          ingredientComposition2,
+          ingredientComposition3
+        ]).then(result => {
+          const validCompositions = result.filter(function(element) {
+            return element !== undefined;
+          });
+
+          const validCompositionsUUIDs = validCompositions.map(function(obj) {
+            return obj.uuid;
+          });
+
+          const uniqueCompositionUUIDs = [...new Set(validCompositionsUUIDs)];
+        });
       }.bind(this)
     );
   }
@@ -195,6 +220,16 @@ export class AddSupplementView extends Component {
         <select
           className="form-control"
           ref={input => this.ingredientMeasurement2 = input}
+        >
+          {measurementKeys.map(key => (
+            <option value={key} key={key}>
+              {this.state.measurements[key].name}
+            </option>
+          ))}
+        </select>
+        <select
+          className="form-control"
+          ref={input => this.ingredientMeasurement3 = input}
         >
           {measurementKeys.map(key => (
             <option value={key} key={key}>
@@ -242,6 +277,12 @@ export class AddSupplementView extends Component {
                   placeholder="Theanine"
                   ref={input => this.ingredientName2 = input}
                 />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Ginseng"
+                  ref={input => this.ingredientName3 = input}
+                />
               </div>
               <div className="form-group col-sm-4">
                 <label><strong>Quantity</strong><sup>2</sup></label>
@@ -251,12 +292,17 @@ export class AddSupplementView extends Component {
                   placeholder="50"
                   ref={input => this.ingredientQuantity1 = input}
                 />
-
                 <input
                   type="text"
                   className="form-control"
                   placeholder="75"
                   ref={input => this.ingredientQuantity2 = input}
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="10"
+                  ref={input => this.ingredientQuantity3 = input}
                 />
               </div>
 

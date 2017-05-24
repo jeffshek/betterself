@@ -6,7 +6,6 @@ const SupplementHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Name</th>
-      <th>Vendor</th>
       <th>Ingredients</th>
       <th>Actions</th>
       <th>Date Added</th>
@@ -42,7 +41,6 @@ const SupplementRow = props => {
   const data = props.object;
 
   const name = data.name;
-  const vendorName = data.vendor;
   const dateCreated = data.created;
   const ingredientsFormatted = getIngredientsCompositionsLabels(
     data.ingredient_compositions
@@ -52,7 +50,6 @@ const SupplementRow = props => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{vendorName}</td>
       <td>{ingredientsFormatted}</td>
       <td />
       <td>{timeFormatted}</td>
