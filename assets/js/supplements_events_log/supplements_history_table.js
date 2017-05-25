@@ -1,11 +1,35 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+
+const confirmDelete = (uuid, supplementName, supplementTime) => {
+  const answer = confirm(
+    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
+  );
+  const params = {
+    uuid: uuid
+  };
+
+  console.log(params);
+  if (answer) {
+    fetch("/api/v1/supplement_events/", {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    }).then(
+      // After deleting, just refresh the entire page. In the future, remove
+      // from the array and setState
+      location.reload()
+    );
+  }
+};
 
 const SupplementHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
+  const uuid = data.uuid;
   const supplementName = data.supplement_name;
   const servingSize = data.quantity;
   const source = data.source;
@@ -22,6 +46,13 @@ const SupplementHistoryRow = props => {
       <td>{timeFormatted}</td>
       <td>{duration}</td>
       <td>
+        <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
+          <div className="remove-icon">
+            <i className="fa fa-remove" />
+          </div>
+        </div>
+      </td>
+      <td>
         <span className="badge badge-success">{source}</span>
       </td>
     </tr>
@@ -35,6 +66,7 @@ const SupplementHistoryTableHeader = () => (
       <th>Serving Size</th>
       <th>Supplement Time</th>
       <th>Duration (Minutes)</th>
+      <th><center>Action</center></th>
       <th>Source</th>
     </tr>
   </thead>

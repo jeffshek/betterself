@@ -19,6 +19,7 @@ const SupplementHistoryTableHeader = () => (
 
 const getIngredientsCompositionsLabels = ingredient_compositions => {
   let ingredientLabels = [];
+  // You should probably switch to a map function here ...
   for (let i = 0; i < ingredient_compositions.length; i++) {
     let details = ingredient_compositions[i];
     let ingredient_name = details.ingredient.name;
