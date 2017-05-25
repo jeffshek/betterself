@@ -1,12 +1,11 @@
-from django.http.response import Http404
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
-from rest_framework.response import Response
+from rest_framework.generics import ListAPIView, GenericAPIView, ListCreateAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
-from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser
+from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -16,10 +15,13 @@ so that users won't have access to models that are not the default or don't belo
 """
 
 
-class VendorView(BaseGenericListCreateAPIViewV1):
+class VendorView(ListCreateAPIView):
     serializer_class = VendorSerializer
     model = Vendor
     filter_fields = ('name', 'uuid')
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
 
 class MeasurementView(ListAPIView):
@@ -31,13 +33,16 @@ class MeasurementView(ListAPIView):
     queryset = Measurement.objects.all()
 
 
-class IngredientView(BaseGenericListCreateAPIViewV1):
+class IngredientView(ListCreateAPIView):
     serializer_class = IngredientSerializer
     model = Ingredient
     filter_fields = ('name', 'half_life_minutes', 'uuid')
 
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
-class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser):
+
+class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser):
     read_serializer_class = IngredientCompositionReadOnlySerializer
     write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
@@ -46,30 +51,28 @@ class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteSeria
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
-class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser, RetrieveUpdateDestroyAPIView):
+
+class SupplementView(GenericAPIView, ListModelMixin, CreateModelMixin, ReadOrWriteSerializerChooser,
+                     UUIDDeleteMixin):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement
     filter_class = SupplementFilter
 
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related('ingredient_compositions')
-
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
-    def destroy(self, request, *args, **kwargs):
-        try:
-            uuid = request.data['uuid']
-        except KeyError:
-            raise Http404
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
-        filter_params = {
-            'uuid': uuid,
-            'user': request.user
-        }
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-        object = get_object_or_404(self.model, **filter_params)
-        object.delete()
-        return Response(status=204)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+# TODO - Add delete tests

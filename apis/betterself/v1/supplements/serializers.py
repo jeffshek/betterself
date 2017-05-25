@@ -122,7 +122,6 @@ class SupplementCreateSerializer(serializers.Serializer):
             validated_data['vendor'] = vendor
 
         if 'ingredient_compositions' in validated_data:
-
             ingredient_compositions = validated_data.pop('ingredient_compositions')
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 

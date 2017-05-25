@@ -1,12 +1,11 @@
 from django.conf.urls import url
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView
-from apis.betterself.v1.supplements.views import SupplementView, VendorView, IngredientCompositionView, \
-    IngredientView, MeasurementView
+from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
+    IngredientView, MeasurementView, SupplementView
 from events.models import SupplementEvent, DailyProductivityLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
-
 
 urlpatterns = [
     # page looks like 127.0.0.1:8001/{Supplement.RESOURCE_NAME}/
