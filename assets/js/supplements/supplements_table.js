@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import {
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -16,6 +19,7 @@ const SupplementHistoryTableHeader = () => (
 
 const getIngredientsCompositionsLabels = ingredient_compositions => {
   let ingredientLabels = [];
+  // You should probably switch to a map function here ...
   for (let i = 0; i < ingredient_compositions.length; i++) {
     let details = ingredient_compositions[i];
     let ingredient_name = details.ingredient.name;
@@ -38,20 +42,30 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
   return ingredientLabels.join(", ");
 };
 
-const confirmDelete = uuid => {
-  console.log(uuid);
-  const answer = confirm("Delete data point?");
+const confirmDelete = (uuid, name) => {
+  const answer = confirm(
+    `WARNING: This will delete ALL events related to ${name}!\n\nDelete supplement - ${name}? `
+  );
+  const params = {
+    uuid: uuid
+  };
   if (answer) {
-    // return
-  } else {
-    // return
+    fetch("/api/v1/supplements/", {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    }).then(
+      // After deleting, just refresh the entire page. In the future, remove
+      // from the array and setState
+      location.reload()
+    );
   }
 };
 
 const SupplementRow = props => {
   const data = props.object;
 
-  const name = data.name;
+  const { uuid, name } = data;
   const dateCreated = data.created;
   const ingredientsFormatted = getIngredientsCompositionsLabels(
     data.ingredient_compositions
@@ -63,8 +77,10 @@ const SupplementRow = props => {
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
       <td>
-        <div className="remove-icon">
-          <i className="fa fa-remove" />
+        <div onClick={e => confirmDelete(uuid, name)}>
+          <div className="remove-icon">
+            <i className="fa fa-remove" />
+          </div>
         </div>
       </td>
       <td>{timeFormatted}</td>

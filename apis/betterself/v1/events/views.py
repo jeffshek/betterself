@@ -1,12 +1,17 @@
+from django.http.response import Http404
+from django.shortcuts import get_object_or_404
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+
 from apis.betterself.v1.events.filters import SupplementEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer
-from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1
+from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog
 
 
-class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
+class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser, RetrieveUpdateDestroyAPIView):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
@@ -19,8 +24,23 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfa
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
+    def destroy(self, request, *args, **kwargs):
+        try:
+            uuid = request.data['uuid']
+        except KeyError:
+            raise Http404
 
-class ProductivityLogView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
+        filter_params = {
+            'uuid': uuid,
+            'user': request.user
+        }
+
+        object = get_object_or_404(self.model, **filter_params)
+        object.delete()
+        return Response(status=204)
+
+
+class ProductivityLogView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser):
     model = DailyProductivityLog
     read_serializer_class = ProductivityLogReadSerializer
     write_serializer_class = ProductivityLogCreateSerializer

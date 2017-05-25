@@ -4,7 +4,8 @@ import {
   DASHBOARD_INDEX_URL,
   DASHBOARD_CHARTS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
-  DASHBOARD_HEART_RATE_LOGS_URL
+  DASHBOARD_HEART_RATE_LOGS_URL,
+  DASHBOARD_SUPPLEMENTS_URL
 } from "../urls/constants";
 
 const DashboardButton = () => (
@@ -42,6 +43,11 @@ const ExternalDataMenu = props => (
 
 const ExternalVendorsLinks = () => (
   <div>
+    <NavigationLink
+      iconName="icon-list"
+      label="Supplements"
+      link={DASHBOARD_SUPPLEMENTS_URL}
+    />
     <NavigationLink
       iconName="icon-rocket"
       label="FitBit"
