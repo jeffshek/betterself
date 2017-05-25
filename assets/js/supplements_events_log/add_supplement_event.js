@@ -70,7 +70,7 @@ export class AddSupplementEvent extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.props.addSupplementEntry(responseData);
+        this.props.addEventEntry(responseData);
       });
   }
 

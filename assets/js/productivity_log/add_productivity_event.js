@@ -5,10 +5,9 @@ import {
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/util_constants";
 import moment from "moment";
-import { DASHBOARD_SUPPLEMENTS_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 
-export class AddSupplementEvent extends Component {
+export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +16,7 @@ export class AddSupplementEvent extends Component {
       supplements: []
     };
 
-    this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
+    this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -40,7 +39,7 @@ export class AddSupplementEvent extends Component {
     this.getPossibleSupplements();
   }
 
-  submitSupplementEvent(e) {
+  submitProductivityEvent(e) {
     e.preventDefault();
 
     const supplementLocation = this.supplementNameKey.value;
@@ -70,7 +69,7 @@ export class AddSupplementEvent extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.props.addSupplementEntry(responseData);
+        this.props.addEventEntry(responseData);
       });
   }
 
@@ -84,24 +83,11 @@ export class AddSupplementEvent extends Component {
     return (
       <div className="card">
         <div className="card-header">
-          <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
-          <Link to={DASHBOARD_SUPPLEMENTS_URL}>
-            <div className="float-right">
-              <button
-                type="submit"
-                id="create-new-supplement-button"
-                className="btn btn-sm btn-success"
-              >
-                <div id="white-text">
-                  <i className="fa fa-dot-circle-o" /> Create Supplement
-                </div>
-              </button>
-            </div>
-          </Link>
+          <strong id="add-supplement-entry-text">Log Productivity Entry</strong>
         </div>
 
         <div className="card-block">
-          <form onSubmit={e => this.submitSupplementEvent(e)}>
+          <form onSubmit={e => this.submitProductivityEvent(e)}>
             <div className="row">
               <div className="col-sm-12">
                 <div className="form-group">
@@ -135,7 +121,7 @@ export class AddSupplementEvent extends Component {
               </div>
               <div className="form-group col-sm-4">
                 <label className="add-supplement-label">
-                  Date / Time of Ingestion
+                  Date
                 </label>
                 {/*Use the current datetime as a default */}
                 <Datetime
@@ -162,9 +148,9 @@ export class AddSupplementEvent extends Component {
                 type="submit"
                 id="supplement-dashboard-submit"
                 className="btn btn-sm btn-success"
-                onClick={e => this.submitSupplementEvent(e)}
+                onClick={e => this.submitProductivityEvent(e)}
               >
-                <i className="fa fa-dot-circle-o" /> Add Supplement Log
+                <i className="fa fa-dot-circle-o" /> Log Productivity
               </button>
             </div>
           </form>

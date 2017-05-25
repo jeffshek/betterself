@@ -8,27 +8,18 @@ class SupplementsLogView extends Component {
   constructor() {
     super();
     this.state = {
-      supplementHistory: [
-        {
-          supplement_name: "Loading ... ",
-          quantity: "Loading ... ",
-          duration: "Loading ... ",
-          time: null,
-          source: "Loading ... "
-        }
-      ],
-      loadedSupplementHistory: false
+      loadedHistory: false
     };
-    this.addSupplementEntry = this.addSupplementEntry.bind(this);
-    this.getSupplementHistory = this.getSupplementHistory.bind(this);
+    this.addEventEntry = this.addEventEntry.bind(this);
+    this.getEventHistory = this.getEventHistory.bind(this);
   }
 
   componentDidMount() {
-    this.getSupplementHistory();
+    this.getEventHistory();
   }
 
-  getSupplementHistory(page = 1) {
-    this.setState({ loadedSupplementHistory: false });
+  getEventHistory(page = 1) {
+    this.setState({ loadedHistory: false });
 
     // Fetch the specific page we want, defaulting at 1
     fetch(`api/v1/supplement_events/?page=${page}`, {
@@ -39,35 +30,32 @@ class SupplementsLogView extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.setState({ supplementHistory: responseData.results });
+        this.setState({ eventHistory: responseData.results });
         this.setState({ currentPageNumber: responseData.current_page });
         this.setState({ lastPageNumber: responseData.last_page });
 
         // After we've gotten the data, now safe to render
-        this.setState({ loadedSupplementHistory: true });
+        this.setState({ loadedHistory: true });
       });
   }
 
-  addSupplementEntry(entry) {
-    let updatedSupplementHistory = [
-      entry,
-      ...this.state.supplementHistory.slice()
-    ];
+  addEventEntry(entry) {
+    let updatedEventHistory = [entry, ...this.state.eventHistory.slice()];
     this.setState({
-      supplementHistory: updatedSupplementHistory
+      eventHistory: updatedEventHistory
     });
   }
 
   render() {
     return (
       <div>
-        <AddSupplementEvent addSupplementEntry={this.addSupplementEntry} />
+        <AddSupplementEvent addSupplementEntry={this.addEventEntry} />
         <SupplementsHistoryTableList
-          supplementHistory={this.state.supplementHistory}
+          eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
-          renderReady={this.state.loadedSupplementHistory}
-          getSupplementHistory={this.getSupplementHistory}
+          renderReady={this.state.loadedHistory}
+          getSupplementHistory={this.getEventHistory}
         />
       </div>
     );

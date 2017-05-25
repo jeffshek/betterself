@@ -24,7 +24,7 @@ const confirmDelete = (uuid, supplementName, supplementTime) => {
   }
 };
 
-const SupplementHistoryRow = props => {
+const ProductivityHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
@@ -58,7 +58,7 @@ const SupplementHistoryRow = props => {
   );
 };
 
-const SupplementHistoryTableHeader = () => (
+const ProductivityHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Supplement</th>
@@ -71,7 +71,7 @@ const SupplementHistoryTableHeader = () => (
   </thead>
 );
 
-export class SupplementsHistoryTableList extends Component {
+export class ProductivityLogTable extends Component {
   constructor() {
     super();
     this.getPageResults = this.getPageResults.bind(this);
@@ -82,19 +82,19 @@ export class SupplementsHistoryTableList extends Component {
       return;
     }
 
-    this.props.getSupplementHistory(page);
+    this.props.getEventHistory(page);
   }
 
   getTableRender() {
-    const historicalData = this.props.supplementHistory;
+    const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <SupplementHistoryTableHeader />
+        <ProductivityHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementHistoryRow key={key} object={historicalData[key]} />
+            <ProductivityHistoryRow key={key} object={historicalData[key]} />
           ))}
         </tbody>
       </table>
@@ -166,7 +166,7 @@ export class SupplementsHistoryTableList extends Component {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Supplement History</strong>
+          <strong>Productivity History</strong>
         </div>
         {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady

@@ -82,11 +82,12 @@ export class SupplementsHistoryTableList extends Component {
       return;
     }
 
-    this.props.getSupplementHistory(page);
+    this.props.getEventHistory(page);
   }
 
   getTableRender() {
-    const historicalData = this.props.supplementHistory;
+    console.log(this.props);
+    const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (

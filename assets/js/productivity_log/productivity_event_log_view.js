@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
-import { AddSupplementEvent } from "./add_productivity_event";
-import { SupplementsHistoryTableList } from "./productivity_table";
+import { AddProductivityEvent } from "./add_productivity_event";
+import { ProductivityLogTable } from "./productivity_table";
 
 class ProductivityLogView extends Component {
   constructor() {
     super();
     this.state = {
-      supplementHistory: [
+      eventHistory: [
         {
           supplement_name: "Loading ... ",
           quantity: "Loading ... ",
@@ -17,18 +17,18 @@ class ProductivityLogView extends Component {
           source: "Loading ... "
         }
       ],
-      loadedSupplementHistory: false
+      loadedHistory: false
     };
-    this.addSupplementEntry = this.addSupplementEntry.bind(this);
-    this.getSupplementHistory = this.getSupplementHistory.bind(this);
+    this.addEventEntry = this.addEventEntry.bind(this);
+    this.getEventHistory = this.getEventHistory.bind(this);
   }
 
   componentDidMount() {
-    this.getSupplementHistory();
+    this.getEventHistory();
   }
 
-  getSupplementHistory(page = 1) {
-    this.setState({ loadedSupplementHistory: false });
+  getEventHistory(page = 1) {
+    this.setState({ loadedHistory: false });
 
     // Fetch the specific page we want, defaulting at 1
     fetch(`api/v1/productivity_log/?page=${page}`, {
@@ -39,35 +39,33 @@ class ProductivityLogView extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.setState({ supplementHistory: responseData.results });
+        console.log(responseData);
+        this.setState({ eventHistory: responseData.results });
         this.setState({ currentPageNumber: responseData.current_page });
         this.setState({ lastPageNumber: responseData.last_page });
 
         // After we've gotten the data, now safe to render
-        this.setState({ loadedSupplementHistory: true });
+        this.setState({ loadedHistory: true });
       });
   }
 
-  addSupplementEntry(entry) {
-    let updatedSupplementHistory = [
-      entry,
-      ...this.state.supplementHistory.slice()
-    ];
+  addEventEntry(entry) {
+    let updatedEventHistory = [entry, ...this.state.eventHistory.slice()];
     this.setState({
-      supplementHistory: updatedSupplementHistory
+      eventHistory: updatedEventHistory
     });
   }
 
   render() {
     return (
       <div>
-        <AddSupplementEvent addSupplementEntry={this.addSupplementEntry} />
-        <SupplementsHistoryTableList
-          supplementHistory={this.state.supplementHistory}
+        <AddProductivityEvent addSupplementEntry={this.addEventEntry} />
+        <ProductivityLogTable
+          supplementHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
-          renderReady={this.state.loadedSupplementHistory}
-          getSupplementHistory={this.getSupplementHistory}
+          renderReady={this.state.loadedHistory}
+          getSupplementHistory={this.getEventHistory}
         />
       </div>
     );
