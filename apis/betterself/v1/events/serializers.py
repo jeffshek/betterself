@@ -73,7 +73,6 @@ class ProductivityLogReadSerializer(serializers.Serializer):
 
 class ProductivityLogCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
-
     very_productive_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     productive_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
     neutral_time_minutes = serializers.IntegerField(required=False, validators=[valid_daily_max_minutes])
