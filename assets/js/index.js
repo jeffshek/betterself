@@ -26,7 +26,7 @@ import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
 import SupplementsLogView
-  from "./supplements_events_log/supplement_event_log_view";
+  from "./supplement_event_log/supplement_event_log_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
 import { SupplementView } from "./supplements/supplements";
