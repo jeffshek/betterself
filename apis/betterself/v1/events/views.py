@@ -32,6 +32,7 @@ class SupplementEventView(GenericAPIView, ListModelMixin, CreateModelMixin, Read
 
 class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser):
     model = DailyProductivityLog
+    pagination_class = ModifiedPageNumberPagination
     read_serializer_class = ProductivityLogReadSerializer
     write_serializer_class = ProductivityLogCreateSerializer
     filter_fields = (

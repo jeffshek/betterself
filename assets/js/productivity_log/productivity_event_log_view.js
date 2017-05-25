@@ -31,7 +31,7 @@ class ProductivityLogView extends Component {
     this.setState({ loadedSupplementHistory: false });
 
     // Fetch the specific page we want, defaulting at 1
-    fetch(`api/v1/supplement_events/?page=${page}`, {
+    fetch(`api/v1/productivity_log/?page=${page}`, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
