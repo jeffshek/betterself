@@ -25,8 +25,6 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfa
         return self._get_read_or_write_serializer_class()
 
     def destroy(self, request, *args, **kwargs):
-        # import ipdb; ipdb.set_trace()
-        # print (request.data)
         try:
             uuid = request.data['uuid']
         except KeyError:
