@@ -1,17 +1,16 @@
-from django.http.response import Http404
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
 from apis.betterself.v1.events.filters import SupplementEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer
-from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser
+from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog
 
 
-class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser, RetrieveUpdateDestroyAPIView):
+class SupplementEventView(GenericAPIView, ListModelMixin, CreateModelMixin, ReadOrWriteSerializerChooser,
+                          UUIDDeleteMixin):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
@@ -19,28 +18,19 @@ class SupplementEventView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerC
     pagination_class = ModifiedPageNumberPagination
 
     def get_queryset(self):
-        return super().get_queryset().select_related('supplement')
+        return self.model.objects.filter(user=self.request.user).select_related('supplement')
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
-    def destroy(self, request, *args, **kwargs):
-        try:
-            uuid = request.data['uuid']
-        except KeyError:
-            raise Http404
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-        filter_params = {
-            'uuid': uuid,
-            'user': request.user
-        }
-
-        object = get_object_or_404(self.model, **filter_params)
-        object.delete()
-        return Response(status=204)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
-class ProductivityLogView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser):
+class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser):
     model = DailyProductivityLog
     read_serializer_class = ProductivityLogReadSerializer
     write_serializer_class = ProductivityLogCreateSerializer
@@ -56,3 +46,6 @@ class ProductivityLogView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerC
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)

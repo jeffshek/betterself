@@ -89,7 +89,6 @@ export class AddSupplementView extends Component {
         return response.json();
       })
       .then(function(responseData) {
-        console.log(responseData);
         return responseData;
       });
   }

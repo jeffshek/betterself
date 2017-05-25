@@ -1,31 +1,36 @@
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
-
-
-class UserQuerysetFilterMixin(object):
-    # for all objects, make sure that we are filtering by the specific user
-    def _get_queryset(self):
-        # for all objects returned in views, we should always only return what the user i
-        queryset = self.model.objects.filter(user=self.request.user)
-        return queryset
-
-
-class BaseGenericAPIViewV1(GenericAPIView, UserQuerysetFilterMixin):
-    def get_queryset(self):
-        return self._get_queryset()
-
-
-class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin):
-    def get_queryset(self):
-        return self._get_queryset()
+from django.http import Http404
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 
 class ReadOrWriteSerializerChooser(object):
     """
     Mixin to decide read or write serializer class
     """
+
     def _get_read_or_write_serializer_class(self):
         request_method = self.request.method
         if request_method.lower() in ['list', 'get']:
             return self.read_serializer_class
         else:
             return self.write_serializer_class
+
+
+class UUIDDeleteMixin(object):
+    """
+    Mixin for API Views to allow deleting of objects
+    """
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            uuid = request.data['uuid']
+        except KeyError:
+            raise Http404
+
+        filter_params = {
+            'uuid': uuid,
+            'user': request.user
+        }
+
+        get_object_or_404(self.model, **filter_params).delete()
+        return Response(status=204)
