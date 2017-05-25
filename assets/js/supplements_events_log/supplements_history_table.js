@@ -11,7 +11,6 @@ const confirmDelete = (uuid, supplementName, supplementTime) => {
     uuid: uuid
   };
 
-  console.log(params);
   if (answer) {
     fetch("/api/v1/supplement_events/", {
       method: "DELETE",
