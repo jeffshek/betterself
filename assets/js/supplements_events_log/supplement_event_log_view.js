@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
-import { AddSupplementEvent } from "./add_supplements_event";
-import { SupplementsHistoryTableList } from "./supplements_history_table";
+import { AddSupplementEvent } from "./add_supplement_event";
+import { SupplementsHistoryTableList } from "./supplement_event_table";
 
 class SupplementsLogView extends Component {
   constructor() {

@@ -5,7 +5,8 @@ import {
   DASHBOARD_CHARTS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
-  DASHBOARD_SUPPLEMENTS_URL
+  DASHBOARD_SUPPLEMENTS_URL,
+  DASHBOARD_PRODUCTIVITY_LOGS_URL
 } from "../urls/constants";
 
 const DashboardButton = () => (
@@ -103,7 +104,7 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-graph"
             label="Productivity"
-            link={DASHBOARD_CHARTS_URL}
+            link={DASHBOARD_PRODUCTIVITY_LOGS_URL}
           />
           <NavigationLink
             iconName="icon-volume-off"
