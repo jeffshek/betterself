@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 DEFAULT_CREDENTIALS = {
-    'username': 'tester',
+    'username': 'default',
     'email': 'username@gmail.com',
     'password': 'secret_password',
 }
@@ -23,21 +23,18 @@ class UsersTestsFixturesMixin(object):
         return user
 
     @classmethod
-    def create_authenticated_user_on_client(cls, client, user, credentials=DEFAULT_CREDENTIALS):
-        client.force_authenticate(user)
-
-        successfully_login = client.login(**credentials)
+    def create_authenticated_user_on_client(cls, client, user):
+        client.force_login(user)
 
         # just a quick check just in case
         assert user.is_authenticated()
-        assert successfully_login
 
         return client
 
     @classmethod
     def create_user_fixtures(cls):
         # setup the user once
-        cls.user_1 = cls.create_user()
-        # create some random fake user_2 to test duplicates
+        cls.user_1, _ = User.objects.get_or_create(username='default')
+
+        # create some random fake user_2 to test duplicates and no information leakage
         cls.user_2 = cls.create_user(SECONDARY_DEFAULT_CREDENTIALS)
-        cls.default_user, _ = User.objects.get_or_create(username='default')
