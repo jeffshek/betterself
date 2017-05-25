@@ -28,7 +28,7 @@ class BaseGenericListCreateAPIViewV1(ListCreateAPIView, UserQuerysetFilterMixin)
         return self._get_queryset()
 
 
-class ReadOrWriteViewInterfaceV1(object):
+class ReadOrWriteSerializerChooser(object):
     """
     Mixin to decide read or write serializer class
     """

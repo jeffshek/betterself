@@ -6,7 +6,7 @@ from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, 
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
-from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1
+from apis.betterself.v1.utils.views import BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -37,7 +37,7 @@ class IngredientView(BaseGenericListCreateAPIViewV1):
     filter_fields = ('name', 'half_life_minutes', 'uuid')
 
 
-class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1):
+class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser):
     read_serializer_class = IngredientCompositionReadOnlySerializer
     write_serializer_class = IngredientCompositionCreateSerializer
     model = IngredientComposition
@@ -47,7 +47,7 @@ class IngredientCompositionView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewI
         return self._get_read_or_write_serializer_class()
 
 
-class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1, RetrieveUpdateDestroyAPIView):
+class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteSerializerChooser, RetrieveUpdateDestroyAPIView):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement
