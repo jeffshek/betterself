@@ -43,9 +43,12 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
 
 const confirmDelete = uuid => {
   const answer = confirm("Delete data point?");
+  const params = {
+    uuid: uuid
+  };
   if (answer) {
     // Doesn't work yet. Need to add URLs/Serializers
-    fetch("/api/v1/supplements/" + uuid, {
+    fetch("/api/v1/supplements/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -56,7 +59,7 @@ const confirmDelete = uuid => {
 const SupplementRow = props => {
   const data = props.object;
 
-  const name = data.name;
+  const { uuid, name } = data;
   const dateCreated = data.created;
   const ingredientsFormatted = getIngredientsCompositionsLabels(
     data.ingredient_compositions
@@ -68,7 +71,7 @@ const SupplementRow = props => {
       <td>{name}</td>
       <td>{ingredientsFormatted}</td>
       <td>
-        <div onClick={e => confirmDelete()}>
+        <div onClick={e => confirmDelete(uuid)}>
           <div className="remove-icon">
             <i className="fa fa-remove" />
           </div>

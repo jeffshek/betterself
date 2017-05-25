@@ -1,4 +1,5 @@
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
+from django.http.response import Http404
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.response import Response
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
@@ -58,7 +59,17 @@ class SupplementView(BaseGenericListCreateAPIViewV1, ReadOrWriteViewInterfaceV1,
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
-    def delete(self, request, *args, **kwargs):
-        data = self.model.objects.get(uuid=request.data['uuid'], user=self.request.user)
-        data.delete()
-        return Response({}, status=202)
+    def destroy(self, request, *args, **kwargs):
+        try:
+            uuid = request.data['uuid']
+        except KeyError:
+            raise Http404
+
+        filter_params = {
+            'uuid': uuid,
+            'user': request.user
+        }
+
+        object = get_object_or_404(self.model, **filter_params)
+        object.delete()
+        return Response(status=204)
