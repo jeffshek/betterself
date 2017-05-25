@@ -39,7 +39,6 @@ class ProductivityLogView extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
         this.setState({ eventHistory: responseData.results });
         this.setState({ currentPageNumber: responseData.current_page });
         this.setState({ lastPageNumber: responseData.last_page });

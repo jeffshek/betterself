@@ -86,7 +86,6 @@ export class SupplementsHistoryTable extends Component {
   }
 
   getTableRender() {
-    console.log(this.props);
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
