@@ -70,7 +70,7 @@ export class AddSupplementEvent extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.props.addSupplementEntry(responseData);
+        this.props.addEventEntry(responseData);
       });
   }
 
@@ -105,7 +105,7 @@ export class AddSupplementEvent extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <div className="form-group">
-                  <label className="add-supplement-label">Supplement</label>
+                  <label className="add-event-label">Supplement</label>
                   <select
                     className="form-control"
                     ref={input => this.supplementNameKey = input}
@@ -123,7 +123,7 @@ export class AddSupplementEvent extends Component {
             </div>
             <div className="row">
               <div className="form-group col-sm-4">
-                <label className="add-supplement-label">
+                <label className="add-event-label">
                   Quantity (Serving Size)
                 </label>
                 <input
@@ -134,7 +134,7 @@ export class AddSupplementEvent extends Component {
                 />
               </div>
               <div className="form-group col-sm-4">
-                <label className="add-supplement-label">
+                <label className="add-event-label">
                   Date / Time of Ingestion
                 </label>
                 {/*Use the current datetime as a default */}
@@ -145,7 +145,7 @@ export class AddSupplementEvent extends Component {
               </div>
               <div className="col-sm-4">
                 <div className="form-group">
-                  <label className="add-supplement-label">
+                  <label className="add-event-label">
                     Duration (Minutes)
                   </label>
                   <input
@@ -160,7 +160,7 @@ export class AddSupplementEvent extends Component {
             <div className="float-right">
               <button
                 type="submit"
-                id="supplement-dashboard-submit"
+                id="event-dashboard-submit"
                 className="btn btn-sm btn-success"
                 onClick={e => this.submitSupplementEvent(e)}
               >

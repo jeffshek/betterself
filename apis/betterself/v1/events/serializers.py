@@ -85,9 +85,9 @@ class ProductivityLogCreateSerializer(serializers.Serializer):
         create_model = self.context['view'].model
         date = validated_data.pop('date')
 
-        obj, created = create_model.objects.get_or_create(
+        obj, created = create_model.objects.update_or_create(
             user=user,
             date=date,
-            **validated_data)
+            defaults=validated_data)
 
         return obj

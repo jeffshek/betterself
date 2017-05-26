@@ -121,6 +121,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestProductivityLogViews
     TEST_MODEL = DailyProductivityLog
+    PAGINATION = True
 
     def setUp(self):
         self.DEFAULT_POST_PARAMS = {
