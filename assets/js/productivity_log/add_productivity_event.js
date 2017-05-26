@@ -97,7 +97,7 @@ export class AddProductivityEvent extends Component {
           <form onSubmit={e => this.submitProductivityEvent(e)}>
 
             <div className="form-group col-sm-4">
-              <label className="add-supplement-label">
+              <label className="add-event-label">
                 Date
               </label>
               {/*Use the current datetime as a default */}
