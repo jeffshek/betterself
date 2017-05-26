@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { AddSupplementEvent } from "./add_supplement_event";
-import { SupplementsHistoryTable } from "./supplement_event_table";
+import { SupplementEntryLogTable } from "./supplement_event_table";
 
 class SupplementsLogView extends Component {
   constructor() {
@@ -46,7 +46,7 @@ class SupplementsLogView extends Component {
     return (
       <div>
         <AddSupplementEvent addEventEntry={this.addEventEntry} />
-        <SupplementsHistoryTable
+        <SupplementEntryLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}

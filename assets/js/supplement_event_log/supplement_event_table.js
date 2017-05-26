@@ -71,7 +71,7 @@ const SupplementHistoryTableHeader = () => (
   </thead>
 );
 
-export class SupplementsHistoryTable extends Component {
+export class SupplementEntryLogTable extends Component {
   constructor() {
     super();
     this.getPageResults = this.getPageResults.bind(this);
