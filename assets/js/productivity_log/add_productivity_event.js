@@ -1,9 +1,6 @@
 import Datetime from "react-datetime";
 import React, { Component, PropTypes } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -12,7 +9,6 @@ export class AddProductivityEvent extends Component {
     super(props);
     this.state = {
       inputDate: moment(),
-      // Default state for productivity, 0.
       veryProductiveMinutes: 0,
       productiveMinutes: 0,
       neutralMinutes: 0,
@@ -24,21 +20,6 @@ export class AddProductivityEvent extends Component {
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
-  }
-
-  getPossibleSupplements() {
-    fetch("/api/v1/supplements", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const supplementNames = responseData.map(object => object.name);
-        this.setState({ supplements: responseData });
-        this.setState({ supplementNames: supplementNames });
-      });
   }
 
   handleInputChange(event) {
@@ -70,10 +51,6 @@ export class AddProductivityEvent extends Component {
     );
   }
 
-  componentDidMount() {
-    this.getPossibleSupplements();
-  }
-
   submitProductivityEvent(e) {
     e.preventDefault();
 
@@ -95,6 +72,7 @@ export class AddProductivityEvent extends Component {
         return response.json();
       })
       .then(responseData => {
+        this.props.addEventEntry(responseData);
         return responseData;
       })
       .catch(error => {

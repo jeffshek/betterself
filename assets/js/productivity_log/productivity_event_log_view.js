@@ -48,7 +48,7 @@ class ProductivityLogView extends Component {
   render() {
     return (
       <div>
-        <AddProductivityEvent addSupplementEntry={this.addEventEntry} />
+        <AddProductivityEvent addEventEntry={this.addEventEntry} />
         <ProductivityLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}

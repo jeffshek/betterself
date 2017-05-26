@@ -45,7 +45,7 @@ class SupplementsLogView extends Component {
   render() {
     return (
       <div>
-        <AddSupplementEvent addSupplementEntry={this.addEventEntry} />
+        <AddSupplementEvent addEventEntry={this.addEventEntry} />
         <SupplementsHistoryTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
