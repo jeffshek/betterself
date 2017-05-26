@@ -19,8 +19,6 @@ class SupplementsLogView extends Component {
   }
 
   getEventHistory(page = 1) {
-    this.setState({ loadedHistory: false });
-
     // Fetch the specific page we want, defaulting at 1
     fetch(`api/v1/supplement_events/?page=${page}`, {
       method: "GET",
@@ -41,9 +39,7 @@ class SupplementsLogView extends Component {
 
   addEventEntry(entry) {
     let updatedEventHistory = [entry, ...this.state.eventHistory.slice()];
-    this.setState({
-      eventHistory: updatedEventHistory
-    });
+    this.setState({ eventHistory: updatedEventHistory });
   }
 
   render() {
@@ -55,7 +51,7 @@ class SupplementsLogView extends Component {
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
           renderReady={this.state.loadedHistory}
-          getSupplementHistory={this.getEventHistory}
+          getEventHistory={this.getEventHistory}
         />
       </div>
     );

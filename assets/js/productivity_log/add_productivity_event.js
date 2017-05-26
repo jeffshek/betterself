@@ -76,8 +76,6 @@ export class AddProductivityEvent extends Component {
 
   submitProductivityEvent(e) {
     e.preventDefault();
-    console.log(this.state);
-    console.log("submit event");
 
     const postParams = {
       very_productive_time_minutes: this.state.veryProductiveMinutes,
@@ -85,16 +83,23 @@ export class AddProductivityEvent extends Component {
       neutral_time_minutes: this.state.neutralMinutes,
       distracting_time_minutes: this.state.distractingMinutes,
       very_distracting_time_minutes: this.state.veryDistractingMinutes,
-      date: this.state.date
+      date: this.state.inputDate.format("YYYY-MM-D")
     };
 
     fetch("api/v1/productivity_log", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
-    });
-
-    console.log(postParams);
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        return responseData;
+      })
+      .catch(error => {
+        alert("Invalid Error Occurred When Submitting Data");
+      });
   }
 
   handleDateChange(moment) {

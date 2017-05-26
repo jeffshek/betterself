@@ -20,8 +20,6 @@ class ProductivityLogView extends Component {
   }
 
   getEventHistory(page = 1) {
-    this.setState({ loadedHistory: false });
-
     // Fetch the specific page we want, defaulting at 1
     fetch(`api/v1/productivity_log/?page=${page}`, {
       method: "GET",

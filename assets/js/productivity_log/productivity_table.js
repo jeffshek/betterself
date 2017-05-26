@@ -157,6 +157,7 @@ export class ProductivityLogTable extends Component {
           <li className="page-item">
             <a className="page-link">...</a>
           </li>
+          {this.getPaginationPageLinkRender(currentPageNumber + 1, "Next")}
           {this.getPaginationPageLinkRender(lastPageNumber, "Last")}
         </ul>
       </nav>
