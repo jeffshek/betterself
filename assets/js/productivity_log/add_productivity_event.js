@@ -76,8 +76,6 @@ export class AddProductivityEvent extends Component {
 
   submitProductivityEvent(e) {
     e.preventDefault();
-    console.log(this.state);
-    console.log("submit event");
   }
 
   handleDateChange(moment) {
