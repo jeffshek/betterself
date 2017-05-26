@@ -7,6 +7,29 @@ import {
 import moment from "moment";
 import { Link } from "react-router-dom";
 
+const AddProductivityRow = props => {
+  const label = props.label;
+  let refInput = props.refInput;
+
+  return (
+    <div className="col-sm-4">
+      <div className="form-group">
+        <label>
+          {label}
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          defaultValue="0"
+          ref={e => {
+            refInput(e);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +41,9 @@ export class AddProductivityEvent extends Component {
 
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.testATheory = this.testATheory.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.addInputRow = this.addInputRow.bind(this);
   }
 
   getPossibleSupplements() {
@@ -35,42 +61,40 @@ export class AddProductivityEvent extends Component {
       });
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    console.log(target);
+  }
+
+  addInputRow(label, inputName) {
+    return (
+      <div className="col-sm-4">
+        <div className="form-group">
+          <label>
+            {label}
+          </label>
+          <input
+            name={inputName}
+            type="text"
+            className="form-control"
+            defaultValue="0"
+            onChange={this.handleInputChange}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  testATheory(number) {
+    console.log("got called");
+  }
+
   componentDidMount() {
     this.getPossibleSupplements();
   }
 
   submitProductivityEvent(e) {
     e.preventDefault();
-
-    const supplementLocation = this.supplementNameKey.value;
-    const supplementSelected = this.state.supplements[supplementLocation];
-
-    // api parameters used to send
-    const supplementUUID = supplementSelected.uuid;
-    const quantity = this.servingSize.value;
-    const time = this.state.formSupplementDateTime.toISOString();
-    const source = "web";
-    const durationMinutes = this.durationMinutes.value;
-
-    const postParams = {
-      supplement_uuid: supplementUUID,
-      quantity: quantity,
-      time: time,
-      source: source,
-      duration: durationMinutes
-    };
-
-    fetch("/api/v1/supplement_events", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.props.addEventEntry(responseData);
-      });
   }
 
   handleChange(moment) {
@@ -78,71 +102,29 @@ export class AddProductivityEvent extends Component {
   }
 
   render() {
-    const supplementsKeys = Object.keys(this.state.supplements);
-
     return (
       <div className="card">
         <div className="card-header">
-          <strong id="add-supplement-entry-text">Log Productivity Entry</strong>
+          <strong id="add-supplement-entry-text">Log Daily Productivity</strong>
         </div>
 
         <div className="card-block">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="form-group">
-                  <label className="add-supplement-label">Supplement</label>
-                  <select
-                    className="form-control"
-                    ref={input => this.supplementNameKey = input}
-                  >
-                    {/*List out all the possible supplements, use the index as the key*/}
-                    {supplementsKeys.map(key => (
-                      <option value={key} key={key}>
-                        {this.state.supplements[key].name}
-                      </option>
-                    ))}
-                  </select>
+            {this.addInputRow(
+              "Very Productive (Minutes)",
+              "veryProductiveMinutes"
+            )}
+            {this.addInputRow("Productive (Minutes)", "productiveMinutes")}
+            {this.addInputRow("Neutral Time (Minutes)", "productiveMinutes")}
+            {this.addInputRow(
+              "Distracting Time (Minutes)",
+              "distractingMinutes"
+            )}
+            {this.addInputRow(
+              "Very Distracting Time (Minutes)",
+              "veryDistractingMinutes"
+            )}
 
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="form-group col-sm-4">
-                <label className="add-supplement-label">
-                  Quantity (Serving Size)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue="1"
-                  ref={input => this.servingSize = input}
-                />
-              </div>
-              <div className="form-group col-sm-4">
-                <label className="add-supplement-label">
-                  Date
-                </label>
-                {/*Use the current datetime as a default */}
-                <Datetime
-                  onChange={this.handleChange}
-                  value={this.state.formSupplementDateTime}
-                />
-              </div>
-              <div className="col-sm-4">
-                <div className="form-group">
-                  <label className="add-supplement-label">
-                    Duration (Minutes)
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    defaultValue="0"
-                    ref={input => this.durationMinutes = input}
-                  />
-                </div>
-              </div>
-            </div>
             <div className="float-right">
               <button
                 type="submit"
