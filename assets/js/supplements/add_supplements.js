@@ -310,7 +310,7 @@ export class AddSupplementView extends Component {
             <div className="float-right">
               <button
                 type="submit"
-                id="supplement-dashboard-submit"
+                id="event-dashboard-submit"
                 className="btn btn-sm btn-success"
                 onClick={e => this.addSupplementFormData(e)}
               >
