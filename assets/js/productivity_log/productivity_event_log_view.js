@@ -8,15 +8,7 @@ class ProductivityLogView extends Component {
   constructor() {
     super();
     this.state = {
-      eventHistory: [
-        {
-          supplement_name: "Loading ... ",
-          quantity: "Loading ... ",
-          duration: "Loading ... ",
-          time: null,
-          source: "Loading ... "
-        }
-      ],
+      eventHistory: [{}],
       loadedHistory: false
     };
     this.addEventEntry = this.addEventEntry.bind(this);
@@ -60,11 +52,11 @@ class ProductivityLogView extends Component {
       <div>
         <AddProductivityEvent addSupplementEntry={this.addEventEntry} />
         <ProductivityLogTable
-          supplementHistory={this.state.eventHistory}
+          eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
           renderReady={this.state.loadedHistory}
-          getSupplementHistory={this.getEventHistory}
+          getEventHistory={this.getEventHistory}
         />
       </div>
     );

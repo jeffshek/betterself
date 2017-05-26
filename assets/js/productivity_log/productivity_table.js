@@ -3,16 +3,16 @@ import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
-const confirmDelete = (uuid, supplementName, supplementTime) => {
+const confirmDelete = (uuid, eventDate) => {
   const answer = confirm(
-    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
+    `WARNING: This will delete the following Productivity Log \n\n${eventDate} \n\nConfirm? `
   );
   const params = {
     uuid: uuid
   };
 
   if (answer) {
-    fetch("/api/v1/supplement_events/", {
+    fetch("/api/v1/productivity_log/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -25,34 +25,35 @@ const confirmDelete = (uuid, supplementName, supplementTime) => {
 };
 
 const ProductivityHistoryRow = props => {
-  // Used to render the data from the API
   const data = props.object;
 
+  const veryProductiveMinutes = data.very_productive_time_minutes;
+  const productiveMinutes = data.productive_time_minutes;
+  const neutralMinutes = data.neutral_time_minutes;
+  const distractingMinutes = data.distracting_time_minutes;
+  const veryDistractingMinutes = data.very_distracting_time_minutes;
+  const eventDate = data.date;
   const uuid = data.uuid;
-  const supplementName = data.supplement_name;
-  const servingSize = data.quantity;
-  const source = data.source;
-  const supplementTime = data.time;
-  const duration = data.duration;
-  const timeFormatted = moment(supplementTime).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  );
+
+  const timeFormatted = moment(eventDate).format("dddd, MMMM Do YYYY");
 
   return (
     <tr>
-      <td>{supplementName}</td>
-      <td>{servingSize}</td>
-      <td>{timeFormatted}</td>
-      <td>{duration}</td>
+      <td>{eventDate}</td>
+      {/*Append minutes at any data set we have so its easier to comprehend*/}
+      <td>{veryProductiveMinutes ? veryProductiveMinutes + " Minutes" : ""}</td>
+      <td>{productiveMinutes ? productiveMinutes + " Minutes" : ""}</td>
+      <td>{neutralMinutes ? neutralMinutes + " Minutes" : ""}</td>
+      <td>{distractingMinutes ? distractingMinutes + " Minutes" : ""}</td>
       <td>
-        <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
+        {veryDistractingMinutes ? veryDistractingMinutes + " Minutes" : ""}
+      </td>
+      <td>
+        <div onClick={e => confirmDelete(uuid, eventDate)}>
           <div className="remove-icon">
             <i className="fa fa-remove" />
           </div>
         </div>
-      </td>
-      <td>
-        <span className="badge badge-success">{source}</span>
       </td>
     </tr>
   );
@@ -61,12 +62,13 @@ const ProductivityHistoryRow = props => {
 const ProductivityHistoryTableHeader = () => (
   <thead>
     <tr>
-      <th>Supplement</th>
-      <th>Serving Size</th>
-      <th>Supplement Time</th>
-      <th>Duration (Minutes)</th>
-      <th><center>Action</center></th>
-      <th>Source</th>
+      <th>Date</th>
+      <th>Very Productive Time</th>
+      <th>Productive Time</th>
+      <th>Neutral Time</th>
+      <th>Distracting Time</th>
+      <th>Very Distracting Time</th>
+      <th>Actions</th>
     </tr>
   </thead>
 );
