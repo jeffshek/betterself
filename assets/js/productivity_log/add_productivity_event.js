@@ -63,7 +63,7 @@ export class AddProductivityEvent extends Component {
       date: this.state.inputDate.format("YYYY-MM-D")
     };
 
-    fetch("api/v1/productivity_log/", {
+    fetch("api/v1/productivity_log", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
