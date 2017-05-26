@@ -10,9 +10,18 @@ import { Link } from "react-router-dom";
 export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      inputDate: moment(),
+      // Default state for productivity, 0.
+      veryProductiveMinutes: 0,
+      productiveMinutes: 0,
+      neutralMinutes: 0,
+      distractingMinutes: 0,
+      veryDistractingMinutes: 0
+    };
 
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
   }
@@ -53,6 +62,7 @@ export class AddProductivityEvent extends Component {
             name={inputName}
             type="text"
             className="form-control"
+            defaultValue={0}
             onChange={this.handleInputChange}
           />
         </div>
@@ -66,7 +76,12 @@ export class AddProductivityEvent extends Component {
 
   submitProductivityEvent(e) {
     e.preventDefault();
+    console.log(this.state);
     console.log("submit event");
+  }
+
+  handleDateChange(moment) {
+    this.setState({ inputDate: moment });
   }
 
   render() {
@@ -80,12 +95,24 @@ export class AddProductivityEvent extends Component {
 
         <div className="card-block">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
+
+            <div className="form-group col-sm-4">
+              <label className="add-supplement-label">
+                Date
+              </label>
+              {/*Use the current datetime as a default */}
+              <Datetime
+                onChange={this.handleDateChange}
+                value={this.state.inputDate.format("MMMM Do YYYY")}
+              />
+            </div>
+
             {this.addInputRow(
               "Very Productive (Minutes)",
               "veryProductiveMinutes"
             )}
             {this.addInputRow("Productive (Minutes)", "productiveMinutes")}
-            {this.addInputRow("Neutral Time (Minutes)", "productiveMinutes")}
+            {this.addInputRow("Neutral Time (Minutes)", "neutralMinutes")}
             {this.addInputRow(
               "Distracting Time (Minutes)",
               "distractingMinutes"
