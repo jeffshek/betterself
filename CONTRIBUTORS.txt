@@ -1,4 +1,0 @@
-#
-Name: Jeffrey Shek
-GitHub: jeffshek
-#
