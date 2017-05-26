@@ -7,41 +7,12 @@ import {
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-const AddProductivityRow = props => {
-  const label = props.label;
-  let refInput = props.refInput;
-
-  return (
-    <div className="col-sm-4">
-      <div className="form-group">
-        <label>
-          {label}
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          defaultValue="0"
-          ref={e => {
-            refInput(e);
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
 export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      supplementNames: [],
-      formSupplementDateTime: moment(),
-      supplements: []
-    };
+    this.state = {};
 
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.testATheory = this.testATheory.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
   }
@@ -63,7 +34,12 @@ export class AddProductivityEvent extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    console.log(target);
+    const name = target.name;
+    const value = target.value;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   addInputRow(label, inputName) {
@@ -77,16 +53,11 @@ export class AddProductivityEvent extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue="0"
             onChange={this.handleInputChange}
           />
         </div>
       </div>
     );
-  }
-
-  testATheory(number) {
-    console.log("got called");
   }
 
   componentDidMount() {
@@ -95,17 +66,16 @@ export class AddProductivityEvent extends Component {
 
   submitProductivityEvent(e) {
     e.preventDefault();
-  }
-
-  handleChange(moment) {
-    this.setState({ formSupplementDateTime: moment });
+    console.log("submit event");
   }
 
   render() {
     return (
       <div className="card">
         <div className="card-header">
-          <strong id="add-supplement-entry-text">Log Daily Productivity</strong>
+          <strong id="add-supplement-entry-text">
+            Log Daily Productivity Time
+          </strong>
         </div>
 
         <div className="card-block">
