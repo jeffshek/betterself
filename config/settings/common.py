@@ -245,7 +245,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-# Overridden a lot in the individual configuration / settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
