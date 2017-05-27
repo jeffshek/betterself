@@ -4,11 +4,13 @@ from betterself.base_models import BaseModelWithUserGeneratedContent
 from betterself.utils import create_django_choice_tuple_from_list
 from supplements.models import Supplement
 
+WEB_INPUT_SOURCE = 'web'
+
 INPUT_SOURCES = [
     'api',
     'ios',
     'android',
-    'web',
+    WEB_INPUT_SOURCE,
     'user_excel'
 ]
 
@@ -31,6 +33,7 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     # so eventually (maybe never) can do half-life analysis
     time = models.DateTimeField()
     # how long in minutes was the supplement consumed
+    # TODO - change this to duration_minutes to match everything else
     duration = models.IntegerField(default=0)
 
     class Meta:
@@ -89,3 +92,29 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = (('date', 'user'),)
+
+
+class ActivityEvent(BaseModelWithUserGeneratedContent):
+    """
+    Represents any particular type of event a user may have done
+        - ie. Meditation, running, take dog the park, etc.
+
+    This doesn't really get to the crux of how do you record a state of mind that's
+    frustrating like depression/flu (both of which share oddly similar mental states),
+    which if this is one thing BetterSelf cures for you, then it's a success.
+
+    I just haven't figured the most appropriate way to model / store such information.
+    """
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
+    duration_minutes = models.IntegerField(default=0)
+    # Was this significant? IE. You got married? Kid? Had surgery? New Job? Decided to quit smoking?
+    # Record all significant events that might change all future decisions.
+    # You want to model it so this can be done as markers/signals in a "how this is how you've changed chart"
+    is_significant_event = models.BooleanField(default=False)
+    # Was this an activity you hate / want to avoid?
+    # Recording negative events as X happened, why?
+    # Are there certain patterns (sleep, diet, supplements, other activities) that lead to negative activities?
+    # IE - It's been shown that limited sleep seems to impact decision making. Let's try to chart/model that.
+    # I'm also quite convinced personally certain food leads to really bad feelings of depression/flu-like symptoms in
+    # <12 hours.
+    is_negative_event = models.BooleanField(default=False)
