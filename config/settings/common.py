@@ -237,7 +237,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -246,6 +245,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+# Overridden a lot in the individual configuration / settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
