@@ -33,9 +33,9 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration TODO - find out what this is and remove
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'rest_framework',
     'django_extensions',
     'webpack_loader',
@@ -209,10 +209,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# make any username you want an email isn't required. that's the point of
-# privacy, but tradeoff is if user loses password, ... will not provide support
-# (too risky)
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
+# Don't require emails, if a user forgets their password, tough luck.
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
