@@ -269,3 +269,5 @@ LOGGING = {
         },
     },
 }
+
+APPEND_SLASH = True
