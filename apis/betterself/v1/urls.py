@@ -21,4 +21,4 @@ urlpatterns = [
         name=DailyProductivityLog.RESOURCE_NAME),
 ]
 
-API_V1_LIST_CREATE_URL = '/api/v1/{0}'
+API_V1_LIST_CREATE_URL = '/api/v1/{0}/'
