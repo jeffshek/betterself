@@ -4,14 +4,18 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { AddSupplementEvent } from "./add_supplement_event";
 import { SupplementEntryLogTable } from "./supplement_event_table";
 
-class SupplementsLogView extends Component {
+class EventLogView extends Component {
   constructor() {
     super();
     this.state = {
       loadedHistory: false
     };
+
     this.addEventEntry = this.addEventEntry.bind(this);
     this.getEventHistory = this.getEventHistory.bind(this);
+
+    // This gets set by classes inheriting this class
+    this.resourceName = null;
   }
 
   componentDidMount() {
@@ -20,7 +24,7 @@ class SupplementsLogView extends Component {
 
   getEventHistory(page = 1) {
     // Fetch the specific page we want, defaulting at 1
-    fetch(`api/v1/supplement_events/?page=${page}`, {
+    fetch(`api/v1/${this.resourceName}/?page=${page}`, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -40,6 +44,13 @@ class SupplementsLogView extends Component {
   addEventEntry(entry) {
     let updatedEventHistory = [entry, ...this.state.eventHistory.slice()];
     this.setState({ eventHistory: updatedEventHistory });
+  }
+}
+
+class SupplementsLogView extends EventLogView {
+  constructor() {
+    super();
+    this.resourceName = "supplement_events";
   }
 
   render() {
