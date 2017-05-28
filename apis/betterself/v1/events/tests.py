@@ -3,16 +3,17 @@ import json
 from unittest import TestCase
 
 import dateutil.parser
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from events.fixtures.factories import UserActivityFactory
+from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -81,9 +82,8 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         self.assertEqual(user, event.user)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'quantity': 1}
         key = 'quantity'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
     def test_valid_get_request_with_params(self):
         request_parameters = {'quantity': 4.0}
@@ -139,9 +139,8 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
         ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'very_productive_time_minutes': 10}
         key = 'very_productive_time_minutes'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
     def test_valid_get_request_with_params(self):
         request_parameters = {'very_productive_time_minutes': 10}
@@ -170,10 +169,43 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
         UserActivityFactory(user=cls.user_1, **cls.SECONDARY_POST_PARAMS)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'name': self.SECONDARY_ACTIVITY_NAME}
         key = 'name'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
     def test_valid_get_request_with_params(self):
         request_parameters = {'name': self.SECONDARY_ACTIVITY_NAME}
+        super().test_valid_get_request_with_params(request_parameters)
+
+
+class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+    TEST_MODEL = UserActivityEvent
+    PAGINATION = True
+
+    def setUp(self):
+        current_time = datetime.datetime.now()
+        previous_time = current_time - relativedelta(days=5)
+        self.DEFAULT_POST_PARAMS = {
+            'time': previous_time.isoformat(),
+            'source': 'user_excel',
+            'duration_minutes': 30
+        }
+
+        # pass a parameter just to make sure the default parameter is valid
+        self.valid_user_activity = UserActivity.objects.filter(user=self.user_1).first()
+        self.DEFAULT_POST_PARAMS['user_activity_uuid'] = str(self.valid_user_activity.uuid)
+
+        super().setUp()
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserActivityEventFixturesGenerator.create_fixtures(cls.user_1)
+
+    def test_valid_get_request_for_key_in_response(self):
+        key = 'duration_minutes'
+        super().test_valid_get_request_for_key_in_response(key)
+
+    def test_valid_get_request_with_params(self):
+        UserActivityEventFactory(user=self.user_1, duration_minutes=30)
+        request_parameters = {'duration_minutes': 30}
         super().test_valid_get_request_with_params(request_parameters)

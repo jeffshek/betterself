@@ -3,8 +3,9 @@ import itertools
 
 from pytz import timezone
 
-from events.fixtures.factories import SupplementEventFactory, DailyProductivityLogFactory, UserActivityFactory
-from events.models import INPUT_SOURCES, UserActivityEvent
+from events.fixtures.factories import SupplementEventFactory, DailyProductivityLogFactory, UserActivityFactory, \
+    UserActivityEventFactory
+from events.models import INPUT_SOURCES
 from supplements.fixtures.factories import SupplementFactory
 
 VALID_QUANTITIES = range(1, 30)
@@ -76,4 +77,4 @@ class UserActivityEventFixturesGenerator(object):
 
         for activity in activity_names:
             user_activity = UserActivityFactory(user=user, name=activity)
-            UserActivityEvent(user_activity=user_activity, user=user)
+            UserActivityEventFactory(user_activity=user_activity, user=user)

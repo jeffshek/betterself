@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from events.models import SupplementEvent, UserActivity
+from events.models import SupplementEvent, UserActivity, UserActivityEvent
 
 
 # starting to feel like there's gotta be a better way than having to do this per each model ...
@@ -31,5 +31,17 @@ class UserActivityFilter(FilterSet):
         model = UserActivity
         fields = [
             'name',
-            'uuid'
+            'uuid',
+        ]
+
+
+class UserActivityEventFilter(FilterSet):
+    uuid = django_filters.UUIDFilter()
+    duration_minutes = django_filters.NumberFilter(name='duration_minutes')
+
+    class Meta:
+        model = UserActivityEvent
+        fields = [
+            'uuid',
+            'duration_minutes'
         ]

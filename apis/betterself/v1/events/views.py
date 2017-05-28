@@ -1,6 +1,6 @@
 from rest_framework.generics import ListCreateAPIView
 
-from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter
+from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
     UserActivityEventCreateSerializer, UserActivityEventReadSerializer
@@ -59,6 +59,7 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = UserActivityEventReadSerializer
     write_serializer_class = UserActivityEventCreateSerializer
+    filter_class = UserActivityEventFilter
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()

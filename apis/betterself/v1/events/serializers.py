@@ -122,15 +122,15 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         create_model = self.context['view'].model
         user = self.context['request'].user
-        name = validated_data.pop('name')
 
         activity_uuid = validated_data.pop('user_activity')['uuid']
         user_activity = UserActivity.objects.get(uuid=activity_uuid)
+        time = validated_data.pop('time')
 
         obj, created = create_model.objects.update_or_create(
             user=user,
-            name=name,
             user_activity=user_activity,
+            time=time,
             defaults=validated_data)
 
         return obj
