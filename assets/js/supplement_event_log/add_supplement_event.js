@@ -18,7 +18,7 @@ export class AddSupplementEvent extends Component {
     };
 
     this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleDateInputChange = this.handleDateInputChange.bind(this);
   }
 
   getPossibleSupplements() {
@@ -74,7 +74,7 @@ export class AddSupplementEvent extends Component {
       });
   }
 
-  handleChange(moment) {
+  handleDateInputChange(moment) {
     this.setState({ formSupplementDateTime: moment });
   }
 
@@ -139,7 +139,7 @@ export class AddSupplementEvent extends Component {
                 </label>
                 {/*Use the current datetime as a default */}
                 <Datetime
-                  onChange={this.handleChange}
+                  onChange={this.handleDateInputChange}
                   value={this.state.formSupplementDateTime}
                 />
               </div>
