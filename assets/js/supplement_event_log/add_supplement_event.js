@@ -120,7 +120,6 @@ export class AddSupplementEvent extends Component {
                     </option>
                   ))}
                 </select>
-
               </div>
             </div>
           </div>

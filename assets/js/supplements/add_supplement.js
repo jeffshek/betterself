@@ -257,7 +257,6 @@ export class AddSupplementView extends Component {
                   ref={input => this.supplementName = input}
                 />
               </div>
-
             </div>
 
             <div className="row">
