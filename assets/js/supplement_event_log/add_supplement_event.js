@@ -58,7 +58,7 @@ export class AddSupplementEvent extends Component {
       quantity: quantity,
       time: time,
       source: source,
-      duration: durationMinutes
+      duration_minutes: durationMinutes
     };
 
     fetch("/api/v1/supplement_events/", {

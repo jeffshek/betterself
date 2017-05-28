@@ -21,7 +21,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     uuid = serializers.UUIDField(required=False, read_only=True)
     supplement_name = CharField(source='supplement.name', read_only=True, required=False)
-    duration = serializers.IntegerField(default=0)
+    duration_minutes = serializers.IntegerField(default=0)
 
     @classmethod
     def validate_supplement_uuid(cls, value):
@@ -58,7 +58,7 @@ class SupplementEventReadOnlySerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     source = serializers.CharField()
     uuid = serializers.UUIDField()
-    duration = serializers.IntegerField()
+    duration_minutes = serializers.IntegerField()
 
 
 class ProductivityLogReadSerializer(serializers.Serializer):

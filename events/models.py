@@ -34,7 +34,7 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     time = models.DateTimeField()
     # how long in minutes was the supplement consumed
     # TODO - change this to duration_minutes to match everything else
-    duration = models.IntegerField(default=0)
+    duration_minutes = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('user', 'time', 'supplement')
