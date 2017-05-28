@@ -8,7 +8,7 @@ export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputDate: moment(),
+      inputDateTime: moment(),
       veryProductiveMinutes: 0,
       productiveMinutes: 0,
       neutralMinutes: 0,
