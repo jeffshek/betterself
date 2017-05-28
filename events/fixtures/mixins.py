@@ -76,4 +76,4 @@ class UserActivityEventFixturesGenerator(object):
 
         for activity in activity_names:
             user_activity = UserActivityFactory(user=user, name=activity)
-            UserActivityEvent(activity=user_activity, user=user)
+            UserActivityEvent(user_activity=user_activity, user=user)

@@ -114,7 +114,7 @@ class UserActivitySerializer(serializers.Serializer):
 
 class UserActivityEventCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
-    activity_uuid = serializers.UUIDField(source='activity.uuid')
+    user_activity_uuid = serializers.UUIDField(source='user_activity.uuid')
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     duration_minutes = serializers.IntegerField(default=0)
     time = serializers.DateTimeField()
@@ -124,13 +124,13 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
         user = self.context['request'].user
         name = validated_data.pop('name')
 
-        activity_uuid = validated_data.pop('activity')['uuid']
-        activity = UserActivity.objects.get(uuid=activity_uuid)
+        activity_uuid = validated_data.pop('user_activity')['uuid']
+        user_activity = UserActivity.objects.get(uuid=activity_uuid)
 
         obj, created = create_model.objects.update_or_create(
             user=user,
             name=name,
-            activity=activity,
+            user_activity=user_activity,
             defaults=validated_data)
 
         return obj
@@ -138,7 +138,7 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
 
 class UserActivityEventReadSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
-    activity = UserActivitySerializer()
+    user_activity = UserActivitySerializer()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     duration_minutes = serializers.IntegerField()
     time = serializers.DateTimeField()

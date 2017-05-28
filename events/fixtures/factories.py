@@ -38,7 +38,7 @@ class UserActivityFactory(factory.DjangoModelFactory):
 class UserActivityEventFactory(factory.DjangoModelFactory):
     time = timezone.now()
     # way to get the passed user to this factory and pass it down to UserActivityFactory
-    activity = factory.SubFactory(UserActivityFactory, user=factory.SelfAttribute('..user'))
+    user_activity = factory.SubFactory(UserActivityFactory, user=factory.SelfAttribute('..user'))
     duration_minutes = 0
 
     class Meta:

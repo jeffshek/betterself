@@ -32,8 +32,7 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     # what time did the user take the five hour energy? use the time model
     # so eventually (maybe never) can do half-life analysis
     time = models.DateTimeField()
-    # how long in minutes was the supplement consumed
-    # TODO - change this to duration_minutes to match everything else
+    # how long it took to consume
     duration_minutes = models.IntegerField(default=0)
 
     class Meta:
@@ -102,7 +101,7 @@ class UserActivity(BaseModelWithUserGeneratedContent):
     This is why it's set as foreign key from ActivityEvent, I don't want to overengineer and build
     the entire foreign key relationships, but I also don't want to build a crappy hole that I have to dig out of.
     """
-    RESOURCE_NAME = 'activities'
+    RESOURCE_NAME = 'user_activities'
 
     name = models.CharField(max_length=300)
     # Was this significant? IE. Got married? Had a Kid? (Congrats!) Had surgery? New Job? Decided to quit smoking?
@@ -110,12 +109,12 @@ class UserActivity(BaseModelWithUserGeneratedContent):
     # Eventually used in charts as "markers/signals" in a chart to show
     # IE. Once you decided to quit smoking --- > This is your heart rate.
     is_significant_activity = models.BooleanField(default=False)
-    # Is this an activity you hate / want to avoid?
+    # Is this an user_activity you hate / want to avoid?
     # Are there certain patterns (sleep, diet, supplements, other activities) that lead to negative activities?
     # IE - Limited sleep impact decision making (probably).
     # Can we figure out if there are certain things you do ahead that limit sleep?
     # Can we figure out if there are certain behaviors you can avoid so this doesn't happen?
-    # Are there certain foods that will likely cause a negative activity?
+    # Are there certain foods that will likely cause a negative user_activity?
     # Personally - Eating foods with lots of preservatives causes depression/flu like symptoms that last for 1-2 days
     is_negative_activity = models.BooleanField(default=False)
 
@@ -134,13 +133,13 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
 
     I just haven't figured the most appropriate way to model / store such information.
     """
-    RESOURCE_NAME = 'activity_events'
+    RESOURCE_NAME = 'user_activity_events'
 
     # TODO - rename to user_activity?
-    activity = models.ForeignKey(UserActivity)
+    user_activity = models.ForeignKey(UserActivity)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     duration_minutes = models.IntegerField(default=0)
     time = models.DateTimeField()
 
     class Meta:
-        unique_together = (('time', 'user', 'activity'),)
+        unique_together = (('time', 'user', 'user_activity'),)
