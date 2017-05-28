@@ -29,7 +29,7 @@ import SupplementsLogView
   from "./supplement_event_log/supplement_event_log_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
-import { SupplementView } from "./supplements/supplements";
+import { SupplementView } from "./supplements/supplements_view";
 import ProductivityLogView
   from "./productivity_log/productivity_event_log_view";
 
