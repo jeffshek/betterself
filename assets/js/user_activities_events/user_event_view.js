@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { EventLogView } from "../resources_table/resource_table_view";
-import { AddUserEvent } from "./add_user_event";
+import { AddUserActivityEvent } from "./add_user_event";
 
 class UserActivitiesEventLogView extends EventLogView {
   constructor() {
@@ -11,7 +11,7 @@ class UserActivitiesEventLogView extends EventLogView {
   render() {
     return (
       <div>
-        <AddUserEvent addEventEntry={this.addEventEntry} />
+        <AddUserActivityEvent addEventEntry={this.addEventEntry} />
         {/*<ProductivityLogTable*/}
         {/*eventHistory={this.state.eventHistory}*/}
         {/*currentPageNumber={this.state.currentPageNumber}*/}

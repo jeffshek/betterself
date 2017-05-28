@@ -12,7 +12,6 @@ export class AddSupplementEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      supplementNames: [],
       formSupplementDateTime: moment(),
       supplements: []
     };
@@ -30,9 +29,7 @@ export class AddSupplementEvent extends Component {
         return response.json();
       })
       .then(responseData => {
-        const supplementNames = responseData.map(object => object.name);
         this.setState({ supplements: responseData });
-        this.setState({ supplementNames: supplementNames });
       });
   }
 

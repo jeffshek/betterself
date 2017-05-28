@@ -1,20 +1,41 @@
 import Datetime from "react-datetime";
 import React, { Component, PropTypes } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import {
+  JSON_POST_AUTHORIZATION_HEADERS,
+  JSON_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-export class AddUserEvent extends Component {
+export class AddUserActivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputDateTime: moment()
+      inputDateTime: moment(),
+      userActivities: []
     };
 
     this.submitEventDetails = this.submitEventDetails.bind(this);
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.addInputRow = this.addInputRow.bind(this);
+    this.renderInputRow = this.renderInputRow.bind(this);
+  }
+
+  componentDidMount() {
+    this.getPossibleActivities();
+  }
+
+  getPossibleActivities() {
+    fetch("/api/v1/user_activities", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.setState({ userActivities: responseData });
+      });
   }
 
   handleInputChange(event) {
@@ -31,7 +52,25 @@ export class AddUserEvent extends Component {
     this.setState({ inputDateTime: moment });
   }
 
-  addInputRow(label, inputName) {
+  renderActivitySelect() {
+    const activitiesKeys = Object.keys(this.state.userActivities);
+
+    return (
+      <select
+        className="form-control"
+        ref={input => this.activityNameKey = input}
+      >
+        {/*List out all the possible supplements, use the index as the key*/}
+        {activitiesKeys.map(key => (
+          <option value={key} key={key}>
+            {this.state.userActivities[key].name}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  renderInputRow(label, inputName) {
     return (
       <div className="col-sm-4">
         <div className="form-group">
@@ -94,14 +133,14 @@ export class AddUserEvent extends Component {
               <label className="add-event-label">
                 Date
               </label>
-              {/*Use the current datetime as a default */}
               <Datetime
                 onChange={this.handleDatetimeChange}
                 value={this.state.inputDateTime}
               />
             </div>
-            {this.addInputRow("Activity", "activity")}
-            {this.addInputRow("Duration (Minutes)", "durationMinutes")}
+
+            {this.renderActivitySelect()}
+            {this.renderInputRow("Duration (Minutes)", "durationMinutes")}
 
             <div className="float-right">
               <button
