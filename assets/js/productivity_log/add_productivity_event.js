@@ -60,7 +60,7 @@ export class AddProductivityEvent extends Component {
       neutral_time_minutes: this.state.neutralMinutes,
       distracting_time_minutes: this.state.distractingMinutes,
       very_distracting_time_minutes: this.state.veryDistractingMinutes,
-      date: this.state.inputDate.format("YYYY-MM-D")
+      date: this.state.inputDateTime.format("YYYY-MM-D")
     };
 
     fetch("api/v1/productivity_log/", {
@@ -103,7 +103,7 @@ export class AddProductivityEvent extends Component {
               {/*Use the current datetime as a default */}
               <Datetime
                 onChange={this.handleDatetimeChange}
-                value={this.state.inputDate.format("MMMM Do YYYY")}
+                value={this.state.inputDateTime.format("MMMM Do YYYY")}
               />
             </div>
 

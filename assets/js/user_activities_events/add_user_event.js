@@ -8,7 +8,7 @@ export class AddUserEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputDate: moment()
+      inputDateTime: moment()
     };
 
     this.submitEventDetails = this.submitEventDetails.bind(this);
@@ -28,7 +28,7 @@ export class AddUserEvent extends Component {
   }
 
   handleDatetimeChange(moment) {
-    this.setState({ inputDate: moment });
+    this.setState({ inputDateTime: moment });
   }
 
   addInputRow(label, inputName) {
@@ -59,10 +59,10 @@ export class AddUserEvent extends Component {
       neutral_time_minutes: this.state.neutralMinutes,
       distracting_time_minutes: this.state.distractingMinutes,
       very_distracting_time_minutes: this.state.veryDistractingMinutes,
-      date: this.state.inputDate.format("YYYY-MM-D")
+      time: this.state.inputDateTime.toISOString()
     };
 
-    fetch("api/v1/productivity_log/", {
+    fetch("api/v1/user_activity_events/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
@@ -97,7 +97,7 @@ export class AddUserEvent extends Component {
               {/*Use the current datetime as a default */}
               <Datetime
                 onChange={this.handleDatetimeChange}
-                value={this.state.inputDate.format("MMMM Do YYYY")}
+                value={this.state.inputDateTime}
               />
             </div>
             {this.addInputRow("Activity", "activity")}
