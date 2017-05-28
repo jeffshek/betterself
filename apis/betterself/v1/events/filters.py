@@ -37,7 +37,7 @@ class UserActivityFilter(FilterSet):
 
 class UserActivityEventFilter(FilterSet):
     uuid = django_filters.UUIDFilter()
-    duration_minutes = django_filters.NumberFilter(name='duration_minutes')
+    duration_minutes = django_filters.NumberFilter()
 
     class Meta:
         model = UserActivityEvent
