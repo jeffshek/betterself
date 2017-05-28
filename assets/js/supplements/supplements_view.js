@@ -12,19 +12,3 @@ export class SupplementView extends Component {
     );
   }
 }
-//
-// class SupplementView extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       loadedHistory: false
-//     };
-//     this.addEventEntry = this.addEventEntry.bind(this);
-//     this.getEventHistory = this.getEventHistory.bind(this);
-//   }
-//
-//   componentDidMount() {
-//     this.getEventHistory();
-//   }
-//
-// }

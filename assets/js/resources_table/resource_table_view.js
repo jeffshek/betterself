@@ -11,7 +11,7 @@ export class EventLogView extends Component {
     this.addEventEntry = this.addEventEntry.bind(this);
     this.getEventHistory = this.getEventHistory.bind(this);
 
-    // This gets set by classes inheriting this class
+    // This gets set by inheriting classes
     this.resourceName = null;
   }
 
