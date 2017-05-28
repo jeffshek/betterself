@@ -94,7 +94,36 @@ class SleepEventLog(BaseModelWithUserGeneratedContent):
         unique_together = (('date', 'user'),)
 
 
-class ActivityEvent(BaseModelWithUserGeneratedContent):
+class UserActivity(BaseModelWithUserGeneratedContent):
+    """
+    Users will probably put stuff like "Ate Breakfast", but ideally I want something that can
+    support an Activity like "Morning Routine" would consists of multiple ActivityActions
+
+    This is why it's set as foreign key from ActivityEvent, I don't want to overengineer and build
+    the entire foreign key relationships, but I also don't want to build a crappy hole that I have to dig out of.
+    """
+    RESOURCE_NAME = 'activities'
+
+    name = models.CharField(max_length=300)
+    # Was this significant? IE. Got married? Had a Kid? (Congrats!) Had surgery? New Job? Decided to quit smoking?
+    # Mark significant events that might change all future events.
+    # Eventually used in charts as "markers/signals" in a chart to show
+    # IE. Once you decided to quit smoking --- > This is your heart rate.
+    is_significant_activity = models.BooleanField(default=False)
+    # Is this an activity you hate / want to avoid?
+    # Are there certain patterns (sleep, diet, supplements, other activities) that lead to negative activities?
+    # IE - Limited sleep impact decision making (probably).
+    # Can we figure out if there are certain things you do ahead that limit sleep?
+    # Can we figure out if there are certain behaviors you can avoid so this doesn't happen?
+    # Are there certain foods that will likely cause a negative activity?
+    # Personally - Eating foods with lots of preservatives causes depression/flu like symptoms that last for 1-2 days
+    is_negative_activity = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (('name', 'user'),)
+
+
+class UserActivityEvent(BaseModelWithUserGeneratedContent):
     """
     Represents any particular type of event a user may have done
         - ie. Meditation, running, take dog the park, etc.
@@ -105,16 +134,12 @@ class ActivityEvent(BaseModelWithUserGeneratedContent):
 
     I just haven't figured the most appropriate way to model / store such information.
     """
+    RESOURCE_NAME = 'activity_events'
+
+    activity = models.ForeignKey(UserActivity)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     duration_minutes = models.IntegerField(default=0)
-    # Was this significant? IE. You got married? Kid? Had surgery? New Job? Decided to quit smoking?
-    # Record all significant events that might change all future decisions.
-    # You want to model it so this can be done as markers/signals in a "how this is how you've changed chart"
-    is_significant_event = models.BooleanField(default=False)
-    # Was this an activity you hate / want to avoid?
-    # Recording negative events as X happened, why?
-    # Are there certain patterns (sleep, diet, supplements, other activities) that lead to negative activities?
-    # IE - It's been shown that limited sleep seems to impact decision making. Let's try to chart/model that.
-    # I'm also quite convinced personally certain food leads to really bad feelings of depression/flu-like symptoms in
-    # <12 hours.
-    is_negative_event = models.BooleanField(default=False)
+    time = models.DateTimeField()
+
+    class Meta:
+        unique_together = (('time', 'user', 'activity'),)
