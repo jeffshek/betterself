@@ -56,7 +56,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)
 
-    def test_valid_get_request_with_params(self, request_parameters):
+    def test_valid_get_request_with_params_filters_correctly(self, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
 
         # don't do application/json for single key/value, issue with unpacking
@@ -82,7 +82,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         self.assertTrue(len(request_data) > 0)
         self.assertEqual(request.status_code, 200)
 
-    def test_valid_get_request_for_key_in_response(self, request_parameters, key_check):
+    def test_valid_get_request_for_key_in_response(self, key_check):
         """ Do a get request, and then check for a certain key type"""
         # TD - Refactor so key_check is a list of keys ...
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
@@ -106,7 +106,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 
-        # pagination views puts data in "results
+        # pagination views puts data in "results"
         if self.PAGINATION:
             request_data = request.data['results']
         else:

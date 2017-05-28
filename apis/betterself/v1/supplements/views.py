@@ -1,5 +1,4 @@
-from rest_framework.generics import ListAPIView, GenericAPIView, ListCreateAPIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
@@ -55,8 +54,7 @@ class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser)
         return self.model.objects.filter(user=self.request.user)
 
 
-class SupplementView(GenericAPIView, ListModelMixin, CreateModelMixin, ReadOrWriteSerializerChooser,
-                     UUIDDeleteMixin):
+class SupplementView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateSerializer
     model = Supplement
@@ -67,12 +65,3 @@ class SupplementView(GenericAPIView, ListModelMixin, CreateModelMixin, ReadOrWri
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-# TODO - Add delete tests

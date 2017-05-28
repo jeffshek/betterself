@@ -1,14 +1,11 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from events.models import SupplementEvent
+from events.models import SupplementEvent, UserActivity, UserActivityEvent
 
 
 class SupplementEventFilter(FilterSet):
     supplement_uuid = django_filters.UUIDFilter(name='supplement__uuid')
-    quantity = django_filters.NumberFilter(name='quantity')
-    time = django_filters.DateTimeFilter(name='time')
-    source = django_filters.CharFilter(name='source')
 
     class Meta:
         model = SupplementEvent
@@ -18,4 +15,22 @@ class SupplementEventFilter(FilterSet):
             'time',
             'source',
             'uuid',
+        ]
+
+
+class UserActivityFilter(FilterSet):
+    class Meta:
+        model = UserActivity
+        fields = [
+            'name',
+            'uuid',
+        ]
+
+
+class UserActivityEventFilter(FilterSet):
+    class Meta:
+        model = UserActivityEvent
+        fields = [
+            'uuid',
+            'duration_minutes'
         ]

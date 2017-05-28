@@ -30,6 +30,7 @@ class BaseModelWithUserGeneratedContent(BaseModel):
     # restrict access to objects that only belong to a user or belong to "defaults"
     @classmethod
     def get_user_viewable_objects(cls, user):
+        # TODO - remove this stupidity
         default_user = get_user_model().objects.get(username='default')
         queryset = cls.objects.filter(Q(user=user) | Q(user=default_user))
         return queryset

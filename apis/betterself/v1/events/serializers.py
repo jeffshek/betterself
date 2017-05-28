@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
-from events.models import INPUT_SOURCES_TUPLES
+from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
 
 
@@ -21,7 +21,7 @@ class SupplementEventCreateSerializer(serializers.Serializer):
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     uuid = serializers.UUIDField(required=False, read_only=True)
     supplement_name = CharField(source='supplement.name', read_only=True, required=False)
-    duration = serializers.IntegerField(default=0)
+    duration_minutes = serializers.IntegerField(default=0)
 
     @classmethod
     def validate_supplement_uuid(cls, value):
@@ -58,7 +58,7 @@ class SupplementEventReadOnlySerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     source = serializers.CharField()
     uuid = serializers.UUIDField()
-    duration = serializers.IntegerField()
+    duration_minutes = serializers.IntegerField()
 
 
 class ProductivityLogReadSerializer(serializers.Serializer):
@@ -91,3 +91,54 @@ class ProductivityLogCreateSerializer(serializers.Serializer):
             defaults=validated_data)
 
         return obj
+
+
+class UserActivitySerializer(serializers.Serializer):
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    name = serializers.CharField()
+    is_significant_activity = serializers.BooleanField(required=False)
+    is_negative_activity = serializers.BooleanField(required=False)
+
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+        name = validated_data.pop('name')
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            name=name,
+            defaults=validated_data)
+
+        return obj
+
+
+class UserActivityEventCreateSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    user_activity_uuid = serializers.UUIDField(source='user_activity.uuid')
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+    duration_minutes = serializers.IntegerField(default=0)
+    time = serializers.DateTimeField()
+
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+
+        activity_uuid = validated_data.pop('user_activity')['uuid']
+        user_activity = UserActivity.objects.get(uuid=activity_uuid)
+        time = validated_data.pop('time')
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            user_activity=user_activity,
+            time=time,
+            defaults=validated_data)
+
+        return obj
+
+
+class UserActivityEventReadSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    user_activity = UserActivitySerializer()
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+    duration_minutes = serializers.IntegerField()
+    time = serializers.DateTimeField()

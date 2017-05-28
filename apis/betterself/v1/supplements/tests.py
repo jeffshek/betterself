@@ -1,6 +1,6 @@
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, DEFAULT_INGREDIENT_HL_MINUTE_1
+from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
@@ -31,28 +31,26 @@ class VendorV1Tests(SupplementBaseTests, PostRequestsTestsMixin, GetRequestsTest
         'url:': 'cool.com',
     }
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'name': DEFAULT_VENDOR_NAME}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'name': DEFAULT_VENDOR_NAME}
         key = 'name'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
 
 class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
     # measurements should be ONLY read-only
     TEST_MODEL = Measurement
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'name': 'milligram'}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'name': 'milligram'}
         key = 'name'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
     def test_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
@@ -69,14 +67,13 @@ class IngredientV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         'half_life_minutes': 30,
     }
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'name': DEFAULT_INGREDIENT_NAME_1}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'half_life_minutes': DEFAULT_INGREDIENT_HL_MINUTE_1}
         key = 'name'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
 
 class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, GetRequestsTestsMixin):
@@ -91,14 +88,13 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         cls.DEFAULT_POST_PARAMS['ingredient_uuid'] = Ingredient.objects.all().first().uuid.__str__()
         cls.DEFAULT_POST_PARAMS['measurement_uuid'] = Measurement.objects.all().first().uuid.__str__()
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'quantity': 1}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'quantity': 5}
         key = 'ingredient'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)
 
     def test_valid_get_with_ingredient_uuid(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
@@ -179,16 +175,15 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         request_parameters = self._get_default_post_parameters()
         super().test_post_request_changes_objects_for_right_user(request_parameters)
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
         data = request.data
         first_name = data[0]['name']
 
         request_parameters = {'name': first_name}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_valid_get_request_for_key_in_response(self):
-        request_parameters = {'name': 'Glutamine'}
         key = 'name'
-        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+        super().test_valid_get_request_for_key_in_response(key)

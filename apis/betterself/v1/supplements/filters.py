@@ -7,8 +7,6 @@ from supplements.models import IngredientComposition, Supplement
 class IngredientCompositionFilter(FilterSet):
     ingredient_uuid = django_filters.UUIDFilter(name='ingredient__uuid')
     measurement_uuid = django_filters.UUIDFilter(name='measurement__uuid')
-    quantity = django_filters.NumberFilter(name='quantity')
-    uuid = django_filters.UUIDFilter(name='uuid')
 
     class Meta:
         model = IngredientComposition

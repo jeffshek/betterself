@@ -42,6 +42,7 @@ class Ingredient(BaseModelWithUserGeneratedContent):
 
 
 class IngredientComposition(BaseModelWithUserGeneratedContent):
+    # TODO - Maybe this was a dumb name and should have been SupplementComposition
     """ Creatine, 5, grams """
     RESOURCE_NAME = 'ingredient_compositions'
 
