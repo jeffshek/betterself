@@ -56,7 +56,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         self.assertTrue(len(request.data) > 0)
         self.assertEqual(request.status_code, 200)
 
-    def test_valid_get_request_with_params(self, request_parameters):
+    def test_valid_get_request_with_params_filters_correctly(self, request_parameters):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
 
         # don't do application/json for single key/value, issue with unpacking

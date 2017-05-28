@@ -85,9 +85,9 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         key = 'quantity'
         super().test_valid_get_request_for_key_in_response(key)
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'quantity': 4.0}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
     def test_event_invalid_supplement_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
@@ -142,9 +142,9 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
         key = 'very_productive_time_minutes'
         super().test_valid_get_request_for_key_in_response(key)
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'very_productive_time_minutes': 10}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
 class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
@@ -172,9 +172,9 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
         key = 'name'
         super().test_valid_get_request_for_key_in_response(key)
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         request_parameters = {'name': self.SECONDARY_ACTIVITY_NAME}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
 class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
@@ -205,7 +205,7 @@ class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequ
         key = 'duration_minutes'
         super().test_valid_get_request_for_key_in_response(key)
 
-    def test_valid_get_request_with_params(self):
+    def test_valid_get_request_with_params_filters_correctly(self):
         UserActivityEventFactory(user=self.user_1, duration_minutes=30)
         request_parameters = {'duration_minutes': 30}
-        super().test_valid_get_request_with_params(request_parameters)
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
