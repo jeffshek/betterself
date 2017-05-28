@@ -16,7 +16,8 @@ import {
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
-  DASHBOARD_PRODUCTIVITY_LOGS_URL
+  DASHBOARD_PRODUCTIVITY_LOGS_URL,
+  DASHBOARD_EVENTS_LOGS_URL
 } from "./urls/constants";
 
 import { Authenticator } from "./authentication/auth";
@@ -29,6 +30,8 @@ import SupplementsLogView
   from "./supplement_event_log/supplement_event_log_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
+import UserActivitiesEventLogView
+  from "./user_activities_events/user_event_view";
 import { SupplementView } from "./supplements/supplements_view";
 import ProductivityLogView
   from "./productivity_log/productivity_event_log_view";
@@ -77,6 +80,11 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_LOGS_URL}
         component={DashboardProductivityLogView}
+      />
+
+      <PrivateRoute
+        path={DASHBOARD_EVENTS_LOGS_URL}
+        component={UserActivitiesEventLogView}
       />
 
     </div>
