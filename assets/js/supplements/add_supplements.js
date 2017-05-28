@@ -35,7 +35,7 @@ export class AddSupplementView extends Component {
     const params = {
       name: ingredientName
     };
-    return fetch("/api/v1/ingredients", {
+    return fetch("/api/v1/ingredients/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -59,7 +59,7 @@ export class AddSupplementView extends Component {
       quantity: ingredientQuantity
     };
 
-    return fetch("/api/v1/ingredient_compositions", {
+    return fetch("/api/v1/ingredient_compositions/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -80,7 +80,7 @@ export class AddSupplementView extends Component {
       params["ingredient_compositions"] = ingredientCompositions;
     }
 
-    return fetch("/api/v1/supplements", {
+    return fetch("/api/v1/supplements/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -185,7 +185,7 @@ export class AddSupplementView extends Component {
   }
 
   getPossibleSupplements() {
-    fetch("/api/v1/measurements", {
+    fetch("/api/v1/measurements/", {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })

@@ -22,7 +22,7 @@ export class AddSupplementEvent extends Component {
   }
 
   getPossibleSupplements() {
-    fetch("/api/v1/supplements", {
+    fetch("/api/v1/supplements/", {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -61,7 +61,7 @@ export class AddSupplementEvent extends Component {
       duration: durationMinutes
     };
 
-    fetch("/api/v1/supplement_events", {
+    fetch("/api/v1/supplement_events/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
