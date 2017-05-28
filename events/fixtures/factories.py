@@ -1,7 +1,7 @@
 import factory
 from django.utils import timezone
 
-from events.models import SupplementEvent, DailyProductivityLog
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 from supplements.fixtures.factories import SupplementFactory
 
 
@@ -26,3 +26,19 @@ class DailyProductivityLogFactory(factory.DjangoModelFactory):
 
     class Meta:
         model = DailyProductivityLog
+
+
+class UserActivityFactory(factory.DjangoModelFactory):
+    name = factory.Faker('name')
+
+    class Meta:
+        model = UserActivity
+
+
+class UserActivityEventFactory(factory.DjangoModelFactory):
+    time = timezone.now()
+    activity = factory.SubFactory(UserActivityFactory, user=factory.SelfAttribute('..user'))
+    duration_minutes = 0
+
+    class Meta:
+        model = UserActivityEvent

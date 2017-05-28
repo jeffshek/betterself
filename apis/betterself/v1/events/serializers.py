@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
-from events.models import INPUT_SOURCES_TUPLES
+from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
 
 
@@ -91,3 +91,54 @@ class ProductivityLogCreateSerializer(serializers.Serializer):
             defaults=validated_data)
 
         return obj
+
+
+class UserActivitySerializer(serializers.Serializer):
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    name = serializers.CharField()
+    is_significant_activity = serializers.BooleanField(required=False)
+    is_negative_activity = serializers.BooleanField(required=False)
+
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+        name = validated_data.pop('name')
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            name=name,
+            defaults=validated_data)
+
+        return obj
+
+
+class UserActivityEventCreateSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    activity_uuid = serializers.UUIDField(source='activity.uuid')
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+    duration_minutes = serializers.IntegerField(default=0)
+    time = serializers.DateTimeField()
+
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+        name = validated_data.pop('name')
+
+        activity_uuid = validated_data.pop('activity')['uuid']
+        activity = UserActivity.objects.get(uuid=activity_uuid)
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            name=name,
+            activity=activity,
+            defaults=validated_data)
+
+        return obj
+
+
+class UserActivityEventReadSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    activity = UserActivitySerializer()
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+    duration_minutes = serializers.IntegerField()
+    time = serializers.DateTimeField()

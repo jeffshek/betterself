@@ -106,7 +106,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.get(url)
 
-        # pagination views puts data in "results
+        # pagination views puts data in "results"
         if self.PAGINATION:
             request_data = request.data['results']
         else:

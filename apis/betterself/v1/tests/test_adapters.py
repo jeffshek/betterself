@@ -4,9 +4,9 @@ from django.utils import timezone
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
 from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
-from events.fixtures.factories import SupplementEventFactory
+from events.fixtures.factories import SupplementEventFactory, UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -409,7 +409,6 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
 
 
 class ProductivityLogAdaptersTests(AdapterTests, TestResourceMixin):
-    # annoys me when unit tests pass, but functional tests catch deeper issues
     model = DailyProductivityLog
 
     @classmethod
@@ -419,3 +418,25 @@ class ProductivityLogAdaptersTests(AdapterTests, TestResourceMixin):
         default, _ = User.objects.get_or_create(username='default')
         SupplementEventFactory(user=default)
         ProductivityLogFixturesGenerator.create_fixtures(default)
+
+
+class UserActivityLogAdaptersTests(AdapterTests, TestResourceMixin):
+    model = UserActivity
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        default, _ = User.objects.get_or_create(username='default')
+        UserActivityFactory(user=default)
+
+
+class UserActivityEventLogAdaptersTests(AdapterTests, TestResourceMixin):
+    model = UserActivityEvent
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        default, _ = User.objects.get_or_create(username='default')
+        UserActivityEventFactory(user=default)

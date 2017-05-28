@@ -9,8 +9,10 @@ from rest_framework import serializers
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog
+from events.fixtures.factories import UserActivityFactory
+from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
+    UserActivityEventFixturesGenerator
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -143,4 +145,35 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
 
     def test_valid_get_request_with_params(self):
         request_parameters = {'very_productive_time_minutes': 10}
+        super().test_valid_get_request_with_params(request_parameters)
+
+
+class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+    TEST_MODEL = UserActivity
+    DEFAULT_POST_PARAMS = {
+        'name': 'Went For A Run',
+        'is_significant_activity': True
+    }
+    SECONDARY_ACTIVITY_NAME = 'Had Breakfast'
+    SECONDARY_POST_PARAMS = {
+        'name': SECONDARY_ACTIVITY_NAME,
+        'is_significant_activity': False
+    }
+
+    def setUp(self):
+        super().setUp()
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserActivityEventFixturesGenerator.create_fixtures(cls.user_1)
+        UserActivityFactory(user=cls.user_1, **cls.SECONDARY_POST_PARAMS)
+
+    def test_valid_get_request_for_key_in_response(self):
+        request_parameters = {'name': self.SECONDARY_ACTIVITY_NAME}
+        key = 'name'
+        super().test_valid_get_request_for_key_in_response(request_parameters, key)
+
+    def test_valid_get_request_with_params(self):
+        request_parameters = {'name': self.SECONDARY_ACTIVITY_NAME}
         super().test_valid_get_request_with_params(request_parameters)

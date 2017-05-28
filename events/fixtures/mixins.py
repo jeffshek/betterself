@@ -3,8 +3,8 @@ import itertools
 
 from pytz import timezone
 
-from events.fixtures.factories import SupplementEventFactory, DailyProductivityLogFactory
-from events.models import INPUT_SOURCES
+from events.fixtures.factories import SupplementEventFactory, DailyProductivityLogFactory, UserActivityFactory
+from events.models import INPUT_SOURCES, UserActivityEvent
 from supplements.fixtures.factories import SupplementFactory
 
 VALID_QUANTITIES = range(1, 30)
@@ -60,3 +60,20 @@ class ProductivityLogFixturesGenerator(object):
         for days_fwd in range(days_fwd_amt):
             fixture_date = start_date + datetime.timedelta(days=days_fwd)
             DailyProductivityLogFactory(user=user, date=fixture_date)
+
+
+class UserActivityEventFixturesGenerator(object):
+    @staticmethod
+    def create_fixtures(user):
+        activity_names = [
+            'Ran',
+            'Bike',
+            'Swim',
+            'Eat',
+            'Sleep',
+            'Fight Crime'
+        ]
+
+        for activity in activity_names:
+            user_activity = UserActivityFactory(user=user, name=activity)
+            UserActivityEvent(activity=user_activity, user=user)

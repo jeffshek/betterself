@@ -136,6 +136,7 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
     """
     RESOURCE_NAME = 'activity_events'
 
+    # TODO - rename to user_activity?
     activity = models.ForeignKey(UserActivity)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     duration_minutes = models.IntegerField(default=0)
