@@ -22,12 +22,6 @@ class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
 
 class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     model = DailyProductivityLog

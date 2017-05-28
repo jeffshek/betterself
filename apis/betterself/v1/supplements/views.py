@@ -65,12 +65,3 @@ class SupplementView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDelete
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-# TODO - Add delete tests
