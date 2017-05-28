@@ -1,5 +1,4 @@
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.generics import ListCreateAPIView
 
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
@@ -10,9 +9,7 @@ from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 
 
-# TODO - why couldn't this be done with ListCreateAPIView again?
-class SupplementEventView(GenericAPIView, ListModelMixin, CreateModelMixin, ReadOrWriteSerializerChooser,
-                          UUIDDeleteMixin):
+class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateSerializer
