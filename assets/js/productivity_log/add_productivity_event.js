@@ -17,7 +17,7 @@ export class AddProductivityEvent extends Component {
     };
 
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
   }
@@ -63,7 +63,7 @@ export class AddProductivityEvent extends Component {
       date: this.state.inputDate.format("YYYY-MM-D")
     };
 
-    fetch("api/v1/productivity_log", {
+    fetch("api/v1/productivity_log/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
@@ -80,7 +80,7 @@ export class AddProductivityEvent extends Component {
       });
   }
 
-  handleDateChange(moment) {
+  handleDatetimeChange(moment) {
     this.setState({ inputDate: moment });
   }
 
@@ -102,7 +102,7 @@ export class AddProductivityEvent extends Component {
               </label>
               {/*Use the current datetime as a default */}
               <Datetime
-                onChange={this.handleDateChange}
+                onChange={this.handleDatetimeChange}
                 value={this.state.inputDate.format("MMMM Do YYYY")}
               />
             </div>
