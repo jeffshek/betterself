@@ -35,17 +35,18 @@ export class AddProductivityEvent extends Component {
   addInputRow(label, inputName) {
     return (
       <div className="col-sm-4">
-        <div className="form-group">
-          <label>
-            {label}
-          </label>
-          <input
-            name={inputName}
-            type="text"
-            className="form-control"
-            defaultValue={0}
-            onChange={this.handleInputChange}
-          />
+        <div className="form-group row">
+          <label className="col-md-3 form-control-label">{label} </label>
+          <div className="col-sm-9">
+            <input
+              type="number"
+              id="number-input"
+              name={inputName}
+              className="form-control"
+              placeholder={0}
+              onChange={this.handleInputChange}
+            />
+          </div>
         </div>
       </div>
     );
@@ -81,7 +82,7 @@ export class AddProductivityEvent extends Component {
   }
 
   handleDatetimeChange(moment) {
-    this.setState({ inputDate: moment });
+    this.setState({ inputDateTime: moment });
   }
 
   render() {
@@ -95,32 +96,24 @@ export class AddProductivityEvent extends Component {
 
         <div className="card-block">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
-
+            <label className="add-event-label">
+              Productivity Log Date
+            </label>
             <div className="form-group col-sm-4">
-              <label className="add-event-label">
-                Date
-              </label>
               {/*Use the current datetime as a default */}
               <Datetime
                 onChange={this.handleDatetimeChange}
                 value={this.state.inputDateTime.format("MMMM Do YYYY")}
               />
             </div>
-
-            {this.addInputRow(
-              "Very Productive (Minutes)",
-              "veryProductiveMinutes"
-            )}
-            {this.addInputRow("Productive (Minutes)", "productiveMinutes")}
-            {this.addInputRow("Neutral Time (Minutes)", "neutralMinutes")}
-            {this.addInputRow(
-              "Distracting Time (Minutes)",
-              "distractingMinutes"
-            )}
-            {this.addInputRow(
-              "Very Distracting Time (Minutes)",
-              "veryDistractingMinutes"
-            )}
+            <label className="add-event-label">
+              Productivity Time (Minutes)
+            </label>
+            {this.addInputRow("Very Productive", "veryProductiveMinutes")}
+            {this.addInputRow("Productive", "productiveMinutes")}
+            {this.addInputRow("Neutral", "neutralMinutes")}
+            {this.addInputRow("Distracting", "distractingMinutes")}
+            {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
 
             <div className="float-right">
               <button

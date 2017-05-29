@@ -60,7 +60,7 @@ export class AddUserActivityEvent extends Component {
       <div className="col-sm-4">
         <div className="form-group">
           <label className="add-event-label">
-            Activity
+            Activity Type
           </label>
           <select
             className="form-control"
