@@ -12,8 +12,6 @@ const confirmDelete = (uuid, name, eventDate) => {
     uuid: uuid
   };
 
-  console.log(params);
-
   if (answer) {
     fetch("/api/v1/user_activity_events/", {
       method: "DELETE",
@@ -32,9 +30,9 @@ const UserActivityEventHistoryRow = props => {
 
   const { source, time, duration_minutes, uuid } = data;
   const user_activity = data.user_activity;
-
   const name = user_activity.name;
-
+  const is_negative_activity = user_activity["is_negative_activity"];
+  const is_significant_activity = user_activity["is_significant_activity"];
   const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
 
   return (
@@ -42,8 +40,8 @@ const UserActivityEventHistoryRow = props => {
       <td>{timeFormatted}</td>
       <td>{name}</td>
       <td>{duration_minutes}</td>
-      <td>Not Important</td>
-      <td>Negative</td>
+      <td>{is_significant_activity ? "True" : ""}</td>
+      <td>{is_negative_activity ? "True" : ""}</td>
       <td>{source}</td>
       <td>
         <div onClick={e => confirmDelete(uuid, name, timeFormatted)}>
