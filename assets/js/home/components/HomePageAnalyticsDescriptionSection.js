@@ -15,7 +15,6 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
               <p styleName="lead-white">
                 Have you ever wondered how your body is being impacted by your habits and diet? How sleep impacts decision making?
                 {" "}
-                <div />
               </p>
               <p styleName="lead-white">
                 Track your decisions, activities, and supplements to see what's really impacting you. Want to see what all your most productive days and weeks have in common? You've come to the right place.
@@ -26,7 +25,12 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
             </div>
             <div className="col-lg-5 col-lg-offset-1 col-md-6 col-sm-12">
               <br />
-              <img className="img-responsive" src={DASHBOARD_EXAMPLE_PATH} />
+              <div className="dashboard-example">
+                <img
+                  className="img-responsive dashboard-example"
+                  src={DASHBOARD_EXAMPLE_PATH}
+                />
+              </div>
             </div>
           </div>
         </div>
