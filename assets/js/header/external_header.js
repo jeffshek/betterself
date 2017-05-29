@@ -1,19 +1,11 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
-import { HOME_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL, HOME_URL } from "../urls/constants";
 import { Link } from "react-router-dom";
 import CSSModules from "react-css-modules";
 import styles from "./css/external_header.css";
 
-const MenuItem = props => (
-  <li className="nav-item" key={props.key}>
-    <Link to={HOME_URL}>{props.name}</Link>
-  </li>
-);
-
 class LoggedOutHeader extends Component {
-  menuItems = [{ name: "Login", key: "Login" }];
-
   render() {
     return (
       <header id="header-1" styleName="the-header" className="soft-scroll">
@@ -27,10 +19,12 @@ class LoggedOutHeader extends Component {
                 />
               </a>
             </div>
-            {/*Menu Dropdown Items*/}
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav navbar-right">
-                {this.menuItems.map(MenuItem)}
+                <li className="nav-item">
+                  {/*Have to do this because of conflicting CSS*/}
+                  <a href={DASHBOARD_INDEX_URL}>Dashboard</a>
+                </li>
               </ul>
             </div>
           </div>
