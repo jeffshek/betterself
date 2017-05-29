@@ -97,11 +97,11 @@ class Sidebar extends Component {
             label="Events"
             link={DASHBOARD_EVENTS_LOGS_URL}
           />
-          <NavigationLink
-            iconName="icon-heart"
-            label="Heart Rate"
-            link={DASHBOARD_HEART_RATE_LOGS_URL}
-          />
+          {/*<NavigationLink*/}
+          {/*iconName="icon-heart"*/}
+          {/*label="Heart Rate"*/}
+          {/*link={DASHBOARD_HEART_RATE_LOGS_URL}*/}
+          {/*/>*/}
           <NavigationLink
             iconName="icon-graph"
             label="Productivity"

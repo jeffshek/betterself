@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -39,7 +36,7 @@ export class AddUserActivity extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue="Gym? Ate Breakfast? Got Married (Significant), Broke Leg (Significant AND Negative), etc"
+            defaultValue="Gym? Ate Breakfast? Got Married (Significant)?"
             onChange={this.handleInputChange}
           />
         </div>
