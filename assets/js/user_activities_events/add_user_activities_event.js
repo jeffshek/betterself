@@ -60,7 +60,7 @@ export class AddUserActivityEvent extends Component {
       <div className="col-sm-4">
         <div className="form-group">
           <label className="add-event-label">
-            Activity
+            Activity Type
           </label>
           <select
             className="form-control"
@@ -139,7 +139,7 @@ export class AddUserActivityEvent extends Component {
               className="btn btn-sm btn-success"
             >
               <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Activity
+                <i className="fa fa-dot-circle-o" /> Create Activity Type
               </div>
             </button>
           </div>

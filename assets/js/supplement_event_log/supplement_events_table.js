@@ -52,7 +52,7 @@ const SupplementHistoryRow = props => {
           </div>
         </div>
       </td>
-      <td>
+      <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
     </tr>
@@ -66,8 +66,8 @@ const SupplementHistoryTableHeader = () => (
       <th>Serving Size</th>
       <th>Supplement Time</th>
       <th>Duration (Minutes)</th>
-      <th><center>Action</center></th>
-      <th>Source</th>
+      <th className="center-source">Action</th>
+      <th className="center-source">Source</th>
     </tr>
   </thead>
 );
