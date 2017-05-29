@@ -26,8 +26,7 @@ import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
-import SupplementsLogView
-  from "./supplement_event_log/supplement_event_log_view";
+import SupplementsLogView from "./supplement_event_log/supplement_events_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
 import UserActivitiesEventLogView
