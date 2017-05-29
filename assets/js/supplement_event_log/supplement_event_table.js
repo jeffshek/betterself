@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { BaseEventLogTable } from "../resources_table/resource_table";
 
 const confirmDelete = (uuid, supplementName, supplementTime) => {
   const answer = confirm(
@@ -71,20 +72,7 @@ const SupplementHistoryTableHeader = () => (
   </thead>
 );
 
-export class SupplementEntryLogTable extends Component {
-  constructor() {
-    super();
-    this.getPageResults = this.getPageResults.bind(this);
-  }
-
-  getPageResults(page) {
-    if (page === 0 || page > this.props.lastPageNumber) {
-      return;
-    }
-
-    this.props.getEventHistory(page);
-  }
-
+export class SupplementEntryLogTable extends BaseEventLogTable {
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
@@ -98,67 +86,6 @@ export class SupplementEntryLogTable extends Component {
           ))}
         </tbody>
       </table>
-    );
-  }
-
-  getPaginationPageLinkRender(page, page_link_verbose_title) {
-    // page_link_verbose_title might be "Last", "First" or just a number
-    return (
-      <li className="page-item">
-        <a
-          className="page-link"
-          onClick={e => {
-            this.getPageResults(page);
-          }}
-        >
-          {page_link_verbose_title}
-        </a>
-      </li>
-    );
-  }
-
-  getPaginationActivePageLinkRender() {
-    const currentPageNumber = this.props.currentPageNumber;
-
-    return (
-      <li className="page-item active">
-        <a className="page-link">{currentPageNumber}</a>
-      </li>
-    );
-  }
-
-  checkCurrentPageIsLastName() {
-    const currentPageNumber = this.props.currentPageNumber;
-    const lastPageNumber = this.props.lastPageNumber;
-
-    if (currentPageNumber === lastPageNumber) {
-      return true;
-    }
-  }
-
-  getNavPaginationControlRender() {
-    const currentPageNumber = this.props.currentPageNumber;
-    const lastPageNumber = this.props.lastPageNumber;
-
-    return (
-      <nav>
-        <ul className="pagination">
-          {this.getPaginationPageLinkRender(1, "First")}
-          {this.getPaginationPageLinkRender(currentPageNumber - 1, "Prev")}
-          {this.getPaginationActivePageLinkRender()}
-          {this.checkCurrentPageIsLastName()
-            ? ""
-            : this.getPaginationPageLinkRender(
-                currentPageNumber + 1,
-                currentPageNumber + 1
-              )}
-          <li className="page-item">
-            <a className="page-link">...</a>
-          </li>
-          {this.getPaginationPageLinkRender(currentPageNumber + 1, "Next")}
-          {this.getPaginationPageLinkRender(lastPageNumber, "Last")}
-        </ul>
-      </nav>
     );
   }
 
