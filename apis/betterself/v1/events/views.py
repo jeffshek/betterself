@@ -49,6 +49,7 @@ class UserActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDele
     model = UserActivity
     serializer_class = UserActivitySerializer
     filter_class = UserActivityFilter
+    pagination_class = ModifiedPageNumberPagination
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)

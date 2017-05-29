@@ -17,7 +17,8 @@ import {
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
-  DASHBOARD_EVENTS_LOGS_URL
+  DASHBOARD_EVENTS_LOGS_URL,
+  DASHBOARD_USER_ACTIVITIES_URL
 } from "./urls/constants";
 
 import { Authenticator } from "./authentication/auth";
@@ -34,6 +35,7 @@ import UserActivitiesEventLogView
 import { SupplementView } from "./supplements/supplements_view";
 import ProductivityLogView
   from "./productivity_log/productivity_event_log_view";
+import { UserActivitiesLogView } from "./user_activities/user_activities_view";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
@@ -46,6 +48,9 @@ const DashboardProductivityLogView = () => (
 );
 const DashboardUserEventLogView = () => (
   <Dashboard view={UserActivitiesEventLogView} />
+);
+const DashboardUserActivityView = () => (
+  <Dashboard view={UserActivitiesLogView} />
 );
 
 const BetterSelfRouter = () => (
@@ -87,6 +92,11 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={DASHBOARD_EVENTS_LOGS_URL}
         component={DashboardUserEventLogView}
+      />
+
+      <PrivateRoute
+        path={DASHBOARD_USER_ACTIVITIES_URL}
+        component={DashboardUserActivityView}
       />
 
     </div>
