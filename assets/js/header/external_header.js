@@ -12,14 +12,7 @@ const MenuItem = props => (
 );
 
 class LoggedOutHeader extends Component {
-  menuItems = [
-    { name: "Home", key: "Home" },
-    { name: "Dashboard", key: "Dashboard" },
-    { name: "Features", key: "Features" },
-    { name: "About", key: "About" },
-    { name: "Contact", key: "Contact" },
-    { name: "Settings", key: "Settings" }
-  ];
+  menuItems = [{ name: "Login", key: "Login" }];
 
   render() {
     return (
