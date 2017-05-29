@@ -142,3 +142,4 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = (('time', 'user', 'user_activity'),)
+        ordering = ['user', '-time']
