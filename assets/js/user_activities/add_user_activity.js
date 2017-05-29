@@ -73,7 +73,7 @@ export class AddUserActivity extends Component {
   renderCreateActivityButton() {
     return (
       <div className="card-header">
-        <strong id="add-supplement-entry-text">Create Activity</strong>
+        <strong id="add-supplement-entry-text">Create Activity Type</strong>
       </div>
     );
   }
@@ -126,7 +126,7 @@ export class AddUserActivity extends Component {
                 onClick={e => this.submitEventDetails(e)}
               >
                 <div id="white-text">
-                  <i className="fa fa-dot-circle-o" /> Create Activity
+                  <i className="fa fa-dot-circle-o" /> Create Activity Type
                 </div>
               </button>
             </div>

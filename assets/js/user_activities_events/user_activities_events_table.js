@@ -4,6 +4,14 @@ import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 
+const TrueCheckBox = () => {
+  return (
+    <div className="true-icon">
+      <i className="fa fa-check-circle" />
+    </div>
+  );
+};
+
 const confirmDelete = (uuid, name, eventDate) => {
   const answer = confirm(
     `WARNING: This will delete the following Activity \n\n ${name} on ${eventDate} \n\nConfirm? `
@@ -39,9 +47,9 @@ const UserActivityEventHistoryRow = props => {
     <tr>
       <td>{timeFormatted}</td>
       <td>{name}</td>
-      <td>{duration_minutes}</td>
-      <td>{is_significant_activity ? "True" : ""}</td>
-      <td>{is_negative_activity ? "True" : ""}</td>
+      <td>{duration_minutes} minutes</td>
+      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
+      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
@@ -60,10 +68,10 @@ const UserActivityEventHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Time</th>
-      <th>Activity</th>
-      <th>Duration Minutes</th>
-      <th>Significant</th>
-      <th>Negative</th>
+      <th>Activity Type</th>
+      <th>Duration (Minutes)</th>
+      <th className="center-source">Significant</th>
+      <th className="center-source">Negative</th>
       <th className="center-source">Source</th>
       <th className="center-source">Actions</th>
     </tr>
@@ -95,7 +103,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Productivity History</strong>
+          <strong>Event History</strong>
         </div>
         {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady
@@ -107,7 +115,6 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
       </div>
     );
   }
