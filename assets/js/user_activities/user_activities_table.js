@@ -1,19 +1,18 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 
-const confirmDelete = (uuid, eventDate) => {
+const confirmDelete = (uuid, name) => {
   const answer = confirm(
-    `WARNING: This will delete the following Productivity Log \n\n${eventDate} \n\nConfirm? `
+    `WARNING: This will delete the following Activity \n\n ${name} \n\nConfirm? `
   );
   const params = {
     uuid: uuid
   };
 
   if (answer) {
-    fetch("/api/v1/productivity_log/", {
+    fetch("/api/v1/user_activities/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -25,30 +24,17 @@ const confirmDelete = (uuid, eventDate) => {
   }
 };
 
-const ProductivityHistoryRow = props => {
+const UserActivityEventHistoryRow = props => {
   const data = props.object;
-
-  const veryProductiveMinutes = data.very_productive_time_minutes;
-  const productiveMinutes = data.productive_time_minutes;
-  const neutralMinutes = data.neutral_time_minutes;
-  const distractingMinutes = data.distracting_time_minutes;
-  const veryDistractingMinutes = data.very_distracting_time_minutes;
-  const eventDate = data.date;
-  const uuid = data.uuid;
+  const { name, is_significant_activity, is_negative_activity, uuid } = data;
 
   return (
     <tr>
-      <td>{eventDate}</td>
-      {/*Append minutes at any data set we have so its easier to comprehend*/}
-      <td>{veryProductiveMinutes ? veryProductiveMinutes + " Minutes" : ""}</td>
-      <td>{productiveMinutes ? productiveMinutes + " Minutes" : ""}</td>
-      <td>{neutralMinutes ? neutralMinutes + " Minutes" : ""}</td>
-      <td>{distractingMinutes ? distractingMinutes + " Minutes" : ""}</td>
+      <td>{name}</td>
+      <td>{is_significant_activity ? "True" : ""}</td>
+      <td>{is_negative_activity ? "True" : ""}</td>
       <td>
-        {veryDistractingMinutes ? veryDistractingMinutes + " Minutes" : ""}
-      </td>
-      <td>
-        <div onClick={e => confirmDelete(uuid, eventDate)}>
+        <div onClick={e => confirmDelete(uuid, name)}>
           <div className="remove-icon">
             <i className="fa fa-remove" />
           </div>
@@ -58,31 +44,31 @@ const ProductivityHistoryRow = props => {
   );
 };
 
-const ProductivityHistoryTableHeader = () => (
+const UserActivityEventHistoryTableHeader = () => (
   <thead>
     <tr>
-      <th>Date</th>
-      <th>Very Productive Time</th>
-      <th>Productive Time</th>
-      <th>Neutral Time</th>
-      <th>Distracting Time</th>
-      <th>Very Distracting Time</th>
-      <th>Actions</th>
+      <th>Activity Name</th>
+      <th>Significant</th>
+      <th>Negative</th>
+      <th><center>Actions</center></th>
     </tr>
   </thead>
 );
 
-export class ProductivityLogTable extends BaseEventLogTable {
+export class UserActivityLogTable extends BaseEventLogTable {
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <ProductivityHistoryTableHeader />
+        <UserActivityEventHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <ProductivityHistoryRow key={key} object={historicalData[key]} />
+            <UserActivityEventHistoryRow
+              key={key}
+              object={historicalData[key]}
+            />
           ))}
         </tbody>
       </table>
@@ -94,7 +80,7 @@ export class ProductivityLogTable extends BaseEventLogTable {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Productivity History</strong>
+          <strong>Activities List</strong>
         </div>
         {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady
@@ -106,7 +92,6 @@ export class ProductivityLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
       </div>
     );
   }

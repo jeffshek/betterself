@@ -6,7 +6,8 @@ import {
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
-  DASHBOARD_PRODUCTIVITY_LOGS_URL
+  DASHBOARD_PRODUCTIVITY_LOGS_URL,
+  DASHBOARD_EVENTS_LOGS_URL
 } from "../urls/constants";
 
 const DashboardButton = () => (
@@ -94,13 +95,13 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-note"
             label="Events"
-            link={DASHBOARD_CHARTS_URL}
+            link={DASHBOARD_EVENTS_LOGS_URL}
           />
-          {/*<NavigationLink*/}
-          {/*iconName="icon-heart"*/}
-          {/*label="Heart Rate"*/}
-          {/*link={DASHBOARD_HEART_RATE_LOGS_URL}*/}
-          {/*/>*/}
+          <NavigationLink
+            iconName="icon-heart"
+            label="Heart Rate"
+            link={DASHBOARD_HEART_RATE_LOGS_URL}
+          />
           <NavigationLink
             iconName="icon-graph"
             label="Productivity"
@@ -109,7 +110,7 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-volume-off"
             label="Sleep"
-            link={DASHBOARD_CHARTS_URL}
+            link={DASHBOARD_HEART_RATE_LOGS_URL}
           />
           <NavigationLink
             iconName="icon-chemistry"

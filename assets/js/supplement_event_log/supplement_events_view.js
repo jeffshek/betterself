@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
 import { AddSupplementEvent } from "./add_supplement_event";
-import { SupplementEntryLogTable } from "./supplement_event_table";
-import { EventLogView } from "../resources_table/resource_table_view";
+import { SupplementEntryLogTable } from "./supplement_events_table";
+import { EventLogView } from "../resources_table/resource_view";
 
-class SupplementsLogView extends EventLogView {
+class SupplementEventsLogView extends EventLogView {
   constructor() {
     super();
     this.resourceName = "supplement_events";
@@ -26,4 +26,4 @@ class SupplementsLogView extends EventLogView {
   }
 }
 
-export default SupplementsLogView;
+export default SupplementEventsLogView;

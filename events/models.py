@@ -135,7 +135,6 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
     """
     RESOURCE_NAME = 'user_activity_events'
 
-    # TODO - rename to user_activity?
     user_activity = models.ForeignKey(UserActivity)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     duration_minutes = models.IntegerField(default=0)
@@ -143,3 +142,4 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = (('time', 'user', 'user_activity'),)
+        ordering = ['user', '-time']
