@@ -31,7 +31,7 @@ import SupplementsLogView
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/heart_rate_log";
 import UserActivitiesEventLogView
-  from "./user_activities_events/user_event_view";
+  from "./user_activities_events/user_activites_events_view";
 import { SupplementView } from "./supplements/supplements_view";
 import ProductivityLogView
   from "./productivity_log/productivity_event_log_view";

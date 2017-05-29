@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { EventLogView } from "../resources_table/resource_view";
-import { AddUserActivityEvent } from "./add_user_event";
-import { UserActivityEventLogTable } from "./user_event_table";
+import { AddUserActivityEvent } from "./add_user_activities_event";
+import { UserActivityEventLogTable } from "./user_activities_events_table";
 
 class UserActivitiesEventLogView extends EventLogView {
   constructor() {
