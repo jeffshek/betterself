@@ -11,6 +11,7 @@ export const DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL = '/dashboard/log/supplements
 
 // Resources
 export const DASHBOARD_SUPPLEMENTS_URL = '/dashboard/supplements'
+export const DASHBOARD_USER_ACTIVITIES_URL = '/dashboard/user_activities'
 
 // Analytics
 export const DASHBOARD_CHARTS_URL = '/dashboard/analytics/charts'

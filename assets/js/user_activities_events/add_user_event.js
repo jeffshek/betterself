@@ -1,12 +1,12 @@
 import Datetime from "react-datetime";
 import React, { Component, PropTypes } from "react";
 import {
-  JSON_POST_AUTHORIZATION_HEADERS,
-  JSON_AUTHORIZATION_HEADERS
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { DASHBOARD_SUPPLEMENTS_URL } from "../urls/constants";
+import { DASHBOARD_USER_ACTIVITIES_URL } from "../urls/constants";
 
 export class AddUserActivityEvent extends Component {
   constructor(props) {
@@ -20,7 +20,6 @@ export class AddUserActivityEvent extends Component {
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.renderInputRow = this.renderInputRow.bind(this);
-    // this.renderSubmitEventForm = this.renderSubmitEventForm.bind(this);
   }
 
   componentDidMount() {
@@ -133,7 +132,7 @@ export class AddUserActivityEvent extends Component {
     return (
       <div className="card-header">
         <strong id="add-supplement-entry-text">Add Activity Event</strong>
-        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
+        <Link to={DASHBOARD_USER_ACTIVITIES_URL}>
           <div className="float-right">
             <button
               type="submit"
