@@ -32,3 +32,11 @@
   color: darkred;
   text-align: center;
 }
+
+.badge .badge-success {
+  text-align: center;
+}
+
+.center-source {
+  text-align: center;
+}

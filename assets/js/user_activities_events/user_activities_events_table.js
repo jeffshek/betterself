@@ -42,7 +42,9 @@ const UserActivityEventHistoryRow = props => {
       <td>{duration_minutes}</td>
       <td>{is_significant_activity ? "True" : ""}</td>
       <td>{is_negative_activity ? "True" : ""}</td>
-      <td>{source}</td>
+      <td className="center-source">
+        <span className="badge badge-success">{source}</span>
+      </td>
       <td>
         <div onClick={e => confirmDelete(uuid, name, timeFormatted)}>
           <div className="remove-icon">
@@ -62,8 +64,8 @@ const UserActivityEventHistoryTableHeader = () => (
       <th>Duration Minutes</th>
       <th>Significant</th>
       <th>Negative</th>
-      <th>Source</th>
-      <th>Actions</th>
+      <th className="center-source">Source</th>
+      <th className="center-source">Actions</th>
     </tr>
   </thead>
 );
