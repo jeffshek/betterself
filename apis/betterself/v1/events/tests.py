@@ -149,6 +149,7 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
 
 class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     TEST_MODEL = UserActivity
+    PAGINATION = True
     DEFAULT_POST_PARAMS = {
         'name': 'Went For A Run',
         'is_significant_activity': True
