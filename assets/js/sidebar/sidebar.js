@@ -97,11 +97,11 @@ class Sidebar extends Component {
             label="Events"
             link={DASHBOARD_EVENTS_LOGS_URL}
           />
-          {/*<NavigationLink*/}
-          {/*iconName="icon-heart"*/}
-          {/*label="Heart Rate"*/}
-          {/*link={DASHBOARD_HEART_RATE_LOGS_URL}*/}
-          {/*/>*/}
+          <NavigationLink
+            iconName="icon-heart"
+            label="Heart Rate"
+            link={DASHBOARD_HEART_RATE_LOGS_URL}
+          />
           <NavigationLink
             iconName="icon-graph"
             label="Productivity"
@@ -110,7 +110,7 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-volume-off"
             label="Sleep"
-            link={DASHBOARD_CHARTS_URL}
+            link={DASHBOARD_HEART_RATE_LOGS_URL}
           />
           <NavigationLink
             iconName="icon-chemistry"

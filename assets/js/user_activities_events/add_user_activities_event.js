@@ -35,7 +35,7 @@ export class AddUserActivityEvent extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.setState({ userActivities: responseData });
+        this.setState({ userActivities: responseData.results });
       });
   }
 
@@ -123,7 +123,6 @@ export class AddUserActivityEvent extends Component {
         return responseData;
       })
       .catch(error => {
-        console.log(error);
         alert("Invalid Error Occurred When Submitting Data");
       });
   }
