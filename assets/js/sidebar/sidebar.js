@@ -7,7 +7,8 @@ import {
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
-  DASHBOARD_EVENTS_LOGS_URL
+  DASHBOARD_EVENTS_LOGS_URL,
+  DASHBOARD_USER_ACTIVITIES_URL
 } from "../urls/constants";
 
 const DashboardButton = () => (
@@ -45,6 +46,11 @@ const ExternalDataMenu = props => (
 
 const ExternalVendorsLinks = () => (
   <div>
+    <NavigationLink
+      iconName="icon-list"
+      label="Activities"
+      link={DASHBOARD_USER_ACTIVITIES_URL}
+    />
     <NavigationLink
       iconName="icon-list"
       label="Supplements"
