@@ -20,7 +20,7 @@ export class AddUserActivityEvent extends Component {
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.renderInputRow = this.renderInputRow.bind(this);
-    this.renderSubmitEventForm = this.renderSubmitEventForm.bind(this);
+    // this.renderSubmitEventForm = this.renderSubmitEventForm.bind(this);
   }
 
   componentDidMount() {
@@ -65,7 +65,7 @@ export class AddUserActivityEvent extends Component {
           </label>
           <select
             className="form-control"
-            ref={input => this.activityNameKey = input}
+            ref={input => this.activityUUID = input}
           >
             {/*List out all the possible supplements, use the index as the key*/}
             {activitiesKeys.map(key => (
@@ -100,9 +100,12 @@ export class AddUserActivityEvent extends Component {
 
   submitEventDetails(e) {
     e.preventDefault();
+    const indexSelected = this.activityUUID.value;
+    const userActivityUUIDSelected = this.state.userActivities[indexSelected]
+      .uuid;
 
     const postParams = {
-      user_activity_uuid: this.state.user_activity_uuid,
+      user_activity_uuid: userActivityUUIDSelected,
       duration_minutes: this.state.durationMinutes,
       time: this.state.inputDateTime.toISOString(),
       source: "web"
@@ -121,6 +124,7 @@ export class AddUserActivityEvent extends Component {
         return responseData;
       })
       .catch(error => {
+        console.log(error);
         alert("Invalid Error Occurred When Submitting Data");
       });
   }

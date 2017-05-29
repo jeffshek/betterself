@@ -65,4 +65,4 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
         return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(user=self.request.user).select_related('user_activity')

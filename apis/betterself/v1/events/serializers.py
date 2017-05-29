@@ -114,6 +114,8 @@ class UserActivitySerializer(serializers.Serializer):
 
 class UserActivityEventCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
+    # We send back user_activity_uuid after an event is created to serialize correctly
+    user_activity = UserActivitySerializer(required=False, read_only=True)
     user_activity_uuid = serializers.UUIDField(source='user_activity.uuid')
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     duration_minutes = serializers.IntegerField(default=0)

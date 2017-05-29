@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { AddProductivityEvent } from "./add_productivity_event";
 import { ProductivityLogTable } from "./productivity_table";
-import { EventLogView } from "../resources_table/resource_table_view";
+import { EventLogView } from "../resources_table/resource_view";
 
 class ProductivityLogView extends EventLogView {
   constructor() {

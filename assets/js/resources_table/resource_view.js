@@ -39,6 +39,7 @@ export class EventLogView extends Component {
   }
 
   addEventEntry(entry) {
+    console.log(entry);
     let updatedEventHistory = [entry, ...this.state.eventHistory.slice()];
     this.setState({ eventHistory: updatedEventHistory });
   }

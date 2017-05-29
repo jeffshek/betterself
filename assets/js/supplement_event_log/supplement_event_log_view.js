@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { AddSupplementEvent } from "./add_supplement_event";
 import { SupplementEntryLogTable } from "./supplement_event_table";
-import { EventLogView } from "../resources_table/resource_table_view";
+import { EventLogView } from "../resources_table/resource_view";
 
 class SupplementsLogView extends EventLogView {
   constructor() {

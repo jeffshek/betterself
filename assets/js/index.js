@@ -45,6 +45,9 @@ const DashboardSupplementsView = () => <Dashboard view={SupplementView} />;
 const DashboardProductivityLogView = () => (
   <Dashboard view={ProductivityLogView} />
 );
+const DashboardUserEventLogView = () => (
+  <Dashboard view={UserActivitiesEventLogView} />
+);
 
 const BetterSelfRouter = () => (
   <Router>
@@ -84,7 +87,7 @@ const BetterSelfRouter = () => (
 
       <PrivateRoute
         path={DASHBOARD_EVENTS_LOGS_URL}
-        component={UserActivitiesEventLogView}
+        component={DashboardUserEventLogView}
       />
 
     </div>
