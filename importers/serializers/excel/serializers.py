@@ -126,7 +126,8 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
 
     @staticmethod
     def _parse_ingredient_from_column_entry(column_name):
-        regex_match = re.search('^[A-Za-z0-9 ]+', column_name)
+        # Include ingredients named like N-Acetyl Tyrosine
+        regex_match = re.search('^[\-A-Za-z0-9 ]+', column_name)
 
         # this cleans up situations where you had Theanine (150mg)
         first_match = regex_match.group(0)

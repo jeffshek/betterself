@@ -4,6 +4,8 @@ import {
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/util_constants";
 
+// All the code in this file is embarassing
+
 export class AddSupplementView extends Component {
   constructor() {
     super();

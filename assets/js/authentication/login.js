@@ -51,9 +51,7 @@ export default class LoginView extends Component {
                 <br />
 
                 <h2>Please Login</h2>
-
-                <p><br /></p>
-
+                <p /><br />
                 <form onSubmit={e => this.handleSubmit(e)}>
                   <div className="row">
                     <div className="col-md-6">
