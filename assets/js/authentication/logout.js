@@ -1,14 +1,14 @@
-import React, { PropTypes, Component } from "react";
-import { withRouter, Redirect, Link } from "react-router-dom";
+import React, { Component, PropTypes } from "react";
+import { Link, Redirect, withRouter } from "react-router-dom";
 
 import { Authenticator } from "./auth";
-import { HOME_URL } from "../urls/constants";
 
 export class LogoutView extends Component {
   render(cb) {
     Authenticator.logout(cb);
     // This is pretty subpar, but there's a few CSS issues I need to work out
-    window.location.assign("https://www.betterself.io");
-    // window.location.reload()
+    window.location.assign("/");
+    // Per React spec return back an empty page even though the location will be changing so quickly
+    return <div />;
   }
 }

@@ -3,7 +3,6 @@ import { Authenticator } from "./auth";
 import { Redirect, withRouter } from "react-router-dom";
 import { LOGIN_LEDGE_PHOTO_PATH } from "../constants/image_paths";
 import LoggedOutHeader from "../header/external_header";
-import Footer from "../footer/footer";
 
 const LoginPageSideImage = () => {
   return (
@@ -36,7 +35,7 @@ export default class LoginView extends Component {
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
-      return <Redirect to={from} />;
+      window.location.assign(from.pathname);
     }
 
     return (
