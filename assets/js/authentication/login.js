@@ -35,7 +35,7 @@ export default class LoginView extends Component {
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
-      return <Redirect to={from} />;
+      window.location.assign(from.pathname);
     }
 
     return (
