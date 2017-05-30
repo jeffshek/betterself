@@ -72,7 +72,7 @@ if 'test' in sys.argv:
 DATABASES['default'] = LOCAL_DB_SETTINGS
 
 # Where API Endpoints should hit
-API_ENDPOINT = 'http://127.0.0.1:9000'
+API_ENDPOINT = 'http://127.0.0.1:8001'
 
 # Use this to debug whitenoise issues
 # Use Whitenoise to serve static files
