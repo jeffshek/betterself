@@ -45,3 +45,25 @@
 .center-source {
   text-align: center;
 }
+
+/*.dashboard-example .img-responsive {*/
+  /*height: 40%;*/
+  /*width: 20%*/
+/*}*/
+
+/*.img .img-responsive .dashboard-example {*/
+  /*height: 100%;*/
+  /*width: 20%*/
+/*}*/
+/*.container .slick-list {*/
+  /*width: 20%;*/
+  /*height: 50%*/
+/*}*/
+
+/*.div .slick-slide .slick-active {*/
+  /*height: 20%*/
+/*}*/
+
+.slick-list .col-lg-5{
+  height: 100%;
+}

@@ -1,8 +1,47 @@
 import React, { PropTypes, Component } from "react";
 import CSSModules from "react-css-modules";
 import styles from "../css/HomePageAnalyticsDescriptionSection.css";
+import {
+  DASHBOARD_EXAMPLE_PATH,
+  DASHBOARD_HEART_RATE,
+  DASHBOARD_SUPPLEMENTS_HISTORY
+} from "../../constants/image_paths";
+import Slider from "react-slick";
 
-import { DASHBOARD_EXAMPLE_PATH } from "../../constants/image_paths";
+class SimpleSlider extends React.Component {
+  render() {
+    const settings = {
+      infinite: true,
+      accessibility: true,
+      adaptiveHeight: false,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
+    return (
+      <Slider {...settings}>
+        <div>
+          <img
+            className="img-responsive dashboard-example"
+            src={DASHBOARD_EXAMPLE_PATH}
+          />
+        </div>
+        <div>
+          <img
+            className="img-responsive dashboard-example"
+            src={DASHBOARD_HEART_RATE}
+          />
+        </div>
+        <div>
+          <img
+            className="img-responsive dashboard-example"
+            src={DASHBOARD_SUPPLEMENTS_HISTORY}
+          />
+        </div>
+      </Slider>
+    );
+  }
+}
 
 class HomePageAnalyticsDescriptionSection extends React.Component {
   render() {
@@ -10,18 +49,20 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
       <section styleName="description-block">
         <div className="container">
           <div className="row">
-            <div className="col-lg-6 col-md-6 col-sm-12">
-              <h1>Your Personalized Analytics</h1>
+            <div className="col-lg-5 col-md-6 col-sm-12">
+              <h1>Personalized Analytics</h1>
               <p styleName="lead-white">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec consectetur dui eget massa iaculis placerat. Cras posuere dictum mauris, porta posuere urna elementum id. Donec scelerisque placerat quam sed varius. Phasellus dolor mi, molestie sed lorem at, interdum dapibus sem. Phasellus lorem mauris, eleifend quis metus et, accumsan dapibus elit. Morbi ut nibh eget orci pharetra cursus non eget massa. Morbi sed libero sodales, dignissim elit ac, elementum leo.
+                Ever wonder how your body is being impacted by your habits and diet? How sleep impacts decision making?
+                {" "}
+              </p>
+              <p styleName="lead-white">
+                Track your decisions, activities, and supplements to see what's really impacting you. What do your most creative days and weeks have in common? You've come to the right place.
+              </p>
+              <p styleName="lead-white">
+                We collect no personal info. Open-sourced to give you the peace of mind that your data isn't being manipulated. All of your data can be safely exported in one easy click. You can also safely delete all your data in the control panel.
               </p>
             </div>
-            <div className="col-lg-5 col-lg-offset-1 col-md-6 col-sm-12">
-              <br />
-              <a href="https://www.betterself.io">
-                <img className="img-responsive" src={DASHBOARD_EXAMPLE_PATH} />
-              </a>
-            </div>
+            <SimpleSlider />
           </div>
         </div>
       </section>
