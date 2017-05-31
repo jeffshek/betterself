@@ -45,12 +45,19 @@ RESCUETIME_EFFICIENCY_HEADERS = [
 
 
 def calculate_rescue_time_pulse_from_dataframe(dataframe):
+    # for days that rescuetime doesn't have any data ... the label won't be in the data
+    very_distracting_time = dataframe.get(VERY_DISTRACTING_TIME_LABEL, 0)
+    distracting_time = dataframe.get(DISTRACTING_TIME_LABEL, 0)
+    neutral_time = dataframe.get(NEUTRAL_TIME_LABEL, 0)
+    productive_time = dataframe.get(PRODUCTIVE_TIME_LABEL, 0)
+    very_productive_time = dataframe.get(VERY_PRODUCTIVE_TIME_LABEL, 0)
+
     pulse = calculate_rescue_time_pulse(
-        very_distracting=dataframe[VERY_DISTRACTING_TIME_LABEL],
-        distracting=dataframe[DISTRACTING_TIME_LABEL],
-        neutral=dataframe[NEUTRAL_TIME_LABEL],
-        productive=dataframe[PRODUCTIVE_TIME_LABEL],
-        very_productive=dataframe[VERY_PRODUCTIVE_TIME_LABEL]
+        very_distracting=very_distracting_time,
+        distracting=distracting_time,
+        neutral=neutral_time,
+        productive=productive_time,
+        very_productive=very_productive_time,
     )
 
     return pulse
