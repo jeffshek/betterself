@@ -39,11 +39,11 @@ def run(*args):
     dataframe_columns = RESCUETIME_EFFICIENCY_HEADERS + [PRODUCTIVITY_PULSE]
     historical_df = pd.DataFrame(columns=dataframe_columns)
 
-    start_date = datetime.date(2017, 3, 24)
+    end_date = datetime.date(2017, 5, 31)
     days_to_look_back = 60
 
     for days_back in range(0, days_to_look_back):
-        lookup_date = start_date - relativedelta.relativedelta(days=days_back)
+        lookup_date = end_date - relativedelta.relativedelta(days=days_back)
         response = get_rescuetime_efficiency_response_for_dates(
             # same because we just care about one day
             restrict_begin=lookup_date,
@@ -57,7 +57,8 @@ def run(*args):
         # Update the dataframe with history
         historical_df.loc[lookup_date] = efficiency_timeseries
 
-    print (historical_df)
+    # A bit of a hack, but just output to path
+    historical_df.to_csv('historical_rescuetime.csv')
 
 
 def get_efficiency_timeseries_from_response(response):
