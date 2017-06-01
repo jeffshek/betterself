@@ -48,7 +48,7 @@ const ExternalVendorsLinks = () => (
   <div>
     <NavigationLink
       iconName="icon-list"
-      label="Activities"
+      label="Activity Types"
       link={DASHBOARD_USER_ACTIVITIES_URL}
     />
     <NavigationLink

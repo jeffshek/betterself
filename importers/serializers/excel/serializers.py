@@ -6,7 +6,7 @@ from django.db.models import Q
 from numpy import dtype
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
-from events.models import SupplementEvent, DailyProductivityLog
+from events.models import SupplementEvent, DailyProductivityLog, UserActivityEvent, UserActivity
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
@@ -224,3 +224,41 @@ class ExcelProductiveFileSerializer(ExcelFileSerializer):
             # for any conflicting results, overwrite it
             self.adapter.get_or_create_resource(
                 DailyProductivityLog, productivity_results, defaults=['date', 'user'])
+
+
+class ExcelUserActivityEventFileSerializer(ExcelFileSerializer):
+    SOURCE = 'user_excel'
+    TEMPLATE_SAVE_MODEL = UserActivityEvent
+    ACTIVITY_TYPE_UUID = {}
+
+    def _create_activity_from_dataframe(self, dataframe):
+        for column_name in dataframe:
+            parameters = {'name': column_name}
+
+            user_activity = self.adapter.get_or_create_resource(UserActivity, parameters)
+            self.ACTIVITY_TYPE_UUID[column_name] = user_activity['uuid']
+
+    def save_results(self, dataframe):
+        self._create_activity_from_dataframe(dataframe)
+
+        for index, event in dataframe.iterrows():
+            for activity_name, count in event.iteritems():
+                # if the count is zero, don't log
+                if count == 0:
+                    continue
+
+                # events are kind of easy, just log once per day the activity that occurred
+                time = index
+
+                # localize and make as UTC time
+                user_timezone = pytz.timezone(self.adapter.user.timezone)
+                localized_time = user_timezone.localize(time)
+
+                results = {
+                    'user_activity_uuid': self.ACTIVITY_TYPE_UUID[activity_name],
+                    'source': self.SOURCE,
+                    'time': localized_time
+                }
+
+                self.adapter.get_or_create_resource(
+                    self.TEMPLATE_SAVE_MODEL, results, defaults=['time', 'user', 'user_activity_uuid'])
