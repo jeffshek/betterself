@@ -28,9 +28,13 @@ class UserActivityFilter(FilterSet):
 
 
 class UserActivityEventFilter(FilterSet):
+    user_activity_uuid = django_filters.UUIDFilter(name='user_activity__uuid')
+
     class Meta:
         model = UserActivityEvent
         fields = [
             'uuid',
-            'duration_minutes'
+            'time',
+            'duration_minutes',
+            'user_activity_uuid'
         ]
