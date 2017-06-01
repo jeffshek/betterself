@@ -5,7 +5,7 @@ import { BaseEventLogTable } from "../resources_table/resource_table";
 
 const confirmDelete = (uuid, name) => {
   const answer = confirm(
-    `WARNING: This will delete the following Activity \n\n ${name} \n\nConfirm? `
+    `WARNING: This will delete the following Activity \n\n ${name} \n\nThis will DELETE all linked events associated with this activity. Confirm? `
   );
   const params = {
     uuid: uuid
