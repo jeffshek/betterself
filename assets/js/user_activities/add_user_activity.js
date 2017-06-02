@@ -36,7 +36,7 @@ export class AddUserActivity extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue="Gym? Ate Breakfast? Got Married (Significant)?"
+            defaultValue="Insert New Activity Type"
             onChange={this.handleInputChange}
           />
         </div>

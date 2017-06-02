@@ -2,10 +2,13 @@ import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
+import {
+  TrueCheckBox
+} from "../user_activities_events/user_activities_events_table";
 
 const confirmDelete = (uuid, name) => {
   const answer = confirm(
-    `WARNING: This will delete the following Activity \n\n ${name} \n\nConfirm? `
+    `WARNING: This will delete the following Activity \n\n${name} \n\nConfirm? `
   );
   const params = {
     uuid: uuid
@@ -31,12 +34,16 @@ const UserActivityEventHistoryRow = props => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{is_significant_activity ? "True" : ""}</td>
-      <td>{is_negative_activity ? "True" : ""}</td>
+      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
+      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
       <td>
-        <div onClick={e => confirmDelete(uuid, name)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
+        <div className="center-icon">
+          <div className="edit-icon">
+            <i className="fa fa-edit fa-1x" />
+          </div>
+          &nbsp;
+          <div className="remove-icon" onClick={e => confirmDelete(uuid, name)}>
+            <i className="fa fa-remove fa-1x" />
           </div>
         </div>
       </td>
@@ -48,9 +55,9 @@ const UserActivityEventHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Activity Name</th>
-      <th>Significant</th>
-      <th>Negative</th>
-      <th><center>Actions</center></th>
+      <th className="center-source">Significant</th>
+      <th className="center-source">Negative</th>
+      <th className="center-source">Actions</th>
     </tr>
   </thead>
 );

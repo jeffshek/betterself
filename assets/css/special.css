@@ -29,8 +29,8 @@
 }
 
 .remove-icon{
+  display: inline;
   color: darkred;
-  text-align: center;
 }
 
 .true-icon{
@@ -48,4 +48,14 @@
 
 .slick-list .col-lg-5{
   height: 100%;
+}
+
+.edit-icon{
+  display: inline;
+  color: darkgreen;
+}
+
+.center-icon{
+  padding-top: 0px;
+  text-align: center;
 }
