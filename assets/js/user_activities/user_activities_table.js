@@ -28,7 +28,6 @@ const UserActivityHistoryRow = props => {
             <i className="fa fa-remove fa-1x" />
           </div>
         </div>
-
       </td>
     </tr>
   );
