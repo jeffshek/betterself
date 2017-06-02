@@ -28,7 +28,7 @@ const confirmDelete = (uuid, name) => {
   }
 };
 
-const UserActivityEventHistoryRow = props => {
+const UserActivityHistoryRow = props => {
   const data = props.object;
   const { name, is_significant_activity, is_negative_activity, uuid } = data;
 
@@ -53,7 +53,7 @@ const UserActivityEventHistoryRow = props => {
   );
 };
 
-const UserActivityEventHistoryTableHeader = () => (
+const UserActivityHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Activity Name</th>
@@ -95,10 +95,10 @@ export class UserActivityLogTable extends BaseEventLogTable {
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <UserActivityEventHistoryTableHeader />
+        <UserActivityHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <UserActivityEventHistoryRow
+            <UserActivityHistoryRow
               key={key}
               object={historicalData[key]}
               selectModalEdit={this.selectModalEdit}
