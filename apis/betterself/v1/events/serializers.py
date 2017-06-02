@@ -119,7 +119,6 @@ class UserActivityUpdateSerializer(serializers.Serializer):
     is_negative_activity = serializers.BooleanField(required=False)
 
     def update(self, instance, validated_data):
-        print(validated_data)
         instance.name = validated_data.get('name', instance.name)
         instance.is_significant_activity = validated_data.get('is_significant_activity',
                                                               instance.is_significant_activity)
