@@ -47,16 +47,11 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
         return self.model.objects.filter(user=self.request.user)
 
 
-class UserActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
+class UserActivityView(ListCreateAPIView, UUIDDeleteMixin):
     model = UserActivity
-    read_serializer_class = UserActivitySerializer
-    write_serializer_class = UserActivitySerializer
-    update_serializer_class = UserActivityUpdateSerializer
+    serializer_class = UserActivitySerializer
     filter_class = UserActivityFilter
     pagination_class = ModifiedPageNumberPagination
-
-    def get_serializer_class(self):
-        return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
