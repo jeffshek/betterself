@@ -7,27 +7,6 @@ import {
 } from "../user_activities_events/user_activities_events_table";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-const confirmDelete = (uuid, name) => {
-  const answer = confirm(
-    `WARNING: This will delete the following Activity \n\n${name} \n\nConfirm? `
-  );
-  const params = {
-    uuid: uuid
-  };
-
-  if (answer) {
-    fetch("/api/v1/user_activities/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
-
 const UserActivityHistoryRow = props => {
   const data = props.object;
   const { name, is_significant_activity, is_negative_activity, uuid } = data;
@@ -43,7 +22,10 @@ const UserActivityHistoryRow = props => {
             <i className="fa fa-edit fa-1x" />
           </div>
           &nbsp;
-          <div className="remove-icon" onClick={e => confirmDelete(uuid, name)}>
+          <div
+            className="remove-icon"
+            onClick={e => props.confirmDelete(uuid, name)}
+          >
             <i className="fa fa-remove fa-1x" />
           </div>
         </div>
@@ -75,18 +57,18 @@ export class UserActivityLogTable extends BaseEventLogTable {
     this.selectModalEdit = this.selectModalEdit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.resourceURL = "/api/v1/user_activities/";
   }
 
-  toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
+  confirmDelete(uuid, name) {
+    const answer = confirm(
+      `WARNING: This will delete the following Activity \n\n${name} \n\nConfirm? `
+    );
 
-  selectModalEdit(object) {
-    this.setState({ editObject: object });
-    // Turn on modal to show for editing
-    this.toggle();
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
   }
 
   getTableRender() {
@@ -102,6 +84,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
               key={key}
               object={historicalData[key]}
               selectModalEdit={this.selectModalEdit}
+              confirmDelete={this.confirmDelete}
             />
           ))}
         </tbody>
@@ -109,19 +92,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
     );
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
   submitEdit() {
-    this.toggle();
-
     const params = {
       uuid: this.state.editObject["uuid"],
       name: this.state["activityName"],
@@ -129,14 +100,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
       is_negative_activity: this.state["isNegativeActivity"]
     };
 
-    fetch("/api/v1/user_activities/", {
-      method: "PUT",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // for now just refresh the page - later on dynamically remove it from state
-      location.reload()
-    );
+    this.putParamsUpdate(params);
   }
 
   renderEditModal() {

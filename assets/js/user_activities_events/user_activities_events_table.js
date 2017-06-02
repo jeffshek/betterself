@@ -79,6 +79,17 @@ const UserActivityEventHistoryTableHeader = () => (
 );
 
 export class UserActivityEventLogTable extends BaseEventLogTable {
+  constructor() {
+    super();
+    this.state = {
+      modal: false,
+      editObject: { name: null }
+    };
+    this.toggle = this.toggle.bind(this);
+    this.selectModalEdit = this.selectModalEdit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);

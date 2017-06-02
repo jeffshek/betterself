@@ -1,9 +1,61 @@
 import React, { Component, PropTypes } from "react";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 export class BaseEventLogTable extends Component {
   constructor() {
     super();
     this.getPageResults = this.getPageResults.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  selectModalEdit(object) {
+    this.setState({ editObject: object });
+    // Turn on modal to show for editing
+    this.toggle();
+  }
+
+  putParamsUpdate(params) {
+    this.toggle();
+
+    fetch(this.resourceURL, {
+      method: "PUT",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    }).then(
+      // for now just refresh the page - later on dynamically remove it from state
+      location.reload()
+    );
+  }
+
+  deleteUUID(uuid) {
+    const params = {
+      uuid: uuid
+    };
+
+    fetch(this.resourceURL, {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    }).then(
+      // After deleting, just refresh the entire page. In the future, remove
+      // from the array and setState
+      location.reload()
+    );
   }
 
   getPageResults(page) {
