@@ -13,14 +13,7 @@
     "url": "https://github.com/jeffshek/betterself/issues"
   },
   "scripts": {
-    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress",
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "homepage": "https://betterself.io",
   "dependencies": {

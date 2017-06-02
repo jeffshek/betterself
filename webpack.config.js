@@ -24,14 +24,14 @@ module.exports = {
   plugins: [
     //tells webpack where to store data about your bundles.
     new BundleTracker({ filename: "./webpack-stats.json" }),
-    //makes jQuery available in every module
+    //makes jQuery available in every module, not sure if you need jquery anymore
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
       "window.jQuery": "jquery"
     }),
     new ExtractTextPlugin({
-      filename: 'app.css',
+      filename: "app.css",
       allChunks: true
     })
   ],
@@ -52,16 +52,13 @@ module.exports = {
         test: /\.(jpg|png|svg|gif|jpeg)$/,
         exclude: /node_modules/,
         loader: "file-loader"
-        // options: {
-        //   name: 'static/bundles/images/[name][hash].[ext]',
-        // },
       },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
+          fallback: "style-loader",
           use: 'css-loader?modules,localIdentName="[name]-[local]-[hash:base64:6]"'
-        }),
+        })
       }
     ]
   },
