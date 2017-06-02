@@ -12,13 +12,6 @@ import sys
 
 from config.settings.common import *  # noqa
 
-try:
-    from config.settings.local_secret_settings import *
-except ImportError:
-    # if you have a secret API settings, import them, otherwise on your merry way
-    pass
-
-
 # DEBUG
 # ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
@@ -63,6 +56,7 @@ LOCAL_DB_SETTINGS = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'betterself',
     'USER': 'vagrant',
+    'PASSWORD': 'he3MZ7YfgTHq2uSl'
 }
 
 # if running python manage.py test, sqlite for now
@@ -84,3 +78,10 @@ API_ENDPOINT = 'http://127.0.0.1:8001'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEBUG = True
+
+# use this file to rewrite over local db passwords
+try:
+    from config.settings.local_secret_settings import *
+except ImportError:
+    # if you have a secret API settings, import them, otherwise on your merry way
+    pass

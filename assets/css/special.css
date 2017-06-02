@@ -29,11 +29,19 @@
 }
 
 .remove-icon{
+  display: inline;
   color: darkred;
-  text-align: center;
 }
 
 .true-icon{
+  color: darkgreen;
+  text-align: center;
+}
+
+.approve-modal {
+  background-color: #193441;
+}
+.decline-modal {
   color: darkgreen;
   text-align: center;
 }
@@ -48,4 +56,14 @@
 
 .slick-list .col-lg-5{
   height: 100%;
+}
+
+.edit-icon{
+  display: inline;
+  color: darkgreen;
+}
+
+.center-icon{
+  padding-top: 0px;
+  text-align: center;
 }
