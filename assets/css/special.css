@@ -38,6 +38,14 @@
   text-align: center;
 }
 
+.approve-modal {
+  background-color: #193441;
+}
+.decline-modal {
+  color: darkgreen;
+  text-align: center;
+}
+
 .badge .badge-success {
   text-align: center;
 }

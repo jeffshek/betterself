@@ -1,9 +1,11 @@
-from rest_framework.generics import ListCreateAPIView
+from django.http import Http404
+from rest_framework.generics import ListCreateAPIView, get_object_or_404
+from rest_framework.response import Response
 
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
-    UserActivityEventCreateSerializer, UserActivityEventReadSerializer
+    UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
@@ -47,12 +49,35 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
 
 class UserActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     model = UserActivity
-    serializer_class = UserActivitySerializer
+    read_serializer_class = UserActivitySerializer
+    write_serializer_class = UserActivitySerializer
+    update_serializer_class = UserActivityUpdateSerializer
     filter_class = UserActivityFilter
     pagination_class = ModifiedPageNumberPagination
 
+    def get_serializer_class(self):
+        return self._get_read_or_write_serializer_class()
+
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        user = request.user
+
+        try:
+            uuid = data['uuid']
+        except KeyError:
+            raise Http404
+
+        instance = get_object_or_404(self.model, user=user, uuid=uuid)
+        serializer = UserActivityUpdateSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            Response('Invalid Data Submitted {}'.format(data), status=400)
+
+        return Response(serializer.data)
 
 
 class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):

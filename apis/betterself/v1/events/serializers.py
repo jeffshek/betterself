@@ -112,6 +112,22 @@ class UserActivitySerializer(serializers.Serializer):
         return obj
 
 
+class UserActivityUpdateSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    name = serializers.CharField(required=False)
+    is_significant_activity = serializers.BooleanField(required=False)
+    is_negative_activity = serializers.BooleanField(required=False)
+
+    def update(self, instance, validated_data):
+        print(validated_data)
+        instance.name = validated_data.get('name', instance.name)
+        instance.is_significant_activity = validated_data.get('is_significant_activity',
+                                                              instance.is_significant_activity)
+        instance.is_negative_activity = validated_data.get('is_negative_activity', instance.is_negative_activity)
+        instance.save()
+        return instance
+
+
 class UserActivityEventCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     # We send back user_activity_uuid after an event is created to serialize correctly

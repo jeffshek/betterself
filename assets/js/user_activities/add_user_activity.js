@@ -36,7 +36,7 @@ export class AddUserActivity extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue="Insert New Activity Type"
+            defaultValue="Add Activity Type"
             onChange={this.handleInputChange}
           />
         </div>
