@@ -4,6 +4,11 @@ import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 export class BaseEventLogTable extends Component {
   constructor() {
     super();
+    // Deal with modal editing
+    this.toggle = this.toggle.bind(this);
+    this.selectModalEdit = this.selectModalEdit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    // Pagination
     this.getPageResults = this.getPageResults.bind(this);
   }
 

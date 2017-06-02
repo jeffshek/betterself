@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import {
   TrueCheckBox
 } from "../user_activities_events/user_activities_events_table";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 const UserActivityHistoryRow = props => {
   const data = props.object;
@@ -53,9 +52,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
       modal: false,
       editObject: { name: null }
     };
-    this.toggle = this.toggle.bind(this);
-    this.selectModalEdit = this.selectModalEdit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activities/";
@@ -69,6 +66,17 @@ export class UserActivityLogTable extends BaseEventLogTable {
     if (answer) {
       this.deleteUUID(uuid);
     }
+  }
+
+  submitEdit() {
+    const params = {
+      uuid: this.state.editObject["uuid"],
+      name: this.state["activityName"],
+      is_significant_activity: this.state["isSignificantActivity"],
+      is_negative_activity: this.state["isNegativeActivity"]
+    };
+
+    this.putParamsUpdate(params);
   }
 
   getTableRender() {
@@ -90,17 +98,6 @@ export class UserActivityLogTable extends BaseEventLogTable {
         </tbody>
       </table>
     );
-  }
-
-  submitEdit() {
-    const params = {
-      uuid: this.state.editObject["uuid"],
-      name: this.state["activityName"],
-      is_significant_activity: this.state["isSignificantActivity"],
-      is_negative_activity: this.state["isNegativeActivity"]
-    };
-
-    this.putParamsUpdate(params);
   }
 
   renderEditModal() {
