@@ -184,7 +184,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
 
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.submitEdit}>Edit</Button>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
           <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
