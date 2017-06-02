@@ -133,7 +133,10 @@ export class UserActivityLogTable extends BaseEventLogTable {
       method: "PUT",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
-    }).then(location.reload());
+    }).then(
+      // for now just refresh the page - later on dynamically remove it from state
+      location.reload()
+    );
   }
 
   renderEditModal() {
