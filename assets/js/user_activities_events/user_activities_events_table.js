@@ -4,7 +4,7 @@ import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 
-const TrueCheckBox = () => {
+export const TrueCheckBox = () => {
   return (
     <div className="true-icon">
       <i className="fa fa-check-circle" />

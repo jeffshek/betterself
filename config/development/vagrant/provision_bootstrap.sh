@@ -24,10 +24,11 @@ export NVM_DIR="$HOME/.nvm"
 
 if ! command -v psql; then
     apt-get install -y postgresql
-    # modify so postgres has access
-    su - postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+    # note - anyone cloning this should run a generator and create a fake
+    # and save to local_settings
     # Create vagrant psql superuser
     su - postgres -c "createuser -s vagrant"
+    su - postgres psql -c "ALTER USER vagrant PASSWORD 'he3MZ7YfgTHq2uSl';"
     su - postgres -c "createdb betterself"
 fi
 
