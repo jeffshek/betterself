@@ -8,6 +8,7 @@ class UserActivitiesEventLogView extends EventLogView {
   constructor() {
     super();
     this.resourceName = "user_activity_events";
+    // Set the state so ActivityTypes
     this.state.loadedActivityTypes = false;
   }
 
@@ -43,7 +44,10 @@ class UserActivitiesEventLogView extends EventLogView {
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
-          renderReady={this.state.loadedHistory}
+          renderReady={
+            this.state.loadedHistory && this.state.loadedActivityTypes
+          }
+          userActivityTypes={this.state.userActivityTypes}
           getEventHistory={this.getEventHistory}
         />
       </div>

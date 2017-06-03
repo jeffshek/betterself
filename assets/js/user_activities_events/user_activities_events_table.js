@@ -130,6 +130,8 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
   }
 
   renderEditModal() {
+    const activitiesKeys = Object.keys(this.props.userActivityTypes);
+
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>Edit Activity Type</ModalHeader>
@@ -146,13 +148,16 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           <label className="form-control-label add-event-label">
             Activity Type
           </label>
-          <input
-            name="activityName"
-            type="text"
+          <select
             className="form-control"
-            defaultValue={this.state.editObject["name"]}
-            onChange={this.handleInputChange}
-          />
+            ref={input => this.activityUUID = input}
+          >
+            {activitiesKeys.map(key => (
+              <option value={key} key={key}>
+                {this.props.userActivityTypes[key].name}
+              </option>
+            ))}
+          </select>
           <br />
 
           <label className="form-control-label add-event-label">
@@ -192,8 +197,9 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
               </div>
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
+              {this.renderEditModal()}
             </div>}
-        {this.renderEditModal()}
+
       </div>
     );
   }
