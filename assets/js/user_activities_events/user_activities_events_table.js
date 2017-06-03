@@ -69,13 +69,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
   constructor() {
     super();
     this.state = {
-      modal: false,
-      editObject: {
-        name: null,
-        user_activity: {
-          name: null
-        }
-      }
+      modal: false
     };
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
@@ -182,7 +176,6 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             onChange={this.handleInputChange}
           />
           <br />
-
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.submitEdit}>Update</Button>
