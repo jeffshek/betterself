@@ -76,6 +76,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
     };
 
     this.putParamsUpdate(params);
+    this.toggle();
   }
 
   getTableRender() {

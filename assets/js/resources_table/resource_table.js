@@ -21,8 +21,6 @@ export class BaseEventLogTable extends Component {
     this.setState({
       [name]: value
     });
-
-    console.log(name, value);
   }
 
   toggle() {
@@ -38,8 +36,6 @@ export class BaseEventLogTable extends Component {
   }
 
   putParamsUpdate(params) {
-    this.toggle();
-
     fetch(this.resourceURL, {
       method: "PUT",
       headers: JSON_POST_AUTHORIZATION_HEADERS,

@@ -75,11 +75,22 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activity_events/";
+    this.handleActivityTypeChange = this.handleActivityTypeChange.bind(this);
   }
 
   handleDatetimeChange(moment) {
     let editObject = this.state.editObject;
     editObject.time = moment;
+
+    this.setState({ editObject: editObject });
+  }
+
+  handleActivityTypeChange(event) {
+    const target = event.target;
+    const value = target.value;
+
+    let editObject = this.state.editObject;
+    editObject["user_activity"] = this.props.userActivityTypes[value];
 
     this.setState({ editObject: editObject });
   }
@@ -97,12 +108,13 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
   submitEdit() {
     const params = {
       uuid: this.state.editObject["uuid"],
-      name: this.state["activityName"],
-      is_significant_activity: this.state["isSignificantActivity"],
-      is_negative_activity: this.state["isNegativeActivity"]
+      time: this.state.editObject["time"],
+      duration_minutes: this.state.editObject["duration_minutes"],
+      user_activity_uuid: this.state.editObject["user_activity"].uuid
     };
 
     this.putParamsUpdate(params);
+    this.toggle();
   }
 
   getTableRender() {
@@ -154,7 +166,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           <select
             className="form-control"
             name="activityTypeIndexSelected"
-            onChange={this.handleInputChange}
+            onChange={this.handleActivityTypeChange}
             value={indexOfActivityEditSelect}
           >
             {activitiesKeys.map(key => (
@@ -172,7 +184,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             name="durationMinutes"
             type="integer"
             className="form-control"
-            defaultValue={this.state.editObject["durationMinutes"]}
+            defaultValue={this.state.editObject["duration_minutes"]}
             onChange={this.handleInputChange}
           />
           <br />
