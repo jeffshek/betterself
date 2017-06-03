@@ -1,62 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
-import { TrueCheckBox } from "../constants/designs";
-
-const UserActivityEventHistoryRow = props => {
-  const data = props.object;
-
-  const { source, time, duration_minutes, uuid } = data;
-  const user_activity = data.user_activity;
-  const name = user_activity.name;
-  const is_negative_activity = user_activity["is_negative_activity"];
-  const is_significant_activity = user_activity["is_significant_activity"];
-  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
-
-  return (
-    <tr>
-      <td>{timeFormatted}</td>
-      <td>{name}</td>
-      <td>{duration_minutes} minutes</td>
-      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
-      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
-      <td className="center-source">
-        <span className="badge badge-success">{source}</span>
-      </td>
-      <td>
-        <div className="center-icon">
-          <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
-            <i className="fa fa-edit fa-1x" />
-          </div>
-          &nbsp;
-          <div
-            className="remove-icon"
-            onClick={e => props.confirmDelete(uuid, name, timeFormatted)}
-          >
-            <i className="fa fa-remove fa-1x" />
-          </div>
-        </div>
-      </td>
-    </tr>
-  );
-};
-
-const UserActivityEventHistoryTableHeader = () => (
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Activity Type</th>
-      <th>Duration (Minutes)</th>
-      <th className="center-source">Significant</th>
-      <th className="center-source">Negative</th>
-      <th className="center-source">Source</th>
-      <th className="center-source">Actions</th>
-    </tr>
-  </thead>
-);
+import {
+  UserActivityEventHistoryRow,
+  UserActivityEventHistoryTableHeader
+} from "./constants";
 
 export class UserActivityEventLogTable extends BaseEventLogTable {
   constructor() {
