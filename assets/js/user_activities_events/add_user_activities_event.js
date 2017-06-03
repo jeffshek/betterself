@@ -7,36 +7,19 @@ import {
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../urls/constants";
+import { CubeLoadingStyle } from "../animations/LoadingStyle";
 
 export class AddUserActivityEvent extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      inputDateTime: moment(),
-      userActivities: []
+      inputDateTime: moment()
     };
 
     this.submitEventDetails = this.submitEventDetails.bind(this);
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.renderInputRow = this.renderInputRow.bind(this);
-  }
-
-  componentDidMount() {
-    this.getPossibleActivities();
-  }
-
-  getPossibleActivities() {
-    fetch("/api/v1/user_activities", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({ userActivities: responseData.results });
-      });
   }
 
   handleInputChange(event) {
@@ -54,7 +37,7 @@ export class AddUserActivityEvent extends Component {
   }
 
   renderActivitySelect() {
-    const activitiesKeys = Object.keys(this.state.userActivities);
+    const activitiesKeys = Object.keys(this.props.userActivityTypes);
 
     return (
       <div className="col-sm-4">
@@ -69,7 +52,7 @@ export class AddUserActivityEvent extends Component {
             {/*List out all the possible supplements, use the index as the key*/}
             {activitiesKeys.map(key => (
               <option value={key} key={key}>
-                {this.state.userActivities[key].name}
+                {this.props.userActivityTypes[key].name}
               </option>
             ))}
           </select>
@@ -100,7 +83,7 @@ export class AddUserActivityEvent extends Component {
   submitEventDetails(e) {
     e.preventDefault();
     const indexSelected = this.activityUUID.value;
-    const userActivityUUIDSelected = this.state.userActivities[indexSelected]
+    const userActivityUUIDSelected = this.props.userActivityTypes[indexSelected]
       .uuid;
 
     const postParams = {
@@ -183,8 +166,12 @@ export class AddUserActivityEvent extends Component {
   render() {
     return (
       <div>
-        {this.renderCreateActivityButton()}
-        {this.renderSubmitEventForm()}
+        {!this.props.renderReady
+          ? <CubeLoadingStyle />
+          : <div>
+              {this.renderCreateActivityButton()}
+              {this.renderSubmitEventForm()}
+            </div>}
       </div>
     );
   }

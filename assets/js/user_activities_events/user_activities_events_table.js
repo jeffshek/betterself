@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Datetime from "react-datetime";
 
 export const TrueCheckBox = () => {
   return (
@@ -70,12 +70,21 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     super();
     this.state = {
       modal: false,
-      editObject: { name: null }
+      editObject: {
+        name: null
+      }
     };
-
+    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activity_events/";
+  }
+
+  handleDatetimeChange(moment) {
+    let editObject = this.state.editObject;
+    editObject.time = moment;
+
+    this.setState({ editObject: editObject });
   }
 
   confirmDelete(uuid, name, eventDate) {
@@ -125,8 +134,17 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>Edit Activity Type</ModalHeader>
         <ModalBody>
+          <label className="add-event-label">
+            Time
+          </label>
+          <Datetime
+            onChange={this.handleDatetimeChange}
+            value={this.state.editObject.time}
+          />
+          <br />
+
           <label className="form-control-label add-event-label">
-            Activity Name
+            Activity Type
           </label>
           <input
             name="activityName"
@@ -138,33 +156,16 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           <br />
 
           <label className="form-control-label add-event-label">
-            Is Significant
+            Duration (Minutes)
           </label>
-          <select
-            name="isSignificantActivity"
+          <input
+            name="activityName"
+            type="text"
             className="form-control"
-            size="1"
-            defaultValue={this.state.editObject["is_significant_activity"]}
+            defaultValue={this.state.editObject["name"]}
             onChange={this.handleInputChange}
-          >
-            <option value={true}>True</option>
-            <option value={false}>False</option>
-          </select>
+          />
           <br />
-
-          <label className="form-control-label add-event-label">
-            Is Negative
-          </label>
-          <select
-            name="isNegativeActivity"
-            className="form-control"
-            size="1"
-            defaultValue={this.state.editObject["is_negative_activity"]}
-            onChange={this.handleInputChange}
-          >
-            <option value={true}>True</option>
-            <option value={false}>False</option>
-          </select>
 
         </ModalBody>
         <ModalFooter>
