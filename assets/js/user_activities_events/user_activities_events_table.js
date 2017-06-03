@@ -150,7 +150,8 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           </label>
           <select
             className="form-control"
-            ref={input => this.activityUUID = input}
+            name="activityTypeIndexSelected"
+            onChange={this.handleInputChange}
           >
             {activitiesKeys.map(key => (
               <option value={key} key={key}>
@@ -164,10 +165,10 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             Duration (Minutes)
           </label>
           <input
-            name="activityName"
-            type="text"
+            name="durationMinutes"
+            type="integer"
             className="form-control"
-            defaultValue={this.state.editObject["name"]}
+            defaultValue={this.state.editObject["durationMinutes"]}
             onChange={this.handleInputChange}
           />
           <br />

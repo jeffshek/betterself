@@ -47,7 +47,7 @@ export class AddUserActivityEvent extends Component {
           </label>
           <select
             className="form-control"
-            ref={input => this.activityUUID = input}
+            ref={input => this.activityTypeIndexSelected = input}
           >
             {/*List out all the possible supplements, use the index as the key*/}
             {activitiesKeys.map(key => (
@@ -82,7 +82,7 @@ export class AddUserActivityEvent extends Component {
 
   submitEventDetails(e) {
     e.preventDefault();
-    const indexSelected = this.activityUUID.value;
+    const indexSelected = this.activityTypeIndexSelected.value;
     const userActivityUUIDSelected = this.props.userActivityTypes[indexSelected]
       .uuid;
 

@@ -21,6 +21,8 @@ export class BaseEventLogTable extends Component {
     this.setState({
       [name]: value
     });
+
+    console.log(name, value);
   }
 
   toggle() {
