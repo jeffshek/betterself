@@ -71,7 +71,10 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     this.state = {
       modal: false,
       editObject: {
-        name: null
+        name: null,
+        user_activity: {
+          name: null
+        }
       }
     };
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
@@ -131,6 +134,12 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
 
   renderEditModal() {
     const activitiesKeys = Object.keys(this.props.userActivityTypes);
+    const activitiesNames = activitiesKeys.map(
+      key => this.props.userActivityTypes[key].name
+    );
+    const indexOfActivityEditSelect = activitiesNames.indexOf(
+      this.state.editObject["user_activity"].name
+    );
 
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -152,6 +161,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             className="form-control"
             name="activityTypeIndexSelected"
             onChange={this.handleInputChange}
+            value={indexOfActivityEditSelect}
           >
             {activitiesKeys.map(key => (
               <option value={key} key={key}>
@@ -198,9 +208,8 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
               </div>
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
-              {this.renderEditModal()}
             </div>}
-
+        {this.state.modal ? <div> {this.renderEditModal()} </div> : <div />}
       </div>
     );
   }
