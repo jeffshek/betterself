@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-import {
-  TrueCheckBox
-} from "../user_activities_events/user_activities_events_table";
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { TrueCheckBox } from "../constants/designs";
 
 const UserActivityHistoryRow = props => {
   const data = props.object;

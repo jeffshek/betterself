@@ -4,14 +4,7 @@ import { CubeLoadingStyle } from "../animations/LoadingStyle";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
-
-export const TrueCheckBox = () => {
-  return (
-    <div className="true-icon">
-      <i className="fa fa-check-circle" />
-    </div>
-  );
-};
+import { TrueCheckBox } from "../constants/designs";
 
 const UserActivityEventHistoryRow = props => {
   const data = props.object;
