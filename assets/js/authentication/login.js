@@ -39,17 +39,15 @@ export default class LoginView extends Component {
     }
 
     return (
-      <div>
+      <div id="login-background-color">
         <LoggedOutHeader />
         <section
           id="promo-1"
-          className="content-block promo-2 min-height-600px bg-black"
+          className="content-block promo-2 min-height-900px bg-black"
         >
           <div className="container">
             <div className="row">
               <div className="col-md-5">
-                <br />
-
                 <h2>Please Login</h2>
                 <p /><br />
                 <form onSubmit={e => this.handleSubmit(e)}>
@@ -86,9 +84,14 @@ export default class LoginView extends Component {
               </div>
               <br />
               <LoginPageSideImage />
+              <br />
             </div>
           </div>
         </section>
+        <footer>
+          {/*Simple but effective way to fill screen space with background color*/}
+          <br /><br /><br /><br /><br /><br />
+        </footer>
       </div>
     );
   }

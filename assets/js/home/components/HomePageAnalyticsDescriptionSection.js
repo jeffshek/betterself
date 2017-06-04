@@ -16,7 +16,7 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
                 {" "}
               </p>
               <p styleName="lead-white">
-                Track your decisions, activities, and supplements to see what's really impacting you. What do your most creative days and weeks have in common? You've come to the right place.
+                Track decisions, activities, and supplements to see what's really impacting you. What do your most creative days and weeks have in common? You've come to the right place.
               </p>
             </div>
             <div className="col-lg-8">
