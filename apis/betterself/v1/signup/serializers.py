@@ -14,7 +14,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password')
+        fields = ('uuid', 'username', 'password')
 
     def create(self, validated_data):
         # Override create in this serializer so we can use the function create_user

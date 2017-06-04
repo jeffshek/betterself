@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
@@ -5,6 +7,10 @@ from rest_framework.views import APIView
 
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from betterself.users.models import DemoUserLog
+
+from faker import Faker
+
+User = get_user_model()
 
 
 class CreateUserView(APIView):
@@ -37,25 +43,23 @@ class CreateDemoUserView(APIView):
     permission_classes = ()
 
     def post(self, request):
-        # have username be demo-username
-        # so demo-usernames are then easy to tell
+        fake = Faker()
+        name = fake.name()
 
-        # TODO
-        # generate a fake username
-        # generate a fake password
-        serializer = CreateUserSerializer(data=request.data)
-        # if serializer isn't valid, just quit early
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        # have username be demo-username, so demos-users are easy to tell
+        username = 'demo-{name}'.format(name=name)
+        username = slugify(username)
 
-        # save the instance
-        user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
-        json_response = serializer.data
-        json_response['token'] = token.key
+        # since these are demo accounts, just set the username/pass the same
+        user = User.objects.create_user(username=username, password=username)
 
         # create a log to show this is a demo user
         DemoUserLog.objects.create(user=user)
 
-        # now create a bunch of fake data for the account
+        serializer = CreateUserSerializer(user)
+        json_response = serializer.data
+
+        token, _ = Token.objects.get_or_create(user=user)
+        json_response['token'] = token.key
+
         return Response(json_response, status=HTTP_201_CREATED)
