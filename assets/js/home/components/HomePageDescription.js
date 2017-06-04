@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import CSSModules from "react-css-modules";
 import styles from "../css/HomePageDescription.css";
 
-import { DASHBOARD_INDEX_URL } from "../../urls/constants";
+import { DASHBOARD_INDEX_URL, SIGNUP_URL } from "../../urls/constants";
 
 class HomePageDescriptionSection extends React.Component {
   render() {
@@ -31,7 +31,7 @@ class HomePageDescriptionSection extends React.Component {
               </a>
               &nbsp; or &nbsp;
               <a
-                href={DASHBOARD_INDEX_URL}
+                href={SIGNUP_URL}
                 className="btn btn-outline btn-outline-lg outline-dark"
               >
                 Sign up (free)

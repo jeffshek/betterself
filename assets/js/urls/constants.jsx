@@ -16,6 +16,9 @@ export const DASHBOARD_USER_ACTIVITIES_URL = '/dashboard/user_activities'
 // Analytics
 export const DASHBOARD_CHARTS_URL = '/dashboard/analytics/charts'
 
-export const LOGIN_URL = '/login'
-export const LOGOUT_URL = '/logout'
+// Auth
+export const LOGIN_URL = '/login/'
+export const LOGOUT_URL = '/logout/'
+export const SIGNUP_URL = '/signup/'
+
 export const SETTINGS_URL = '/settings'

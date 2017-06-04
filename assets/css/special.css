@@ -6,6 +6,10 @@
   margin-bottom: 0;
 }
 
+#create-username {
+  background-color: #193441;
+}
+
 .add-event-label {
   font-weight: bold;
 }
@@ -72,4 +76,10 @@
   background-color: #193441;
   border-bottom: black;
   border-bottom: 50px;
+}
+
+#special-signup-footer {
+  background-color: #193441;
+  height: 60px;
+  min-height: 500px;
 }
