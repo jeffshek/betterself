@@ -7,7 +7,9 @@ from apis.betterself.v1.signup.serializers import CreateUserSerializer
 
 
 class CreateUserView(APIView):
-    # TODO - Add rate limiting to prevent someone from spamming
+    # Limit the amount of signups from any individual ip to 5 a day
+    # to prevent spam issues
+    throttle_scope = 'signups'
     # If the user is just signing up, one would assume they can't have authentication yet ...
     permission_classes = ()
 
