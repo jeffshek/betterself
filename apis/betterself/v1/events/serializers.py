@@ -113,6 +113,11 @@ class UserActivitySerializer(serializers.Serializer):
 
 
 class UserActivityUpdateSerializer(serializers.Serializer):
+    """
+    The create and update serializers "could" be combined, but I rather
+    be explicit separation for now, I can combine them later -- just don't want to build
+    tests that assume they're nested.
+    """
     uuid = serializers.UUIDField()
     name = serializers.CharField(required=False)
     is_significant_activity = serializers.BooleanField(required=False)

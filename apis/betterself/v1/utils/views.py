@@ -34,3 +34,27 @@ class UUIDDeleteMixin(object):
 
         get_object_or_404(self.model, **filter_params).delete()
         return Response(status=204)
+
+
+class UUIDUpdateMixin(object):
+    """
+    Mixin for API Views to allow updating of objects
+    """
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        user = request.user
+
+        try:
+            uuid = data['uuid']
+        except KeyError:
+            raise Http404
+
+        instance = get_object_or_404(self.model, user=user, uuid=uuid)
+        serializer = self.update_serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            Response('Invalid Data Submitted {}'.format(data), status=400)
+
+        return Response(serializer.data)
