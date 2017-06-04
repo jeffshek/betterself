@@ -8,8 +8,8 @@ export const UserActivityHistoryRow = props => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
-      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
+      <td>{is_significant_activity ? <TrueCheckBox /> : <div />}</td>
+      <td>{is_negative_activity ? <TrueCheckBox /> : <div />}</td>
       <td>
         <div className="center-icon">
           <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
