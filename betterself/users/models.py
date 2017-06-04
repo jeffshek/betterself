@@ -6,10 +6,12 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
+
+from betterself.base_models import BaseModel
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -43,3 +45,19 @@ class User(AbstractUser):
     @staticmethod
     def get_default_user_id():
         return User.get_default_user().id
+
+
+class DemoUserLog(BaseModel):
+    """
+    Create a log of all demo users that are generated. That way all demo users
+    can be periodically purged, but still offer a good experience for people
+    interested in trying out features
+    """
+    user = models.OneToOneField(User, unique=True)
+
+
+# Create a signal to be able to delete all demo-users easily so this
+# can be cleaned up via admin
+@receiver(post_delete, sender=DemoUserLog)
+def post_delete_user(sender, instance, *args, **kwargs):
+    instance.user.delete()

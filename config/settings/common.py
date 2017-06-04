@@ -248,6 +248,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_RATES': {
         'signups': '3/day',
+        'demo_signups': '10/day',  # let a user create a few more demo accounts
     }
 }
 
