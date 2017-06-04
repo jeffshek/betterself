@@ -1,30 +1,86 @@
 import React, { Component } from "react";
+import { JSON_HEADERS } from "../constants/util_constants";
 
 export class SignupView extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      username: "",
+      password: "",
+      password_confirm: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    if (this.state.password !== this.state.password_confirm) {
+      alert("Passwords does not match confirm password. Please try again.");
+    } else {
+      const postParams = {
+        username: this.state.username,
+        password: this.state.password
+      };
+
+      fetch("api/v1/user-signup/", {
+        method: "POST",
+        headers: JSON_HEADERS,
+        body: JSON.stringify(postParams)
+      }).then(response => {
+        if (response.status === 400) {
+          response.json().then(responseData => {
+            if ("username" in responseData) {
+              alert("Username : " + responseData["username"]);
+            } else if ("password" in responseData) {
+              alert("Password : " + responseData["password"]);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
   render() {
     return (
       <div>
         <div className="row approve-modal">
           <br />
-
           <div className="col-md-6 offset-sm-1">
             <br /><br /><br />
             <div className="card">
               <div className="card-header">
-                <strong>Sign Up</strong>
+                <h3><strong>Sign Up</strong></h3>
               </div>
               <div className="card-block">
-                <form action="" method="post" className="form-horizontal ">
+                <form method="post" className="form-horizontal ">
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label">
                       Username
                     </label>
                     <div className="col-md-9">
                       <input
-                        type="username"
+                        name="username"
                         className="form-control"
-                        placeholder="Create Username .."
+                        value={this.state.username}
+                        onChange={this.handleChange}
+                        placeholder="Create Username ..."
                       />
+                      <span className="help-block">
+                        {" "}Between 4-32 Characters
+                      </span>
                     </div>
                   </div>
                   <div className="form-group row">
@@ -33,11 +89,28 @@ export class SignupView extends Component {
                     </label>
                     <div className="col-md-9">
                       <input
+                        name="password"
                         type="password"
-                        id="hf-password"
-                        name="hf-password"
                         className="form-control"
-                        placeholder="Enter Password.."
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        placeholder="Enter Password ..."
+                      />
+                      <span className="help-block">
+                        {" "}Minimum of 8 Characters
+                      </span>
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-md-3 form-control-label" />
+                    <div className="col-md-9">
+                      <input
+                        name="password_confirm"
+                        type="password"
+                        className="form-control"
+                        value={this.state.password_confirm}
+                        onChange={this.handleChange}
+                        placeholder="Confirm Password.."
                       />
                     </div>
                   </div>
@@ -48,6 +121,7 @@ export class SignupView extends Component {
                   type="submit"
                   className="btn btn-sm btn-success float-right"
                   id="create-username"
+                  onClick={this.handleSubmit}
                 >
                   <i className="fa fa-dot-circle-o" /> Submit
                 </button>&nbsp;

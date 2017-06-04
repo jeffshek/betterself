@@ -11,7 +11,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
     be explicit separation for now, I can combine them later -- just don't want to build
     tests that assume they're nested.
     """
-    username = serializers.CharField(max_length=32,
+    username = serializers.CharField(min_length=4, max_length=32,
                                      validators=[UniqueValidator(queryset=User.objects.all())]
                                      )
 
