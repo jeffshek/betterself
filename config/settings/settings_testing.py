@@ -55,3 +55,6 @@ DATABASES['default'] = TEST_DB_SETTINGS
 
 # Where API Endpoints should hit
 API_ENDPOINT = 'http://localhost:8081'
+
+# don't check for throttling when testing
+REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']['signups'] = '500/sec'
