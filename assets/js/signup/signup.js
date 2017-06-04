@@ -41,6 +41,7 @@ export class SignupView extends Component {
                 alert("Password : " + responseData["password"]);
               }
             });
+            // Don't return anything if its not working
             return;
           }
           return response.json();
