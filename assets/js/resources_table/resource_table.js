@@ -40,10 +40,14 @@ export class BaseEventLogTable extends Component {
       method: "PUT",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
-    }).then(
-      // for now just refresh the page - later on dynamically remove it from state
-      location.reload()
-    );
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        // Once we get the data, refresh the page
+        location.reload();
+      });
   }
 
   deleteUUID(uuid) {

@@ -52,7 +52,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     const params = {
       uuid: this.state.editObject["uuid"],
       time: this.state.editObject["time"],
-      duration_minutes: this.state.editObject["duration_minutes"],
+      duration_minutes: this.state["durationMinutes"],
       user_activity_uuid: this.state.editObject["user_activity"].uuid
     };
 

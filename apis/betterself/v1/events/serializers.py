@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
@@ -156,6 +156,22 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
             defaults=validated_data)
 
         return obj
+
+    def update(self, instance, validated_data):
+        if 'user_activity' in validated_data:
+            try:
+                user_activity_uuid = validated_data['user_activity']['uuid']
+                user_activity = UserActivity.objects.get(uuid=user_activity_uuid, user=instance.user)
+            except ObjectDoesNotExist:
+                raise ValidationError('Invalid User Activity UUID Entered')
+
+            instance.user_activity = user_activity
+
+        instance.user_activity_uuid = validated_data.get('user_activity', instance.user_activity.uuid)
+        instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
+        instance.time = validated_data.get('time', instance.time)
+        instance.save()
+        return instance
 
 
 class UserActivityEventReadSerializer(serializers.Serializer):

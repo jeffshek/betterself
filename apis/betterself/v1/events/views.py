@@ -56,11 +56,12 @@ class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
         return self.model.objects.filter(user=self.request.user)
 
 
-class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
+class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = UserActivityEvent
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = UserActivityEventReadSerializer
     write_serializer_class = UserActivityEventCreateSerializer
+    update_serializer_class = UserActivityEventCreateSerializer
     filter_class = UserActivityEventFilter
 
     def get_serializer_class(self):
