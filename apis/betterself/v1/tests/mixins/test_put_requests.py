@@ -46,7 +46,7 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         copied_result['uuid'] = uuid
 
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        result = self.client_1.put(url, data=copied_result)
+        result = self.client_1.put(url, data=copied_result, format='json')
 
         for attribute in attributes_to_update:
             self.assertTrue(result.data[attribute], STRING_UPDATE_PARAM)

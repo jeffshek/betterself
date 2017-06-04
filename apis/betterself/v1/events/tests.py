@@ -181,7 +181,7 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     TEST_MODEL = UserActivityEvent
     PAGINATION = True
 

@@ -51,7 +51,7 @@ class UUIDUpdateMixin(object):
             raise Http404
 
         instance = get_object_or_404(self.model, user=user, uuid=uuid)
-        serializer = self.update_serializer_class(instance, data=request.data)
+        serializer = self.update_serializer_class(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
         else:
