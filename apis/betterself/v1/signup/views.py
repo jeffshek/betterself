@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 
 
-class CreateUser(APIView):
+class CreateUserView(APIView):
     # TODO - Add rate limiting to prevent someone from spamming
     # If the user is just signing up, one would assume they can't have authentication yet ...
     permission_classes = ()

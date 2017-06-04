@@ -141,7 +141,6 @@ export class SignupView extends Component {
                 </button>&nbsp;
               </div>
             </div>
-
           </div>
         </div>
         <div id="special-signup-footer" />

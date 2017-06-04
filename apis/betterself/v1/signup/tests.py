@@ -12,7 +12,7 @@ User = get_user_model()
 class AccountsTest(TestCase):
     def setUp(self):
         # We want to go ahead and originally create a user.
-        self.test_user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
+        self.test_user = User.objects.create_user('testuser', 'testpassword')
 
         # URL for creating an account.
         self.create_url = reverse('api-create-user')

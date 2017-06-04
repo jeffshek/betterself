@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
     UserActivityEventView
-from apis.betterself.v1.signup.views import CreateUser
+from apis.betterself.v1.signup.views import CreateUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
@@ -25,7 +25,7 @@ urlpatterns = [
         name=UserActivity.RESOURCE_NAME),
     url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(),
         name=UserActivityEvent.RESOURCE_NAME),
-    url(r'user-signup/$', CreateUser.as_view(), name='api-create-user')
+    url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user')
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'

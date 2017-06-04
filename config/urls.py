@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
     url(r'^login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
     url(r'^logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
-    url(r'^signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
+    url(r'^signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
     url(r'^settings/$', TemplateView.as_view(template_name=react_home_template), name='react-settings'),
 
     # To get API Token Back
