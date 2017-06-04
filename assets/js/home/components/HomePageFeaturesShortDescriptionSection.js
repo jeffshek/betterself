@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from "react";
-import CSSModules from 'react-css-modules';
-import FontAwesomeIconBox from "./FontAwesomeIconBox"
+import CSSModules from "react-css-modules";
+import FontAwesomeIconBox from "./FontAwesomeIconBox";
 
-import styles from '../css/HomePageFeaturesShortDescriptionSection.css'
-
+import styles from "../css/HomePageFeaturesShortDescriptionSection.css";
 
 class HomePageFeaturesShortDescriptionSection extends React.Component {
   render() {
@@ -29,7 +28,7 @@ class HomePageFeaturesShortDescriptionSection extends React.Component {
             <FontAwesomeIconBox
               icon="fa fa-mobile"
               header="Integrations"
-              description="Track supplement or medication usage in seven seconds or less. Available on iOS and Android."
+              description="Track supplement or medication usage in seven seconds or less. Available (soon) on iOS and Android."
             />
           </div>
         </div>
@@ -38,4 +37,4 @@ class HomePageFeaturesShortDescriptionSection extends React.Component {
   }
 }
 
-export default CSSModules(HomePageFeaturesShortDescriptionSection, styles)
+export default CSSModules(HomePageFeaturesShortDescriptionSection, styles);
