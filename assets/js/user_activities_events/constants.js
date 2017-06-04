@@ -1,0 +1,55 @@
+import React, { PropTypes, Component } from "react";
+import { TrueCheckBox } from "../constants/designs";
+import moment from "moment";
+
+export const UserActivityEventHistoryRow = props => {
+  const data = props.object;
+
+  const { source, time, duration_minutes, uuid } = data;
+  const user_activity = data.user_activity;
+  const name = user_activity.name;
+  const is_negative_activity = user_activity["is_negative_activity"];
+  const is_significant_activity = user_activity["is_significant_activity"];
+  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
+
+  return (
+    <tr>
+      <td>{timeFormatted}</td>
+      <td>{name}</td>
+      <td>{duration_minutes} minutes</td>
+      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
+      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
+      <td className="center-source">
+        <span className="badge badge-success">{source}</span>
+      </td>
+      <td>
+        <div className="center-icon">
+          <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
+            <i className="fa fa-edit fa-1x" />
+          </div>
+          &nbsp;
+          <div
+            className="remove-icon"
+            onClick={e => props.confirmDelete(uuid, name, timeFormatted)}
+          >
+            <i className="fa fa-remove fa-1x" />
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+export const UserActivityEventHistoryTableHeader = () => (
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Activity Type</th>
+      <th>Duration (Minutes)</th>
+      <th className="center-source">Significant</th>
+      <th className="center-source">Negative</th>
+      <th className="center-source">Source</th>
+      <th className="center-source">Actions</th>
+    </tr>
+  </thead>
+);

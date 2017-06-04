@@ -1,4 +1,6 @@
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
+from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator

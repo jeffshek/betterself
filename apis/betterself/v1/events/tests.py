@@ -8,7 +8,10 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
+from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
@@ -147,7 +150,7 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     TEST_MODEL = UserActivity
     PAGINATION = True
     DEFAULT_POST_PARAMS = {

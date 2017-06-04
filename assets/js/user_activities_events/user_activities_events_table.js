@@ -1,84 +1,65 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../animations/LoadingStyle";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-
-export const TrueCheckBox = () => {
-  return (
-    <div className="true-icon">
-      <i className="fa fa-check-circle" />
-    </div>
-  );
-};
-
-const confirmDelete = (uuid, name, eventDate) => {
-  const answer = confirm(
-    `WARNING: This will delete the following Activity \n\n ${name} on ${eventDate} \n\nConfirm? `
-  );
-  const params = {
-    uuid: uuid
-  };
-
-  if (answer) {
-    fetch("/api/v1/user_activity_events/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
-
-const UserActivityEventHistoryRow = props => {
-  const data = props.object;
-
-  const { source, time, duration_minutes, uuid } = data;
-  const user_activity = data.user_activity;
-  const name = user_activity.name;
-  const is_negative_activity = user_activity["is_negative_activity"];
-  const is_significant_activity = user_activity["is_significant_activity"];
-  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
-
-  return (
-    <tr>
-      <td>{timeFormatted}</td>
-      <td>{name}</td>
-      <td>{duration_minutes} minutes</td>
-      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
-      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
-      <td className="center-source">
-        <span className="badge badge-success">{source}</span>
-      </td>
-      <td>
-        <div onClick={e => confirmDelete(uuid, name, timeFormatted)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
-          </div>
-        </div>
-      </td>
-    </tr>
-  );
-};
-
-const UserActivityEventHistoryTableHeader = () => (
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Activity Type</th>
-      <th>Duration (Minutes)</th>
-      <th className="center-source">Significant</th>
-      <th className="center-source">Negative</th>
-      <th className="center-source">Source</th>
-      <th className="center-source">Actions</th>
-    </tr>
-  </thead>
-);
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Datetime from "react-datetime";
+import {
+  UserActivityEventHistoryRow,
+  UserActivityEventHistoryTableHeader
+} from "./constants";
 
 export class UserActivityEventLogTable extends BaseEventLogTable {
+  constructor() {
+    super();
+    this.state = {
+      modal: false
+    };
+    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
+    this.submitEdit = this.submitEdit.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.resourceURL = "/api/v1/user_activity_events/";
+    this.handleActivityTypeChange = this.handleActivityTypeChange.bind(this);
+  }
+
+  handleDatetimeChange(moment) {
+    let editObject = this.state.editObject;
+    editObject.time = moment;
+
+    this.setState({ editObject: editObject });
+  }
+
+  handleActivityTypeChange(event) {
+    const target = event.target;
+    const value = target.value;
+
+    let editObject = this.state.editObject;
+    editObject["user_activity"] = this.props.userActivityTypes[value];
+
+    this.setState({ editObject: editObject });
+  }
+
+  confirmDelete(uuid, name, eventDate) {
+    const answer = confirm(
+      `WARNING: This will delete the following Activity \n\n${name} on ${eventDate} \n\nConfirm?`
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
+  }
+
+  submitEdit() {
+    const params = {
+      uuid: this.state.editObject["uuid"],
+      time: this.state.editObject["time"],
+      duration_minutes: this.state.editObject["duration_minutes"],
+      user_activity_uuid: this.state.editObject["user_activity"].uuid
+    };
+
+    this.putParamsUpdate(params);
+    this.toggle();
+  }
+
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
@@ -91,10 +72,71 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             <UserActivityEventHistoryRow
               key={key}
               object={historicalData[key]}
+              selectModalEdit={this.selectModalEdit}
+              confirmDelete={this.confirmDelete}
             />
           ))}
         </tbody>
       </table>
+    );
+  }
+
+  renderEditModal() {
+    const activitiesKeys = Object.keys(this.props.userActivityTypes);
+    const activitiesNames = activitiesKeys.map(
+      key => this.props.userActivityTypes[key].name
+    );
+    const indexOfActivityEditSelect = activitiesNames.indexOf(
+      this.state.editObject["user_activity"].name
+    );
+
+    return (
+      <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <ModalHeader toggle={this.toggle}>Edit Activity Type</ModalHeader>
+        <ModalBody>
+          <label className="add-event-label">
+            Time
+          </label>
+          <Datetime
+            onChange={this.handleDatetimeChange}
+            value={this.state.editObject.time}
+          />
+          <br />
+
+          <label className="form-control-label add-event-label">
+            Activity Type
+          </label>
+          <select
+            className="form-control"
+            name="activityTypeIndexSelected"
+            onChange={this.handleActivityTypeChange}
+            value={indexOfActivityEditSelect}
+          >
+            {activitiesKeys.map(key => (
+              <option value={key} key={key}>
+                {this.props.userActivityTypes[key].name}
+              </option>
+            ))}
+          </select>
+          <br />
+
+          <label className="form-control-label add-event-label">
+            Duration (Minutes)
+          </label>
+          <input
+            name="durationMinutes"
+            type="integer"
+            className="form-control"
+            defaultValue={this.state.editObject["duration_minutes"]}
+            onChange={this.handleInputChange}
+          />
+          <br />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     );
   }
 
@@ -115,6 +157,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
+        {this.state.modal ? <div> {this.renderEditModal()} </div> : <div />}
       </div>
     );
   }
