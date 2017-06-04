@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import uuid as uuid
 
 import pytz
@@ -36,15 +35,6 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
-
-    @staticmethod
-    def get_default_user():
-        default_user, _ = User.objects.get_or_create(username='default')
-        return default_user
-
-    @staticmethod
-    def get_default_user_id():
-        return User.get_default_user().id
 
 
 class DemoUserLog(BaseModel):
