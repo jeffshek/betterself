@@ -19,7 +19,7 @@ class HomePageDescriptionSection extends React.Component {
             <div className="col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-4 content clearfix">
               <h1>Your Body's Dashboard</h1>
               <p styleName="content-1-4-lead">
-                Track supplements, sleep, productivity, heart rate, exercise, and happiness across fifteen integrations.
+                Track supplements, sleep, productivity, heart rate, exercise, and happiness across multiple integrations.
                 <br />
               </p>
               {/*Force redirect to take a different CSS, aka why we don't use Link*/}
@@ -28,6 +28,13 @@ class HomePageDescriptionSection extends React.Component {
                 className="btn btn-outline btn-outline-lg outline-dark"
               >
                 Try the demo
+              </a>
+              &nbsp; or &nbsp;
+              <a
+                href={DASHBOARD_INDEX_URL}
+                className="btn btn-outline btn-outline-lg outline-dark"
+              >
+                Sign up (free)
               </a>
               <div className="row pad45">
                 <div className="col-sm-6">
