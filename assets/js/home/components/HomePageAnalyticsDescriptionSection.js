@@ -12,7 +12,7 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
             <div className="col-lg-4 col-md-3 col-sm-12">
               <h1>Personalized Analytics</h1>
               <p styleName="lead-white">
-                Ever wonder how your body is being impacted by your habits and diet? How sleep impacts decision making?
+                Ever wonder how your body is being impacted by supplements, diet or habits? How sleep impacts decision making?
                 {" "}
               </p>
               <p styleName="lead-white">

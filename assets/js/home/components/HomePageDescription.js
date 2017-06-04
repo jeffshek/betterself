@@ -29,6 +29,13 @@ class HomePageDescriptionSection extends React.Component {
               >
                 Try the demo
               </a>
+              &nbsp; or &nbsp;
+              <a
+                href={DASHBOARD_INDEX_URL}
+                className="btn btn-outline btn-outline-lg outline-dark"
+              >
+                Sign up (free)
+              </a>
               <div className="row pad45">
                 <div className="col-sm-6">
                   <h5>Compound Improvements.</h5>
