@@ -18,7 +18,8 @@ import {
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_EVENTS_LOGS_URL,
-  DASHBOARD_USER_ACTIVITIES_URL
+  DASHBOARD_USER_ACTIVITIES_URL,
+  SIGNUP_URL
 } from "./urls/constants";
 
 import { Authenticator } from "./authentication/auth";
@@ -36,6 +37,7 @@ import { SupplementView } from "./supplements/supplements_view";
 import ProductivityLogView
   from "./productivity_log/productivity_event_log_view";
 import { UserActivitiesLogView } from "./user_activities/user_activities_view";
+import { SignupView } from "./signup/signup";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
@@ -52,12 +54,14 @@ const DashboardUserEventLogView = () => (
 const DashboardUserActivityView = () => (
   <Dashboard view={UserActivitiesLogView} />
 );
+const DashboardSignupView = () => <Dashboard view={SignupView} />;
 
 const BetterSelfRouter = () => (
   <Router>
     <div>
       {/*Public Routes*/}
       <Route exact path={HOME_URL} component={HomePage} />
+      <Route exact path={SIGNUP_URL} component={DashboardSignupView} />
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
