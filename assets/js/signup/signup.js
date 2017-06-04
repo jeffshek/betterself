@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/util_constants";
+import { DASHBOARD_INDEX_URL } from "../urls/constants";
+import { Redirect } from "react-router-dom";
 
 export class SignupView extends Component {
   constructor() {
@@ -29,17 +31,28 @@ export class SignupView extends Component {
         method: "POST",
         headers: JSON_HEADERS,
         body: JSON.stringify(postParams)
-      }).then(response => {
-        if (response.status === 400) {
-          response.json().then(responseData => {
-            if ("username" in responseData) {
-              alert("Username : " + responseData["username"]);
-            } else if ("password" in responseData) {
-              alert("Password : " + responseData["password"]);
-            }
-          });
-        }
-      });
+      })
+        .then(response => {
+          if (response.status === 400) {
+            response.json().then(responseData => {
+              if ("username" in responseData) {
+                alert("Username : " + responseData["username"]);
+              } else if ("password" in responseData) {
+                alert("Password : " + responseData["password"]);
+              }
+            });
+            return;
+          }
+          return response.json();
+        })
+        .then(responseData => {
+          if ("token" in responseData) {
+            // If the token is in the response, set the storage
+            // and then redirect to the dashboard
+            localStorage.token = responseData["token"];
+            window.location.assign(DASHBOARD_INDEX_URL);
+          }
+        });
     }
   }
 
