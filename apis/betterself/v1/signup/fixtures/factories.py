@@ -9,6 +9,9 @@ class DemoSupplementFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Supplement
+        # this makes any user/names that are passed correctly
+        # used as defaults (factory boy is kind of amazing)
+        django_get_or_create = ('user', 'name')
 
 
 class DemoSupplementEventFactory(factory.django.DjangoModelFactory):

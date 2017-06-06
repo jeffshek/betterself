@@ -1,3 +1,7 @@
+import datetime
+
+import pandas
+import random
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from faker import Faker
@@ -6,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
+from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory
+from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from betterself.users.models import DemoUserLog
 
@@ -61,11 +67,18 @@ class CreateDemoUserView(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         json_response['token'] = token.key
         #
-        # for supplement, supplement_details in SUPPLEMENTS_FIXTURES.items():
-        #     events_to_create = random.randint(*supplement_details['quantity_range'])
-        #     for _ in range(events_to_create):
-        #         supplement_event = DemoSupplementEventFactory(user=user, name=supplement)
-        #
-        #     count = Supplement.objects.all().filter(user=user)
+        start_date = datetime.datetime(2017, 1, 1)
+        date_series = pandas.date_range(start_date, freq='D', periods=90)
+        hour_series = range(0, 24)
+
+        for timestamp in date_series:
+            for supplement, supplement_details in SUPPLEMENTS_FIXTURES.items():
+                events_to_create = random.randint(*supplement_details['quantity_range'])
+                random_hours = random.sample(hour_series, events_to_create)
+                for _ in range(events_to_create):
+                    random_hour = random_hours.pop()
+                    random_time = timestamp.to_datetime().replace(hour=random_hour)
+
+                    DemoSupplementEventFactory(user=user, name=supplement, time=random_time)
 
         return Response(json_response, status=HTTP_201_CREATED)

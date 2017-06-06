@@ -56,7 +56,6 @@ class MeasurementV1Tests(SupplementBaseTests, GetRequestsTestsMixin):
     def test_post_request(self):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = self.client_1.put(url)
-
         # expected to fail, this is a read-only set of stuff
         self.assertEqual(request.status_code, 405)
 
