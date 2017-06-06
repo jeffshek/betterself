@@ -1,9 +1,8 @@
 # maybe change the location of this file, but don't have a better place at the moment
 import uuid as uuid
+
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import Q
 
 
 class BaseModel(models.Model):
@@ -26,12 +25,3 @@ class BaseModelWithUserGeneratedContent(BaseModel):
 
     class Meta:
         abstract = True
-
-    # restrict access to objects that only belong to a user or belong to "defaults"
-    @classmethod
-    def get_user_viewable_objects(cls, user):
-        # TODO - remove this stupidity
-        # flag TODO again
-        default_user = get_user_model().objects.get(username='default')
-        queryset = cls.objects.filter(Q(user=user) | Q(user=default_user))
-        return queryset

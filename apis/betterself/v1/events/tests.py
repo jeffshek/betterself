@@ -53,7 +53,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
         }
 
         # pass a parameter just to make sure the default parameter is valid
-        valid_supplement = Supplement.get_user_viewable_objects(self.user_1).first()
+        valid_supplement = Supplement.objects.filter(user=self.user_1).first()
         self.DEFAULT_POST_PARAMS['supplement_uuid'] = str(valid_supplement.uuid)
 
         super().setUp()

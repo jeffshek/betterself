@@ -132,7 +132,7 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
     def _get_default_post_parameters(self):
         # kind of whack, but create a list of valid IDs that could be passed
         # when serializing
-        ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
+        ingr_comps = IngredientComposition.objects.filter(user=self.user_1)
         ingr_comps_uuids = ingr_comps.values_list('uuid', flat=True)
         ingr_comps_uuids = [{'uuid': str(item)} for item in ingr_comps_uuids]
 
