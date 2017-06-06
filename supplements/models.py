@@ -1,7 +1,6 @@
 from django.db import models
 
 from betterself.base_models import BaseModel, BaseModelWithUserGeneratedContent
-from vendors.models import Vendor
 
 
 class Measurement(BaseModel):
@@ -77,11 +76,10 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     name = models.CharField(max_length=300)
     ingredient_compositions = models.ManyToManyField(IngredientComposition, blank=True)
-    vendor = models.ForeignKey(Vendor, null=True, blank=True)
     # quantity is an event type of attribute, so its not here.
 
     class Meta:
-        unique_together = ('user', 'name', 'vendor')
+        unique_together = ('user', 'name')
         ordering = ['user', 'name']
         verbose_name = 'Supplement'
         verbose_name_plural = 'Supplements'

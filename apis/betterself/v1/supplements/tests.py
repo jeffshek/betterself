@@ -21,7 +21,6 @@ class SupplementBaseTests(BaseAPIv1Tests):
         # there, so supplement/models includes ingredients, etc.
         SupplementModelsFixturesGenerator.create_fixtures()
         VendorModelsFixturesGenerator.create_fixtures()
-
         super().setUpTestData()
 
 
@@ -132,9 +131,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
     TEST_MODEL = Supplement
 
     def _get_default_post_parameters(self):
-        client_vendors = Vendor.get_user_viewable_objects(self.user_1)
-        vendor_id = client_vendors[0].uuid.__str__()
-
         # kind of whack, but create a list of valid IDs that could be passed
         # when serializing
         ingr_comps = IngredientComposition.get_user_viewable_objects(self.user_1)
@@ -143,7 +139,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
 
         request_parameters = {
             'name': 'Glutamine',
-            'vendor_uuid': vendor_id,
             'ingredient_compositions': ingr_comps_uuids
         }
         return request_parameters
@@ -154,7 +149,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         self._make_post_request(self.client_1, request_parameters)
 
         supplement = Supplement.objects.get(name=request_parameters['name'])
-        vendor_uuid = str(supplement.vendor.uuid)
 
         ingr_comps_uuids = supplement.ingredient_compositions.values_list('uuid', flat=True)
         ingr_comps_uuids = set(str(uuid) for uuid in ingr_comps_uuids)
@@ -162,7 +156,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         request_ingredient_compositions = request_parameters['ingredient_compositions']
         request_ingredient_compositions_uuids = set(item['uuid'] for item in request_ingredient_compositions)
 
-        self.assertEqual(vendor_uuid, request_parameters['vendor_uuid'])
         self.assertSetEqual(request_ingredient_compositions_uuids, ingr_comps_uuids)
 
     def test_post_request(self):

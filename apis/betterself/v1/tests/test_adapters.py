@@ -272,38 +272,6 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
         data = self.adapter.post_resource_data(Supplement, parameters=parameters)
         self.assertEqual(data['name'], supplement_name)
 
-    def test_post_supplements_with_invalid_vendor_uuid(self):
-        supplement_name = 'cheese'
-        parameters = {
-            'name': supplement_name,
-            'vendor_uuid': [1, 2],
-        }
-
-        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
-
-        # when django errors out, it does it by returning the key field with an error and description
-        self.assertTrue('vendor_uuid' in data)
-        self.assertEqual(len(data), 1)
-        self.assertFalse('name' in data)
-
-    def test_post_supplements_with_non_existent_vendor_uuid(self):
-        vendor_uuid = Vendor.objects.all().first().uuid
-        supplement_name = 'cheese'
-        parameters = {
-            'name': supplement_name,
-            'vendor_uuid': vendor_uuid,
-        }
-
-        # delete all vendor_ids so we can now test out what happens
-        Vendor.objects.all().delete()
-
-        data = self.adapter.post_resource_data(Supplement, parameters=parameters)
-
-        # when django errors out, it does it by returning the key field with an error and description
-        self.assertTrue('vendor_uuid' in data)
-        self.assertEqual(len(data), 1)
-        self.assertFalse('name' in data)
-
 
 class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
     model = SupplementEvent
@@ -314,7 +282,8 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
         super().setUpTestData()
 
         default_user, _ = User.objects.get_or_create(username='default')
-        SupplementEventFactory(user=default_user)
+        supplement = Supplement.objects.filter(user=default_user).first()
+        SupplementEventFactory(user=default_user, supplement=supplement)
 
     def test_post_events(self):
         supplement_uuid = self.adapter.get_resource_data(Supplement)[0]['uuid']
@@ -416,7 +385,8 @@ class ProductivityLogAdaptersTests(AdapterTests, TestResourceMixin):
         super().setUpTestData()
 
         default, _ = User.objects.get_or_create(username='default')
-        SupplementEventFactory(user=default)
+        supplement = Supplement.objects.filter(user=default).first()
+        SupplementEventFactory(user=default, supplement=supplement)
         ProductivityLogFixturesGenerator.create_fixtures(default)
 
 

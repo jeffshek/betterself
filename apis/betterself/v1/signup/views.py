@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
+from faker import Faker
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
@@ -7,8 +8,6 @@ from rest_framework.views import APIView
 
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from betterself.users.models import DemoUserLog
-
-from faker import Faker
 
 User = get_user_model()
 
@@ -61,5 +60,12 @@ class CreateDemoUserView(APIView):
 
         token, _ = Token.objects.get_or_create(user=user)
         json_response['token'] = token.key
+        #
+        # for supplement, supplement_details in SUPPLEMENTS_FIXTURES.items():
+        #     events_to_create = random.randint(*supplement_details['quantity_range'])
+        #     for _ in range(events_to_create):
+        #         supplement_event = DemoSupplementEventFactory(user=user, name=supplement)
+        #
+        #     count = Supplement.objects.all().filter(user=user)
 
         return Response(json_response, status=HTTP_201_CREATED)

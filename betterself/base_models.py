@@ -31,6 +31,7 @@ class BaseModelWithUserGeneratedContent(BaseModel):
     @classmethod
     def get_user_viewable_objects(cls, user):
         # TODO - remove this stupidity
+        # flag TODO again
         default_user = get_user_model().objects.get(username='default')
         queryset = cls.objects.filter(Q(user=user) | Q(user=default_user))
         return queryset

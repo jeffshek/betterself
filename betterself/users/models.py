@@ -20,11 +20,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class User(AbstractUser):
-    # most of the models have id equivalent to uuid, but for User (since this
-    # is so inherent in Django) i've left as uuid ... this can be refactored
-    # later to replace the id column after i feel comfortable with it. right now
-    # it's just not worth the risk of finding out having a uuid as the primary key
-    # on user breaks things i don't know about
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
     # since this is dealing with a lot of different timezones - enforce a user input
