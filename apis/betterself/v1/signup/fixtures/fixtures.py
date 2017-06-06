@@ -56,7 +56,7 @@ SUPPLEMENTS_FIXTURES = {
     },
 }
 
-user_activity_events = {
+USER_ACTIVITY_EVENTS = {
     'Meditation': {
         'quantity_range': (0, 1),
         'duration': 30,

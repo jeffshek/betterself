@@ -1,12 +1,11 @@
 import datetime
 import factory
 
-from events.models import SupplementEvent
+from events.models import SupplementEvent, UserActivity, UserActivityEvent
 from supplements.models import Supplement
 
 
 class DemoSupplementFactory(factory.django.DjangoModelFactory):
-
     class Meta:
         model = Supplement
         # this makes any user/names that are passed correctly
@@ -24,4 +23,22 @@ class DemoSupplementEventFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = SupplementEvent
+        exclude = ('name',)
+
+
+class DemoActivityType(factory.django.DjangoModelFactory):
+    class Meta:
+        model = UserActivity
+        # this makes any user/names that are passed correctly
+        # used as defaults (factory boy is kind of amazing)
+        django_get_or_create = ('user', 'name')
+
+
+class DemoActivityEvent(factory.django.DjangoModelFactory):
+    user_activity = factory.SubFactory(DemoActivityType,
+                                       user=factory.SelfAttribute('..user'),
+                                       name=factory.SelfAttribute('..name'))
+
+    class Meta:
+        model = UserActivityEvent
         exclude = ('name',)
