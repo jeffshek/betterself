@@ -66,7 +66,7 @@ class CreateDemoUserView(APIView):
 
         token, _ = Token.objects.get_or_create(user=user)
         json_response['token'] = token.key
-        #
+
         start_date = datetime.datetime(2017, 1, 1)
         date_series = pandas.date_range(start_date, freq='D', periods=90)
         hour_series = range(0, 24)
