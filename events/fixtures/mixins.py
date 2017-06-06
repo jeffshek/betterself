@@ -31,7 +31,7 @@ def generate_unique_index_per_supplements_and_time(supplements_used):
 class SupplementEventsFixturesGenerator(object):
     @staticmethod
     def create_fixtures(user):
-        supplement_1 = SupplementFactory(user=user)
+        supplement_1 = SupplementFactory(user=user, name='Fish Oil')
         supplement_2 = SupplementFactory(user=user, name='Snake Oil')
         supplement_3 = SupplementFactory(user=user, name='Truffle Oil')
 

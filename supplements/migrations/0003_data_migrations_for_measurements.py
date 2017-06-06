@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             app.objects.create(**measurement)
 
     dependencies = [
-        ('supplements', '0001_initial'),
+        ('supplements', '0002_auto_20170605_1603'),
     ]
 
     operations = [

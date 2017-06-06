@@ -4,7 +4,10 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+from betterself.users.models import DemoUserLog
+
 User = get_user_model()
+
 
 # thanks to https://github.com/iheanyi/ for writing these tests
 
@@ -94,3 +97,35 @@ class AccountsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), self.starting_user_count)
         self.assertEqual(len(response.data['username']), 1)
+
+
+class DemoAccountsTest(TestCase):
+    def setUp(self):
+        self.create_url = reverse('api-create-demo-user')
+
+    def test_demo_user_creation(self):
+        response = self.client.post(self.create_url)
+        self.assertEqual(response.status_code, 201)
+
+    def test_demo_user_creation_is_in_demo_user_log(self):
+        response = self.client.post(self.create_url)
+        data = response.data
+
+        uuid = data['uuid']
+        user = User.objects.get(uuid=uuid)
+
+        demo_user_log = DemoUserLog.objects.get(user=user)
+        self.assertEqual(demo_user_log.user, user)
+
+    def test_delete_demo_user_log_deletes_user(self):
+        response = self.client.post(self.create_url)
+        data = response.data
+
+        uuid = data['uuid']
+        user = User.objects.get(uuid=uuid)
+
+        demo_user_log = DemoUserLog.objects.get(user=user)
+        demo_user_log.delete()
+
+        user_matching_deleted_uuid = User.objects.filter(uuid=uuid).count()
+        self.assertEqual(user_matching_deleted_uuid, 0)

@@ -36,7 +36,7 @@ class IngredientCompositionAdmin(admin.ModelAdmin):
 
 @admin.register(Supplement)
 class SupplementAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'ingredient_composition_display', 'vendor')
+    list_display = ('user', 'name', 'ingredient_composition_display', )
     search_fields = ('user__username', 'name')
 
     class Meta:

@@ -71,7 +71,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=300)),
                 ('ingredient_compositions', models.ManyToManyField(blank=True, to='supplements.IngredientComposition')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('vendor', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='vendors.Vendor')),
             ],
             options={
                 'verbose_name': 'Supplement',
@@ -91,7 +90,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='supplement',
-            unique_together=set([('user', 'name', 'vendor')]),
+            unique_together=set([('user', 'name')]),
         ),
         migrations.AlterUniqueTogether(
             name='ingredientcomposition',

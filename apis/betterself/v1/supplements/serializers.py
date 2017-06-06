@@ -89,7 +89,6 @@ class IngredientCompositionCreateSerializer(serializers.Serializer):
 class SupplementReadOnlySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
-    vendor = VendorSerializer()
     uuid = serializers.UUIDField(required=False, read_only=True)
     created = serializers.DateTimeField()
 
@@ -101,26 +100,10 @@ class SimpleIngredientCompositionSerializer(serializers.Serializer):
 class SupplementCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = SimpleIngredientCompositionSerializer(many=True, required=False)
-    vendor_uuid = serializers.UUIDField(source='vendor.uuid', required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
     created = serializers.DateTimeField(required=False)
 
-    def validate_vendor_uuid(self, instance):
-        try:
-            Vendor.objects.get(uuid=instance)
-        except Vendor.DoesNotExist:
-            raise ValidationError('Non-required Vendor! UUID doesn\'t exist'.format(instance))
-
-        return instance
-
     def validate(self, validated_data):
-        if 'vendor' in validated_data:
-            vendor_details = validated_data.pop('vendor')
-            vendor_uuid = vendor_details['uuid']
-            vendor = Vendor.objects.get(uuid=vendor_uuid)
-
-            validated_data['vendor'] = vendor
-
         if 'ingredient_compositions' in validated_data:
             ingredient_compositions = validated_data.pop('ingredient_compositions')
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
