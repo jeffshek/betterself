@@ -29,3 +29,11 @@ class TestDemoFixturesBuilder(TestCase):
         # 30 + 30 + 30 + (-30) (-30)
         # 30
         self.assertEqual(result, 30)
+
+        # test the peak
+        result = DemoHistoricalDataBuilder.calculate_productivity_impact(3, details)
+        self.assertEqual(result, 90)
+
+        # test sample size of 1
+        result = DemoHistoricalDataBuilder.calculate_productivity_impact(1, details)
+        self.assertEqual(result, 30)

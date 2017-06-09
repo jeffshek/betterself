@@ -21,8 +21,8 @@ class DemoHistoricalDataBuilder(object):
         historical_data_points_quantity = 90
 
         # use pandas to generate a nifty index of timestamps
-        start_date = datetime.datetime(2017, 1, 1)
-        self.date_series = pd.date_range(start_date, freq='D', periods=historical_data_points_quantity)
+        end_date = datetime.date.today()
+        self.date_series = pd.date_range(end=end_date, freq='D', periods=historical_data_points_quantity)
 
         # build a series that shows the impact of what supplements/events have on sleep
         self.sleep_impact_series = pd.Series(0, index=self.date_series)
