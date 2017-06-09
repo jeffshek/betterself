@@ -89,6 +89,7 @@ class DemoHistoricalDataBuilder(object):
         # and then let's add how productivity
         baseline_productivity_series = total_sleep / 2
         productivity_series = self.productivity_impact_series + baseline_productivity_series
+
         productivity_logs = []
         for index, productivity_amount in productivity_series.iteritems():
             log = DailyProductivityLog(user=self.user, date=index, very_productive_time_minutes=productivity_amount,
