@@ -34,7 +34,7 @@ class DemoActivityType(factory.django.DjangoModelFactory):
         django_get_or_create = ('user', 'name')
 
 
-class DemoActivityEvent(factory.django.DjangoModelFactory):
+class DemoActivityEventFactory(factory.django.DjangoModelFactory):
     user_activity = factory.SubFactory(DemoActivityType,
                                        user=factory.SelfAttribute('..user'),
                                        name=factory.SelfAttribute('..name'))
