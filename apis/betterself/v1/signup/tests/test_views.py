@@ -9,7 +9,7 @@ from betterself.users.models import DemoUserLog
 User = get_user_model()
 
 
-# thanks to https://github.com/iheanyi/ for writing these tests
+# thanks to https://github.com/iheanyi/ for writing a bulk of AccountsTest
 
 
 class AccountsTest(TestCase):

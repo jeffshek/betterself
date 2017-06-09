@@ -25,6 +25,7 @@ urlpatterns = [
         name=UserActivity.RESOURCE_NAME),
     url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(),
         name=UserActivityEvent.RESOURCE_NAME),
+    # used by the front-end to send views
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user')
 ]
