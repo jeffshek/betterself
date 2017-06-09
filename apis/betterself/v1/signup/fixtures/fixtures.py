@@ -18,17 +18,17 @@
 SUPPLEMENTS_FIXTURES = {
     'Caffeine': {
         'quantity_range': (0, 5),  # more than 5 cups is just unrealistic
-        'net_productivity_impact_per_quantity': 50,
+        'net_productivity_impact_per_quantity': 60,
         'peak_threshold_quantity': 3,
         'post_threshold_impact_on_productivity_per_quantity': -30,
-        'sleep_impact_per_quantity': -15,
+        'sleep_impact_per_quantity': -10,
     },
     'Theanine': {
         'quantity_range': (0, 3),
-        'net_productivity_impact_per_quantity': 15,
+        'net_productivity_impact_per_quantity': 20,
         'peak_threshold_quantity': None,
         'post_threshold_impact_on_productivity_per_quantity': None,
-        'sleep_impact_per_quantity': 10,
+        'sleep_impact_per_quantity': 15,
     },
     'Magnesium': {
         'quantity_range': (0, 3),
@@ -39,12 +39,12 @@ SUPPLEMENTS_FIXTURES = {
         'sleep_impact_per_quantity': 20,
     },
     'Ibuprofen': {
-        'quantity_range': (0, 4),
-        'net_productivity_impact_per_quantity': -30,
+        'quantity_range': (0, 2),
+        'net_productivity_impact_per_quantity': -45,
         # correlation != causation here, ibuprofen is an indicator of being sick, etc.
         'peak_threshold_quantity': None,
         'post_threshold_impact_on_productivity_per_quantity': None,
-        'sleep_impact_per_quantity': -15,  # days you've been ibuprofen, you don't sleep as well
+        'sleep_impact_per_quantity': -20,  # days you've been ibuprofen, you don't sleep as well
     },
     'Fish Oil': {
         'quantity_range': (0, 2),
@@ -56,7 +56,7 @@ SUPPLEMENTS_FIXTURES = {
     },
 }
 
-user_activity_events = {
+USER_ACTIVITY_EVENTS = {
     'Meditation': {
         'quantity_range': (0, 1),
         'duration': 30,
@@ -68,17 +68,17 @@ user_activity_events = {
     'Ate Fast Food': {
         'quantity_range': (0, 2),
         'duration': 0,
-        'net_productivity_impact_per_quantity': -60,  # eating fast food has absolutely crushed you with food coma
+        'net_productivity_impact_per_quantity': -45,  # eating fast food has absolutely crushed you with food coma
         'peak_threshold_quantity': None,
         'post_threshold_impact_on_productivity_per_quantity': None,
-        'sleep_impact_per_quantity': -10,
+        'sleep_impact_per_quantity': -20,
     },
     'Jogging': {
         'quantity_range': (0, 2),
         'duration': 30,
-        'net_productivity_impact_per_quantity': 15,
+        'net_productivity_impact_per_quantity': 30,
         'peak_threshold_quantity': None,
         'post_threshold_impact_on_productivity_per_quantity': None,
-        'sleep_impact_per_quantity': 10,
+        'sleep_impact_per_quantity': 15,
     },
 }

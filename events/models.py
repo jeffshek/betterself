@@ -77,16 +77,13 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
 
 class SleepEventLog(BaseModelWithUserGeneratedContent):
     """
-    Represents how many hours of sleep you got COMING into the day.
-    If a user slept 5 hours on Sunday night, Monday's log would say 5*60=300
-
-    Mimicking how vendors report it ... since productivity is often driven
-    by how many hours of sleep you got the night before.
+    Represents how much sleep you got on that specific day ... so on Monday night
+    if you sleep from 9PM to 3AM, this represents, tbe date value should be Monday's
+    date and NOT Tuesday.
     """
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
-    sleep_time_minutes = models.IntegerField()  # always should be stored in minutes
-    # Odd debate, but what day does this event accurately represent?
-    # "I'm tired, I only got 5 hours of sleep." Those 5 hours represent the state of the day
+    sleep_time_minutes = models.IntegerField()
+    # represent the sleep you got that SAME day.
     date = models.DateField()
 
     class Meta:
