@@ -24,10 +24,8 @@ class TestDemoFixturesBuilder(TestCase):
         }
 
         result = DemoHistoricalDataBuilder.calculate_productivity_impact(5, details)
-
         # if the quantity is 5 ... the result should be
-        # 30 + 30 + 30 + (-30) (-30)
-        # 30
+        # 30 + 30 + 30 + (-30) (-30) = 30
         self.assertEqual(result, 30)
 
         # test the peak

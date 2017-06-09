@@ -2,7 +2,11 @@ import React, { PropTypes, Component } from "react";
 import CSSModules from "react-css-modules";
 import styles from "../css/HomePageDescription.css";
 
-import { DASHBOARD_INDEX_URL, SIGNUP_URL } from "../../urls/constants";
+import {
+  DASHBOARD_INDEX_URL,
+  DEMO_SIGNUP_URL,
+  SIGNUP_URL
+} from "../../urls/constants";
 
 class HomePageDescriptionSection extends React.Component {
   render() {
@@ -24,7 +28,7 @@ class HomePageDescriptionSection extends React.Component {
               </p>
               {/*Force redirect to take a different CSS, aka why we don't use Link*/}
               <a
-                href={DASHBOARD_INDEX_URL}
+                href={DEMO_SIGNUP_URL}
                 className="btn btn-outline btn-outline-lg outline-dark"
               >
                 Try the demo
