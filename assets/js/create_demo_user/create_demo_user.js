@@ -76,57 +76,22 @@ export class CreateDemoUserView extends Component {
             <br /><br /><br />
             <div className="card">
               <div className="card-header">
-                <h3><strong>Sign Up</strong></h3>
+                <h3><strong>Create Demo User</strong></h3>
               </div>
               <div className="card-block">
                 <form method="post" className="form-horizontal ">
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label">
-                      Username
+                  <div className="col-md-11 form-group row">
+                    <label className="form-control-label">
+                      Hitting CREATE generates a demo user with randomly generated data to illustrate analytics.
+                      {" "}
+                      <br />
+                      {" "}
+                      <p>
+                        {" "}
+                        Demo users are temporary and will be deleted by the end of day.
+                        {" "}
+                      </p>
                     </label>
-                    <div className="col-md-9">
-                      <input
-                        name="username"
-                        className="form-control"
-                        value={this.state.username}
-                        onChange={this.handleChange}
-                        placeholder="Create Username ..."
-                      />
-                      <span className="help-block">
-                        {" "}Between 4-32 Characters
-                      </span>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label">
-                      Password
-                    </label>
-                    <div className="col-md-9">
-                      <input
-                        name="password"
-                        type="password"
-                        className="form-control"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                        placeholder="Enter Password ..."
-                      />
-                      <span className="help-block">
-                        {" "}Minimum of 8 Characters
-                      </span>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" />
-                    <div className="col-md-9">
-                      <input
-                        name="password_confirm"
-                        type="password"
-                        className="form-control"
-                        value={this.state.password_confirm}
-                        onChange={this.handleChange}
-                        placeholder="Confirm Password.."
-                      />
-                    </div>
                   </div>
                 </form>
               </div>
@@ -137,7 +102,7 @@ export class CreateDemoUserView extends Component {
                   id="create-username"
                   onClick={this.handleSubmit}
                 >
-                  <i className="fa fa-dot-circle-o" /> Submit
+                  <i className="fa fa-dot-circle-o" /> CREATE DEMO USER
                 </button>&nbsp;
               </div>
             </div>

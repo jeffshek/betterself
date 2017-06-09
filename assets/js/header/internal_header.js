@@ -21,6 +21,12 @@ class LoggedInHeader extends Component {
     });
   }
 
+  componentDidMount() {
+    if (window.location.href.includes("signup")) {
+      document.body.classList.toggle("sidebar-hidden");
+    }
+  }
+
   sidebarToggle(e) {
     e.preventDefault();
     document.body.classList.toggle("sidebar-hidden");
