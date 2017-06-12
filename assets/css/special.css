@@ -42,6 +42,11 @@
   text-align: center;
 }
 
+.username-text {
+  color: #193441;
+  font-weight: bold;
+}
+
 .approve-modal {
   background-color: #193441;
 }

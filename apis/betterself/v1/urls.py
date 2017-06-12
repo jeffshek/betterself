@@ -5,6 +5,7 @@ from apis.betterself.v1.events.views import SupplementEventView, ProductivityLog
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
+from apis.betterself.v1.users.views import UserInfoView
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
@@ -27,7 +28,8 @@ urlpatterns = [
         name=UserActivityEvent.RESOURCE_NAME),
     # used by the front-end to send views
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
-    url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user')
+    url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
+    url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details')
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'

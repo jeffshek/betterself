@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { DASHBOARD_INDEX_URL } from "../urls/constants";
 
 export class CreateDemoUserView extends Component {
   constructor() {
@@ -9,18 +10,35 @@ export class CreateDemoUserView extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+
+    return fetch("/api/v1/user-signup-demo/", {
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        if ("token" in responseData) {
+          // If the token is in the response, set the storage
+          // and then redirect to the dashboard
+          localStorage.token = responseData["token"];
+          window.location.assign(DASHBOARD_INDEX_URL);
+        }
+        return responseData;
+      });
   }
 
   render() {
     return (
       <div>
         <div className="row approve-modal">
-          <br />
-          <div className="col-md-6 offset-sm-1">
+          <br /><br /><br />
+          <div className="col-md-6 offset-sm-3">
             <br /><br /><br />
             <div className="card">
               <div className="card-header">
-                <h3><strong>Create Demo User</strong></h3>
+                <br />
+                <h3><strong>&nbsp;Create Demo User</strong></h3>
               </div>
               <div className="card-block">
                 <form method="post" className="form-horizontal ">
