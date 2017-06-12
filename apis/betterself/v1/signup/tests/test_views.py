@@ -104,11 +104,11 @@ class DemoAccountsTest(TestCase):
         self.create_url = reverse('api-create-demo-user')
 
     def test_demo_user_creation(self):
-        response = self.client.post(self.create_url)
+        response = self.client.get(self.create_url)
         self.assertEqual(response.status_code, 201)
 
     def test_demo_user_creation_is_in_demo_user_log(self):
-        response = self.client.post(self.create_url)
+        response = self.client.get(self.create_url)
         data = response.data
 
         uuid = data['uuid']
@@ -118,7 +118,7 @@ class DemoAccountsTest(TestCase):
         self.assertEqual(demo_user_log.user, user)
 
     def test_delete_demo_user_log_deletes_user(self):
-        response = self.client.post(self.create_url)
+        response = self.client.get(self.create_url)
         data = response.data
 
         uuid = data['uuid']
