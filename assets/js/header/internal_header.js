@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Dropdown, DropdownMenu, DropdownItem } from "reactstrap";
 import { Link, Redirect } from "react-router-dom";
 import { LOGOUT_URL } from "../urls/constants";
+import {
+  JSON_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 
 const AVATAR_IMG = require("../../img/icons/small_brain.svg");
 
@@ -13,6 +17,9 @@ class LoggedInHeader extends Component {
     this.state = {
       dropdownOpen: false
     };
+    if (localStorage.userName) {
+      this.state.userName = localStorage.userName;
+    }
   }
 
   toggle(e) {
@@ -21,9 +28,29 @@ class LoggedInHeader extends Component {
     });
   }
 
+  updateUserName() {
+    fetch("/api/v1/user-info/", {
+      method: "GET",
+      headers: JSON_POST_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        // If valid response, get the store the username
+        localStorage.userName = responseData.username;
+        this.setState({
+          userName: responseData.username
+        });
+      });
+  }
+
   componentDidMount() {
     if (window.location.href.includes("signup")) {
       document.body.classList.toggle("sidebar-hidden");
+    }
+    if (!localStorage.userName) {
+      this.updateUserName();
     }
   }
 
@@ -79,7 +106,9 @@ class LoggedInHeader extends Component {
                   width="50px"
                   height="50px"
                 />
-                <span className="hidden-md-down">User &nbsp;</span>
+                <span className="hidden-md-down username-text">
+                  {this.state.userName} &nbsp;
+                </span>
               </a>
 
               <DropdownMenu className="dropdown-menu-right">

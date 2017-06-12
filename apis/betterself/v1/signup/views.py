@@ -42,7 +42,7 @@ class CreateDemoUserView(APIView):
     # If the user is just signing up, one would assume they can't have authentication yet ...
     permission_classes = ()
 
-    def post(self, request):
+    def get(self, request):
         fake = Faker()
         name = fake.name()
 
