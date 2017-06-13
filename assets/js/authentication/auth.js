@@ -25,6 +25,7 @@ export const Authenticator = {
 
   logout(cb) {
     delete localStorage.token;
+    delete localStorage.userName;
     this.isAuthenticated = false;
     setTimeout(cb, 100);
   },

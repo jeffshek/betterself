@@ -49,7 +49,7 @@ class LoggedInHeader extends Component {
     if (window.location.href.includes("signup")) {
       document.body.classList.toggle("sidebar-hidden");
     }
-    if (!localStorage.userName) {
+    if (typeof localStorage.userName === "undefined") {
       this.updateUserName();
     }
   }
