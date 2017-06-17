@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { CubeLoadingStyle } from "../animations/loading_styles";
+import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";

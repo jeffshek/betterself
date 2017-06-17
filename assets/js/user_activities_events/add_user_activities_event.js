@@ -7,7 +7,7 @@ import {
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../urls/constants";
-import { CubeLoadingStyle } from "../animations/loading_styles";
+import { CubeLoadingStyle } from "../constants/loading_styles";
 
 export class AddUserActivityEvent extends Component {
   constructor() {

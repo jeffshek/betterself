@@ -51,6 +51,7 @@ export class SignupView extends Component {
             // If the token is in the response, set the storage
             // and then redirect to the dashboard
             localStorage.token = responseData["token"];
+            localStorage.userName = responseData["username"];
             window.location.assign(DASHBOARD_INDEX_URL);
           }
         });
