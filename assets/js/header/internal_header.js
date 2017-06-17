@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import { Dropdown, DropdownMenu, DropdownItem } from "reactstrap";
+import { Dropdown, DropdownItem, DropdownMenu } from "reactstrap";
 import { Link, Redirect } from "react-router-dom";
 import { LOGOUT_URL } from "../constants/urls";
-import {
-  JSON_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
 
 const AVATAR_IMG = require("../../img/icons/small_brain.svg");
 
