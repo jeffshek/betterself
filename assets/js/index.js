@@ -35,8 +35,7 @@ import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
 import UserActivitiesEventLogView
   from "./user_activities_events/user_activites_events_view";
 import { SupplementView } from "./supplements/supplements_view";
-import ProductivityLogView
-  from "./productivity_log/productivity_event_log_view";
+import ProductivityLogView from "./productivity_log/productivity_event_view";
 import { UserActivitiesLogView } from "./user_activities/user_activities_view";
 import { SignupView } from "./signup/signup";
 import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
