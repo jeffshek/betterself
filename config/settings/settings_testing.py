@@ -59,3 +59,27 @@ API_ENDPOINT = 'http://localhost:8081'
 # don't check for throttling when testing
 REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']['signups'] = '500/sec'
 REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']['demo_signups'] = '500/sec'
+
+# we don't want to see a large amount of spam from INFOs during testing - only show for ERRORS
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'ERROR'
+        },
+    },
+    'loggers': {
+        # assuming this gets server side errors
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+        },
+        # have to do this because not nesting everything under "django"
+        '': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+        },
+    },
+}
