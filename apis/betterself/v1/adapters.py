@@ -35,6 +35,8 @@ class BetterSelfAPIAdapter(object):
         # so it's either http://127.0.0.1:9000/ --- then api/v1/sleep, etc.
         self.domain = settings.API_ENDPOINT
 
+        # some integration tests rely on testing this adapter logic ... in this case, we want to use a specific address
+        # that django's live server test case will provide (it varies port if tests are clashing into each other)
         if override_domain:
             self.domain = override_domain
 
