@@ -10,7 +10,7 @@ django-extensions==1.7.6
 django-filter==1.0.4
 django-floppyforms==1.7.0
 django-model-utils==2.6.1
-# django-secure==1.0.1
+django-secure==1.0.1
 django-webpack-loader==0.5
 djangorestframework==3.6.3
 factory-boy==2.8.1
