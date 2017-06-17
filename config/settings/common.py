@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
-import os
 
 # return where ever the project starts at
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
@@ -252,24 +251,27 @@ REST_FRAMEWORK = {
     }
 }
 
+
+# TODO - Reorganize all of these to be different based on staging/production
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'level': 'INFO'
         },
     },
     'loggers': {
         # assuming this gets server side errors
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': 'INFO',
         },
         # have to do this because not nesting everything under "django"
         '': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': 'INFO',
         },
     },
 }
