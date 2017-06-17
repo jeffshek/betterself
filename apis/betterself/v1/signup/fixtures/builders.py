@@ -90,6 +90,10 @@ class DemoHistoricalDataBuilder(object):
         baseline_productivity_series = total_sleep / 2
         productivity_series = self.productivity_impact_series + baseline_productivity_series
 
+        # if the productivity falls below zero ... just make it a zero, since negative
+        # productivity doesn't really make sense either.
+        productivity_series[productivity_series < 0] = 0
+
         productivity_logs = []
         for index, productivity_amount in productivity_series.iteritems():
             log = DailyProductivityLog(user=self.user, date=index, very_productive_time_minutes=productivity_amount,

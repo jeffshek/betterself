@@ -6,10 +6,16 @@ export class CreateDemoUserView extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      onClickDisabled: false
+    };
   }
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({
+      onClickDisabled: true
+    });
 
     return fetch("/api/v1/user-signup-demo/", {
       method: "GET"
@@ -19,9 +25,11 @@ export class CreateDemoUserView extends Component {
       })
       .then(responseData => {
         if ("token" in responseData) {
-          // If the token is in the response, set the storage
+          // If the token is in the response, set localStorage correctly
           // and then redirect to the dashboard
           localStorage.token = responseData["token"];
+          localStorage.userName = responseData["username"];
+
           window.location.assign(DASHBOARD_INDEX_URL);
         }
         return responseData;
@@ -63,6 +71,7 @@ export class CreateDemoUserView extends Component {
                   className="btn btn-sm btn-success float-right"
                   id="create-username"
                   onClick={this.handleSubmit}
+                  disabled={this.state.onClickDisabled}
                 >
                   <i className="fa fa-dot-circle-o" /> CREATE DEMO USER
                 </button>&nbsp;
