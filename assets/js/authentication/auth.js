@@ -16,6 +16,7 @@ export const Authenticator = {
       if (res.authenticated) {
         this.isAuthenticated = true;
         localStorage.token = res.token;
+        localStorage.userName = username;
         if (cb) cb(true);
       } else {
         if (cb) cb(false);

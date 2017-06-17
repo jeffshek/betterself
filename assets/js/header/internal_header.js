@@ -15,11 +15,9 @@ class LoggedInHeader extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      dropdownOpen: false
+      dropdownOpen: false,
+      userName: localStorage.userName
     };
-    if (localStorage.userName) {
-      this.state.userName = localStorage.userName;
-    }
   }
 
   toggle(e) {
