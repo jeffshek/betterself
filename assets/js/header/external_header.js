@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
-import { DASHBOARD_INDEX_URL, HOME_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL, HOME_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import CSSModules from "react-css-modules";
 import styles from "./css/external_header.css";

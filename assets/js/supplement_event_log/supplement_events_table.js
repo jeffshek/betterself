@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-import { CubeLoadingStyle } from "../animations/LoadingStyle";
+import { CubeLoadingStyle } from "../constants/loading_styles";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 

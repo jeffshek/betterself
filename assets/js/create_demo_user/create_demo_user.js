@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { DASHBOARD_INDEX_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL } from "../constants/urls";
 
 export class CreateDemoUserView extends Component {
   constructor() {

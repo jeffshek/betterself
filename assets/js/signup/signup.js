@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/util_constants";
-import { DASHBOARD_INDEX_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL } from "../constants/urls";
 import { Redirect } from "react-router-dom";
 
 export class SignupView extends Component {
@@ -51,6 +51,7 @@ export class SignupView extends Component {
             // If the token is in the response, set the storage
             // and then redirect to the dashboard
             localStorage.token = responseData["token"];
+            localStorage.userName = responseData["username"];
             window.location.assign(DASHBOARD_INDEX_URL);
           }
         });
