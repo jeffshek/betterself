@@ -6,7 +6,7 @@ import {
   DASHBOARD_INDEX_URL,
   DEMO_SIGNUP_URL,
   SIGNUP_URL
-} from "../../urls/constants";
+} from "../../constants/urls";
 
 class HomePageDescriptionSection extends React.Component {
   render() {

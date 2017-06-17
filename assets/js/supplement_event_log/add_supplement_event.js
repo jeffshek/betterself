@@ -5,7 +5,7 @@ import {
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/util_constants";
 import moment from "moment";
-import { DASHBOARD_SUPPLEMENTS_URL } from "../urls/constants";
+import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 
 export class AddSupplementEvent extends Component {

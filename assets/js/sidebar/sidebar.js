@@ -9,7 +9,7 @@ import {
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL
-} from "../urls/constants";
+} from "../constants/urls";
 
 const DashboardButton = () => (
   <li className="nav-item">

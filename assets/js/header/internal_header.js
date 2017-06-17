@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Dropdown, DropdownMenu, DropdownItem } from "reactstrap";
 import { Link, Redirect } from "react-router-dom";
-import { LOGOUT_URL } from "../urls/constants";
+import { LOGOUT_URL } from "../constants/urls";
 import {
   JSON_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
@@ -18,6 +18,14 @@ class LoggedInHeader extends Component {
       dropdownOpen: false,
       userName: localStorage.userName
     };
+
+    // If the data wasn't available, do this so there isn't an ugly undefined in the top right
+    if (
+      localStorage.userName === "undefined" ||
+      typeof localStorage.userName === "undefined"
+    ) {
+      this.state.userName = "";
+    }
   }
 
   toggle(e) {
@@ -26,30 +34,13 @@ class LoggedInHeader extends Component {
     });
   }
 
-  updateUserName() {
-    fetch("/api/v1/user-info/", {
-      method: "GET",
-      headers: JSON_POST_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        // If valid response, get the store the username
-        localStorage.userName = responseData.username;
-        this.setState({
-          userName: responseData.username
-        });
-      });
-  }
-
   componentDidMount() {
     if (window.location.href.includes("signup")) {
       document.body.classList.toggle("sidebar-hidden");
     }
-    if (typeof localStorage.userName === "undefined") {
-      this.updateUserName();
-    }
+    // if (typeof localStorage.userName === "undefined") {
+    //   this.updateUserName();
+    // }
   }
 
   sidebarToggle(e) {

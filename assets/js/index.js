@@ -21,7 +21,7 @@ import {
   DASHBOARD_USER_ACTIVITIES_URL,
   SIGNUP_URL,
   DEMO_SIGNUP_URL
-} from "./urls/constants";
+} from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
 import LoginView from "./authentication/login";

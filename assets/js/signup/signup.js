@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/util_constants";
-import { DASHBOARD_INDEX_URL } from "../urls/constants";
+import { DASHBOARD_INDEX_URL } from "../constants/urls";
 import { Redirect } from "react-router-dom";
 
 export class SignupView extends Component {
