@@ -1,8 +1,8 @@
-import datetime
-
 import numpy as np
 import pandas as pd
 import random
+
+from django.utils import timezone
 
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
@@ -20,8 +20,8 @@ class DemoHistoricalDataBuilder(object):
 
         historical_data_points_quantity = 90
 
-        # use pandas to generate a nifty index of timestamps
-        end_date = datetime.date.today()
+        # use pandas to generate a nifty index of timestamps, use timezone to remove warning signals
+        end_date = timezone.now()
         self.date_series = pd.date_range(end=end_date, freq='D', periods=historical_data_points_quantity)
 
         # build a series that shows the impact of what supplements/events have on sleep
@@ -108,7 +108,7 @@ class DemoHistoricalDataBuilder(object):
         random_hours = random.sample(self.hour_series, events_to_create)
         for _ in range(events_to_create):
             random_hour = random_hours.pop()
-            random_time = timestamp.to_datetime().replace(hour=random_hour)
+            random_time = timestamp.to_pydatetime().replace(hour=random_hour)
             # use a factory boy instance to create the record
             factory_type(user=self.user, name=activity_name, time=random_time)
 
