@@ -11,7 +11,7 @@ from supplements.models import Ingredient, IngredientComposition, Measurement, S
 
 
 class ExcelFileSerializer(object):
-    def __init__(self, file_path, user, ignore_columns=None, sheet=None):
+    def __init__(self, file_path, user, ignore_columns=None, sheet=None, override_domain=None):
         self.file_path = file_path
         # Sheet1 is default name for xlsx files
         self.sheet = sheet if sheet else 'Sheet1'
@@ -23,7 +23,7 @@ class ExcelFileSerializer(object):
         # seems like a huge pain considering we could just use native django save/create/query
         # but using this and making sure there are no bugs is better than having
         # real users face issues
-        self.adapter = BetterSelfAPIAdapter(user)
+        self.adapter = BetterSelfAPIAdapter(user, override_domain)
 
     def get_sanitized_dataframe(self, date_column='Date'):
         # ExcelFile does not handle file_paths very well, use native Python open

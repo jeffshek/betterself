@@ -1,6 +1,6 @@
 coverage==4.3.4
 cython==0.25.2
-django==1.9.6
+django==1.10.7
 django-allauth==0.30.0
 django-autoslug==1.9.3
 django-braces==1.10.0
