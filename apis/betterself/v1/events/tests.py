@@ -8,10 +8,10 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
-from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \

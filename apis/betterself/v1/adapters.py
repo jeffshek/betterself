@@ -26,7 +26,7 @@ class BetterSelfAPIAdapter(object):
     Takes a user, retrieves the token and fetches RESTful endpoints for that user
     """
 
-    def __init__(self, user):
+    def __init__(self, user, override_domain=None):
         self.user = user
         self.api_token, _ = Token.objects.get_or_create(user=user)
         self.headers = {'Authorization': 'Token {}'.format(self.api_token.key)}
@@ -34,6 +34,11 @@ class BetterSelfAPIAdapter(object):
         # use to figure out how to prefix a resource endpoint
         # so it's either http://127.0.0.1:9000/ --- then api/v1/sleep, etc.
         self.domain = settings.API_ENDPOINT
+
+        # some integration tests rely on testing this adapter logic ... in this case, we want to use a specific address
+        # that django's live server test case will provide (it varies port if tests are clashing into each other)
+        if override_domain:
+            self.domain = override_domain
 
     def fetch_resource_endpoint_url(self, resource):
         # just called fetch so no confusion with "get"

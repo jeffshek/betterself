@@ -23,10 +23,11 @@ class ExcelImporterTests(LiveServerTestCase, TestCase):
         User.objects.create_user(username='jacob', email='jacob@donkey.com', password='top_secret')
         cls.user = User.objects.get(username='jacob')
 
-        file_path = cls.file_path()
-        cls.sanitizer = ExcelSupplementFileSerializer(file_path, cls.user)
-
         super().setUpTestData()
+
+    def setUp(self):
+        file_path = self.file_path()
+        self.sanitizer = ExcelSupplementFileSerializer(file_path, self.user, override_domain=self.live_server_url)
 
     def test_sanitizer_results_is_dataframe(self):
         results = self.sanitizer.get_sanitized_dataframe()

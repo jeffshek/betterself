@@ -64,7 +64,7 @@ class AdapterTests(LiveServerTestCase, TestCase):
 
     def setUp(self):
         self.default_user, _ = User.objects.get_or_create(username='default')
-        self.adapter = BetterSelfAPIAdapter(self.default_user)
+        self.adapter = BetterSelfAPIAdapter(self.default_user, override_domain=self.live_server_url)
         super().setUp()
 
 
