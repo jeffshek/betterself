@@ -8,7 +8,8 @@ import {
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_EVENTS_LOGS_URL,
-  DASHBOARD_USER_ACTIVITIES_URL
+  DASHBOARD_USER_ACTIVITIES_URL,
+  DASHBOARD_SLEEP_LOGS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -116,7 +117,7 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-volume-off"
             label="Sleep"
-            link={DASHBOARD_HEART_RATE_LOGS_URL}
+            link={DASHBOARD_SLEEP_LOGS_URL}
           />
           <NavigationLink
             iconName="icon-chemistry"

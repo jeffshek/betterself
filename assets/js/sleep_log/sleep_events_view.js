@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import { AddSupplementEvent } from "./add_sleep_event";
-import { SupplementEntryLogTable } from "./sleep_events_table";
+import { AddSleepEvent } from "./add_sleep_event";
+import { SleepEntryLogTable } from "./sleep_events_table";
 import { EventLogView } from "../resources_table/resource_view";
 
-class SleepEventsLogView extends EventLogView {
+export class SleepEventsLogView extends EventLogView {
   constructor() {
     super();
     this.resourceName = "sleep_events";
@@ -13,8 +13,8 @@ class SleepEventsLogView extends EventLogView {
   render() {
     return (
       <div>
-        <AddSupplementEvent addEventEntry={this.addEventEntry} />
-        <SupplementEntryLogTable
+        {/*<AddSleepEvent addEventEntry={this.addEventEntry} />*/}
+        <SleepEntryLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}
@@ -25,5 +25,3 @@ class SleepEventsLogView extends EventLogView {
     );
   }
 }
-
-export default SleepEventsLogView;

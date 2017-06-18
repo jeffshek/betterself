@@ -25,7 +25,7 @@ const confirmDelete = (uuid, supplementName, supplementTime) => {
   }
 };
 
-const SupplementHistoryRow = props => {
+const SleepHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
@@ -59,7 +59,7 @@ const SupplementHistoryRow = props => {
   );
 };
 
-const SupplementHistoryTableHeader = () => (
+const SleepHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Supplement</th>
@@ -72,17 +72,17 @@ const SupplementHistoryTableHeader = () => (
   </thead>
 );
 
-export class SupplementEntryLogTable extends BaseEventLogTable {
+export class SleepEntryLogTable extends BaseEventLogTable {
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <SupplementHistoryTableHeader />
+        <SleepHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementHistoryRow key={key} object={historicalData[key]} />
+            <SleepHistoryRow key={key} object={historicalData[key]} />
           ))}
         </tbody>
       </table>
@@ -106,7 +106,6 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
       </div>
     );
   }
