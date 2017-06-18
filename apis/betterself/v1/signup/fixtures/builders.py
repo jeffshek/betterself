@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
-from events.models import SleepEventLog, DailyProductivityLog
+from events.models import DailyProductivityLog
 
 
 class DemoHistoricalDataBuilder(object):
@@ -78,12 +78,12 @@ class DemoHistoricalDataBuilder(object):
         # Include the baseline randomness of sleep along with how supplements impacted it
         total_sleep = self.sleep_series + self.sleep_impact_series
 
-        sleep_logs = []
-        for index, sleep_amount in total_sleep.iteritems():
-            sleep_event = SleepEventLog(user=self.user, sleep_time_minutes=sleep_amount, source='web', date=index)
-            sleep_logs.append(sleep_event)
-
-        SleepEventLog.objects.bulk_create(sleep_logs)
+        # sleep_logs = []
+        # for index, sleep_amount in total_sleep.iteritems():
+        #     sleep_event = SleepEventLog(user=self.user, sleep_time_minutes=sleep_amount, source='web', date=index)
+        #     sleep_logs.append(sleep_event)
+        #
+        # SleepEventLog.objects.bulk_create(sleep_logs)
 
         # let's do some real basic estimation that sleep is the most important thing to productivity
         # and then let's add how productivity
