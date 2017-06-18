@@ -45,7 +45,7 @@ const SleepHistoryTableHeader = () => (
     <tr>
       <th>Sleep - Start Time</th>
       <th>Sleep - End Time </th>
-      <th>Time Slept</th>
+      <th className="center-source">Time Slept</th>
       <th className="center-source">Source</th>
       <th className="center-source">Actions</th>
     </tr>
@@ -61,7 +61,7 @@ export class SleepEntryLogTable extends BaseEventLogTable {
 
   confirmDelete(uuid, startTime, endTime) {
     const answer = confirm(
-      `WARNING: This will delete the following Sleep Log \n\n${startTime} to ${endTime} \n\nConfirm?`
+      `WARNING: This will delete the following Sleep Log \n\nStart: ${startTime} \nEnd: ${endTime} \n\nConfirm?`
     );
 
     if (answer) {

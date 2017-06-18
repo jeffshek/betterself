@@ -78,7 +78,7 @@ export class AddSleepEvent extends Component {
               className="btn btn-sm btn-success"
               onClick={e => this.submitSleepEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Add Sleep Log
+              <i className="fa fa-dot-circle-o" /> Add Sleep Entry
             </button>
           </div>
         </form>
