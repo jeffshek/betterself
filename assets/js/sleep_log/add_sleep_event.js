@@ -2,6 +2,7 @@ import Datetime from "react-datetime";
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 export class AddSleepEvent extends Component {
   constructor(props) {
@@ -18,6 +19,24 @@ export class AddSleepEvent extends Component {
 
   submitSleepEvent(e) {
     e.preventDefault();
+
+    const params = {
+      start_time: this.state.eventStartTime.toISOString(),
+      end_time: this.state.eventEndTime.toISOString(),
+      source: "web"
+    };
+
+    fetch("/api/v1/sleep_activities/", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.props.addEventEntry(responseData);
+      });
   }
 
   handleStartTimeChange(moment) {
