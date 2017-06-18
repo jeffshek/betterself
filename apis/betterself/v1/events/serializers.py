@@ -180,3 +180,32 @@ class UserActivityEventReadSerializer(serializers.Serializer):
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
     duration_minutes = serializers.IntegerField()
     time = serializers.DateTimeField()
+
+
+class SleepActivityReadSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    start_time = serializers.DateTimeField()
+    end_time = serializers.DateTimeField()
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+
+
+class SleepActivityCreateSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    start_time = serializers.DateTimeField()
+    end_time = serializers.DateTimeField()
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+
+    def validate(self, data):
+        """
+        Check that start_end/end_times are valid
+        """
+        if data['start_time'] > data['end_time']:
+            raise serializers.ValidationError('End time must occur after start')
+
+        return data
+
+
+class SleepActivityUpdateSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    start_time = serializers.DateTimeField(required=False)
+    end_time = serializers.DateTimeField(required=False)

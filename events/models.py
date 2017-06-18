@@ -76,11 +76,14 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
         ordering = ['-date']
 
 
+# TODO - rename from SleepActivityLog to SleepActivity
 class SleepActivityLog(BaseModelWithUserGeneratedContent):
     """
     Records per each time a person falls asleep that combined across 24 hours is a way to see how much sleep
     a person gets.
     """
+    RESOURCE_NAME = 'sleep_activity'
+
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()

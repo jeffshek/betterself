@@ -1,12 +1,12 @@
 from django.conf.urls import url
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView
+    UserActivityEventView, SleepActivityView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
 from apis.betterself.v1.users.views import UserInfoView
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivityLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
@@ -26,7 +26,9 @@ urlpatterns = [
         name=UserActivity.RESOURCE_NAME),
     url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(),
         name=UserActivityEvent.RESOURCE_NAME),
-    # used by the front-end to send views
+    url(r'^{0}/$'.format(SleepActivityLog.RESOURCE_NAME), SleepActivityView.as_view(),
+        name=SleepActivityLog.RESOURCE_NAME),
+    # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
     url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details')

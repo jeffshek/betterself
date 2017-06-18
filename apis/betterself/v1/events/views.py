@@ -3,10 +3,11 @@ from rest_framework.generics import ListCreateAPIView
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
-    UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer
+    UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer, \
+    SleepActivityReadSerializer, SleepActivityCreateSerializer, SleepActivityUpdateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivityLog
 
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
@@ -69,3 +70,17 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user).select_related('user_activity')
+
+
+class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
+    model = SleepActivityLog
+    pagination_class = ModifiedPageNumberPagination
+    read_serializer_class = SleepActivityReadSerializer
+    write_serializer_class = SleepActivityCreateSerializer
+    update_serializer_class = SleepActivityUpdateSerializer
+
+    def get_serializer_class(self):
+        return self._get_read_or_write_serializer_class()
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
