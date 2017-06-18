@@ -36,7 +36,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
             # based on how zero utc is represented, here bring the object back to datetime
             # and then isoformat it out again
             for key in record_values:
-                if 'time' in key:
+                if 'time' == key[-4:]:
                     returned_time_string = record_values[key]
                     serialized_time_string = dateutil.parser.parse(returned_time_string).isoformat()
 
