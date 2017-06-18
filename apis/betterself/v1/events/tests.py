@@ -1,10 +1,10 @@
 import datetime
 import json
-from unittest import TestCase
 import dateutil.parser
 import pytz
 from dateutil.relativedelta import relativedelta
 
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
