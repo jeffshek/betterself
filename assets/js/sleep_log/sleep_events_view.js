@@ -13,7 +13,7 @@ export class SleepEventsLogView extends EventLogView {
   render() {
     return (
       <div>
-        {/*<AddSleepEvent addEventEntry={this.addEventEntry} />*/}
+        <AddSleepEvent addEventEntry={this.addEventEntry} />
         <SleepEntryLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
