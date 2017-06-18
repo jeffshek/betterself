@@ -1,35 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-
-const confirmDelete = (uuid, supplementName, supplementTime) => {
-  const answer = confirm(
-    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
-  );
-  const params = {
-    uuid: uuid
-  };
-
-  if (answer) {
-    fetch("/api/v1/sleep_activities/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
 
 const SleepHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
-  // const uuid = data.uuid;
+  const uuid = data.uuid;
   const startTime = moment(data.start_time);
   const endTime = moment(data.end_time);
   const source = data.source;
@@ -47,6 +25,17 @@ const SleepHistoryRow = props => {
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
+      <td>
+        <div className="center-icon">
+          <div
+            className="remove-icon"
+            onClick={e =>
+              props.confirmDelete(uuid, startTimeFormatted, endTimeFormatted)}
+          >
+            <i className="fa fa-remove fa-1x" />
+          </div>
+        </div>
+      </td>
     </tr>
   );
 };
@@ -58,11 +47,28 @@ const SleepHistoryTableHeader = () => (
       <th>Sleep - End Time </th>
       <th>Time Slept</th>
       <th className="center-source">Source</th>
+      <th className="center-source">Actions</th>
     </tr>
   </thead>
 );
 
 export class SleepEntryLogTable extends BaseEventLogTable {
+  constructor() {
+    super();
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.resourceURL = "/api/v1/sleep_activities/";
+  }
+
+  confirmDelete(uuid, startTime, endTime) {
+    const answer = confirm(
+      `WARNING: This will delete the following Sleep Log \n\n${startTime} to ${endTime} \n\nConfirm?`
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
+  }
+
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
@@ -72,7 +78,11 @@ export class SleepEntryLogTable extends BaseEventLogTable {
         <SleepHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SleepHistoryRow key={key} object={historicalData[key]} />
+            <SleepHistoryRow
+              key={key}
+              object={historicalData[key]}
+              confirmDelete={this.confirmDelete}
+            />
           ))}
         </tbody>
       </table>

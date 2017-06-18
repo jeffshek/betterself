@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
@@ -48,9 +47,11 @@ const ProductivityHistoryRow = props => {
         {veryDistractingMinutes ? veryDistractingMinutes + " Minutes" : ""}
       </td>
       <td>
-        <div onClick={e => confirmDelete(uuid, eventDate)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
+        <div className="center-icon">
+          <div onClick={e => confirmDelete(uuid, eventDate)}>
+            <div className="remove-icon">
+              <i className="fa fa-remove" />
+            </div>
           </div>
         </div>
       </td>
@@ -67,7 +68,7 @@ const ProductivityHistoryTableHeader = () => (
       <th>Neutral Time</th>
       <th>Distracting Time</th>
       <th>Very Distracting Time</th>
-      <th>Actions</th>
+      <th className="center-source">Actions</th>
     </tr>
   </thead>
 );
