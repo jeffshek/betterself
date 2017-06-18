@@ -59,3 +59,10 @@ class SleepActivityModelTests(TestCase):
 
         with self.assertRaises(ValidationError):
             SleepActivityLog.objects.create(user=self.default_user, start_time=start_time, end_time=end_time)
+
+    def test_sleep_activity_allows_same_object_to_be_saved(self):
+        start_time = datetime.datetime(2016, 1, 1, hour=1, tzinfo=utc_tz)
+        end_time = datetime.datetime(2016, 1, 1, hour=7, tzinfo=utc_tz)
+
+        sleep_log = SleepActivityLog.objects.get(user=self.default_user, start_time=start_time, end_time=end_time)
+        sleep_log.save()

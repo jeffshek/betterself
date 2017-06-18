@@ -204,6 +204,18 @@ class SleepActivityCreateSerializer(serializers.Serializer):
 
         return data
 
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            start_time=validated_data['start_time'],
+            end_time=validated_data['end_time'],
+            defaults=validated_data)
+
+        return obj
+
 
 class SleepActivityUpdateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()

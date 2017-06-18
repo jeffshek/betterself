@@ -94,7 +94,7 @@ class SleepActivityLog(BaseModelWithUserGeneratedContent):
         ordering = ['user', '-end_time']
 
     def __str__(self):
-        return '{obj.user}, {obj.start_time} {obj.end_time}'.format(obj=self)
+        return '{obj.user} {obj.start_time} {obj.end_time}'.format(obj=self)
 
     def save(self, *args, **kwargs):
         if self.end_time <= self.start_time:
@@ -104,6 +104,10 @@ class SleepActivityLog(BaseModelWithUserGeneratedContent):
         # https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
         queryset = SleepActivityLog.objects.filter(user=self.user, end_time__gte=self.start_time,
                                                    start_time__lte=self.end_time)
+
+        # sometimes save just happens for an update, exclude so wont always fail
+        if self.pk:
+            queryset = queryset.exclude(id=self.pk)
 
         if queryset.exists():
             raise ValidationError('Overlapping Periods found when saving Sleep Activity. Found {}'.format(queryset))
