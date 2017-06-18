@@ -7,7 +7,7 @@ import { EventLogView } from "../resources_table/resource_view";
 export class SleepEventsLogView extends EventLogView {
   constructor() {
     super();
-    this.resourceName = "sleep_events";
+    this.resourceName = "sleep_activities";
   }
 
   render() {

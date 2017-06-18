@@ -13,7 +13,7 @@ const confirmDelete = (uuid, supplementName, supplementTime) => {
   };
 
   if (answer) {
-    fetch("/api/v1/supplement_events/", {
+    fetch("/api/v1/sleep_activities/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(params)
@@ -29,29 +29,21 @@ const SleepHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
-  const uuid = data.uuid;
-  const supplementName = data.supplement_name;
-  const servingSize = data.quantity;
+  // const uuid = data.uuid;
+  const startTime = moment(data.start_time);
+  const endTime = moment(data.end_time);
   const source = data.source;
-  const supplementTime = data.time;
-  const duration = data.duration_minutes;
-  const timeFormatted = moment(supplementTime).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  );
+
+  const startTimeFormatted = startTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const endTimeFormatted = endTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const duration = moment.duration(endTime.diff(startTime));
+  const durationFormatted = duration.asMinutes();
 
   return (
     <tr>
-      <td>{supplementName}</td>
-      <td>{servingSize}</td>
-      <td>{timeFormatted}</td>
-      <td>{duration}</td>
-      <td>
-        <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
-          </div>
-        </div>
-      </td>
+      <td>{startTimeFormatted}</td>
+      <td>{endTimeFormatted}</td>
+      <td>{durationFormatted} minutes</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
@@ -62,11 +54,9 @@ const SleepHistoryRow = props => {
 const SleepHistoryTableHeader = () => (
   <thead>
     <tr>
-      <th>Supplement</th>
-      <th>Serving Size</th>
-      <th>Supplement Time</th>
-      <th>Duration (Minutes)</th>
-      <th className="center-source">Action</th>
+      <th>Sleep - Start Time</th>
+      <th>Sleep - End Time </th>
+      <th>Time Slept</th>
       <th className="center-source">Source</th>
     </tr>
   </thead>
@@ -94,7 +84,7 @@ export class SleepEntryLogTable extends BaseEventLogTable {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Supplement History</strong>
+          <strong>Sleep History</strong>
         </div>
         {/*Conditional loading if ready to review or not yet*/}
         {!this.props.renderReady
