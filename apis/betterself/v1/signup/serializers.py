@@ -1,7 +1,6 @@
 import pytz
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 
 User = get_user_model()
@@ -12,7 +11,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
                                      validators=[UniqueValidator(queryset=User.objects.all())]
                                      )
     password = serializers.CharField(min_length=8, max_length=32, write_only=True)
-    # timezone = serializers.CharField(default='US/Eastern')
     timezone = serializers.ChoiceField(pytz.common_timezones, default='US/Eastern')
 
     class Meta:
@@ -27,9 +25,3 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
         user = User.objects.create_user(username=username, password=password, **validated_data)
         return user
-
-    def validate_timezone(self, attribute):
-        if attribute not in pytz.common_timezones:
-            raise ValidationError('Invalid Timezone')
-
-        return attribute
