@@ -57,21 +57,21 @@ const ExternalVendorsLinks = () => (
       label="Supplements"
       link={DASHBOARD_SUPPLEMENTS_URL}
     />
-    <NavigationLink
-      iconName="icon-rocket"
-      label="FitBit"
-      link={DASHBOARD_CHARTS_URL}
-    />
-    <NavigationLink
-      iconName="icon-social-github"
-      label="GitHub"
-      link={DASHBOARD_CHARTS_URL}
-    />
-    <NavigationLink
-      iconName="icon-target"
-      label="RescueTime"
-      link={DASHBOARD_CHARTS_URL}
-    />
+    {/*<NavigationLink*/}
+    {/*iconName="icon-rocket"*/}
+    {/*label="FitBit"*/}
+    {/*link={DASHBOARD_CHARTS_URL}*/}
+    {/*/>*/}
+    {/*<NavigationLink*/}
+    {/*iconName="icon-social-github"*/}
+    {/*label="GitHub"*/}
+    {/*link={DASHBOARD_CHARTS_URL}*/}
+    {/*/>*/}
+    {/*<NavigationLink*/}
+    {/*iconName="icon-target"*/}
+    {/*label="RescueTime"*/}
+    {/*link={DASHBOARD_CHARTS_URL}*/}
+    {/*/>*/}
   </div>
 );
 

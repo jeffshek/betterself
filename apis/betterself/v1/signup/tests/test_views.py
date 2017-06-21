@@ -98,6 +98,28 @@ class AccountsTest(TestCase):
         self.assertEqual(User.objects.count(), self.starting_user_count)
         self.assertEqual(len(response.data['username']), 1)
 
+    def test_creating_user_with_invalid_timezone_errors(self):
+        data = {
+            'username': 'supercoolusername',
+            'password': 'supercoolpassword',
+            'timezone': 'unicorn-island'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        # if invalid, will say something like {'timezone': ['Invalid Timezone']}
+        self.assertTrue('timezone' in response.data)
+
+    def test_creating_user_with_valid_timezone_like_UTC(self):
+        data = {
+            'username': 'supercoolusername',
+            'password': 'supercoolpassword',
+            'timezone': 'UTC'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        data = response.data
+        self.assertEqual(data['timezone'], 'UTC')
+
 
 class DemoAccountsTest(TestCase):
     def setUp(self):
