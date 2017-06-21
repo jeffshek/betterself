@@ -4,7 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from rest_framework.authtoken import views
+
+from apis.betterself.v1.users.views import ObtainAuthToken
 
 react_home_template = 'react/home.html'
 react_dashboard_template = 'react/dashboard.html'
@@ -36,7 +37,7 @@ urlpatterns = [
 
     # To get API Token Back
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:8001/api-token-auth/
-    url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+    url(r'^api-token-auth/', ObtainAuthToken.as_view(), name='api-token-auth'),
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced

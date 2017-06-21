@@ -15,8 +15,12 @@ export const Authenticator = {
     this.getToken(username, password, res => {
       if (res.authenticated) {
         this.isAuthenticated = true;
+
+        // TODO - Just delete the entire localStorage
         localStorage.token = res.token;
-        localStorage.userName = username;
+        localStorage.userName = res.userName;
+        localStorage.timezone = res.timezone;
+
         if (cb) cb(true);
       } else {
         if (cb) cb(false);
@@ -27,6 +31,8 @@ export const Authenticator = {
   logout(cb) {
     delete localStorage.token;
     delete localStorage.userName;
+    delete localStorage.timezone;
+
     this.isAuthenticated = false;
     setTimeout(cb, 100);
   },
@@ -50,7 +56,9 @@ export const Authenticator = {
         if ("token" in responseData) {
           cb({
             authenticated: true,
-            token: responseData.token
+            token: responseData.token,
+            userName: responseData.username,
+            timezone: responseData.timezone
           });
         } else {
           alert("Invalid Login Error");
