@@ -215,9 +215,3 @@ class SleepActivityCreateSerializer(serializers.Serializer):
             defaults=validated_data)
 
         return obj
-
-
-class SleepActivityUpdateSerializer(serializers.Serializer):
-    uuid = serializers.UUIDField()
-    start_time = serializers.DateTimeField(required=False)
-    end_time = serializers.DateTimeField(required=False)

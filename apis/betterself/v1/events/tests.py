@@ -1,11 +1,10 @@
 import datetime
 import json
-import dateutil.parser
-import pytz
-from dateutil.relativedelta import relativedelta
 
-from django.test import TestCase
+import dateutil.parser
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 from rest_framework import serializers
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
@@ -14,6 +13,7 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from betterself.utils import UTC_TZ
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
@@ -21,8 +21,6 @@ from events.models import SupplementEvent, DailyProductivityLog, UserActivity, U
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
-
-utc_tz = pytz.timezone('UTC')
 
 User = get_user_model()
 
@@ -235,12 +233,12 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
         super().setUpTestData()
 
         # create a sleep record for two days
-        start_time = datetime.datetime(2017, 1, 1, tzinfo=utc_tz)
-        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=utc_tz)
+        start_time = datetime.datetime(2017, 1, 1, tzinfo=UTC_TZ)
+        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=UTC_TZ)
         SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
         # day two
-        start_time = datetime.datetime(2017, 1, 2, tzinfo=utc_tz)
-        end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=utc_tz)
+        start_time = datetime.datetime(2017, 1, 2, tzinfo=UTC_TZ)
+        end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
         SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
 
     def test_valid_get_request_for_key_in_response(self):

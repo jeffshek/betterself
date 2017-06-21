@@ -5,7 +5,7 @@ from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivit
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
     UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer, \
-    SleepActivityReadSerializer, SleepActivityCreateSerializer, SleepActivityUpdateSerializer
+    SleepActivityReadSerializer, SleepActivityCreateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivityLog
@@ -73,12 +73,11 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
         return self.model.objects.filter(user=self.request.user).select_related('user_activity')
 
 
-class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
+class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     model = SleepActivityLog
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = SleepActivityReadSerializer
     write_serializer_class = SleepActivityCreateSerializer
-    update_serializer_class = SleepActivityUpdateSerializer
     filter_class = SleepActivityFilter
 
     def get_serializer_class(self):
