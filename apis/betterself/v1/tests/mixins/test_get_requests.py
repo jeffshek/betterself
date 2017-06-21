@@ -1,3 +1,5 @@
+import dateutil
+
 from apis.betterself.v1.tests.test_base import GenericRESTMethodMixin
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 
@@ -29,6 +31,16 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
             # 5.0 back! Build a dictionary containing only what was in the
             # request parameters and compare that it's equal
             record_values = {key: record[key] for key in request_parameters}
+
+            # a bit of a hack, but string responses of datetimes can change slightly
+            # based on how zero utc is represented, here bring the object back to datetime
+            # and then isoformat it out again
+            for key in record_values:
+                if 'time' == key[-4:]:
+                    returned_time_string = record_values[key]
+                    serialized_time_string = dateutil.parser.parse(returned_time_string).isoformat()
+
+                    record_values[key] = serialized_time_string
 
             self.assertEqual(record_values, request_parameters)
 
@@ -66,6 +78,7 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
         else:
             request_data = request.data
 
+        # this assumes that the fixtures data will create more than 1 record!
         self.assertTrue(len(request_data) > 1)
 
         # if this isn't true, we'll blindly say this test is passing

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Authenticator } from "./auth";
 import { Redirect, withRouter } from "react-router-dom";
-import { LOGIN_LEDGE_PHOTO_PATH } from "../constants/image_paths";
+import { LOGIN_SIDE_PHOTO_PATH } from "../constants/image_paths";
 import LoggedOutHeader from "../header/external_header";
 
 const LoginPageSideImage = () => {
   return (
     <div className="col-md-6 col-md-offset-1">
-      <img src={LOGIN_LEDGE_PHOTO_PATH} width="100%" />
+      <img src={LOGIN_SIDE_PHOTO_PATH} width="100%" />
     </div>
   );
 };

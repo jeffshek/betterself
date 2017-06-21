@@ -20,7 +20,8 @@ import {
   DASHBOARD_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
   SIGNUP_URL,
-  DEMO_SIGNUP_URL
+  DEMO_SIGNUP_URL,
+  DASHBOARD_SLEEP_LOGS_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -29,16 +30,19 @@ import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
-import SupplementsLogView from "./supplement_event_log/supplement_events_view";
+import SupplementsLogView from "./supplement_events_log/supplement_events_view";
 import ChartsView from "./productivity_charts/productivity_charts";
 import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
 import UserActivitiesEventLogView
-  from "./user_activities_events/user_activites_events_view";
-import { SupplementView } from "./supplements/supplements_view";
+  from "./user_activities_events_log/user_activites_events_view";
+import { SupplementView } from "./supplements_log/supplements_view";
 import ProductivityLogView from "./productivity_log/productivity_event_view";
-import { UserActivitiesLogView } from "./user_activities/user_activities_view";
+import {
+  UserActivitiesLogView
+} from "./user_activities_log/user_activities_view";
 import { SignupView } from "./signup/signup";
 import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
+import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
@@ -57,6 +61,7 @@ const DashboardUserActivityView = () => (
 );
 const DashboardSignupView = () => <Dashboard view={SignupView} />;
 const DashboardDemoUserView = () => <Dashboard view={CreateDemoUserView} />;
+const DashboardSleepView = () => <Dashboard view={SleepEventsLogView} />;
 
 const BetterSelfRouter = () => (
   <Router>
@@ -104,6 +109,11 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={DASHBOARD_USER_ACTIVITIES_URL}
         component={DashboardUserActivityView}
+      />
+
+      <PrivateRoute
+        path={DASHBOARD_SLEEP_LOGS_URL}
+        component={DashboardSleepView}
       />
 
     </div>

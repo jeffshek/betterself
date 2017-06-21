@@ -1,3 +1,4 @@
+import datetime
 import numpy as np
 import pandas as pd
 import random
@@ -6,7 +7,8 @@ from django.utils import timezone
 
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
-from events.models import SleepEventLog, DailyProductivityLog
+from betterself.utils import UTC_TZ
+from events.models import DailyProductivityLog, SleepActivityLog
 
 
 class DemoHistoricalDataBuilder(object):
@@ -80,10 +82,24 @@ class DemoHistoricalDataBuilder(object):
 
         sleep_logs = []
         for index, sleep_amount in total_sleep.iteritems():
-            sleep_event = SleepEventLog(user=self.user, sleep_time_minutes=sleep_amount, source='web', date=index)
+
+            index_date = index.date()
+            # always pretend a user is sleeping at 10 PM
+            index_start_time = datetime.time(hour=22)
+
+            index_start_datetime = datetime.datetime.combine(index_date, index_start_time)
+            index_start_datetime = UTC_TZ.localize(index_start_datetime)
+
+            index_end_datetime = index_start_datetime + datetime.timedelta(minutes=sleep_amount)
+
+            sleep_event = SleepActivityLog(
+                user=self.user, source='web',
+                start_time=index_start_datetime,
+                end_time=index_end_datetime
+            )
             sleep_logs.append(sleep_event)
 
-        SleepEventLog.objects.bulk_create(sleep_logs)
+        SleepActivityLog.objects.bulk_create(sleep_logs)
 
         # let's do some real basic estimation that sleep is the most important thing to productivity
         # and then let's add how productivity

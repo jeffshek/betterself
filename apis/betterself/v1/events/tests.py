@@ -1,10 +1,10 @@
 import datetime
 import json
-from unittest import TestCase
 
 import dateutil.parser
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 from rest_framework import serializers
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
@@ -13,10 +13,11 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from betterself.utils import UTC_TZ
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -163,9 +164,6 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
         'is_significant_activity': False
     }
 
-    def setUp(self):
-        super().setUp()
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -212,4 +210,44 @@ class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequ
     def test_valid_get_request_with_params_filters_correctly(self):
         UserActivityEventFactory(user=self.user_1, duration_minutes=30)
         request_parameters = {'duration_minutes': 30}
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+
+class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+    # python manage.py test apis.betterself.v1.events.tests.TestSleepActivityViews
+    TEST_MODEL = SleepActivityLog
+    PAGINATION = True
+
+    def setUp(self):
+        start_time = datetime.datetime.utcnow() - relativedelta(hours=8)
+        self.DEFAULT_POST_PARAMS = {
+            'start_time': start_time.isoformat(),
+            'end_time': datetime.datetime.utcnow().isoformat(),
+            'source': 'api',
+        }
+
+        super().setUp()
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        # create a sleep record for two days
+        start_time = datetime.datetime(2017, 1, 1, tzinfo=UTC_TZ)
+        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=UTC_TZ)
+        SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        # day two
+        start_time = datetime.datetime(2017, 1, 2, tzinfo=UTC_TZ)
+        end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
+        SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+
+    def test_valid_get_request_for_key_in_response(self):
+        key = 'start_time'
+        super().test_valid_get_request_for_key_in_response(key)
+
+    def test_valid_get_request_with_params_filters_correctly(self):
+        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time_iso = end_time.isoformat()
+
+        request_parameters = {'end_time': end_time_iso}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)

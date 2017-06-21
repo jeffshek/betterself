@@ -7,14 +7,17 @@ export class CreateDemoUserView extends Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      onClickDisabled: false
+      onClickDisabled: false,
+      createDemoUserText: "Create Demo User",
+      createDemoUserState: "CREATE DEMO USER"
     };
   }
 
   handleSubmit(event) {
     event.preventDefault();
     this.setState({
-      onClickDisabled: true
+      onClickDisabled: true,
+      createDemoUserState: "CREATING DEMO USER ... PLEASE WAIT"
     });
 
     return fetch("/api/v1/user-signup-demo/", {
@@ -46,7 +49,7 @@ export class CreateDemoUserView extends Component {
             <div className="card">
               <div className="card-header">
                 <br />
-                <h3><strong>&nbsp;Create Demo User</strong></h3>
+                <h3><strong>&nbsp;{this.state.createDemoUserText}</strong></h3>
               </div>
               <div className="card-block">
                 <form method="post" className="form-horizontal ">
@@ -73,7 +76,9 @@ export class CreateDemoUserView extends Component {
                   onClick={this.handleSubmit}
                   disabled={this.state.onClickDisabled}
                 >
-                  <i className="fa fa-dot-circle-o" /> CREATE DEMO USER
+                  <i className="fa fa-dot-circle-o" />
+                  {" "}
+                  {this.state.createDemoUserState}
                 </button>&nbsp;
               </div>
             </div>

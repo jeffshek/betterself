@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from betterself.base_models import BaseModelWithUserGeneratedContent
@@ -75,19 +76,43 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
         ordering = ['-date']
 
 
-class SleepEventLog(BaseModelWithUserGeneratedContent):
+# TODO - rename from SleepActivityLog to SleepActivity
+class SleepActivityLog(BaseModelWithUserGeneratedContent):
     """
-    Represents how much sleep you got on that specific day ... so on Monday night
-    if you sleep from 9PM to 3AM, this represents, tbe date value should be Monday's
-    date and NOT Tuesday.
+    Records per each time a person falls asleep that combined across 24 hours is a way to see how much sleep
+    a person gets.
     """
+    RESOURCE_NAME = 'sleep_activities'
+
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
-    sleep_time_minutes = models.IntegerField()
-    # represent the sleep you got that SAME day.
-    date = models.DateField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     class Meta:
-        unique_together = (('date', 'user'),)
+        verbose_name = 'Sleep Activity Log'
+        verbose_name_plural = 'Sleep Activity Logs'
+        ordering = ['user', '-end_time']
+
+    def __str__(self):
+        return '{obj.user} {obj.start_time} {obj.end_time}'.format(obj=self)
+
+    def save(self, *args, **kwargs):
+        if self.end_time <= self.start_time:
+            raise ValidationError('End Time must be greater than Start Time')
+
+        # make sure that there are no overlaps for activities
+        # https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+        queryset = SleepActivityLog.objects.filter(user=self.user, end_time__gte=self.start_time,
+                                                   start_time__lte=self.end_time)
+
+        # sometimes save just happens for an update, exclude so wont always fail
+        if self.pk:
+            queryset = queryset.exclude(id=self.pk)
+
+        if queryset.exists():
+            raise ValidationError('Overlapping Periods found when saving Sleep Activity. Found {}'.format(queryset))
+
+        super().save(*args, **kwargs)
 
 
 class UserActivity(BaseModelWithUserGeneratedContent):
@@ -117,6 +142,7 @@ class UserActivity(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = (('name', 'user'),)
+        ordering = ['name']
 
 
 class UserActivityEvent(BaseModelWithUserGeneratedContent):

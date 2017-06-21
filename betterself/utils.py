@@ -1,3 +1,6 @@
+import pytz
+
+
 def create_django_choice_tuple_from_list(list_a):
     if list_a is None:
         return ()
@@ -13,3 +16,5 @@ def create_django_choice_tuple_from_list(list_a):
         tuples_list.append(tuple_item)
 
     return tuple(tuples_list)
+
+UTC_TZ = pytz.timezone('UTC')
