@@ -52,6 +52,7 @@ export class SignupView extends Component {
             // and then redirect to the dashboard
             localStorage.token = responseData["token"];
             localStorage.userName = responseData["username"];
+            localStorage.timezone = responseData["timezone"];
             window.location.assign(DASHBOARD_INDEX_URL);
           }
         });
