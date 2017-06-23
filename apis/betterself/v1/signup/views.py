@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from betterself.users.models import DemoUserLog
+from events.utils.default_events_builder import DefaultEventsBuilder
 
 User = get_user_model()
 
@@ -28,6 +29,10 @@ class CreateUserView(APIView):
             token, _ = Token.objects.get_or_create(user=user)
             json_response = serializer.data
             json_response['token'] = token.key
+
+            # build default events for new-users
+            builder = DefaultEventsBuilder(user)
+            builder.build_defaults()
 
             return Response(json_response, status=HTTP_201_CREATED)
         else:
