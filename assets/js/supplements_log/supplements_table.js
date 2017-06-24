@@ -11,7 +11,7 @@ const SupplementHistoryTableHeader = () => (
     <tr>
       <th>Name</th>
       <th>Ingredients</th>
-      <th><center>Actions</center></th>
+      <th className="center-source">Actions</th>
       <th>Date Added</th>
     </tr>
   </thead>

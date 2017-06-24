@@ -45,7 +45,7 @@ const SupplementHistoryRow = props => {
       <td>{servingSize}</td>
       <td>{timeFormatted}</td>
       <td>{duration}</td>
-      <td>
+      <td className="center-source">
         <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
           <div className="remove-icon">
             <i className="fa fa-remove" />
@@ -66,7 +66,7 @@ const SupplementHistoryTableHeader = () => (
       <th>Serving Size</th>
       <th>Supplement Time</th>
       <th>Duration (Minutes)</th>
-      <th className="center-source">Action</th>
+      <th className="center-source">Actions</th>
       <th className="center-source">Source</th>
     </tr>
   </thead>

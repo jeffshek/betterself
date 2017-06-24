@@ -5,11 +5,14 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 
 from betterself.users.models import DemoUserLog
+from events.models import UserActivity
+from events.utils.default_events_builder import DEFAULT_ACTIVITIES
+from supplements.models import Supplement
 
 User = get_user_model()
 
 
-# thanks to https://github.com/iheanyi/ for writing a bulk of AccountsTest
+# thanks to https://github.com/iheanyi/ for writing the initial group of these
 
 
 class AccountsTest(TestCase):
@@ -97,6 +100,25 @@ class AccountsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), self.starting_user_count)
         self.assertEqual(len(response.data['username']), 1)
+
+    def test_creating_new_user_creates_defaults(self):
+        username = 'a-brand-new-world'
+        data = {
+            'username': username,
+            'password': 'a-brand-new-world'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+
+        # check that the defaults for user-activities exist after being created
+        user_activities = UserActivity.objects.filter(user=user)
+        self.assertEqual(len(DEFAULT_ACTIVITIES), user_activities.count())
+
+        user_supplements = Supplement.objects.filter(user=user)
+        self.assertTrue(len(user_supplements) > 0)
 
 
 class DemoAccountsTest(TestCase):
