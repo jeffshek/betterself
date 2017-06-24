@@ -29,6 +29,9 @@ export const Authenticator = {
     delete localStorage.userName;
     this.isAuthenticated = false;
     setTimeout(cb, 100);
+
+    // This is pretty subpar, but there's a few CSS issues I need to work out
+    window.location.assign("/");
   },
 
   getToken(username, pass, cb) {

@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
 
 from betterself.users.models import DemoUserLog
 from events.models import UserActivity
@@ -151,3 +152,40 @@ class DemoAccountsTest(TestCase):
 
         user_matching_deleted_uuid = User.objects.filter(uuid=uuid).count()
         self.assertEqual(user_matching_deleted_uuid, 0)
+
+
+class UserViewTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.url = reverse('api-logged-in-user-details')
+        super().setUpClass()
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='usain-bolt')
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_deleting_of_user(self):
+        # first let's make sure the user exists in db
+        test_user_exists = User.objects.filter(username=self.user.username).exists()
+        self.assertTrue(test_user_exists)
+
+        # send to the right view to make sure what we expect is removed
+        self.client.delete(self.url)
+
+        test_user_exists_second = User.objects.filter(username=self.user.username).exists()
+        self.assertFalse(test_user_exists_second)
+
+    def test_user_logged_in_details_correct(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        username = response.data['username']
+        uuid = response.data['uuid']
+
+        self.assertEqual(self.user.username, username)
+        self.assertEqual(str(self.user.uuid), uuid)

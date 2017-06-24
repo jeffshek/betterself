@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { Authenticator } from "../authentication/auth";
 
 export class UserSettingsView extends Component {
   constructor() {
     super();
     this.deleteUser = this.deleteUser.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
-    this.resetLogin = this.resetLogin.bind(this);
   }
 
   confirmDelete() {
@@ -18,13 +18,7 @@ export class UserSettingsView extends Component {
     }
   }
 
-  resetLogin() {
-    delete localStorage.token;
-    delete localStorage.userName;
-    window.location.assign("/");
-  }
-
-  deleteUser() {
+  deleteUser(cb) {
     fetch("/api/v1/user-info/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS
@@ -33,7 +27,7 @@ export class UserSettingsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        this.resetLogin();
+        Authenticator.logout(cb);
       });
   }
 
