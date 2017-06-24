@@ -71,11 +71,12 @@ API_ENDPOINT = 'http://127.0.0.1:8001'
 # Use this to debug whitenoise issues
 # Use Whitenoise to serve static files
 # See: https://whitenoise.readthedocs.io/
-# WHITENOISE_MIDDLEWARE = (
-#     'whitenoise.middleware.WhiteNoiseMiddleware',
-# )
-# MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
+WHITENOISE_MIDDLEWARE = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+)
+MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 DEBUG = True
 
