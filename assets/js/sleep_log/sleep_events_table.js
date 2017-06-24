@@ -16,12 +16,13 @@ const SleepHistoryRow = props => {
   const endTimeFormatted = endTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
   const duration = moment.duration(endTime.diff(startTime));
   const durationFormatted = duration.asMinutes();
+  const durationFormattedRounded = Math.floor(durationFormatted);
 
   return (
     <tr>
       <td>{startTimeFormatted}</td>
       <td>{endTimeFormatted}</td>
-      <td>{durationFormatted} minutes</td>
+      <td>{durationFormattedRounded} minutes</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
