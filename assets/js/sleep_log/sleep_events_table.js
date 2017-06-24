@@ -18,11 +18,15 @@ const SleepHistoryRow = props => {
   const durationFormatted = duration.asMinutes();
   const durationFormattedRounded = Math.floor(durationFormatted);
 
+  const hoursSlept = Math.floor(durationFormattedRounded / 60);
+  const minutesSlept = durationFormattedRounded % 60;
+  const timeSlept = `${hoursSlept} hours ${minutesSlept} minutes`;
+
   return (
     <tr>
       <td>{startTimeFormatted}</td>
       <td>{endTimeFormatted}</td>
-      <td>{durationFormattedRounded} minutes</td>
+      <td>{timeSlept}</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
