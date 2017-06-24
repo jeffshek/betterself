@@ -31,7 +31,7 @@ urlpatterns = [
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
-    url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details')
+    url(r'user-detailed-info/$', UserInfoView.as_view(), name='api-logged-in-user-details')
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'
