@@ -175,7 +175,8 @@ class UserViewTests(TestCase):
         self.assertTrue(test_user_exists)
 
         # send to the right view to make sure what we expect is removed
-        self.client.delete(self.url)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, 202)
 
         test_user_exists_second = User.objects.filter(username=self.user.username).exists()
         self.assertFalse(test_user_exists_second)
