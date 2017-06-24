@@ -1,9 +1,12 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component, PropTypes } from "react";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 export class UserSettingsView extends Component {
-  super() {
-    this();
+  constructor() {
+    super();
+    this.deleteUser = this.deleteUser.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.resetLogin = this.resetLogin.bind(this);
   }
 
   confirmDelete() {
@@ -11,8 +14,27 @@ export class UserSettingsView extends Component {
       "Are you sure you want to delete? This user's info will be permanently deleted!"
     );
     if (userConfirmedDelete) {
-      console.log("Deleting!");
+      this.deleteUser();
     }
+  }
+
+  resetLogin() {
+    delete localStorage.token;
+    delete localStorage.userName;
+    window.location.assign("/");
+  }
+
+  deleteUser() {
+    fetch("/api/v1/user-info/", {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.resetLogin();
+      });
   }
 
   render() {
