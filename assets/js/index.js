@@ -21,7 +21,8 @@ import {
   DASHBOARD_USER_ACTIVITIES_URL,
   SIGNUP_URL,
   DEMO_SIGNUP_URL,
-  DASHBOARD_SLEEP_LOGS_URL
+  DASHBOARD_SLEEP_LOGS_URL,
+  SETTINGS_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -62,6 +63,7 @@ const DashboardUserActivityView = () => (
 const DashboardSignupView = () => <Dashboard view={SignupView} />;
 const DashboardDemoUserView = () => <Dashboard view={CreateDemoUserView} />;
 const DashboardSleepView = () => <Dashboard view={SleepEventsLogView} />;
+const DashboardSettingsView = () => <Dashboard view={SleepEventsLogView} />;
 
 const BetterSelfRouter = () => (
   <Router>
@@ -115,6 +117,8 @@ const BetterSelfRouter = () => (
         path={DASHBOARD_SLEEP_LOGS_URL}
         component={DashboardSleepView}
       />
+
+      <PrivateRoute path={SETTINGS_URL} component={DashboardSettingsView} />
 
     </div>
   </Router>
