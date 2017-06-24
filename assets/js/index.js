@@ -44,6 +44,7 @@ import {
 import { SignupView } from "./signup/signup";
 import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
 import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
+import { UserSettingsView } from "./user_settings/user_settings";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
@@ -63,7 +64,7 @@ const DashboardUserActivityView = () => (
 const DashboardSignupView = () => <Dashboard view={SignupView} />;
 const DashboardDemoUserView = () => <Dashboard view={CreateDemoUserView} />;
 const DashboardSleepView = () => <Dashboard view={SleepEventsLogView} />;
-const DashboardSettingsView = () => <Dashboard view={SleepEventsLogView} />;
+const DashboardSettingsView = () => <Dashboard view={UserSettingsView} />;
 
 const BetterSelfRouter = () => (
   <Router>
