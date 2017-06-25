@@ -7,7 +7,7 @@ from rest_framework.test import APIClient
 
 from betterself.users.models import DemoUserLog
 from events.models import UserActivity
-from events.utils.default_events_builder import DEFAULT_ACTIVITIES
+from events.utils.default_events_builder import DEFAULT_ACTIVITIES, SPECIAL_ACTIVITIES
 from supplements.models import Supplement
 
 User = get_user_model()
@@ -116,7 +116,8 @@ class AccountsTest(TestCase):
 
         # check that the defaults for user-activities exist after being created
         user_activities = UserActivity.objects.filter(user=user)
-        self.assertEqual(len(DEFAULT_ACTIVITIES), user_activities.count())
+        expected_activities = len(DEFAULT_ACTIVITIES) + len(SPECIAL_ACTIVITIES)
+        self.assertEqual(expected_activities, user_activities.count())
 
         user_supplements = Supplement.objects.filter(user=user)
         self.assertTrue(len(user_supplements) > 0)
