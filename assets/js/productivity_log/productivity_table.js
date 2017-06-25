@@ -35,6 +35,9 @@ const ProductivityHistoryRow = props => {
   const eventDate = data.date;
   const uuid = data.uuid;
 
+  // TODO - Switch the minutes out to something that formats out to hours/mintutes
+  // and looks cleaner than the current logic
+
   return (
     <tr>
       <td>{eventDate}</td>

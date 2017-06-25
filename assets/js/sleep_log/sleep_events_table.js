@@ -3,6 +3,16 @@ import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 
+const MinutesToHourMinutesFormat = minutes => {
+  const durationFormattedRounded = Math.floor(minutes);
+
+  const hoursSlept = Math.floor(durationFormattedRounded / 60);
+  const minutesSlept = durationFormattedRounded % 60;
+  const timeSlept = `${hoursSlept} hours ${minutesSlept} minutes`;
+
+  return timeSlept;
+};
+
 const SleepHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
@@ -15,14 +25,15 @@ const SleepHistoryRow = props => {
   const startTimeFormatted = startTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
   const endTimeFormatted = endTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
   const duration = moment.duration(endTime.diff(startTime));
-  const durationFormatted = duration.asMinutes();
-  const durationFormattedRounded = Math.floor(durationFormatted);
+  const durationAsMinutes = duration.asMinutes();
+
+  const timeSlept = MinutesToHourMinutesFormat(durationAsMinutes);
 
   return (
     <tr>
       <td>{startTimeFormatted}</td>
       <td>{endTimeFormatted}</td>
-      <td>{durationFormattedRounded} minutes</td>
+      <td>{timeSlept}</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>

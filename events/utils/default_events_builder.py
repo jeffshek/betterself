@@ -2,10 +2,12 @@ from events.models import UserActivity
 from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
 
 DEFAULT_ACTIVITIES = [
-    'Meditation',
+    'Meditated',
     'Jogged',
     'Went to the Gym',
-    'Brushed Teeth'
+    'Brushed Teeth',
+    'Cold Shower',
+    'Ate Breakfast'
 ]
 
 
