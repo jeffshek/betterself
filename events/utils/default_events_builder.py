@@ -5,7 +5,9 @@ DEFAULT_ACTIVITIES = [
     'Meditated',
     'Jogged',
     'Went to the Gym',
-    'Brushed Teeth'
+    'Brushed Teeth',
+    'Cold Shower',
+    'Ate Breakfast'
 ]
 
 
