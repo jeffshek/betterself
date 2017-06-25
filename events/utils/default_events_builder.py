@@ -10,6 +10,13 @@ DEFAULT_ACTIVITIES = [
     'Ate Breakfast'
 ]
 
+SPECIAL_ACTIVITIES = [
+    'Got Married',
+    'Started New Job',
+    'Read Life-Changing Book',
+    'Bought A Car',
+]
+
 
 class DefaultEventsBuilder(object):
     def __init__(self, user):
@@ -70,3 +77,6 @@ class DefaultEventsBuilder(object):
     def build_default_activities(self):
         for activity_name in DEFAULT_ACTIVITIES:
             UserActivity.objects.get_or_create(user=self.user, name=activity_name)
+
+        for activity_name in SPECIAL_ACTIVITIES:
+            UserActivity.objects.get_or_create(user=self.user, name=activity_name, is_significant_activity=True)
