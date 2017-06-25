@@ -131,15 +131,53 @@ class Charts extends Component {
               </div>
             </div>
           </div>
+          <div className="float-right">
+            <div className="card">
+              <div className="card-header">
+                Caffeine Measurement
+                <div className="card-actions" />
+              </div>
+              <div className="card-block">
+                <div className="chart-wrapper">
+                  <Bar
+                    data={bar}
+                    options={{
+                      maintainAspectRatio: false
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-header">
+            Productivity
+            <div className="card-actions" />
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Line
+                data={line}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="card-columns cols-2">
           <div className="card">
             <div className="card-header">
-              Caffeine Measurement
+              Productivity
               <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
-                <Bar
-                  data={bar}
+                <Line
+                  data={line}
                   options={{
                     maintainAspectRatio: false
                   }}
@@ -147,51 +185,71 @@ class Charts extends Component {
               </div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-header">
-              Yearly Breakdown
-              <div className="card-actions" />
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Doughnut data={doughnut} />
+          <div className="float-right">
+            <div className="card">
+              <div className="card-header">
+                Caffeine Measurement
+                <div className="card-actions" />
               </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-header">
-              Desired Time Breakdowns
-              <div className="card-actions" />
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Radar data={radar} />
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-header">
-              Productivity Drivers
-              <div className="card-actions" />
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Pie data={pie} />
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-header">
-              Polar Area Chart
-              <div className="card-actions" />
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Polar data={polar} />
+              <div className="card-block">
+                <div className="chart-wrapper">
+                  <Bar
+                    data={bar}
+                    options={{
+                      maintainAspectRatio: false
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/*<div className="card">*/}
+        {/*<div className="card-header">*/}
+        {/*Yearly Breakdown*/}
+        {/*<div className="card-actions" />*/}
+        {/*</div>*/}
+        {/*<div className="card-block">*/}
+        {/*<div className="chart-wrapper">*/}
+        {/*<Doughnut data={doughnut} />*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*<div className="card">*/}
+        {/*<div className="card-header">*/}
+        {/*Desired Time Breakdowns*/}
+        {/*<div className="card-actions" />*/}
+        {/*</div>*/}
+        {/*<div className="card-block">*/}
+        {/*<div className="chart-wrapper">*/}
+        {/*<Radar data={radar} />*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*<div className="card">*/}
+        {/*<div className="card-header">*/}
+        {/*Productivity Drivers*/}
+        {/*<div className="card-actions" />*/}
+        {/*</div>*/}
+        {/*<div className="card-block">*/}
+        {/*<div className="chart-wrapper">*/}
+        {/*<Pie data={pie} />*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*<div className="card">*/}
+        {/*<div className="card-header">*/}
+        {/*Polar Area Chart*/}
+        {/*<div className="card-actions" />*/}
+        {/*</div>*/}
+        {/*<div className="card-block">*/}
+        {/*<div className="chart-wrapper">*/}
+        {/*<Polar data={polar} />*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        Hello
       </div>
     );
   }
