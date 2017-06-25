@@ -90,7 +90,7 @@ export class AddProductivityEvent extends Component {
       <div className="card">
         <div className="card-header">
           <strong id="add-supplement-entry-text">
-            Log Daily Productivity Time
+            Add Daily Productivity Time
           </strong>
         </div>
 

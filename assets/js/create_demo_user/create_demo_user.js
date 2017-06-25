@@ -17,7 +17,7 @@ export class CreateDemoUserView extends Component {
     event.preventDefault();
     this.setState({
       onClickDisabled: true,
-      createDemoUserState: "CREATING DEMO USER WITH RANDOMLY GENERATED DATA ... PLEASE WAIT ( ~ TEN SECONDS)"
+      createDemoUserState: "GENERATING DEMO USER ... PLEASE WAIT ( ~ TEN SECONDS )"
     });
 
     return fetch("/api/v1/user-signup-demo/", {

@@ -50,7 +50,7 @@ class HomePageDescriptionSection extends React.Component {
                 <div className="col-sm-6">
                   <h5>Privacy First.</h5>
                   <p>
-                    We're not here to sell your contact info. We don't want your name or address. All we care about is improving health and productivity for our anonymous users. Open-sourced on GitHub.
+                    We're not here to sell your contact info. We don't want your name or address. All we care about is improving health and productivity anonymously. Open-sourced on GitHub.
                   </p>
                 </div>
               </div>
