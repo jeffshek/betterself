@@ -17,7 +17,7 @@ from betterself.utils import UTC_TZ
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivityLog
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -215,7 +215,7 @@ class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequ
 
 class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSleepActivityViews
-    TEST_MODEL = SleepActivityLog
+    TEST_MODEL = SleepActivity
     PAGINATION = True
 
     def setUp(self):
@@ -235,11 +235,11 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
         # create a sleep record for two days
         start_time = datetime.datetime(2017, 1, 1, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=UTC_TZ)
-        SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
         # day two
         start_time = datetime.datetime(2017, 1, 2, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
-        SleepActivityLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
 
     def test_valid_get_request_for_key_in_response(self):
         key = 'start_time'

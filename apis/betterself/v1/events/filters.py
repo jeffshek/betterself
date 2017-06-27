@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from events.models import SupplementEvent, UserActivity, UserActivityEvent, SleepActivityLog
+from events.models import SupplementEvent, UserActivity, UserActivityEvent, SleepActivity
 
 
 class SupplementEventFilter(FilterSet):
@@ -42,7 +42,7 @@ class UserActivityEventFilter(FilterSet):
 
 class SleepActivityFilter(FilterSet):
     class Meta:
-        model = SleepActivityLog
+        model = SleepActivity
         fields = [
             'uuid',
             'start_time',
