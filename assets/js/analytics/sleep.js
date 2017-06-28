@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Nav, NavItem, NavLink } from "reactstrap";
 
 const line = {
   labels: [
@@ -13,7 +14,7 @@ const line = {
   ],
   datasets: [
     {
-      label: "Average Weekday Sleep Duration",
+      label: "Sleep Time (Hours)",
       fill: false,
       lineTension: 0.1,
       backgroundColor: "rgba(75,192,192,0.4)",
@@ -37,12 +38,44 @@ const line = {
 };
 
 const bar = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  labels: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
   datasets: [
     {
-      label: "Average Caffeine Intake",
-      backgroundColor: "rgba(255,99,132,0.2)",
-      borderColor: "rgba(255,99,132,1)",
+      label: "Average Sleep (Hours)",
+      // # rgb(66, 134, 244)
+      backgroundColor: "rgb(74, 86, 104)",
+      borderColor: "rgb(74, 86, 104)",
+      borderWidth: 1,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: [65, 59, 80, 81, 56, 55, 40]
+    }
+  ]
+};
+
+const bar_2 = {
+  labels: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
+  datasets: [
+    {
+      label: "Average Sleep (Hours)",
+      backgroundColor: "teal",
+      borderColor: "teal",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
@@ -122,16 +155,33 @@ class Charts extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            Sleep History
+            <div className="card-actions" />
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Line
+                data={line}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="card-columns cols-2">
           <div className="card">
-            <div className="card-header analytics-text-box">
+            <div className="card-header analytics-text-box-label">
               Daily Sleep Analytics
               <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
-                <Line
-                  data={line}
+                <Bar
+                  data={bar}
                   options={{
                     maintainAspectRatio: false
                   }}
@@ -139,24 +189,6 @@ class Charts extends Component {
               </div>
             </div>
           </div>
-          {/*<div className="float-right">*/}
-          {/*<div className="card">*/}
-          {/*<div className="card-header">*/}
-          {/*Caffeine Measurement*/}
-          {/*<div className="card-actions" />*/}
-          {/*</div>*/}
-          {/*<div className="card-block">*/}
-          {/*<div className="chart-wrapper">*/}
-          {/*<Bar*/}
-          {/*data={bar}*/}
-          {/*options={{*/}
-          {/*maintainAspectRatio: false*/}
-          {/*}}*/}
-          {/*/>*/}
-          {/*</div>*/}
-          {/*</div>*/}
-          {/*</div>*/}
-          {/*</div>*/}
           <div className="float-left">
             <div className="card">
               <div className="card-header analytics-text-box">
@@ -191,105 +223,64 @@ class Charts extends Component {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            Average Sleep on Weekday
-            <div className="card-actions" />
-          </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Line
-                data={line}
-                options={{
-                  maintainAspectRatio: false
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className="card-columns cols-2">
           <div className="card">
-            <div className="card-header">
-              Productivity
+            <div className="card-header analytics-text-box-label">
+              Activities and Sleep Correlation
               <div className="card-actions" />
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
-                <Line
-                  data={line}
+                <Bar
+                  data={bar_2}
                   options={{
-                    maintainAspectRatio: false
+                    maintainAspectRatio: true
                   }}
-                />
+                />&gt;
               </div>
             </div>
           </div>
-          <div className="float-right">
+          <div className="float-left">
             <div className="card">
-              <div className="card-header">
-                Caffeine Measurement
-                <div className="card-actions" />
-              </div>
-              <div className="card-block">
-                <div className="chart-wrapper">
-                  <Bar
-                    data={bar}
-                    options={{
-                      maintainAspectRatio: false
-                    }}
-                  />
+              <Nav tabs>
+                <div className="selected-modal analytics-text-box-label">
+                  <NavItem>
+                    <NavLink>
+                      Positive Correlation
+                    </NavLink>
+                  </NavItem>
                 </div>
+                <div className="default-background">
+                  <NavItem>
+                    <NavLink>
+                      Negative Correlation
+                    </NavLink>
+                  </NavItem>
+                </div>
+              </Nav>
+              <div className="card-block">
+
+                <span className="analytics-text-box">Melatonin :</span>
+                {" "}
+                .83
+                <br />
+                <span className="analytics-text-box">Running : </span>
+                {" "}
+                .68
+                <br />
+                <span className="analytics-text-box">Showering : </span>
+                {" "}
+                .52
+                <br />
+                <span className="analytics-text-box">Meditation : </span>
+                {" "}
+                .25
+                <br />
               </div>
             </div>
           </div>
         </div>
 
-        {/*<div className="card">*/}
-        {/*<div className="card-header">*/}
-        {/*Yearly Breakdown*/}
-        {/*<div className="card-actions" />*/}
-        {/*</div>*/}
-        {/*<div className="card-block">*/}
-        {/*<div className="chart-wrapper">*/}
-        {/*<Doughnut data={doughnut} />*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*<div className="card">*/}
-        {/*<div className="card-header">*/}
-        {/*Desired Time Breakdowns*/}
-        {/*<div className="card-actions" />*/}
-        {/*</div>*/}
-        {/*<div className="card-block">*/}
-        {/*<div className="chart-wrapper">*/}
-        {/*<Radar data={radar} />*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*<div className="card">*/}
-        {/*<div className="card-header">*/}
-        {/*Productivity Drivers*/}
-        {/*<div className="card-actions" />*/}
-        {/*</div>*/}
-        {/*<div className="card-block">*/}
-        {/*<div className="chart-wrapper">*/}
-        {/*<Pie data={pie} />*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*<div className="card">*/}
-        {/*<div className="card-header">*/}
-        {/*Polar Area Chart*/}
-        {/*<div className="card-actions" />*/}
-        {/*</div>*/}
-        {/*<div className="card-block">*/}
-        {/*<div className="chart-wrapper">*/}
-        {/*<Polar data={polar} />*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        Hello
       </div>
     );
   }

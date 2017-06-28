@@ -92,3 +92,19 @@
 .analytics-text-box {
   font-weight: bold;
 }
+
+.analytics-text-box-label {
+  font-weight: bold;
+  text-align: center;
+}
+
+.default-background {
+  background-color: indianred;
+  color: white;
+}
+
+.selected-modal {
+  background-color: darkgreen;
+  color: white;
+
+}
