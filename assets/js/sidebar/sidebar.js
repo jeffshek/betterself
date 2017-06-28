@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
   DASHBOARD_INDEX_URL,
-  DASHBOARD_CHARTS_URL,
+  DASHBOARD_ANALYTICS_SLEEP,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
@@ -81,7 +81,7 @@ const ExportSidebar = () => (
     <NavigationLink
       iconName="icon-cloud-download"
       label="All Data"
-      link={DASHBOARD_CHARTS_URL}
+      link={DASHBOARD_ANALYTICS_SLEEP}
     />
   </div>
 );
@@ -130,8 +130,8 @@ class Sidebar extends Component {
           <NavigationTitle title="Analytics" />
           <NavigationLink
             iconName="icon-chart"
-            label="Productivity"
-            link={DASHBOARD_CHARTS_URL}
+            label="Sleep"
+            link={DASHBOARD_ANALYTICS_SLEEP}
           />
 
           <li className="divider" />

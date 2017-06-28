@@ -2,10 +2,18 @@ import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 
 const line = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  labels: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
   datasets: [
     {
-      label: "Average Monthly Productivity Score",
+      label: "Average Weekday Sleep Duration",
       fill: false,
       lineTension: 0.1,
       backgroundColor: "rgba(75,192,192,0.4)",
@@ -116,8 +124,8 @@ class Charts extends Component {
       <div className="animated fadeIn">
         <div className="card-columns cols-2">
           <div className="card">
-            <div className="card-header">
-              Productivity
+            <div className="card-header analytics-text-box">
+              Daily Sleep Analytics
               <div className="card-actions" />
             </div>
             <div className="card-block">
@@ -131,21 +139,53 @@ class Charts extends Component {
               </div>
             </div>
           </div>
-          <div className="float-right">
+          {/*<div className="float-right">*/}
+          {/*<div className="card">*/}
+          {/*<div className="card-header">*/}
+          {/*Caffeine Measurement*/}
+          {/*<div className="card-actions" />*/}
+          {/*</div>*/}
+          {/*<div className="card-block">*/}
+          {/*<div className="chart-wrapper">*/}
+          {/*<Bar*/}
+          {/*data={bar}*/}
+          {/*options={{*/}
+          {/*maintainAspectRatio: false*/}
+          {/*}}*/}
+          {/*/>*/}
+          {/*</div>*/}
+          {/*</div>*/}
+          {/*</div>*/}
+          {/*</div>*/}
+          <div className="float-left">
             <div className="card">
-              <div className="card-header">
-                Caffeine Measurement
-                <div className="card-actions" />
+              <div className="card-header analytics-text-box">
+                Sleep Statistics (Averages)
               </div>
               <div className="card-block">
-                <div className="chart-wrapper">
-                  <Bar
-                    data={bar}
-                    options={{
-                      maintainAspectRatio: false
-                    }}
-                  />
-                </div>
+                <span className="analytics-text-box">Historical :</span>
+                {" "}
+                7 hours 51 minutes
+                <br />
+                <span className="analytics-text-box">Last 15 Days : </span>
+                {" "}
+                6 hours 28 minutes
+                <br />
+                <span className="analytics-text-box">Last 30 Days : </span>
+                {" "}
+                6 hours 28 minutes
+                <br />
+                <span className="analytics-text-box">Last 60 Days : </span>
+                {" "}
+                6 hours 55 minutes
+                <br />
+                <span className="analytics-text-box">Weekends :</span>
+                {" "}
+                6 hours 28 minutes
+                <br />
+                <span className="analytics-text-box">Weekdays :</span>
+                {" "}
+                6 hours 28 minutes
               </div>
             </div>
           </div>
@@ -153,7 +193,7 @@ class Charts extends Component {
 
         <div className="card">
           <div className="card-header">
-            Productivity
+            Average Sleep on Weekday
             <div className="card-actions" />
           </div>
           <div className="card-block">
