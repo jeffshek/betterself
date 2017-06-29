@@ -74,8 +74,8 @@ const bar_2 = {
   datasets: [
     {
       label: "Average Sleep (Hours)",
-      backgroundColor: "teal",
-      borderColor: "teal",
+      backgroundColor: "rgb(74, 86, 104)",
+      borderColor: "rgb(74, 86, 104)",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
@@ -242,7 +242,7 @@ class Charts extends Component {
           </div>
           <div className="float-left">
             <Nav tabs>
-              <div className="selected-modal analytics-text-box-label">
+              <div className="selected-modal">
                 <NavItem>
                   <NavLink>
                     Positively Correlated
@@ -258,7 +258,6 @@ class Charts extends Component {
               </div>
             </Nav>
             <div className="card">
-
               <div className="card-block">
                 <table className="table">
                   <thead>
@@ -266,7 +265,6 @@ class Charts extends Component {
                       <th>Activity</th>
                       <th>Date Created</th>
                       <th>Correlation</th>
-                      <th>Regression</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -274,27 +272,18 @@ class Charts extends Component {
                       <td>Samppa Nori</td>
                       <td>2012/01/01</td>
                       <td>Member</td>
-                      <td>
-                        <span className="badge badge-success">Active</span>
-                      </td>
                     </tr>
                     <tr>
                       <td>Estavan Lykos</td>
                       <td>2012/02/01</td>
                       <td>Staff</td>
-                      <td>
-                        <span className="badge badge-danger">Banned</span>
-                      </td>
                     </tr>
-
                   </tbody>
                 </table>
-
               </div>
             </div>
           </div>
         </div>
-
       </div>
     );
   }

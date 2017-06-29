@@ -104,13 +104,15 @@
 }
 
 .default-background {
-  background-color: indianred;
-  color: white;
-  border: none;
+  background-color: rgb(237, 241, 247);
+  color: black;
+  border: 5px;
+  border-color: black;
 }
 
 .selected-modal {
   background-color: darkgreen;
   color: white;
   border: none;
+  /*text-decoration: underline;*/
 }
