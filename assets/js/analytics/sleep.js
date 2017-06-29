@@ -241,41 +241,55 @@ class Charts extends Component {
             </div>
           </div>
           <div className="float-left">
+            <Nav tabs>
+              <div className="selected-modal analytics-text-box-label">
+                <NavItem>
+                  <NavLink>
+                    Positively Correlated
+                  </NavLink>
+                </NavItem>
+              </div>
+              <div className="default-background">
+                <NavItem>
+                  <NavLink>
+                    Negatively Correlated
+                  </NavLink>
+                </NavItem>
+              </div>
+            </Nav>
             <div className="card">
-              <Nav tabs>
-                <div className="selected-modal analytics-text-box-label">
-                  <NavItem>
-                    <NavLink>
-                      Positive Correlation
-                    </NavLink>
-                  </NavItem>
-                </div>
-                <div className="default-background">
-                  <NavItem>
-                    <NavLink>
-                      Negative Correlation
-                    </NavLink>
-                  </NavItem>
-                </div>
-              </Nav>
-              <div className="card-block">
 
-                <span className="analytics-text-box">Melatonin :</span>
-                {" "}
-                .83
-                <br />
-                <span className="analytics-text-box">Running : </span>
-                {" "}
-                .68
-                <br />
-                <span className="analytics-text-box">Showering : </span>
-                {" "}
-                .52
-                <br />
-                <span className="analytics-text-box">Meditation : </span>
-                {" "}
-                .25
-                <br />
+              <div className="card-block">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Activity</th>
+                      <th>Date Created</th>
+                      <th>Correlation</th>
+                      <th>Regression</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Samppa Nori</td>
+                      <td>2012/01/01</td>
+                      <td>Member</td>
+                      <td>
+                        <span className="badge badge-success">Active</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Estavan Lykos</td>
+                      <td>2012/02/01</td>
+                      <td>Staff</td>
+                      <td>
+                        <span className="badge badge-danger">Banned</span>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
               </div>
             </div>
           </div>
