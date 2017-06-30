@@ -91,6 +91,20 @@ const line = {
         81,
         56,
         55,
+        40,
+        65,
+        59,
+        80,
+        81,
+        56,
+        55,
+        40,
+        65,
+        59,
+        80,
+        81,
+        56,
+        55,
         40
       ]
     }
@@ -182,35 +196,83 @@ class Charts extends Component {
               </div>
             </div>
           </div>
-          <div className="float-left">
+          <div className="float">
+
             <div className="card">
-              <div className="card-header analytics-text-box">
-                Sleep Statistics (Averages)
-              </div>
+              <Nav tabs>
+                <NavItem className="selected-modal">
+                  <NavLink>
+                    Full Historical Lookback
+                  </NavLink>
+                </NavItem>
+                {/*<span className="default-background">*/}
+                <NavItem>
+                  <NavLink>
+                    7 Day
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink>
+                    14 Day
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink>
+                    30 Day
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink>
+                    90 Day
+                  </NavLink>
+                </NavItem>
+
+                {/*</span>*/}
+              </Nav>
+
+              {/*<div className="card-header analytics-text-box">*/}
+              {/*Sleep Statistics (Averages)*/}
+              {/*</div>*/}
+
               <div className="card-block">
-                <span className="analytics-text-box">Historical :</span>
-                {" "}
-                7 hours 51 minutes
-                <br />
-                <span className="analytics-text-box">Last 15 Days : </span>
-                {" "}
-                6 hours 28 minutes
-                <br />
-                <span className="analytics-text-box">Last 30 Days : </span>
-                {" "}
-                6 hours 28 minutes
-                <br />
-                <span className="analytics-text-box">Last 60 Days : </span>
-                {" "}
-                6 hours 55 minutes
-                <br />
-                <span className="analytics-text-box">Weekends :</span>
-                {" "}
-                6 hours 28 minutes
-                <br />
-                <span className="analytics-text-box">Weekdays :</span>
-                {" "}
-                6 hours 28 minutes
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Weekday</th>
+                      <th>Average Sleep</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Monday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Tuesday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Wednesday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Thursday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Friday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Saturday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                    <tr>
+                      <td>Sunday</td>
+                      <td>6 hours 53 minutes</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -232,19 +294,19 @@ class Charts extends Component {
               </div>
             </div>
           </div>
-          <div className="float-left">
+          <div className="float">
             <Nav tabs>
               <div className="selected-modal">
                 <NavItem>
                   <NavLink>
-                    Positively Correlated
+                    Positively Correlated Activities
                   </NavLink>
                 </NavItem>
               </div>
               <div className="default-background">
                 <NavItem>
                   <NavLink>
-                    Negatively Correlated
+                    Negatively Correlated Activities
                   </NavLink>
                 </NavItem>
               </div>
