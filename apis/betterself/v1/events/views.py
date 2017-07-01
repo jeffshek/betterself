@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.views import APIView
 
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     SleepActivityFilter
@@ -85,3 +86,24 @@ class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDel
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+
+class SleepAggregatesView(APIView):
+    def get(self, request):
+        print ('hi hi')
+        return
+
+
+class SleepAveragesView(APIView):
+    def get(self, request):
+        return
+
+
+class SleepActivitiesCorrelationView(APIView):
+    def get(self, request):
+        return
+
+
+class SleepSupplementsCorrelationView(APIView):
+    def get(self, request):
+        return
