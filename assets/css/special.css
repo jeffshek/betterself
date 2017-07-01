@@ -111,7 +111,7 @@
 }
 
 .selected-modal {
-  background-color: green;
+  background-color: rgb(74, 86, 104);
   color: white;
   border: none;
 }
