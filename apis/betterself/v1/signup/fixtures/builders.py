@@ -8,7 +8,7 @@ from django.utils import timezone
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils import UTC_TZ
-from events.models import DailyProductivityLog, SleepActivityLog
+from events.models import DailyProductivityLog, SleepActivity
 
 
 class DemoHistoricalDataBuilder(object):
@@ -92,14 +92,14 @@ class DemoHistoricalDataBuilder(object):
 
             index_end_datetime = index_start_datetime + datetime.timedelta(minutes=sleep_amount)
 
-            sleep_event = SleepActivityLog(
+            sleep_event = SleepActivity(
                 user=self.user, source='web',
                 start_time=index_start_datetime,
                 end_time=index_end_datetime
             )
             sleep_logs.append(sleep_event)
 
-        SleepActivityLog.objects.bulk_create(sleep_logs)
+        SleepActivity.objects.bulk_create(sleep_logs)
 
         # let's do some real basic estimation that sleep is the most important thing to productivity
         # and then let's add how productivity

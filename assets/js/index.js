@@ -12,7 +12,7 @@ import {
   LOGIN_URL,
   HOME_URL,
   LOGOUT_URL,
-  DASHBOARD_CHARTS_URL,
+  DASHBOARD_ANALYTICS_SLEEP,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
@@ -32,7 +32,7 @@ import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
 import SupplementsLogView from "./supplement_events_log/supplement_events_view";
-import ChartsView from "./productivity_charts/productivity_charts";
+import ChartsView from "./analytics/sleep";
 import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
 import UserActivitiesEventLogView
   from "./user_activities_events_log/user_activites_events_view";
@@ -82,7 +82,7 @@ const BetterSelfRouter = () => (
         component={DashboardChartsView}
       />
       <PrivateRoute
-        path={DASHBOARD_CHARTS_URL}
+        path={DASHBOARD_ANALYTICS_SLEEP}
         component={DashboardChartsView}
       />
       <PrivateRoute

@@ -63,6 +63,11 @@
   text-align: center;
 }
 
+.right-align-td {
+  text-align: right;
+  align: right;
+}
+
 .slick-list .col-lg-5{
   height: 100%;
 }
@@ -88,3 +93,27 @@
   height: 500px;
   min-height: 550px;
 }
+
+.analytics-text-box {
+  font-weight: bold;
+}
+
+.analytics-text-box-label {
+  font-weight: bold;
+  text-align: center;
+}
+
+.default-background {
+  background-color: rgb(237, 241, 247);
+  color: black;
+  border: 5px;
+  border-color: black;
+}
+
+.selected-modal {
+  background-color: green;
+  color: white;
+  border: none;
+}
+
+
