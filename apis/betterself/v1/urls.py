@@ -30,10 +30,10 @@ urlpatterns = [
     url(r'^{0}/'.format(SleepActivity.RESOURCE_NAME),
         include([
             url(r'^$', SleepActivityView.as_view(), name=SleepActivity.RESOURCE_NAME),
-            url(r'^aggregates$', SleepAggregatesView.as_view(), name=SleepActivity.RESOURCE_NAME),
-            url(r'^averages$', SleepAveragesView.as_view(), name=SleepActivity.RESOURCE_NAME),
-            url(r'^activities/correlations$', SleepActivitiesCorrelationView.as_view(), name=SleepActivity.RESOURCE_NAME),  # noqa
-            url(r'^supplements/correlations$', SleepSupplementsCorrelationView.as_view(), name=SleepActivity.RESOURCE_NAME),  # noqa
+            url(r'^aggregates$', SleepAggregatesView.as_view(), name='sleep-aggregates'),
+            url(r'^averages$', SleepAveragesView.as_view(), name='sleep-averages'),
+            url(r'^activities/correlations$', SleepActivitiesCorrelationView.as_view(), name='sleep-activities-correlations'),  # noqa
+            url(r'^supplements/correlations$', SleepSupplementsCorrelationView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
