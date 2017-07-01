@@ -2,113 +2,36 @@ import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
+const DefaultLineChartParameters = {
+  label: "Sleep Time (Hours)",
+  fill: false,
+  lineTension: 0.1,
+  backgroundColor: "rgb(74, 86, 104)",
+  borderColor: "rgb(74, 86, 104)",
+  borderCapStyle: "butt",
+  borderDash: [],
+  borderDashOffset: 0.0,
+  borderJoinStyle: "miter",
+  pointBorderColor: "black",
+  pointBackgroundColor: "#fff",
+  pointBorderWidth: 1,
+  pointHoverRadius: 5,
+  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+  pointHoverBorderColor: "black",
+  pointHoverBorderWidth: 2,
+  pointRadius: 1,
+  pointHitRadius: 10,
+  data: [195, 2, 5, 65, 33, 62]
+};
+
+const SleepHistoryData = {
+  labels: [1, 2, 3, 4],
+  datasets: [Object.assign({}, DefaultLineChartParameters)]
+};
+
 const line = {
-  labels: [
-    "3/31/17",
-    "(S) 4/1/17",
-    "4/2/17",
-    "4/3/17",
-    "4/4/17",
-    "4/5/17",
-    "4/6/17",
-    "(S) 4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17",
-    "4/6/17"
-  ],
-  datasets: [
-    {
-      label: "Sleep Time (Hours)",
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: "rgb(74, 86, 104)",
-      borderColor: "rgb(74, 86, 104)",
-      borderCapStyle: "butt",
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: "miter",
-      pointBorderColor: "black",
-      pointBackgroundColor: "#fff",
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "black",
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40,
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40,
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40,
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40,
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40,
-        65,
-        59,
-        80,
-        81,
-        56,
-        55,
-        40
-      ]
-    }
-  ]
+  labels: ["3/31/17", "3/31/27", "3/31/37"],
+  datasets: [Object.assign({}, DefaultLineChartParameters)]
 };
 
 const bar = {
@@ -159,6 +82,14 @@ const bar_2 = {
 };
 
 class Charts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      line: line
+    };
+    this.state.line.labels = ["January", "Feb", 3, 4, 5, 6];
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -170,7 +101,7 @@ class Charts extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Line
-                data={line}
+                data={this.state.line}
                 options={{
                   maintainAspectRatio: false
                 }}
