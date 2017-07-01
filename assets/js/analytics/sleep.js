@@ -24,11 +24,6 @@ const DefaultLineChartParameters = {
   data: [195, 2, 5, 65, 33, 62]
 };
 
-const SleepHistoryData = {
-  labels: [1, 2, 3, 4],
-  datasets: [Object.assign({}, DefaultLineChartParameters)]
-};
-
 const line = {
   labels: ["3/31/17", "3/31/27", "3/31/37"],
   datasets: [Object.assign({}, DefaultLineChartParameters)]
@@ -47,7 +42,6 @@ const bar = {
   datasets: [
     {
       label: "Average Sleep (Hours)",
-      // # rgb(66, 134, 244)
       backgroundColor: "rgb(74, 86, 104)",
       borderColor: "rgb(74, 86, 104)",
       borderWidth: 1,
@@ -136,7 +130,6 @@ class Charts extends Component {
                     Full Historical Lookback
                   </NavLink>
                 </NavItem>
-                {/*<span className="default-background">*/}
                 <NavItem>
                   <NavLink>
                     7 Day
@@ -157,14 +150,7 @@ class Charts extends Component {
                     90 Day
                   </NavLink>
                 </NavItem>
-
-                {/*</span>*/}
               </Nav>
-
-              {/*<div className="card-header analytics-text-box">*/}
-              {/*Sleep Statistics (Averages)*/}
-              {/*</div>*/}
-
               <div className="card-block">
                 <table className="table">
                   <thead>
