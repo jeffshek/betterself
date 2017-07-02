@@ -249,7 +249,10 @@ class SleepActivityDataframeBuilder(object):
     """
     def __init__(self, queryset):
         self.sleep_activities = queryset
-        self.user = self.sleep_activities[0].user
+        try:
+            self.user = self.sleep_activities[0].user
+        except IndexError:
+            self.user = None
 
     def get_sleep_history(self):
         user_timezone = self.user.pytz_timezone
