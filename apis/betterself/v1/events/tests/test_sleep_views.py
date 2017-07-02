@@ -90,9 +90,9 @@ class SleepCorrelationTests(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
 
-        # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_sleep_fixtures()
+        builder.create_historical_fixtures()
+
         super().setUpTestData()
 
     def setUp(self):
@@ -101,8 +101,10 @@ class SleepCorrelationTests(TestCase):
 
     def test_sleep_activities_correlations_view(self):
         url = reverse('sleep-activities-correlations')
-        self.assertTrue(url)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_sleep_supplements_view(self):
         url = reverse('sleep-supplements-correlations')
-        self.assertTrue(url)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)

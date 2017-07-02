@@ -132,6 +132,13 @@ class SleepAveragesView(APIView):
 
 class SleepActivitiesCorrelationView(APIView):
     def get(self, request):
+        user = request.user
+        sleep_activities = SleepActivity.objects.filter(user=user)
+
+        serializer = SleepActivityDataframeBuilder(sleep_activities)
+        sleep_aggregate = serializer.get_sleep_history()
+        print (sleep_aggregate)
+
         return Response(status=200)
 
 
