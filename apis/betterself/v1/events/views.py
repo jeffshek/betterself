@@ -1,5 +1,6 @@
 import json
 
+from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -109,16 +110,13 @@ class SleepAggregatesView(APIView):
 
 class SleepAveragesView(APIView):
     def get(self, request):
-        # TODO - refactor this so the exception just catches two
-        if LOOKBACK_PARAM_NAME not in request.query_params:
+        try:
+            lookback = int(request.query_params[LOOKBACK_PARAM_NAME])
+        except (ValueError, MultiValueDictKeyError):
+            # MultiValueDictKeyError when a key doesn't exist
+            # if something that was entered for a lookback that couldn't be interpreted
+            # aka something like 'seven'
             return Response(status=400)
-        else:
-            try:
-                lookback = int(request.query_params[LOOKBACK_PARAM_NAME])
-            except ValueError:
-                # if something that was entered for a lookback that couldn't be interpreted
-                # aka something like 'seven'
-                return Response(status=400)
 
         user = request.user
         sleep_activities = SleepActivity.objects.filter(user=user)
