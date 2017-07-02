@@ -113,6 +113,10 @@ class SleepActivity(BaseModelWithUserGeneratedContent):
 
         super().save(*args, **kwargs)
 
+    @property
+    def duration(self):
+        return self.end_time - self.start_time
+
 
 class UserActivity(BaseModelWithUserGeneratedContent):
     """
