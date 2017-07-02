@@ -19,7 +19,7 @@ class SleepAggregateTests(TestCase):
 
         # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_historical_fixtures()
+        builder.create_sleep_fixtures()
 
         super().setUpTestData()
 
@@ -56,7 +56,7 @@ class SleepAverageTests(TestCase):
 
         # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_historical_fixtures()
+        builder.create_sleep_fixtures()
 
         super().setUpTestData()
 
@@ -92,8 +92,7 @@ class SleepCorrelationTests(TestCase):
 
         # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_historical_fixtures()
-
+        builder.create_sleep_fixtures()
         super().setUpTestData()
 
     def setUp(self):
