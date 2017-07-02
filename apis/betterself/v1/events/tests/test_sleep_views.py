@@ -1,4 +1,5 @@
 import math
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -7,6 +8,7 @@ from rest_framework.test import APIClient
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 
 # python manage.py test apis.betterself.v1.events.tests.test_sleep_views
+from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity
 
 User = get_user_model()
@@ -17,7 +19,6 @@ class SleepAggregateTests(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
 
-        # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
         builder.create_sleep_fixtures()
 
@@ -54,7 +55,6 @@ class SleepAverageTests(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
 
-        # kinda wish you had done this via a factory like everything else
         builder = DemoHistoricalDataBuilder(cls.user)
         builder.create_sleep_fixtures()
 
@@ -102,7 +102,10 @@ class SleepCorrelationTests(TestCase):
     def test_sleep_activities_correlations_view(self):
         url = reverse('sleep-activities-correlations')
         response = self.client.get(url)
+
         self.assertEqual(response.status_code, 200)
+        # the correlation of sleep to itself will be one
+        self.assertEqual(response.data[SLEEP_MINUTES_COLUMN], 1)
 
     def test_sleep_supplements_view(self):
         url = reverse('sleep-supplements-correlations')

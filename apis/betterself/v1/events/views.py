@@ -9,9 +9,11 @@ from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivit
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
     ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
     UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer, \
-    SleepActivityReadSerializer, SleepActivityCreateSerializer, SleepActivityDataframeBuilder
+    SleepActivityReadSerializer, SleepActivityCreateSerializer, SleepActivityDataframeBuilder, \
+    UserActivityEventDataframeBuilder
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from config.pagination import ModifiedPageNumberPagination
+from constants import SLEEP_MINUTES_COLUMN, LOOKBACK_PARAM_NAME
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 
 
@@ -107,11 +109,12 @@ class SleepAggregatesView(APIView):
 
 class SleepAveragesView(APIView):
     def get(self, request):
-        if 'lookback' not in request.query_params:
+        # TODO - refactor this so the exception just catches two
+        if LOOKBACK_PARAM_NAME not in request.query_params:
             return Response(status=400)
         else:
             try:
-                lookback = int(request.query_params['lookback'])
+                lookback = int(request.query_params[LOOKBACK_PARAM_NAME])
             except ValueError:
                 # if something that was entered for a lookback that couldn't be interpreted
                 # aka something like 'seven'
@@ -133,13 +136,26 @@ class SleepAveragesView(APIView):
 class SleepActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
+
         sleep_activities = SleepActivity.objects.filter(user=user)
+        sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
+        # have to clean this up a lot ...
+        sleep_aggregate = sleep_serializer.get_sleep_history()
+        sleep_aggregate = sleep_aggregate.tz_convert(user.pytz_timezone)
 
-        serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate = serializer.get_sleep_history()
-        print (sleep_aggregate)
+        # resample so that it goes from no frequency to a daily frequency
+        # which matches UserActivityEvents, eventually need to be more elegant
+        sleep_aggregate = sleep_aggregate.resample('d').last()
 
-        return Response(status=200)
+        activity_events = UserActivityEvent.objects.filter(user=user)
+        activity_serializer = UserActivityEventDataframeBuilder(activity_events)
+        user_activity_dataframe = activity_serializer.get_user_activity_events()
+
+        user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
+
+        correlation = user_activity_dataframe.corr()
+        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values()
+        return Response(sleep_correlation.to_dict())
 
 
 class SleepSupplementsCorrelationView(APIView):

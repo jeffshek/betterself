@@ -269,3 +269,33 @@ class SleepActivityDataframeBuilder(object):
         sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
 
         return sleep_aggregate
+
+
+class UserActivityEventDataframeBuilder(object):
+    def __init__(self, queryset):
+        self.user_activities = queryset
+
+        try:
+            self.user = self.user_activities[0].user
+        except IndexError:
+            self.user = None
+
+    def get_user_activity_events(self):
+        activity_events_values = self.user_activities.values('time', 'user_activity__name')
+        user_timezone = self.user.pytz_timezone
+
+        time_index = [item['time'].astimezone(user_timezone).date() for item in activity_events_values]
+        time_index_localized = pd.DatetimeIndex(time_index).tz_localize(user_timezone)
+        activity_names = [item['user_activity__name'] for item in activity_events_values]
+
+        df = pd.DataFrame({
+            'time': time_index_localized,
+            'activity': activity_names,
+            'value': 1
+        })
+
+        # switch to a flattened history of user activity dataframe instead
+        df = df.pivot_table(index=pd.DatetimeIndex(df['time']), values='value', columns='activity', aggfunc=np.sum)
+        df = df.asfreq('D')
+
+        return df
