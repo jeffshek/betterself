@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
+from constants import SLEEP_CUTOFF_TIME
 from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
 
@@ -229,7 +230,7 @@ def round_timestamp_to_sleep_date(timeseries):
     """
     sleep_dates = []
     for value in timeseries:
-        if value.hour < 5:
+        if value.hour < SLEEP_CUTOFF_TIME:
             result = value - pd.DateOffset(days=1)
         else:
             result = value
@@ -248,14 +249,21 @@ class SleepActivityDataframeBuilder(object):
     """
     def __init__(self, queryset):
         self.sleep_activities = queryset
+        self.user = self.sleep_activities[0].user
 
     def get_sleep_history(self):
+        user_timezone = self.user.pytz_timezone
+
         sleep_activities_values = self.sleep_activities.values('start_time', 'end_time')
+        sleep_activity_normalized_timezones = []
+        for record in sleep_activities_values:
+            record_normalized = {key: user_timezone.normalize(value) for key, value in record.items()}
+            sleep_activity_normalized_timezones.append(record_normalized)
 
         # for each given 24 hour period (ending at 2PM - the latest I can imagine someone might sleep in)
         # lot of mental debate here between calculating the sleep one gets from monday 10PM to tuesday 6AM as
         # either a Monday or Tuesday night, but I've decided to lean toward calculating that as Monday night
-        dataframe = pd.DataFrame.from_records(sleep_activities_values)
+        dataframe = pd.DataFrame.from_records(sleep_activity_normalized_timezones)
         dataframe['sleep_time'] = dataframe['end_time'] - dataframe['start_time']
 
         sleep_index = round_timestamp_to_sleep_date(dataframe['end_time'])
