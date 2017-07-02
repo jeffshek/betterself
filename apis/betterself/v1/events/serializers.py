@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
@@ -215,3 +218,54 @@ class SleepActivityCreateSerializer(serializers.Serializer):
             defaults=validated_data)
 
         return obj
+
+
+def round_timestamp_to_sleep_date(timeseries):
+    """
+    Not my proudest function ... this isn't as efficient as it could be, but struggling
+    with some pandas syntax to find the perfect pandas one-line
+
+    This can be much more performant, but need time to sit down and figure it out
+    """
+    sleep_dates = []
+    for value in timeseries:
+        if value.hour < 5:
+            result = value - pd.DateOffset(days=1)
+        else:
+            result = value
+
+        sleep_dates.append(result)
+
+    index = pd.DatetimeIndex(sleep_dates)
+    return index
+
+
+class SleepActivityDataframeBuilder(object):
+    """
+    Custom serializer to parse sleep logs in a meaningful way
+
+    Returns a dataframe of sleep activity
+    """
+    def __init__(self, queryset):
+        self.sleep_activities = queryset
+
+    def get_sleep_history(self):
+        sleep_activities_values = self.sleep_activities.values('start_time', 'end_time')
+
+        # for each given 24 hour period (ending at 2PM - the latest I can imagine someone might sleep in)
+        # lot of mental debate here between calculating the sleep one gets from monday 10PM to tuesday 6AM as
+        # either a Monday or Tuesday night, but I've decided to lean toward calculating that as Monday night
+        dataframe = pd.DataFrame.from_records(sleep_activities_values)
+        dataframe['sleep_time'] = dataframe['end_time'] - dataframe['start_time']
+
+        sleep_index = round_timestamp_to_sleep_date(dataframe['end_time'])
+        sleep_series = pd.Series(dataframe['sleep_time'].values, index=sleep_index)
+
+        # get the sum of time slept during days (so this includes naps)
+        # the result is timedeltas though, so convert below
+        sleep_aggregate = sleep_series.resample('D').sum()
+
+        # change from timedeltas to minutes, otherwise json response of timedelta is garbage
+        sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
+
+        return sleep_aggregate

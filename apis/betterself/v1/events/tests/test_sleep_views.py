@@ -12,7 +12,7 @@ from events.models import SleepActivity
 User = get_user_model()
 
 
-class ActivityTests(TestCase):
+class SleepAggregateTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
@@ -48,9 +48,57 @@ class ActivityTests(TestCase):
         first_record_falls_within_range = min_duration_minutes <= first_record_sleep_time < max_duration_minutes
         self.assertTrue(first_record_falls_within_range)
 
+
+class SleepAverageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(username='demo')
+
+        # kinda wish you had done this via a factory like everything else
+        builder = DemoHistoricalDataBuilder(cls.user)
+        builder.create_historical_fixtures()
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
+
     def test_sleep_averages_view(self):
         url = reverse('sleep-averages')
-        self.assertTrue(url)
+        kwargs = {'lookback': 7}
+        response = self.client.get(url, data=kwargs)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.data) > 1)
+
+    def test_sleep_averages_returns_400_with_invalid_lookback(self):
+        url = reverse('sleep-averages')
+        kwargs = {'lookback': 'cat'}
+        response = self.client.get(url, data=kwargs)
+        self.assertEqual(response.status_code, 400)
+
+    def test_sleep_averages_view_returns_400(self):
+        url = reverse('sleep-averages')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 400)
+
+
+class SleepCorrelationTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(username='demo')
+
+        # kinda wish you had done this via a factory like everything else
+        builder = DemoHistoricalDataBuilder(cls.user)
+        builder.create_historical_fixtures()
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
 
     def test_sleep_activities_correlations_view(self):
         url = reverse('sleep-activities-correlations')
