@@ -241,6 +241,7 @@ def round_timestamp_to_sleep_date(timeseries):
     return index
 
 
+# TODO - move these to analytics / dataframe - builders
 class SleepActivityDataframeBuilder(object):
     """
     Custom serializer to parse sleep logs in a meaningful way

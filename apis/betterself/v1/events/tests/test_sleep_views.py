@@ -121,7 +121,7 @@ class SleepCorrelationTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(self.user)
 
-    def test_sleep_activities_correlations_view(self):
+    def test_sleep_activities_view(self):
         url = reverse('sleep-activities-correlations')
         response = self.client.get(url)
 

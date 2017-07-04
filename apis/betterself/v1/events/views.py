@@ -5,6 +5,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     SleepActivityFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
@@ -159,4 +160,18 @@ class SleepActivitiesCorrelationView(APIView):
 
 class SleepSupplementsCorrelationView(APIView):
     def get(self, request):
+        user = request.user
+        queryset = SupplementEvent.objects.filter(user=user)
+        supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
+        supplements_df = supplements_df_builder.build_dataframe()
+        # the pattern you have at the moment is for dataframe builders, they will take a user
+        # and set it as a state (so that you can use the timezone and format it)
+        # this is a legacy builder that doesn't do that ... i'm not quite sure what
+        # what pattern I should do yet ...
+        supplements_df.index = supplements_df.index.tz_convert(user.pytz_timezone)
+
+        sleep_activities = SleepActivity.objects.filter(user=user)
+        sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
+        sleep_aggregate_series = sleep_serializer.get_sleep_history()
+
         return Response(status=200)

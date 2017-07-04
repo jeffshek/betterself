@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'django_extensions',
     'webpack_loader',
+    'django_filters',
 )
 
 # Apps specific for this project go here.
