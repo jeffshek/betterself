@@ -143,7 +143,7 @@ class SleepActivitiesCorrelationView(APIView):
 
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
-        sleep_aggregate = sleep_aggregate.resample('d').last()
+        sleep_aggregate = sleep_aggregate.resample('D').last()
 
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)

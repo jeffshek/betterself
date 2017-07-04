@@ -255,6 +255,9 @@ class SleepActivityDataframeBuilder(object):
             self.user = None
 
     def get_sleep_history(self):
+        if not self.user:
+            return pd.Series()
+
         user_timezone = self.user.pytz_timezone
 
         sleep_activities_values = self.sleep_activities.values('start_time', 'end_time')
@@ -278,7 +281,6 @@ class SleepActivityDataframeBuilder(object):
 
         # change from timedeltas to minutes, otherwise json response of timedelta is garbage
         sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
-
         return sleep_aggregate
 
 
@@ -293,6 +295,10 @@ class UserActivityEventDataframeBuilder(object):
 
     def get_user_activity_events(self):
         activity_events_values = self.user_activities.values('time', 'user_activity__name')
+
+        if not self.user:
+            return pd.DataFrame()
+
         user_timezone = self.user.pytz_timezone
 
         time_index = [item['time'].astimezone(user_timezone).date() for item in activity_events_values]

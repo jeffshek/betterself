@@ -6,12 +6,12 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
-
-# python manage.py test apis.betterself.v1.events.tests.test_sleep_views
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity
 
 User = get_user_model()
+
+# python manage.py test apis.betterself.v1.events.tests.test_sleep_views
 
 
 class SleepAggregateTests(TestCase):
@@ -49,6 +49,16 @@ class SleepAggregateTests(TestCase):
         first_record_falls_within_range = min_duration_minutes <= first_record_sleep_time < max_duration_minutes
         self.assertTrue(first_record_falls_within_range)
 
+    def test_sleep_aggregates_with_user_and_no_data(self):
+        url = reverse('sleep-aggregates')
+        user = User.objects.create(username='jack-in-box-2')
+        client = APIClient()
+        client.force_authenticate(user)
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {})
+
 
 class SleepAverageTests(TestCase):
     @classmethod
@@ -84,6 +94,18 @@ class SleepAverageTests(TestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_sleep_averages_with_user_and_no_data(self):
+        url = reverse('sleep-averages')
+        user = User.objects.create(username='jack-in-box')
+        client = APIClient()
+        client.force_authenticate(user)
+
+        kwargs = {'lookback': 7}
+
+        response = client.get(url, data=kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {})
+
 
 class SleepCorrelationTests(TestCase):
     @classmethod
@@ -110,4 +132,24 @@ class SleepCorrelationTests(TestCase):
     def test_sleep_supplements_view(self):
         url = reverse('sleep-supplements-correlations')
         response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sleep_activities_with_empty_user(self):
+        url = reverse('sleep-activities-correlations')
+
+        user = User.objects.create(username='something-new')
+        client = APIClient()
+        client.force_authenticate(user)
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sleep_supplements_with_empty_user(self):
+        url = reverse('sleep-supplements-correlations')
+
+        user = User.objects.create(username='something-new')
+        client = APIClient()
+        client.force_authenticate(user)
+
+        response = client.get(url)
         self.assertEqual(response.status_code, 200)
