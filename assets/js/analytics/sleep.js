@@ -73,7 +73,9 @@ class ChartsView extends Component {
     this.selectAnalyticsHistoryLookback = this.selectAnalyticsHistoryLookback.bind(
       this
     );
-    this.renderSelectionTab = this.renderSelectionTab.bind(this);
+    this.renderAnalyticsHistorySelectionTab = this.renderAnalyticsHistorySelectionTab.bind(
+      this
+    );
   }
 
   selectAnalyticsHistoryLookback(event) {
@@ -142,13 +144,9 @@ class ChartsView extends Component {
   componentDidMount() {
     this.getHistoricalSleep();
     this.getActivitiesSleepCorrelations();
-    // this.state.selectedAnalyticsTab
-    this.setState({
-      selectedAnalyticsTab: "7 Day"
-    });
   }
 
-  renderSelectionTab(tabName) {
+  renderAnalyticsHistorySelectionTab(tabName) {
     if (this.state.selectedAnalyticsTab === tabName) {
       return (
         <NavItem className="selected-modal">
@@ -159,7 +157,7 @@ class ChartsView extends Component {
       );
     }
     return (
-      <NavItem>
+      <NavItem className="default-background">
         <NavLink onClick={this.selectAnalyticsHistoryLookback} name={tabName}>
           {tabName}
         </NavLink>
@@ -210,20 +208,13 @@ class ChartsView extends Component {
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.renderSelectionTab("Full Historical Lookback")}
-              {this.renderSelectionTab("7 Day")}
-              {this.renderSelectionTab("14 Day")}
-              {this.renderSelectionTab("30 Day")}
-              {this.renderSelectionTab("90 Day")}
-              {/*<NavItem>*/}
-              {/*<NavLink*/}
-              {/*onClick={this.selectAnalyticsHistoryLookback}*/}
-              {/*name="cool"*/}
-              {/*value="cool"*/}
-              {/*>*/}
-              {/*7 Day*/}
-              {/*</NavLink>*/}
-              {/*</NavItem>*/}
+              {this.renderAnalyticsHistorySelectionTab(
+                "Full Historical Lookback"
+              )}
+              {this.renderAnalyticsHistorySelectionTab("7 Day")}
+              {this.renderAnalyticsHistorySelectionTab("14 Day")}
+              {this.renderAnalyticsHistorySelectionTab("30 Day")}
+              {this.renderAnalyticsHistorySelectionTab("90 Day")}
             </Nav>
             <div className="card-block">
               <table className="table">
