@@ -62,13 +62,27 @@ const SupplementsAndSleepCorrelationChart = {
   ]
 };
 
+const SupplementRow = data => {
+  // Pretty sure this is not the right way to do this
+  const details = data.object;
+
+  return (
+    <tr>
+      <td>{details[0]}</td>
+      <td>{details[1]}</td>
+    </tr>
+  );
+};
+
 class ChartsView extends Component {
   constructor() {
     super();
     this.state = {
       sleepHistory: SleepHistoryChart,
       supplementsCorrelation: SupplementsAndSleepCorrelationChart,
-      selectedAnalyticsTab: "Full Historical Lookback"
+      selectedAnalyticsTab: "Full Historical Lookback",
+      positivelyCorrelatedSupplements: [],
+      negativelyCorrelatedSupplements: []
     };
     this.selectAnalyticsHistoryLookback = this.selectAnalyticsHistoryLookback.bind(
       this
@@ -89,7 +103,7 @@ class ChartsView extends Component {
     });
   }
 
-  getActivitiesSleepCorrelations() {
+  getSupplementsSleepCorrelations() {
     fetch(`api/v1/sleep_activities/supplements/correlations`, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -108,8 +122,18 @@ class ChartsView extends Component {
         this.state.supplementsCorrelation.labels = labels;
         this.state.supplementsCorrelation.datasets[0].data = dataValues;
 
+        const positivelyCorrelatedSupplements = responseData.filter(data => {
+          return data[1] > 0;
+        });
+        const negativelyCorrelatedSupplements = responseData.filter(data => {
+          return data[1] < 0;
+        });
+
+        // Finally update state after we've done so much magic
         this.setState({
-          supplementsCorrelation: this.state.supplementsCorrelation
+          supplementsCorrelation: this.state.supplementsCorrelation,
+          negativelyCorrelatedSupplements: negativelyCorrelatedSupplements,
+          positivelyCorrelatedSupplements: positivelyCorrelatedSupplements
         });
       });
   }
@@ -143,7 +167,7 @@ class ChartsView extends Component {
 
   componentDidMount() {
     this.getHistoricalSleep();
-    this.getActivitiesSleepCorrelations();
+    this.getSupplementsSleepCorrelations();
   }
 
   renderAnalyticsHistorySelectionTab(tabName) {
@@ -285,14 +309,14 @@ class ChartsView extends Component {
             <div className="selected-modal">
               <NavItem>
                 <NavLink>
-                  Positively Correlated Activities
+                  Positively Correlated
                 </NavLink>
               </NavItem>
             </div>
             <div className="default-background">
               <NavItem>
                 <NavLink>
-                  Negatively Correlated Activities
+                  Negatively Correlated
                 </NavLink>
               </NavItem>
             </div>
@@ -302,22 +326,14 @@ class ChartsView extends Component {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Activity</th>
-                    <th>Date Created</th>
+                    <th>Supplement</th>
                     <th>Correlation</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Samppa Nori</td>
-                    <td>2012/01/01</td>
-                    <td>Member</td>
-                  </tr>
-                  <tr>
-                    <td>Estavan Lykos</td>
-                    <td>2012/02/01</td>
-                    <td>Staff</td>
-                  </tr>
+                  {this.state.positivelyCorrelatedSupplements.map(key => (
+                    <SupplementRow key={key} object={key} />
+                  ))}
                 </tbody>
               </table>
             </div>
