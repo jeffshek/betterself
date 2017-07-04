@@ -75,10 +75,12 @@ WHITENOISE_MIDDLEWARE = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 MIDDLEWARE_CLASSES = WHITENOISE_MIDDLEWARE + MIDDLEWARE_CLASSES
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 DEBUG = True
+
+SHELL_PLUS_PRINT_SQL = True
+
 
 # use this file to rewrite over local db passwords
 try:
