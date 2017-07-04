@@ -67,8 +67,24 @@ class ChartsView extends Component {
     super();
     this.state = {
       sleepHistory: SleepHistoryChart,
-      supplementsCorrelation: SupplementsAndSleepCorrelationChart
+      supplementsCorrelation: SupplementsAndSleepCorrelationChart,
+      selectedAnalyticsTab: "Full Historical Lookback"
     };
+    this.selectAnalyticsHistoryLookback = this.selectAnalyticsHistoryLookback.bind(
+      this
+    );
+    this.renderSelectionTab = this.renderSelectionTab.bind(this);
+  }
+
+  selectAnalyticsHistoryLookback(event) {
+    event.preventDefault();
+
+    const target = event.target;
+    const name = target.name;
+
+    this.setState({
+      selectedAnalyticsTab: name
+    });
   }
 
   getActivitiesSleepCorrelations() {
@@ -126,6 +142,29 @@ class ChartsView extends Component {
   componentDidMount() {
     this.getHistoricalSleep();
     this.getActivitiesSleepCorrelations();
+    // this.state.selectedAnalyticsTab
+    this.setState({
+      selectedAnalyticsTab: "7 Day"
+    });
+  }
+
+  renderSelectionTab(tabName) {
+    if (this.state.selectedAnalyticsTab === tabName) {
+      return (
+        <NavItem className="selected-modal">
+          <NavLink>
+            {tabName}
+          </NavLink>
+        </NavItem>
+      );
+    }
+    return (
+      <NavItem>
+        <NavLink onClick={this.selectAnalyticsHistoryLookback} name={tabName}>
+          {tabName}
+        </NavLink>
+      </NavItem>
+    );
   }
 
   renderSleepHistoryChart() {
@@ -169,34 +208,22 @@ class ChartsView extends Component {
           </div>
         </div>
         <div className="float">
-
           <div className="card">
             <Nav tabs>
-              <NavItem className="selected-modal">
-                <NavLink>
-                  Full Historical Lookback
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  7 Day
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  14 Day
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  30 Day
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  90 Day
-                </NavLink>
-              </NavItem>
+              {this.renderSelectionTab("Full Historical Lookback")}
+              {this.renderSelectionTab("7 Day")}
+              {this.renderSelectionTab("14 Day")}
+              {this.renderSelectionTab("30 Day")}
+              {this.renderSelectionTab("90 Day")}
+              {/*<NavItem>*/}
+              {/*<NavLink*/}
+              {/*onClick={this.selectAnalyticsHistoryLookback}*/}
+              {/*name="cool"*/}
+              {/*value="cool"*/}
+              {/*>*/}
+              {/*7 Day*/}
+              {/*</NavLink>*/}
+              {/*</NavItem>*/}
             </Nav>
             <div className="card-block">
               <table className="table">
