@@ -8,6 +8,11 @@ DEFAULT_ACTIVITIES = [
     'Brushed Teeth',
     'Cold Shower',
     'Ate Breakfast'
+    'Wrote in Journal'
+    'Drank Alcohol',
+    'Hungover',
+    'Walked to Work',
+    'Went to Gym'
 ]
 
 SPECIAL_ACTIVITIES = [
