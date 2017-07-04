@@ -125,7 +125,6 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
             return df
 
         flat_df = self._get_summed_df_by_index(df)
-
         return flat_df
 
 
