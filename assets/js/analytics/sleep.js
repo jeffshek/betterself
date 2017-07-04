@@ -128,6 +128,166 @@ class ChartsView extends Component {
     this.getActivitiesSleepCorrelations();
   }
 
+  renderHistoricalSleepAnalytics() {
+    return (
+      <div className="card-columns cols-2">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            Daily Sleep Analytics
+            <div className="card-actions" />
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Bar
+                data={AverageSleepHistoryChart}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="float">
+
+          <div className="card">
+            <Nav tabs>
+              <NavItem className="selected-modal">
+                <NavLink>
+                  Full Historical Lookback
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
+                  7 Day
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
+                  14 Day
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
+                  30 Day
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
+                  90 Day
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <div className="card-block">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Weekday</th>
+                    <th>Average Sleep</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Monday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Tuesday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Wednesday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Thursday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Friday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Saturday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                  <tr>
+                    <td>Sunday</td>
+                    <td>6 hours 53 minutes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderSupplementsSleepCorrelation() {
+    return (
+      <div className="card-columns cols-2">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            Supplements and Sleep Correlation
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Bar
+                data={SupplementsAndSleepCorrelationChart}
+                options={{
+                  maintainAspectRatio: true
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="float">
+          <Nav tabs>
+            <div className="selected-modal">
+              <NavItem>
+                <NavLink>
+                  Positively Correlated Activities
+                </NavLink>
+              </NavItem>
+            </div>
+            <div className="default-background">
+              <NavItem>
+                <NavLink>
+                  Negatively Correlated Activities
+                </NavLink>
+              </NavItem>
+            </div>
+          </Nav>
+          <div className="card">
+            <div className="card-block">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Activity</th>
+                    <th>Date Created</th>
+                    <th>Correlation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Samppa Nori</td>
+                    <td>2012/01/01</td>
+                    <td>Member</td>
+                  </tr>
+                  <tr>
+                    <td>Estavan Lykos</td>
+                    <td>2012/02/01</td>
+                    <td>Staff</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -147,158 +307,8 @@ class ChartsView extends Component {
             </div>
           </div>
         </div>
-
-        <div className="card-columns cols-2">
-          <div className="card">
-            <div className="card-header analytics-text-box-label">
-              Daily Sleep Analytics
-              <div className="card-actions" />
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Bar
-                  data={AverageSleepHistoryChart}
-                  options={{
-                    maintainAspectRatio: false
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="float">
-
-            <div className="card">
-              <Nav tabs>
-                <NavItem className="selected-modal">
-                  <NavLink>
-                    Full Historical Lookback
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink>
-                    7 Day
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink>
-                    14 Day
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink>
-                    30 Day
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink>
-                    90 Day
-                  </NavLink>
-                </NavItem>
-              </Nav>
-              <div className="card-block">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Weekday</th>
-                      <th>Average Sleep</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Monday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Tuesday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Wednesday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Thursday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Friday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Saturday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                    <tr>
-                      <td>Sunday</td>
-                      <td>6 hours 53 minutes</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-columns cols-2">
-          <div className="card">
-            <div className="card-header analytics-text-box-label">
-              Supplements and Sleep Correlation
-            </div>
-            <div className="card-block">
-              <div className="chart-wrapper">
-                <Bar
-                  data={SupplementsAndSleepCorrelationChart}
-                  options={{
-                    maintainAspectRatio: true
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="float">
-            <Nav tabs>
-              <div className="selected-modal">
-                <NavItem>
-                  <NavLink>
-                    Positively Correlated Activities
-                  </NavLink>
-                </NavItem>
-              </div>
-              <div className="default-background">
-                <NavItem>
-                  <NavLink>
-                    Negatively Correlated Activities
-                  </NavLink>
-                </NavItem>
-              </div>
-            </Nav>
-            <div className="card">
-              <div className="card-block">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Activity</th>
-                      <th>Date Created</th>
-                      <th>Correlation</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Samppa Nori</td>
-                      <td>2012/01/01</td>
-                      <td>Member</td>
-                    </tr>
-                    <tr>
-                      <td>Estavan Lykos</td>
-                      <td>2012/02/01</td>
-                      <td>Staff</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.renderHistoricalSleepAnalytics()}
+        {this.renderSupplementsSleepCorrelation()}
       </div>
     );
   }
