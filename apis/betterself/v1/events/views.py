@@ -163,10 +163,20 @@ class SleepSupplementsCorrelationView(APIView):
         user = request.user
         queryset = SupplementEvent.objects.filter(user=user)
         supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
-        supplements_df = supplements_df_builder.build_dataframe()
+        supplements_flat_daily_df = supplements_df_builder.get_flat_daily_dataframe()
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
         sleep_aggregate_series = sleep_serializer.get_sleep_history()
+        try:
+            # attempt to normalize to hold sleep_aggregate_series only dates
+            sleep_aggregate_series.index = sleep_aggregate_series.index.date
+        except AttributeError:
+            pass
 
-        return Response(status=200)
+        supplements_and_sleep_df = supplements_flat_daily_df.copy()
+        supplements_and_sleep_df[SLEEP_MINUTES_COLUMN] = sleep_aggregate_series
+
+        correlation = supplements_and_sleep_df.corr()
+        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values()
+        return Response(sleep_correlation.to_dict())

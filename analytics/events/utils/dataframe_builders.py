@@ -83,19 +83,25 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         except IndexError:
             self.user = None
 
-    def get_flat_dataframe(self):
+    def get_flat_daily_dataframe(self):
         """
-        Return a flattened view of all the supplements that were taken
+        Simplify the history of whatever supplements were taken - round the timestamps
+        to dates and then sum the # taken up per supplement.
         """
         df = self.build_dataframe()
-
         if df.empty:
             return df
 
+        df.index = df.index.date
+
+        flat_df = self._get_summed_df_by_index(df)
+        return flat_df
+
+    @staticmethod
+    def _get_summed_df_by_index(df):
         # use a pivot_table and not a pivot because duplicates should be summed
         # should there be duplicates though? ie. would anyone ever record
         # taking two BCAAs at the same time??
-        # this is a slight problem with supplements taking at separate times
         flat_df = df.pivot_table(
             index=df.index,
             values=QUANTITY_COLUMN_NAME,
@@ -106,6 +112,19 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # When doing a pivot, the dataframe type seems to convert from float64 back to object ... so here we force it
         # back to float64
         flat_df = flat_df.astype('float64')
+
+        return flat_df
+
+    def get_flat_dataframe(self):
+        """
+        Return a flattened view of all the supplements that were taken
+        """
+        df = self.build_dataframe()
+
+        if df.empty:
+            return df
+
+        flat_df = self._get_summed_df_by_index(df)
 
         return flat_df
 
