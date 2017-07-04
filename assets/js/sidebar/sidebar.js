@@ -96,7 +96,7 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar sidebar-nav">
         <ul className="nav">
-          <DashboardButton />
+          {/*<DashboardButton />*/}
 
           <NavigationTitle title="Log" />
           <NavigationLink
