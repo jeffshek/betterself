@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import moment from "moment";
 
 const DefaultLineChartParameters = {
   label: "Sleep Time (Minutes)",
@@ -22,7 +23,7 @@ const DefaultLineChartParameters = {
   pointHoverBorderWidth: 2,
   pointRadius: 1,
   pointHitRadius: 10,
-  data: [195, 2, 5, 65, 33, 62]
+  data: []
 };
 
 const line = {
@@ -82,7 +83,7 @@ class Charts extends Component {
     this.state = {
       line: line
     };
-    this.state.line.labels = ["January", "Feb", 3, 4, 5, 6];
+    this.state.line.labels = [];
   }
 
   getHistoricalSleep() {
@@ -94,18 +95,22 @@ class Charts extends Component {
         return response.json();
       })
       .then(responseData => {
-        // console.log(responseData)
+        console.log(responseData);
+        // Sort by datetime
         const sleepDates = Object.keys(responseData);
         sleepDates.sort();
-        //key => (
-        // /<HeartRateRowHistory key={key} object={heartRateData[key]} />
-        const result = sleepDates.map(key => responseData[key]);
-        console.log(result);
 
-        this.state.line.labels = sleepDates;
-        this.state.line.datasets[0].data = result;
-        this.setState(this.state);
-        // console.log(responseKeys)
+        const sleepDatesFormatted = sleepDates.map(key =>
+          moment(key).format("MMMM D YYYY")
+        );
+
+        const dataParsed = sleepDates.map(key => responseData[key]);
+
+        this.state.line.labels = sleepDatesFormatted;
+        this.state.line.datasets[0].data = dataParsed;
+
+        // Reset the historicalState of the graph after the data has been grabbed.
+        this.setState({ line: this.state.line });
       });
   }
 
