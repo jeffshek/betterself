@@ -26,8 +26,8 @@ const DefaultLineChartParameters = {
   data: []
 };
 
-const line = {
-  labels: ["3/31/17", "3/31/27", "3/31/37"],
+const SleepHistory = {
+  labels: [],
   datasets: [Object.assign({}, DefaultLineChartParameters)]
 };
 
@@ -77,11 +77,11 @@ const bar_2 = {
   ]
 };
 
-class Charts extends Component {
+class ChartsView extends Component {
   constructor() {
     super();
     this.state = {
-      line: line
+      line: SleepHistory
     };
     this.state.line.labels = [];
   }
@@ -294,4 +294,4 @@ class Charts extends Component {
   }
 }
 
-export default Charts;
+export default ChartsView;
