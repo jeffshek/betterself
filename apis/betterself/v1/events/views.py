@@ -102,7 +102,8 @@ class SleepAggregatesView(APIView):
         serializer = SleepActivityDataframeBuilder(sleep_activities)
         sleep_aggregate = serializer.get_sleep_history()
 
-        # this is crap, there's got to be something you're missing with pandas and drf json responses
+        # because pandas uses a timeindex, when we go to json - it doesn't
+        # play nicely with a typical json dump, so we do an additional load so drf can transmit nicely
         result = sleep_aggregate.to_json(date_format='iso')
         result = json.loads(result)
         return Response(data=result, content_type='application/json')
@@ -114,8 +115,7 @@ class SleepAveragesView(APIView):
             lookback = int(request.query_params[LOOKBACK_PARAM_NAME])
         except (ValueError, MultiValueDictKeyError):
             # MultiValueDictKeyError when a key doesn't exist
-            # if something that was entered for a lookback that couldn't be interpreted
-            # aka something like 'seven'
+            # ValueError if something entered for a lookback that couldn't be interpreted
             return Response(status=400)
 
         user = request.user
@@ -137,9 +137,7 @@ class SleepActivitiesCorrelationView(APIView):
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        # have to clean this up a lot ...
         sleep_aggregate = sleep_serializer.get_sleep_history()
-        sleep_aggregate = sleep_aggregate.tz_convert(user.pytz_timezone)
 
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
@@ -147,8 +145,8 @@ class SleepActivitiesCorrelationView(APIView):
 
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
-        user_activity_dataframe = activity_serializer.get_user_activity_events()
 
+        user_activity_dataframe = activity_serializer.get_user_activity_events()
         user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
 
         correlation = user_activity_dataframe.corr()

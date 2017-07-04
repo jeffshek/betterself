@@ -266,9 +266,10 @@ class SleepActivityDataframeBuilder(object):
             record_normalized = {key: user_timezone.normalize(value) for key, value in record.items()}
             sleep_activity_normalized_timezones.append(record_normalized)
 
-        # for each given 24 hour period (ending at 2PM - the latest I can imagine someone might sleep in)
-        # lot of mental debate here between calculating the sleep one gets from monday 10PM to tuesday 6AM as
-        # either a Monday or Tuesday night, but I've decided to lean toward calculating that as Monday night
+        # for each given 24 hour period (ending at 11AM)
+        # Lot of mental debate here between calculating the sleep one gets from monday 10PM to tuesday 6AM which
+        # date it should be attributed to ... aka either a Monday or Tuesday night.
+        # I've decided to lean toward calculating that as Monday night
         dataframe = pd.DataFrame.from_records(sleep_activity_normalized_timezones)
         dataframe['sleep_time'] = dataframe['end_time'] - dataframe['start_time']
 
