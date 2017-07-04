@@ -128,6 +128,27 @@ class ChartsView extends Component {
     this.getActivitiesSleepCorrelations();
   }
 
+  renderSleepHistoryChart() {
+    return (
+      <div className="card">
+        <div className="card-header analytics-text-box-label">
+          Sleep History
+          <div className="card-actions" />
+        </div>
+        <div className="card-block">
+          <div className="chart-wrapper">
+            <Line
+              data={this.state.sleepHistory}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderHistoricalSleepAnalytics() {
     return (
       <div className="card-columns cols-2">
@@ -291,22 +312,7 @@ class ChartsView extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <div className="card">
-          <div className="card-header analytics-text-box-label">
-            Sleep History
-            <div className="card-actions" />
-          </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Line
-                data={this.state.sleepHistory}
-                options={{
-                  maintainAspectRatio: false
-                }}
-              />
-            </div>
-          </div>
-        </div>
+        {this.renderSleepHistoryChart()}
         {this.renderHistoricalSleepAnalytics()}
         {this.renderSupplementsSleepCorrelation()}
       </div>
