@@ -139,6 +139,9 @@ class SleepActivitiesCorrelationView(APIView):
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
         sleep_aggregate = sleep_serializer.get_sleep_history()
 
+        if sleep_aggregate.empty:
+            return Response({})
+
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
         sleep_aggregate = sleep_aggregate.resample('D').last()
