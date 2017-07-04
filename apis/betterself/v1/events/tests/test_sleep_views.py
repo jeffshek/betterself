@@ -121,7 +121,7 @@ class SleepCorrelationTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(self.user)
 
-    def test_sleep_activities_correlations_view(self):
+    def test_sleep_activities_view(self):
         url = reverse('sleep-activities-correlations')
         response = self.client.get(url)
 
@@ -132,6 +132,9 @@ class SleepCorrelationTests(TestCase):
     def test_sleep_supplements_view(self):
         url = reverse('sleep-supplements-correlations')
         response = self.client.get(url)
+
+        self.assertTrue(SLEEP_MINUTES_COLUMN in response.data)
+        self.assertEqual(response.data[SLEEP_MINUTES_COLUMN], 1)
         self.assertEqual(response.status_code, 200)
 
     def test_sleep_activities_with_empty_user(self):

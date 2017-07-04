@@ -45,7 +45,14 @@ class DataFrameBuilder(object):
 
         # make the columns and labels prettier
         df = df.rename(columns=self.column_mapping)
+
         df.index.name = TIME_COLUMN_NAME
+        try:
+            df.index = df.index.tz_convert(self.user.pytz_timezone)
+        except AttributeError:
+            # if attribute-error means the index is just a regular Index and
+            # that only dates (and not time) was passed
+            df.index = pd.DatetimeIndex(df.index, tz=self.user.pytz_timezone)
 
         # cast them all as float64 if possible ... ideally want to stay with only numbers
         try:
@@ -71,15 +78,27 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # tell the queryset to only specifically get a set of columns are about
         self.values = self.queryset.values(*values_columns)
 
-    def get_flat_dataframe(self):
+        try:
+            self.user = self.queryset[0].user
+        except IndexError:
+            self.user = None
+
+    def get_flat_daily_dataframe(self):
         """
-        Return a flattened view of all the supplements that were taken
+        Simplify the history of whatever supplements were taken - round the timestamps
+        to dates and then sum the # taken up per supplement.
         """
         df = self.build_dataframe()
-
         if df.empty:
             return df
 
+        df.index = df.index.date
+
+        flat_df = self._get_summed_df_by_index(df)
+        return flat_df
+
+    @staticmethod
+    def _get_summed_df_by_index(df):
         # use a pivot_table and not a pivot because duplicates should be summed
         # should there be duplicates though? ie. would anyone ever record
         # taking two BCAAs at the same time??
@@ -96,6 +115,18 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
 
         return flat_df
 
+    def get_flat_dataframe(self):
+        """
+        Return a flattened view of all the supplements that were taken
+        """
+        df = self.build_dataframe()
+
+        if df.empty:
+            return df
+
+        flat_df = self._get_summed_df_by_index(df)
+        return flat_df
+
 
 class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
     index_column = 'date'
@@ -105,6 +136,11 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         self.queryset = queryset
         values_columns = self.column_mapping.keys()
         self.values = self.queryset.values(*values_columns)
+
+        try:
+            self.user = self.queryset[0].user
+        except IndexError:
+            self.user = None
 
     def get_productive_timeseries(self):
         df = self.build_dataframe()
@@ -168,10 +204,10 @@ class AggregateDataframeBuilder(object):
             supplement_event_queryset=supplement_events,
             productivity_log_queryset=productivity_log,
         )
-        dataframe = aggregate_dataframe.build_dataframe()
+        dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe
 
-    def build_dataframe(self):
+    def build_daily_dataframe(self):
         productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
         supplement_dataframe = self._get_supplement_event_dataframe(self.supplement_event_queryset)
 
@@ -187,6 +223,9 @@ class AggregateDataframeBuilder(object):
         # an easier simplification to deal with all of this is to force the index to be a date
         supplement_date_index = daily_supplement_dataframe.index.date
         daily_supplement_dataframe.index = supplement_date_index
+
+        # force the conversion of the productivity_log_dataframe to be a simple date index
+        productivity_log_dataframe.index = productivity_log_dataframe.index.date
 
         # axis of zero means to align them based on column
         # we want to align it based on matching index, so axis=1
