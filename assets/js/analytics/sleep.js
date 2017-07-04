@@ -4,7 +4,8 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 
-const DefaultLineChartParameters = {
+// Have a default seems kind of stupid if you're only going to use it once
+const DefaultLineDataset = {
   label: "Sleep Time (Minutes)",
   fill: false,
   lineTension: 0.1,
@@ -26,21 +27,13 @@ const DefaultLineChartParameters = {
   data: []
 };
 
-const SleepHistory = {
+const SleepHistoryChart = {
   labels: [],
-  datasets: [Object.assign({}, DefaultLineChartParameters)]
+  datasets: [Object.assign({}, DefaultLineDataset)]
 };
 
-const bar = {
-  labels: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ],
+const AverageSleepHistoryChart = {
+  labels: [],
   datasets: [
     {
       label: "Average Sleep (Hours)",
@@ -49,30 +42,22 @@ const bar = {
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: []
     }
   ]
 };
 
-const bar_2 = {
-  labels: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ],
+const SupplementsAndSleepCorrelationChart = {
+  labels: [],
   datasets: [
     {
-      label: "Average Sleep (Hours)",
+      label: "Sleep Correlation",
       backgroundColor: "#193441",
       borderColor: "#193441",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: []
     }
   ]
 };
@@ -81,9 +66,34 @@ class ChartsView extends Component {
   constructor() {
     super();
     this.state = {
-      line: SleepHistory
+      sleepHistory: SleepHistoryChart,
+      supplementsCorrelation: SupplementsAndSleepCorrelationChart
     };
-    this.state.line.labels = [];
+  }
+
+  getActivitiesSleepCorrelations() {
+    fetch(`api/v1/sleep_activities/supplements/correlations`, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const labels = responseData.map(data => {
+          return data[0];
+        });
+        const dataValues = responseData.map(data => {
+          return data[1];
+        });
+
+        this.state.supplementsCorrelation.labels = labels;
+        this.state.supplementsCorrelation.datasets[0].data = dataValues;
+
+        this.setState({
+          supplementsCorrelation: this.state.supplementsCorrelation
+        });
+      });
   }
 
   getHistoricalSleep() {
@@ -95,7 +105,6 @@ class ChartsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
         // Sort by datetime
         const sleepDates = Object.keys(responseData);
         sleepDates.sort();
@@ -106,16 +115,17 @@ class ChartsView extends Component {
 
         const dataParsed = sleepDates.map(key => responseData[key]);
 
-        this.state.line.labels = sleepDatesFormatted;
-        this.state.line.datasets[0].data = dataParsed;
+        this.state.sleepHistory.labels = sleepDatesFormatted;
+        this.state.sleepHistory.datasets[0].data = dataParsed;
 
         // Reset the historicalState of the graph after the data has been grabbed.
-        this.setState({ line: this.state.line });
+        this.setState({ sleepHistory: this.state.sleepHistory });
       });
   }
 
   componentDidMount() {
     this.getHistoricalSleep();
+    this.getActivitiesSleepCorrelations();
   }
 
   render() {
@@ -129,7 +139,7 @@ class ChartsView extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Line
-                data={this.state.line}
+                data={this.state.sleepHistory}
                 options={{
                   maintainAspectRatio: false
                 }}
@@ -147,7 +157,7 @@ class ChartsView extends Component {
             <div className="card-block">
               <div className="chart-wrapper">
                 <Bar
-                  data={bar}
+                  data={AverageSleepHistoryChart}
                   options={{
                     maintainAspectRatio: false
                   }}
@@ -232,12 +242,12 @@ class ChartsView extends Component {
         <div className="card-columns cols-2">
           <div className="card">
             <div className="card-header analytics-text-box-label">
-              Activities and Sleep Correlation
+              Supplements and Sleep Correlation
             </div>
             <div className="card-block">
               <div className="chart-wrapper">
                 <Bar
-                  data={bar_2}
+                  data={SupplementsAndSleepCorrelationChart}
                   options={{
                     maintainAspectRatio: true
                   }}

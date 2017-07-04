@@ -133,8 +133,10 @@ class SleepCorrelationTests(TestCase):
         url = reverse('sleep-supplements-correlations')
         response = self.client.get(url)
 
-        self.assertTrue(SLEEP_MINUTES_COLUMN in response.data)
-        self.assertEqual(response.data[SLEEP_MINUTES_COLUMN], 1)
+        self.assertTrue(SLEEP_MINUTES_COLUMN in response.data[0])
+        # Return back in a tuple format to preserve order when transmitting as JSON
+        self.assertEqual(response.data[0][0], SLEEP_MINUTES_COLUMN)
+        self.assertEqual(response.data[0][1], 1)
         self.assertEqual(response.status_code, 200)
 
     def test_sleep_activities_with_empty_user(self):
