@@ -8,8 +8,8 @@ const DefaultLineChartParameters = {
   label: "Sleep Time (Minutes)",
   fill: false,
   lineTension: 0.1,
-  backgroundColor: "rgb(74, 86, 104)",
-  borderColor: "rgb(74, 86, 104)",
+  backgroundColor: "#193441",
+  borderColor: "#193441",
   borderCapStyle: "butt",
   borderDash: [],
   borderDashOffset: 0.0,
@@ -44,7 +44,7 @@ const bar = {
   datasets: [
     {
       label: "Average Sleep (Hours)",
-      backgroundColor: "rgb(74, 86, 104)",
+      backgroundColor: "#193441",
       borderColor: "rgb(74, 86, 104)",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
@@ -67,8 +67,8 @@ const bar_2 = {
   datasets: [
     {
       label: "Average Sleep (Hours)",
-      backgroundColor: "rgb(74, 86, 104)",
-      borderColor: "rgb(74, 86, 104)",
+      backgroundColor: "#193441",
+      borderColor: "#193441",
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
