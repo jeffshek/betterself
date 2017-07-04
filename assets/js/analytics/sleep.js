@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 const DefaultLineChartParameters = {
-  label: "Sleep Time (Hours)",
+  label: "Sleep Time (Minutes)",
   fill: false,
   lineTension: 0.1,
   backgroundColor: "rgb(74, 86, 104)",
@@ -82,6 +83,34 @@ class Charts extends Component {
       line: line
     };
     this.state.line.labels = ["January", "Feb", 3, 4, 5, 6];
+  }
+
+  getHistoricalSleep() {
+    fetch(`api/v1/sleep_activities/aggregates`, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        // console.log(responseData)
+        const sleepDates = Object.keys(responseData);
+        sleepDates.sort();
+        //key => (
+        // /<HeartRateRowHistory key={key} object={heartRateData[key]} />
+        const result = sleepDates.map(key => responseData[key]);
+        console.log(result);
+
+        this.state.line.labels = sleepDates;
+        this.state.line.datasets[0].data = result;
+        this.setState(this.state);
+        // console.log(responseKeys)
+      });
+  }
+
+  componentDidMount() {
+    this.getHistoricalSleep();
   }
 
   render() {
