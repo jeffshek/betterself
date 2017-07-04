@@ -113,6 +113,10 @@ class SleepActivity(BaseModelWithUserGeneratedContent):
 
         super().save(*args, **kwargs)
 
+    @property
+    def duration(self):
+        return self.end_time - self.start_time
+
 
 class UserActivity(BaseModelWithUserGeneratedContent):
     """
@@ -165,3 +169,6 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
     class Meta:
         unique_together = (('time', 'user', 'user_activity'),)
         ordering = ['user', '-time']
+
+    def __str__(self):
+        return '{} {}'.format(self.user_activity, self.time)

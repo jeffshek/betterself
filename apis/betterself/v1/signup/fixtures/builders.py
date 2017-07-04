@@ -69,20 +69,12 @@ class DemoHistoricalDataBuilder(object):
         sleep_series = pd.Series(sleep_times, index=index)
         return sleep_series
 
-    def create_historical_fixtures(self):
-        for timestamp in self.date_series:
-            for activity_name, activity_details in USER_ACTIVITY_EVENTS.items():
-                self.build_events(activity_name, activity_details, timestamp, DemoActivityEventFactory)
-
-            for supplement_name, supplement_details in SUPPLEMENTS_FIXTURES.items():
-                self.build_events(supplement_name, supplement_details, timestamp, DemoSupplementEventFactory)
-
+    def create_sleep_fixtures(self):
         # Include the baseline randomness of sleep along with how supplements impacted it
-        total_sleep = self.sleep_series + self.sleep_impact_series
+        self.total_sleep = self.sleep_series + self.sleep_impact_series
 
         sleep_logs = []
-        for index, sleep_amount in total_sleep.iteritems():
-
+        for index, sleep_amount in self.total_sleep.iteritems():
             index_date = index.date()
             # always pretend a user is sleeping at 10 PM
             index_start_time = datetime.time(hour=22)
@@ -101,9 +93,21 @@ class DemoHistoricalDataBuilder(object):
 
         SleepActivity.objects.bulk_create(sleep_logs)
 
+    def create_historical_fixtures(self):
+        for timestamp in self.date_series:
+            for activity_name, activity_details in USER_ACTIVITY_EVENTS.items():
+                self.build_events(activity_name, activity_details, timestamp, DemoActivityEventFactory)
+
+            for supplement_name, supplement_details in SUPPLEMENTS_FIXTURES.items():
+                self.build_events(supplement_name, supplement_details, timestamp, DemoSupplementEventFactory)
+
+        # calculate how much sleep from a random normal distribution
+        # and how supplements would impact it
+        self.create_sleep_fixtures()
+
         # let's do some real basic estimation that sleep is the most important thing to productivity
         # and then let's add how productivity
-        baseline_productivity_series = total_sleep / 2
+        baseline_productivity_series = self.total_sleep / 2
         productivity_series = self.productivity_impact_series + baseline_productivity_series
 
         # if the productivity falls below zero ... just make it a zero, since negative
