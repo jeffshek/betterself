@@ -186,10 +186,10 @@ class AggregateDataframeBuilder(object):
             supplement_event_queryset=supplement_events,
             productivity_log_queryset=productivity_log,
         )
-        dataframe = aggregate_dataframe.build_dataframe()
+        dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe
 
-    def build_dataframe(self):
+    def build_daily_dataframe(self):
         productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
         supplement_dataframe = self._get_supplement_event_dataframe(self.supplement_event_queryset)
 

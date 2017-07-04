@@ -138,7 +138,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         supplement_event_queryset = SupplementEvent.objects.all()
         productivity_log_queryset = DailyProductivityLog.objects.all()
         builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
-        dataframe = builder.build_dataframe()
+        dataframe = builder.build_daily_dataframe()
 
         distinct_supplement_event_times = supplement_event_queryset.values_list('time', flat=True).distinct()
         distinct_supplement_event_dates = {item.date() for item in distinct_supplement_event_times}
@@ -157,6 +157,6 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         productivity_log_queryset = DailyProductivityLog.objects.filter(id='9000')
 
         builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
-        dataframe = builder.build_dataframe()
+        dataframe = builder.build_daily_dataframe()
 
         self.assertTrue(dataframe.empty)
