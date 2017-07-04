@@ -45,7 +45,14 @@ class DataFrameBuilder(object):
 
         # make the columns and labels prettier
         df = df.rename(columns=self.column_mapping)
+
         df.index.name = TIME_COLUMN_NAME
+        try:
+            df.index = df.index.tz_convert(self.user.pytz_timezone)
+        except AttributeError:
+            # if attribute-error means the index is just a regular Index and
+            # that only dates (and not time) was passed
+            df.index = pd.DatetimeIndex(df.index, tz=self.user.pytz_timezone)
 
         # cast them all as float64 if possible ... ideally want to stay with only numbers
         try:
@@ -71,6 +78,11 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # tell the queryset to only specifically get a set of columns are about
         self.values = self.queryset.values(*values_columns)
 
+        try:
+            self.user = self.queryset[0].user
+        except IndexError:
+            self.user = None
+
     def get_flat_dataframe(self):
         """
         Return a flattened view of all the supplements that were taken
@@ -83,6 +95,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # use a pivot_table and not a pivot because duplicates should be summed
         # should there be duplicates though? ie. would anyone ever record
         # taking two BCAAs at the same time??
+        # this is a slight problem with supplements taking at separate times
         flat_df = df.pivot_table(
             index=df.index,
             values=QUANTITY_COLUMN_NAME,
@@ -105,6 +118,11 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         self.queryset = queryset
         values_columns = self.column_mapping.keys()
         self.values = self.queryset.values(*values_columns)
+
+        try:
+            self.user = self.queryset[0].user
+        except IndexError:
+            self.user = None
 
     def get_productive_timeseries(self):
         df = self.build_dataframe()
@@ -187,6 +205,9 @@ class AggregateDataframeBuilder(object):
         # an easier simplification to deal with all of this is to force the index to be a date
         supplement_date_index = daily_supplement_dataframe.index.date
         daily_supplement_dataframe.index = supplement_date_index
+
+        # force the conversion of the productivity_log_dataframe to be a simple date index
+        productivity_log_dataframe.index = productivity_log_dataframe.index.date
 
         # axis of zero means to align them based on column
         # we want to align it based on matching index, so axis=1

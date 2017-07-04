@@ -164,11 +164,6 @@ class SleepSupplementsCorrelationView(APIView):
         queryset = SupplementEvent.objects.filter(user=user)
         supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
         supplements_df = supplements_df_builder.build_dataframe()
-        # the pattern you have at the moment is for dataframe builders, they will take a user
-        # and set it as a state (so that you can use the timezone and format it)
-        # this is a legacy builder that doesn't do that ... i'm not quite sure what
-        # what pattern I should do yet ...
-        supplements_df.index = supplements_df.index.tz_convert(user.pytz_timezone)
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
