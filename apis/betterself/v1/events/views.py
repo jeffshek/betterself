@@ -178,5 +178,8 @@ class SleepSupplementsCorrelationView(APIView):
         supplements_and_sleep_df[SLEEP_MINUTES_COLUMN] = sleep_aggregate_series
 
         correlation = supplements_and_sleep_df.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values()
-        return Response(sleep_correlation.to_dict())
+        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
+
+        # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
+        sorted_response = [item for item in sleep_correlation.iteritems()]
+        return Response(sorted_response)
