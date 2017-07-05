@@ -74,17 +74,22 @@ const SupplementRow = data => {
   );
 };
 
-class ChartsView extends Component {
+class SleepChartsView extends Component {
   constructor() {
     super();
     this.state = {
       sleepHistory: SleepHistoryChart,
       supplementsCorrelation: SupplementsAndSleepCorrelationChart,
       selectedAnalyticsTab: "Full Historical Lookback",
+      selectedSupplementsCorrelationTab: "Positively Correlated",
+      selectedCorrelatedSupplements: [],
       positivelyCorrelatedSupplements: [],
       negativelyCorrelatedSupplements: []
     };
-    this.selectAnalyticsHistoryLookback = this.selectAnalyticsHistoryLookback.bind(
+    this.selectAnalyticsHistoryLookbackTab = this.selectAnalyticsHistoryLookbackTab.bind(
+      this
+    );
+    this.selectSupplementsCorrelationTab = this.selectSupplementsCorrelationTab.bind(
       this
     );
     this.renderAnalyticsHistorySelectionTab = this.renderAnalyticsHistorySelectionTab.bind(
@@ -92,7 +97,35 @@ class ChartsView extends Component {
     );
   }
 
-  selectAnalyticsHistoryLookback(event) {
+  componentDidMount() {
+    this.getHistoricalSleep();
+    this.getSupplementsSleepCorrelations();
+  }
+
+  selectSupplementsCorrelationTab(event) {
+    event.preventDefault();
+
+    const target = event.target;
+    const name = target.name;
+
+    if (name === "Positively Correlated") {
+      this.setState({
+        selectedCorrelatedSupplements: this.state
+          .positivelyCorrelatedSupplements
+      });
+    } else if (name === "Negatively Correlated") {
+      this.setState({
+        selectedCorrelatedSupplements: this.state
+          .negativelyCorrelatedSupplements
+      });
+    }
+
+    this.setState({
+      selectedSupplementsCorrelationTab: name
+    });
+  }
+
+  selectAnalyticsHistoryLookbackTab(event) {
     event.preventDefault();
 
     const target = event.target;
@@ -132,6 +165,7 @@ class ChartsView extends Component {
         // Finally update state after we've done so much magic
         this.setState({
           supplementsCorrelation: this.state.supplementsCorrelation,
+          selectedCorrelatedSupplements: positivelyCorrelatedSupplements,
           negativelyCorrelatedSupplements: negativelyCorrelatedSupplements,
           positivelyCorrelatedSupplements: positivelyCorrelatedSupplements
         });
@@ -165,9 +199,23 @@ class ChartsView extends Component {
       });
   }
 
-  componentDidMount() {
-    this.getHistoricalSleep();
-    this.getSupplementsSleepCorrelations();
+  renderSupplementsCorrelationSelectionTab(tabName) {
+    if (this.state.selectedSupplementsCorrelationTab === tabName) {
+      return (
+        <NavItem className="selected-modal">
+          <NavLink>
+            {tabName}
+          </NavLink>
+        </NavItem>
+      );
+    }
+    return (
+      <NavItem className="default-background">
+        <NavLink onClick={this.selectSupplementsCorrelationTab} name={tabName}>
+          {tabName}
+        </NavLink>
+      </NavItem>
+    );
   }
 
   renderAnalyticsHistorySelectionTab(tabName) {
@@ -182,7 +230,10 @@ class ChartsView extends Component {
     }
     return (
       <NavItem className="default-background">
-        <NavLink onClick={this.selectAnalyticsHistoryLookback} name={tabName}>
+        <NavLink
+          onClick={this.selectAnalyticsHistoryLookbackTab}
+          name={tabName}
+        >
           {tabName}
         </NavLink>
       </NavItem>
@@ -306,20 +357,12 @@ class ChartsView extends Component {
         </div>
         <div className="float">
           <Nav tabs>
-            <div className="selected-modal">
-              <NavItem>
-                <NavLink>
-                  Positively Correlated
-                </NavLink>
-              </NavItem>
-            </div>
-            <div className="default-background">
-              <NavItem>
-                <NavLink>
-                  Negatively Correlated
-                </NavLink>
-              </NavItem>
-            </div>
+            {this.renderSupplementsCorrelationSelectionTab(
+              "Positively Correlated"
+            )}
+            {this.renderSupplementsCorrelationSelectionTab(
+              "Negatively Correlated"
+            )}
           </Nav>
           <div className="card">
             <div className="card-block">
@@ -331,7 +374,7 @@ class ChartsView extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.positivelyCorrelatedSupplements.map(key => (
+                  {this.state.selectedCorrelatedSupplements.map(key => (
                     <SupplementRow key={key} object={key} />
                   ))}
                 </tbody>
@@ -347,11 +390,12 @@ class ChartsView extends Component {
     return (
       <div className="animated fadeIn">
         {this.renderSleepHistoryChart()}
-        {this.renderHistoricalSleepAnalytics()}
+        {/*Just do historical sleep analytics ... after. No one even has 90 days of history yet*/}
+        {/*{this.renderHistoricalSleepAnalytics()}*/}
         {this.renderSupplementsSleepCorrelation()}
       </div>
     );
   }
 }
 
-export default ChartsView;
+export default SleepChartsView;
