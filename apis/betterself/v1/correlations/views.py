@@ -1,10 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder
+from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
+    ProductivityLogEventsDataframeBuilder
 from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, UserActivityEvent, SupplementEvent
+from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
 
 class SleepActivitiesCorrelationView(APIView):
@@ -62,4 +63,12 @@ class SleepSupplementsCorrelationView(APIView):
 
 class ProductivitySupplementsCorrelationView(APIView):
     def get(self, request):
-        pass
+        user = request.user
+        queryset = SupplementEvent.objects.filter(user=user)
+        supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
+        supplements_flat_daily_df = supplements_df_builder.get_flat_daily_dataframe()
+
+        productivity_history = DailyProductivityLog.objects.filter(user=user)
+        builder = ProductivityLogEventsDataframeBuilder(productivity_history)
+
+        return Response()
