@@ -58,3 +58,8 @@ class SleepSupplementsCorrelationView(APIView):
         # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
         sorted_response = [item for item in sleep_correlation.iteritems()]
         return Response(sorted_response)
+
+
+class ProductivitySupplementsCorrelationView(APIView):
+    def get(self, request):
+        pass
