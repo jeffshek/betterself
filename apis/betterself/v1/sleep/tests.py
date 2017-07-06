@@ -11,8 +11,6 @@ from events.models import SleepActivity
 
 User = get_user_model()
 
-# python manage.py test apis.betterself.v1.events.tests.test_sleep_views
-
 
 class SleepAggregateTests(TestCase):
     @classmethod

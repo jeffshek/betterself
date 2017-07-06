@@ -1,8 +1,10 @@
 from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView, SleepActivityView, SleepActivitiesCorrelationView, SleepSupplementsCorrelationView, \
-    SleepAveragesView, SleepAggregatesView
+    UserActivityEventView
+from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
+from apis.betterself.v1.correlations.views import SleepActivitiesCorrelationView, SleepSupplementsCorrelationView, \
+    ProductivitySupplementsCorrelationView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
@@ -21,8 +23,11 @@ urlpatterns = [
         name=IngredientComposition.RESOURCE_NAME),
     url(r'^{0}/$'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view(),
         name=SupplementEvent.RESOURCE_NAME),
-    url(r'^{0}/$'.format(DailyProductivityLog.RESOURCE_NAME), ProductivityLogView.as_view(),
-        name=DailyProductivityLog.RESOURCE_NAME),
+    url(r'^{0}/'.format(DailyProductivityLog.RESOURCE_NAME),
+        include([
+            url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
+            url(r'^supplements/correlations$', ProductivitySupplementsCorrelationView.as_view(), name='productivity-supplements-correlations'),  # noqa
+        ])),
     url(r'^{0}/$'.format(UserActivity.RESOURCE_NAME), UserActivityView.as_view(),
         name=UserActivity.RESOURCE_NAME),
     url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(),
@@ -35,6 +40,7 @@ urlpatterns = [
             url(r'^user_activities/correlations$', SleepActivitiesCorrelationView.as_view(), name='sleep-activities-correlations'),  # noqa
             url(r'^supplements/correlations$', SleepSupplementsCorrelationView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
+
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),

@@ -97,8 +97,12 @@ class Sidebar extends Component {
       <nav className="sidebar sidebar-nav">
         <ul className="nav">
           {/*<DashboardButton />*/}
-
           <NavigationTitle title="Log" />
+          <NavigationLink
+            iconName="icon-chemistry"
+            label="Supplements"
+            link={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
+          />
           <NavigationLink
             iconName="icon-note"
             label="Events"
@@ -119,24 +123,15 @@ class Sidebar extends Component {
             label="Sleep"
             link={DASHBOARD_SLEEP_LOGS_URL}
           />
-          <NavigationLink
-            iconName="icon-chemistry"
-            label="Supplements"
-            link={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
-          />
-
           <li className="divider" />
-
           <NavigationTitle title="Analytics" />
           <NavigationLink
             iconName="icon-chart"
             label="Sleep"
             link={DASHBOARD_ANALYTICS_SLEEP}
           />
-
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)} />
-
           <li className="divider" />
           <ExportSidebar />
 
