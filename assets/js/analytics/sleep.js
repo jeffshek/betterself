@@ -77,9 +77,6 @@ class SleepChartsView extends Component {
     this.selectSupplementsCorrelationTab = this.selectSupplementsCorrelationTab.bind(
       this
     );
-    this.renderAnalyticsHistorySelectionTab = this.renderAnalyticsHistorySelectionTab.bind(
-      this
-    );
   }
 
   componentDidMount() {
@@ -197,28 +194,6 @@ class SleepChartsView extends Component {
     return (
       <NavItem className="default-background">
         <NavLink onClick={this.selectSupplementsCorrelationTab} name={tabName}>
-          {tabName}
-        </NavLink>
-      </NavItem>
-    );
-  }
-
-  renderAnalyticsHistorySelectionTab(tabName) {
-    if (this.state.selectedAnalyticsTab === tabName) {
-      return (
-        <NavItem className="selected-modal">
-          <NavLink>
-            {tabName}
-          </NavLink>
-        </NavItem>
-      );
-    }
-    return (
-      <NavItem className="default-background">
-        <NavLink
-          onClick={this.selectAnalyticsHistoryLookbackTab}
-          name={tabName}
-        >
           {tabName}
         </NavLink>
       </NavItem>
@@ -373,5 +348,27 @@ export default SleepChartsView;
 //         </div>
 //       </div>
 //     </div>
+//   );
+// }
+
+// renderAnalyticsHistorySelectionTab(tabName) {
+//   if (this.state.selectedAnalyticsTab === tabName) {
+//     return (
+//       <NavItem className="selected-modal">
+//         <NavLink>
+//           {tabName}
+//         </NavLink>
+//       </NavItem>
+//     );
+//   }
+//   return (
+//     <NavItem className="default-background">
+//       <NavLink
+//         onClick={this.selectAnalyticsHistoryLookbackTab}
+//         name={tabName}
+//       >
+//         {tabName}
+//       </NavLink>
+//     </NavItem>
 //   );
 // }
