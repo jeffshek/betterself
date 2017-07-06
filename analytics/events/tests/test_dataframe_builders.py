@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SUPPLEMENT_EVENT_COLUMN_MAP, \
-    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, AggregateDataframeBuilder
+    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, AggregateSupplementProductivityDataframeBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
 from events.models import SupplementEvent, DailyProductivityLog
@@ -137,7 +137,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
     def test_dataframe_composition(self):
         supplement_event_queryset = SupplementEvent.objects.all()
         productivity_log_queryset = DailyProductivityLog.objects.all()
-        builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
+        builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
         dataframe = builder.build_daily_dataframe()
 
         distinct_supplement_event_times = supplement_event_queryset.values_list('time', flat=True).distinct()
@@ -156,7 +156,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         supplement_event_queryset = SupplementEvent.objects.filter(id='9000')
         productivity_log_queryset = DailyProductivityLog.objects.filter(id='9000')
 
-        builder = AggregateDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
+        builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
         dataframe = builder.build_daily_dataframe()
 
         self.assertTrue(dataframe.empty)

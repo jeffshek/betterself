@@ -20,6 +20,15 @@ PRODUCTIVE_TIME_LABEL = 'Productive Minutes'
 NEUTRAL_TIME_LABEL = 'Neutral Minutes'
 DISTRACTING_TIME_LABEL = 'Distracting Minutes'
 VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Minutes'
+
+VALID_PRODUCTIVITY_DRIVERS = [
+    VERY_PRODUCTIVE_TIME_LABEL,
+    PRODUCTIVE_TIME_LABEL,
+    NEUTRAL_TIME_LABEL,
+    DISTRACTING_TIME_LABEL,
+    VERY_DISTRACTING_TIME_LABEL,
+]
+
 DATE_LABEL = 'Date'
 
 PRODUCTIVITY_LOG_COLUMN_MAP = {
@@ -30,7 +39,6 @@ PRODUCTIVITY_LOG_COLUMN_MAP = {
     'neutral_time_minutes': NEUTRAL_TIME_LABEL,
     'distracting_time_minutes': DISTRACTING_TIME_LABEL,
     'very_distracting_time_minutes': VERY_DISTRACTING_TIME_LABEL,
-
 }
 
 
@@ -142,6 +150,17 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         except IndexError:
             self.user = None
 
+    def get_flat_daily_dataframe(self):
+        """
+        Simplify the history of the model and condense it to a daily metric
+        """
+        df = self.build_dataframe()
+        if df.empty:
+            return df
+
+        df.index = df.index.date
+        return df
+
     def get_productive_timeseries(self):
         df = self.build_dataframe()
 
@@ -172,7 +191,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         return unproductive_timeseries
 
 
-class AggregateDataframeBuilder(object):
+class AggregateSupplementProductivityDataframeBuilder(object):
     """
     Really want to name this MasterBuilder from the Lego Movie
 

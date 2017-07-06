@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
 from analytics.events.analytics import DataFrameEventsAnalyzer
-from analytics.events.utils.dataframe_builders import AggregateDataframeBuilder
+from analytics.events.utils.dataframe_builders import AggregateSupplementProductivityDataframeBuilder
 
 
 class UserHistoricalAnalyticsView(LoginRequiredMixin, TemplateView):
@@ -18,7 +18,7 @@ class UserHistoricalAnalyticsView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
 
         context['aggregate_dataframe'] = aggregate_dataframe
         context['aggregate_dataframe_html'] = aggregate_dataframe.to_html()
@@ -39,7 +39,7 @@ class UserRescueTimeAnalyticsView(LoginRequiredMixin, TemplateView):
         # comes as a string from the interwebs
         days_back = int(days_back)
 
-        aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
 
         # default of zero means get full history, otherwise an amount of days back lets a user
         # make more intelligence decisions about what effects and when ... some functionality
@@ -79,7 +79,7 @@ class UserRescueTimeMostProductiveDaysView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        aggregate_dataframe = AggregateDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
         productive_days = aggregate_dataframe['Very Productive Minutes'].copy().dropna()
         productive_days = productive_days[productive_days > 1]  # don't want zero days either
 

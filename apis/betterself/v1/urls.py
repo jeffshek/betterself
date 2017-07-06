@@ -23,7 +23,6 @@ urlpatterns = [
         name=IngredientComposition.RESOURCE_NAME),
     url(r'^{0}/$'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view(),
         name=SupplementEvent.RESOURCE_NAME),
-    #
     url(r'^{0}/'.format(DailyProductivityLog.RESOURCE_NAME),
         include([
             url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
