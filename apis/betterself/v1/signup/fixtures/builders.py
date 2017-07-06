@@ -115,9 +115,17 @@ class DemoHistoricalDataBuilder(object):
         productivity_series[productivity_series < 0] = 0
 
         productivity_logs = []
-        for index, productivity_amount in productivity_series.iteritems():
-            log = DailyProductivityLog(user=self.user, date=index, very_productive_time_minutes=productivity_amount,
-                                       very_distracting_time_minutes=productivity_amount / 2)
+        for index, productivity_minutes in productivity_series.iteritems():
+            half_productivity_minutes = productivity_minutes / 2
+            neutral_time_minutes = random.randint(10, 30)
+            distracting_time_minutes = random.randint(10, 30)
+
+            log = DailyProductivityLog(user=self.user, date=index,
+                                       very_productive_time_minutes=productivity_minutes,
+                                       productive_time_minutes=half_productivity_minutes,
+                                       neutral_time_minutes=neutral_time_minutes,
+                                       distracting_time_minutes=distracting_time_minutes,
+                                       very_distracting_time_minutes=productivity_minutes / 2)
             productivity_logs.append(log)
 
         DailyProductivityLog.objects.bulk_create(productivity_logs)
