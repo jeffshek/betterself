@@ -32,21 +32,6 @@ const SleepHistoryChart = {
   datasets: [Object.assign({}, DefaultLineDataset)]
 };
 
-// const AverageSleepHistoryChart = {
-//   labels: [],
-//   datasets: [
-//     {
-//       label: "Average Sleep (Hours)",
-//       backgroundColor: "#193441",
-//       borderColor: "rgb(74, 86, 104)",
-//       borderWidth: 1,
-//       hoverBackgroundColor: "rgba(255,99,132,0.4)",
-//       hoverBorderColor: "rgba(255,99,132,1)",
-//       data: []
-//     }
-//   ]
-// };
-
 const SupplementsAndSleepCorrelationChart = {
   labels: [],
   datasets: [
@@ -261,58 +246,6 @@ class SleepChartsView extends Component {
     );
   }
 
-  // renderHistoricalSleepAnalytics() {
-  //   return (
-  //     <div className="card-columns cols-2">
-  //       <div className="card">
-  //         <div className="card-header analytics-text-box-label">
-  //           Daily Sleep Analytics
-  //           <div className="card-actions" />
-  //         </div>
-  //         <div className="card-block">
-  //           <div className="chart-wrapper">
-  //             <Bar
-  //               data={AverageSleepHistoryChart}
-  //               options={{
-  //                 maintainAspectRatio: false
-  //               }}
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //       <div className="float">
-  //         <div className="card">
-  //           <Nav tabs>
-  //             {this.renderAnalyticsHistorySelectionTab(
-  //               "Full Historical Lookback"
-  //             )}
-  //             {this.renderAnalyticsHistorySelectionTab("7 Day")}
-  //             {this.renderAnalyticsHistorySelectionTab("14 Day")}
-  //             {this.renderAnalyticsHistorySelectionTab("30 Day")}
-  //             {this.renderAnalyticsHistorySelectionTab("90 Day")}
-  //           </Nav>
-  //           <div className="card-block">
-  //             <table className="table">
-  //               <thead>
-  //                 <tr>
-  //                   <th>Weekday</th>
-  //                   <th>Average Sleep</th>
-  //                 </tr>
-  //               </thead>
-  //               <tbody>
-  //                 <tr>
-  //                   <td>Monday</td>
-  //                   <td>6 hours 53 minutes</td>
-  //                 </tr>
-  //               </tbody>
-  //             </table>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   renderSupplementsSleepCorrelation() {
     return (
       <div className="card-columns cols-2">
@@ -375,3 +308,70 @@ class SleepChartsView extends Component {
 }
 
 export default SleepChartsView;
+
+// const AverageSleepHistoryChart = {
+//   labels: [],
+//   datasets: [
+//     {
+//       label: "Average Sleep (Hours)",
+//       backgroundColor: "#193441",
+//       borderColor: "rgb(74, 86, 104)",
+//       borderWidth: 1,
+//       hoverBackgroundColor: "rgba(255,99,132,0.4)",
+//       hoverBorderColor: "rgba(255,99,132,1)",
+//       data: []
+//     }
+//   ]
+// };
+
+// renderHistoricalSleepAnalytics() {
+//   return (
+//     <div className="card-columns cols-2">
+//       <div className="card">
+//         <div className="card-header analytics-text-box-label">
+//           Daily Sleep Analytics
+//           <div className="card-actions" />
+//         </div>
+//         <div className="card-block">
+//           <div className="chart-wrapper">
+//             <Bar
+//               data={AverageSleepHistoryChart}
+//               options={{
+//                 maintainAspectRatio: false
+//               }}
+//             />
+//           </div>
+//         </div>
+//       </div>
+//       <div className="float">
+//         <div className="card">
+//           <Nav tabs>
+//             {this.renderAnalyticsHistorySelectionTab(
+//               "Full Historical Lookback"
+//             )}
+//             {this.renderAnalyticsHistorySelectionTab("7 Day")}
+//             {this.renderAnalyticsHistorySelectionTab("14 Day")}
+//             {this.renderAnalyticsHistorySelectionTab("30 Day")}
+//             {this.renderAnalyticsHistorySelectionTab("90 Day")}
+//           </Nav>
+//           <div className="card-block">
+//             <table className="table">
+//               <thead>
+//                 <tr>
+//                   <th>Weekday</th>
+//                   <th>Average Sleep</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 <tr>
+//                   <td>Monday</td>
+//                   <td>6 hours 53 minutes</td>
+//                 </tr>
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
