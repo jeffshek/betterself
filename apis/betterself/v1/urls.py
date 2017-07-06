@@ -2,8 +2,8 @@ from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
     UserActivityEventView
-from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView, \
-    SleepActivitiesCorrelationView, SleepSupplementsCorrelationView
+from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
+from apis.betterself.v1.correlations.views import SleepActivitiesCorrelationView, SleepSupplementsCorrelationView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
