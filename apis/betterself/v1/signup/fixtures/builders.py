@@ -20,7 +20,7 @@ class DemoHistoricalDataBuilder(object):
         self.user = user
         self.hour_series = range(0, 24)
 
-        historical_data_points_quantity = 90
+        historical_data_points_quantity = 30
 
         # use pandas to generate a nifty index of timestamps, use timezone to remove warning signals
         end_date = timezone.now()
