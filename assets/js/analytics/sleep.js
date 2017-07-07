@@ -135,14 +135,16 @@ class SleepChartsView extends Component {
     const target = event.target;
     const name = target.name;
 
+    console.log(name);
+
     if (name === "Positively Correlated") {
       this.setState({
-        selectedUserActivityCorrelationsChart: this.state
+        selectedUserActivitiesCorrelations: this.state
           .positiveUserActivitiesCorrelations
       });
     } else if (name === "Negatively Correlated") {
       this.setState({
-        selectedUserActivityCorrelationsChart: this.state
+        selectedUserActivitiesCorrelations: this.state
           .negativeUserActivitiesCorrelations
       });
     }
