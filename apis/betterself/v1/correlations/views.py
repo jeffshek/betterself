@@ -46,8 +46,8 @@ class SleepActivitiesCorrelationView(APIView):
         user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
 
         correlation = user_activity_dataframe.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values()
-        return Response(sleep_correlation.to_dict())
+        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
+        return get_sorted_response(sleep_correlation)
 
 
 class SleepSupplementsCorrelationView(APIView):

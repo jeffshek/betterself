@@ -47,6 +47,21 @@ const SupplementsAndSleepCorrelationChart = {
   ]
 };
 
+const ActivitiesAndSleepCorrelationChart = {
+  labels: [],
+  datasets: [
+    {
+      label: "Sleep Correlation",
+      backgroundColor: "#193441",
+      borderColor: "#193441",
+      borderWidth: 1,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: []
+    }
+  ]
+};
+
 const SupplementRow = data => {
   // Pretty sure this is not the right way to do this
   const details = data.object;
@@ -64,17 +79,23 @@ class SleepChartsView extends Component {
     super();
     this.state = {
       sleepHistory: SleepHistoryChart,
-      supplementsCorrelation: SupplementsAndSleepCorrelationChart,
-      selectedAnalyticsTab: "Full Historical Lookback",
-      selectedSupplementsCorrelationTab: "Positively Correlated",
+      //
+      supplementsCorrelationChart: SupplementsAndSleepCorrelationChart,
       selectedCorrelatedSupplements: [],
+      selectedCorrelationsSupplementsTab: "Positively Correlated",
       positivelyCorrelatedSupplements: [],
-      negativelyCorrelatedSupplements: []
+      negativelyCorrelatedSupplements: [],
+      //
+      selectedCorrelatedActivitiesChart: ActivitiesAndSleepCorrelationChart,
+      selectedCorrelatedActivities: [],
+      selectedActivitiesCorrelationTab: "Positively Correlated",
+      positivelyCorrelatedActivities: [],
+      negativelyCorrelatedActivities: []
     };
-    this.selectAnalyticsHistoryLookbackTab = this.selectAnalyticsHistoryLookbackTab.bind(
+    this.selectSupplementsCorrelationTab = this.selectSupplementsCorrelationTab.bind(
       this
     );
-    this.selectSupplementsCorrelationTab = this.selectSupplementsCorrelationTab.bind(
+    this.selectActivitiesCorrelationTab = this.selectActivitiesCorrelationTab.bind(
       this
     );
   }
@@ -82,6 +103,7 @@ class SleepChartsView extends Component {
   componentDidMount() {
     this.getHistoricalSleep();
     this.getSupplementsSleepCorrelations();
+    this.getActivitiesSleepCorrelations();
   }
 
   selectSupplementsCorrelationTab(event) {
@@ -103,21 +125,36 @@ class SleepChartsView extends Component {
     }
 
     this.setState({
-      selectedSupplementsCorrelationTab: name
+      selectedCorrelationsSupplementsTab: name
     });
   }
 
-  selectAnalyticsHistoryLookbackTab(event) {
+  selectActivitiesCorrelationTab(event) {
     event.preventDefault();
 
     const target = event.target;
     const name = target.name;
 
+    if (name === "Positively Correlated") {
+      this.setState({
+        selectedCorrelatedActivitiesChart: this.state
+          .positivelyCorrelatedActivities
+      });
+    } else if (name === "Negatively Correlated") {
+      this.setState({
+        selectedCorrelatedActivitiesChart: this.state
+          .negativelyCorrelatedActivities
+      });
+    }
+
     this.setState({
-      selectedAnalyticsTab: name
+      selectedActivitiesCorrelationTab: name
     });
   }
 
+  //
+  // API Calls
+  //
   getSupplementsSleepCorrelations() {
     fetch(`api/v1/sleep_activities/supplements/correlations`, {
       method: "GET",
@@ -134,8 +171,8 @@ class SleepChartsView extends Component {
           return data[1];
         });
 
-        this.state.supplementsCorrelation.labels = labels;
-        this.state.supplementsCorrelation.datasets[0].data = dataValues;
+        this.state.supplementsCorrelationChart.labels = labels;
+        this.state.supplementsCorrelationChart.datasets[0].data = dataValues;
 
         const positivelyCorrelatedSupplements = responseData.filter(data => {
           return data[1] > 0;
@@ -146,10 +183,49 @@ class SleepChartsView extends Component {
 
         // Finally update state after we've done so much magic
         this.setState({
-          supplementsCorrelation: this.state.supplementsCorrelation,
+          supplementsCorrelationChart: this.state.supplementsCorrelationChart,
           selectedCorrelatedSupplements: positivelyCorrelatedSupplements,
-          negativelyCorrelatedSupplements: negativelyCorrelatedSupplements,
-          positivelyCorrelatedSupplements: positivelyCorrelatedSupplements
+          positivelyCorrelatedSupplements: positivelyCorrelatedSupplements,
+          negativelyCorrelatedSupplements: negativelyCorrelatedSupplements
+        });
+      });
+  }
+
+  getActivitiesSleepCorrelations() {
+    fetch(`api/v1/sleep_activities/user_activities/correlations`, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const labels = responseData.map(data => {
+          return data[0];
+        });
+        const dataValues = responseData.map(data => {
+          return data[1];
+        });
+
+        this.state.selectedCorrelatedActivitiesChart.labels = labels;
+        this.state.selectedCorrelatedActivitiesChart.datasets[
+          0
+        ].data = dataValues;
+
+        const positivelyCorrelatedActivities = responseData.filter(data => {
+          return data[1] > 0;
+        });
+        const negativelyCorrelatedActivities = responseData.filter(data => {
+          return data[1] < 0;
+        });
+
+        // Finally update state after we've done so much magic
+        this.setState({
+          selectedCorrelatedActivitiesChart: this.state
+            .supplementsCorrelationChart,
+          selectedCorrelatedActivities: positivelyCorrelatedActivities,
+          positivelyCorrelatedActivities: positivelyCorrelatedActivities,
+          negativelyCorrelatedActivities: negativelyCorrelatedActivities
         });
       });
   }
@@ -182,7 +258,26 @@ class SleepChartsView extends Component {
   }
 
   renderSupplementsCorrelationSelectionTab(tabName) {
-    if (this.state.selectedSupplementsCorrelationTab === tabName) {
+    if (this.state.selectedCorrelationsSupplementsTab === tabName) {
+      return (
+        <NavItem className="selected-modal">
+          <NavLink>
+            {tabName}
+          </NavLink>
+        </NavItem>
+      );
+    }
+    return (
+      <NavItem className="default-background">
+        <NavLink onClick={this.selectSupplementsCorrelationTab} name={tabName}>
+          {tabName}
+        </NavLink>
+      </NavItem>
+    );
+  }
+
+  renderActivitiesCorrelationSelectionTab(tabName) {
+    if (this.state.selectedActivitiesCorrelationTab === tabName) {
       return (
         <NavItem className="selected-modal">
           <NavLink>
@@ -226,12 +321,12 @@ class SleepChartsView extends Component {
       <div className="card-columns cols-2">
         <div className="card">
           <div className="card-header analytics-text-box-label">
-            Supplements and Sleep Correlation
+            Activities and Sleep Correlation
           </div>
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={SupplementsAndSleepCorrelationChart}
+                data={ActivitiesAndSleepCorrelationChart}
                 options={{
                   maintainAspectRatio: true
                 }}
@@ -253,7 +348,7 @@ class SleepChartsView extends Component {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Supplement</th>
+                    <th>Activity</th>
                     <th>Correlation</th>
                   </tr>
                 </thead>
@@ -326,7 +421,7 @@ class SleepChartsView extends Component {
         {/*Just do historical sleep analytics ... after. No one even has 90 days of history yet*/}
         {/*{this.renderHistoricalSleepAnalytics()}*/}
         {this.renderSupplementsSleepCorrelation()}
-        {/*{this.renderActivitiesSleepCorrelation()}*/}
+        {this.renderActivitiesSleepCorrelation()}
       </div>
     );
   }
@@ -421,4 +516,15 @@ export default SleepChartsView;
 //       </NavLink>
 //     </NavItem>
 //   );
+// }
+
+// selectAnalyticsHistoryLookbackTab(event) {
+//   event.preventDefault();
+//
+//   const target = event.target;
+//   const name = target.name;
+//
+//   this.setState({
+//     selectedAnalyticsTab: name
+//   });
 // }
