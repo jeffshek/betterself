@@ -3,29 +3,10 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
-
-// Have a default seems kind of stupid if you're only going to use it once
-const DefaultLineChartDataset = {
-  label: "",
-  fill: false,
-  lineTension: 0.1,
-  backgroundColor: "#193441",
-  borderColor: "#193441",
-  borderCapStyle: "butt",
-  borderDash: [],
-  borderDashOffset: 0.0,
-  borderJoinStyle: "miter",
-  pointBorderColor: "black",
-  pointBackgroundColor: "#fff",
-  pointBorderWidth: 1,
-  pointHoverRadius: 5,
-  pointHoverBackgroundColor: "rgba(75,192,192,1)",
-  pointHoverBorderColor: "black",
-  pointHoverBorderWidth: 2,
-  pointRadius: 1,
-  pointHitRadius: 10,
-  data: []
-};
+import {
+  CHARTS_BACKGROUND_COLOR,
+  DefaultLineChartDataset
+} from "../constants/charts";
 
 const SleepHistoryChart = {
   labels: [],
@@ -37,8 +18,8 @@ const SupplementsCorrelationsChart = {
   datasets: [
     {
       label: "Sleep Correlation",
-      backgroundColor: "#193441",
-      borderColor: "#193441",
+      backgroundColor: CHARTS_BACKGROUND_COLOR,
+      borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
@@ -52,8 +33,8 @@ const ActivitiesCorrelationsChart = {
   datasets: [
     {
       label: "Sleep Correlation",
-      backgroundColor: "#193441",
-      borderColor: "#193441",
+      backgroundColor: CHARTS_BACKGROUND_COLOR,
+      borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
       hoverBackgroundColor: "rgba(255,99,132,0.4)",
       hoverBorderColor: "rgba(255,99,132,1)",
@@ -437,7 +418,7 @@ export default SleepAnalyticsView;
 //   datasets: [
 //     {
 //       label: "Average Sleep (Hours)",
-//       backgroundColor: "#193441",
+//       backgroundColor: CHARTS_BACKGROUND_COLOR,
 //       borderColor: "rgb(74, 86, 104)",
 //       borderWidth: 1,
 //       hoverBackgroundColor: "rgba(255,99,132,0.4)",
