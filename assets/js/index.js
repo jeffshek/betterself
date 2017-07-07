@@ -46,6 +46,7 @@ import { SignupView } from "./signup/signup";
 import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
 import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
 import { UserSettingsView } from "./user_settings/user_settings";
+import { ProductivityAnalyticsView } from "./analytics/productivity";
 
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
@@ -77,17 +78,18 @@ const BetterSelfRouter = () => (
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
       {/*Private Routes*/}
+      {/*Try this style of having unnamed functions with Dashboard views rather than explicitly naming them*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
-        component={<Dashboard view={SleepAnalyticsView} />}
+        component={e => <Dashboard view={SleepAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
-        component={<Dashboard view={SleepAnalyticsView} />}
+        component={e => <Dashboard view={SleepAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
-        component={<Dashboard view={SleepAnalyticsView} />}
+        component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
