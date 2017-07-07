@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
   DASHBOARD_INDEX_URL,
-  DASHBOARD_ANALYTICS_SLEEP,
+  DASHBOARD_SLEEP_ANALYTICS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
-  DASHBOARD_SLEEP_LOGS_URL
+  DASHBOARD_SLEEP_LOGS_URL,
+  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -81,7 +82,7 @@ const ExportSidebar = () => (
     <NavigationLink
       iconName="icon-cloud-download"
       label="All Data"
-      link={DASHBOARD_ANALYTICS_SLEEP}
+      link={DASHBOARD_SLEEP_ANALYTICS_URL}
     />
   </div>
 );
@@ -128,7 +129,12 @@ class Sidebar extends Component {
           <NavigationLink
             iconName="icon-chart"
             label="Sleep"
-            link={DASHBOARD_ANALYTICS_SLEEP}
+            link={DASHBOARD_SLEEP_ANALYTICS_URL}
+          />
+          <NavigationLink
+            iconName="icon-speedometer"
+            label="Productivity"
+            link={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
           />
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)} />

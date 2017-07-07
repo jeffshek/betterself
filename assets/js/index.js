@@ -12,7 +12,7 @@ import {
   LOGIN_URL,
   HOME_URL,
   LOGOUT_URL,
-  DASHBOARD_ANALYTICS_SLEEP,
+  DASHBOARD_SLEEP_ANALYTICS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
@@ -82,7 +82,7 @@ const BetterSelfRouter = () => (
         component={DashboardChartsView}
       />
       <PrivateRoute
-        path={DASHBOARD_ANALYTICS_SLEEP}
+        path={DASHBOARD_SLEEP_ANALYTICS_URL}
         component={DashboardChartsView}
       />
       <PrivateRoute
