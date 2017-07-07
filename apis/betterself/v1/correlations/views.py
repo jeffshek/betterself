@@ -1,3 +1,5 @@
+import pandas as pd
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,7 +12,15 @@ from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
 def get_sorted_response(series):
     # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
-    sorted_response = [item for item in series.iteritems()]
+    # sorted_response = [item for item in series.iteritems()]
+    sorted_response = []
+    for index, value in series.iteritems():
+        if not pd.notnull(value):
+            value = None
+
+        data_point = (index, value)
+        sorted_response.append(data_point)
+
     return Response(sorted_response)
 
 
@@ -36,8 +46,8 @@ class SleepActivitiesCorrelationView(APIView):
         user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
 
         correlation = user_activity_dataframe.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values()
-        return Response(sleep_correlation.to_dict())
+        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
+        return get_sorted_response(sleep_correlation)
 
 
 class SleepSupplementsCorrelationView(APIView):

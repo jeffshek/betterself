@@ -125,7 +125,7 @@ class SleepCorrelationTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         # the correlation of sleep to itself will be one
-        self.assertEqual(response.data[SLEEP_MINUTES_COLUMN], 1)
+        self.assertEqual(response.data[0][1], 1)
 
     def test_sleep_supplements_view(self):
         url = reverse('sleep-supplements-correlations')

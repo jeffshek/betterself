@@ -1,0 +1,32 @@
+////////////
+// Some naming patterns because you are all over the place ...
+////////////
+
+# Put Resource First and THEN generic Nouns
+# MAJOR : Generic Nouns at the end of things
+#    - ie. log / charts / tabs / history
+selectedSupplementsCorrelationsTab
+sleepHistory
+
+# try to have correlation after the resource even though it will sound odd sometimes
+supplementCorrelationCharts
+
+# try to make restful resource as early in the word as possible
+supplementCorrelationCharts
+
+# Always put User in front of any resource where it makes sense
+UserActivities
+
+# something that indicates selected goes before everything else!
+selectedSupplementCorrelations
+
+# When in doubt of singular versus plural, just pick plural, so lean toward plural
+UserActivitiesEvents
+
+# when comparing things like Sleep and Supplements, pick the resource that's closest to the page first
+# so if you're on sleep.js
+sleepSupplementsCorrelations
+
+# or if you can ... remove sleep from the name altogether
+supplementsCorrelations
+
