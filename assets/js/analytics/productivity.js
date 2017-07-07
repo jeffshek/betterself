@@ -34,7 +34,32 @@ export class ProductivityAnalyticsView extends Component {
         console.log(responseData);
       });
   }
+  renderHistoryChart() {
+    return (
+      <div className="card">
+        <div className="card-header analytics-text-box-label">
+          Productivity History
+          <div className="card-actions" />
+        </div>
+        <div className="card-block">
+          <div className="chart-wrapper">
+            <Line
+              data={this.state.productivityHistory}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    return <div />;
+    return (
+      <div className="animated fadeIn">
+        {this.renderHistoryChart()}
+      </div>
+    );
   }
 }
