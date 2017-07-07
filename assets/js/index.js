@@ -50,9 +50,6 @@ import { UserSettingsView } from "./user_settings/user_settings";
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
 );
-const DashboardSleepAnalyticsView = () => (
-  <Dashboard view={SleepAnalyticsView} />
-);
 const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView} />;
 const DashboardSupplementsView = () => <Dashboard view={SupplementView} />;
 const DashboardProductivityLogView = () => (
@@ -82,15 +79,15 @@ const BetterSelfRouter = () => (
       {/*Private Routes*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
-        component={DashboardSleepAnalyticsView}
+        component={<Dashboard view={SleepAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
-        component={DashboardSleepAnalyticsView}
+        component={<Dashboard view={SleepAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
-        component={DashboardSleepAnalyticsView}
+        component={<Dashboard view={SleepAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
