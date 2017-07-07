@@ -17,12 +17,13 @@ import {
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
-  DASHBOARD_EVENTS_LOGS_URL,
+  DASHBOARD_USER_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
   SIGNUP_URL,
   DEMO_SIGNUP_URL,
   DASHBOARD_SLEEP_LOGS_URL,
-  SETTINGS_URL
+  SETTINGS_URL,
+  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -49,7 +50,7 @@ import { UserSettingsView } from "./user_settings/user_settings";
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
 );
-const DashboardChartsView = () => <Dashboard view={ChartsView} />;
+const DashboardSleepAnalyticsView = () => <Dashboard view={ChartsView} />;
 const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView} />;
 const DashboardSupplementsView = () => <Dashboard view={SupplementView} />;
 const DashboardProductivityLogView = () => (
@@ -79,11 +80,15 @@ const BetterSelfRouter = () => (
       {/*Private Routes*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
-        component={DashboardChartsView}
+        component={DashboardSleepAnalyticsView}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
-        component={DashboardChartsView}
+        component={DashboardSleepAnalyticsView}
+      />
+      <PrivateRoute
+        path={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
+        component={DashboardSleepAnalyticsView}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
@@ -105,7 +110,7 @@ const BetterSelfRouter = () => (
       />
 
       <PrivateRoute
-        path={DASHBOARD_EVENTS_LOGS_URL}
+        path={DASHBOARD_USER_EVENTS_LOGS_URL}
         component={DashboardUserEventLogView}
       />
 

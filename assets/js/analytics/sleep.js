@@ -74,7 +74,7 @@ const SupplementRow = data => {
   );
 };
 
-class SleepChartsView extends Component {
+class SleepAnalyticsView extends Component {
   constructor() {
     super();
     this.state = {
@@ -430,7 +430,7 @@ class SleepChartsView extends Component {
   }
 }
 
-export default SleepChartsView;
+export default SleepAnalyticsView;
 
 // const AverageSleepHistoryChart = {
 //   labels: [],
