@@ -5,6 +5,7 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import {
   CHARTS_BACKGROUND_COLOR,
+  DataAnalyticsRow,
   DefaultLineChartDataset
 } from "../constants/charts";
 
@@ -41,18 +42,6 @@ const ActivitiesCorrelationsChart = {
       data: []
     }
   ]
-};
-
-const SupplementRow = data => {
-  // Pretty sure this is not the right way to do this
-  const details = data.object;
-
-  return (
-    <tr>
-      <td>{details[0]}</td>
-      <td>{details[1].toFixed(3)}</td>
-    </tr>
-  );
 };
 
 class SleepAnalyticsView extends Component {
@@ -338,7 +327,7 @@ class SleepAnalyticsView extends Component {
                 </thead>
                 <tbody>
                   {this.state.selectedUserActivitiesCorrelations.map(key => (
-                    <SupplementRow key={key} object={key} />
+                    <DataAnalyticsRow key={key} object={key} />
                   ))}
                 </tbody>
               </table>
@@ -387,7 +376,7 @@ class SleepAnalyticsView extends Component {
                 </thead>
                 <tbody>
                   {this.state.selectedSupplementsCorrelations.map(key => (
-                    <SupplementRow key={key} object={key} />
+                    <DataAnalyticsRow key={key} object={key} />
                   ))}
                 </tbody>
               </table>

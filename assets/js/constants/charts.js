@@ -22,3 +22,15 @@ export const DefaultLineChartDataset = {
   pointHitRadius: 10,
   data: []
 };
+
+export const DataAnalyticsRow = data => {
+  // Pretty sure this is not the right way to do this
+  const details = data.object;
+
+  return (
+    <tr>
+      <td>{details[0]}</td>
+      <td>{details[1].toFixed(3)}</td>
+    </tr>
+  );
+};

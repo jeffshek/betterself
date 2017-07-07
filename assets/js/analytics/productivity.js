@@ -3,10 +3,19 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
+import { DefaultLineChartDataset } from "../constants/charts";
+
+const ProductivityHistoryChart = {
+  labels: [],
+  datasets: [Object.assign({}, DefaultLineChartDataset)]
+};
 
 export class ProductivityAnalyticsView extends Component {
   constructor() {
     super();
+    this.state = {
+      productivityHistory: ProductivityHistoryChart
+    };
   }
 
   componentDidMount() {
