@@ -6,7 +6,7 @@ import moment from "moment";
 
 // Have a default seems kind of stupid if you're only going to use it once
 const DefaultLineDataset = {
-  label: "Sleep Time (Hours)",
+  label: "",
   fill: false,
   lineTension: 0.1,
   backgroundColor: "#193441",
@@ -69,7 +69,7 @@ const SupplementRow = data => {
   return (
     <tr>
       <td>{details[0]}</td>
-      <td>{details[1].toFixed(2)}</td>
+      <td>{details[1].toFixed(3)}</td>
     </tr>
   );
 };
