@@ -32,7 +32,7 @@ const SleepHistoryChart = {
   datasets: [Object.assign({}, DefaultLineDataset)]
 };
 
-const SupplementsCorrelationChart = {
+const SupplementsCorrelationsChart = {
   labels: [],
   datasets: [
     {
@@ -47,7 +47,7 @@ const SupplementsCorrelationChart = {
   ]
 };
 
-const ActivitiesCorrelationChart = {
+const ActivitiesCorrelationsChart = {
   labels: [],
   datasets: [
     {
@@ -80,13 +80,13 @@ class SleepChartsView extends Component {
     this.state = {
       sleepHistory: SleepHistoryChart,
       //
-      supplementsCorrelationsChart: SupplementsCorrelationChart,
+      supplementsCorrelationsChart: SupplementsCorrelationsChart,
       selectedSupplementsCorrelations: [],
       selectedSupplementsCorrelationsTab: "Positively Correlated",
       positiveSupplementsCorrelations: [],
       negativeSupplementsCorrelations: [],
       //
-      selectedUserActivityCorrelationsChart: ActivitiesCorrelationChart,
+      selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
       selectedUserActivitiesCorrelationsTab: "Positively Correlated",
       positiveUserActivitiesCorrelations: [],
@@ -134,8 +134,6 @@ class SleepChartsView extends Component {
 
     const target = event.target;
     const name = target.name;
-
-    console.log(name);
 
     if (name === "Positively Correlated") {
       this.setState({
@@ -331,7 +329,7 @@ class SleepChartsView extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={ActivitiesCorrelationChart}
+                data={ActivitiesCorrelationsChart}
                 options={{
                   maintainAspectRatio: true
                 }}
@@ -380,7 +378,7 @@ class SleepChartsView extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={SupplementsCorrelationChart}
+                data={SupplementsCorrelationsChart}
                 options={{
                   maintainAspectRatio: true
                 }}

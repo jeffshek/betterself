@@ -17,7 +17,7 @@ INPUT_SOURCES = [
 
 INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
 
-# TODO - if Productivity and Sleep expand any more split it into its own app
+# TODO - if Productivity and Sleep expand any more split it into their own apps
 
 
 class SupplementEvent(BaseModelWithUserGeneratedContent):
