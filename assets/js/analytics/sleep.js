@@ -5,7 +5,7 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 
 // Have a default seems kind of stupid if you're only going to use it once
-const DefaultLineDataset = {
+const DefaultLineChartDataset = {
   label: "",
   fill: false,
   lineTension: 0.1,
@@ -29,7 +29,7 @@ const DefaultLineDataset = {
 
 const SleepHistoryChart = {
   labels: [],
-  datasets: [Object.assign({}, DefaultLineDataset)]
+  datasets: [Object.assign({}, DefaultLineChartDataset)]
 };
 
 const SupplementsCorrelationsChart = {
