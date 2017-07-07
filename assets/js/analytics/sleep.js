@@ -272,8 +272,7 @@ class SleepAnalyticsView extends Component {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          Sleep History
-          <div className="card-actions" />
+          <span className="font-2xl">Sleep History</span>
         </div>
         <div className="card-block">
           <div className="chart-wrapper">
