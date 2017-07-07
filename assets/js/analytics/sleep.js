@@ -69,7 +69,7 @@ const SupplementRow = data => {
   return (
     <tr>
       <td>{details[0]}</td>
-      <td>{details[1]}</td>
+      <td>{details[1].toFixed(2)}</td>
     </tr>
   );
 };
@@ -338,15 +338,15 @@ class SleepChartsView extends Component {
           </div>
         </div>
         <div className="float">
-          <Nav tabs>
-            {this.renderActivitiesCorrelationSelectionTab(
-              "Positively Correlated"
-            )}
-            {this.renderActivitiesCorrelationSelectionTab(
-              "Negatively Correlated"
-            )}
-          </Nav>
           <div className="card">
+            <Nav tabs>
+              {this.renderActivitiesCorrelationSelectionTab(
+                "Positively Correlated"
+              )}
+              {this.renderActivitiesCorrelationSelectionTab(
+                "Negatively Correlated"
+              )}
+            </Nav>
             <div className="card-block">
               <table className="table">
                 <thead>
@@ -387,15 +387,15 @@ class SleepChartsView extends Component {
           </div>
         </div>
         <div className="float">
-          <Nav tabs>
-            {this.renderSupplementsCorrelationSelectionTab(
-              "Positively Correlated"
-            )}
-            {this.renderSupplementsCorrelationSelectionTab(
-              "Negatively Correlated"
-            )}
-          </Nav>
           <div className="card">
+            <Nav tabs>
+              {this.renderSupplementsCorrelationSelectionTab(
+                "Positively Correlated"
+              )}
+              {this.renderSupplementsCorrelationSelectionTab(
+                "Negatively Correlated"
+              )}
+            </Nav>
             <div className="card-block">
               <table className="table">
                 <thead>
