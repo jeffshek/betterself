@@ -33,7 +33,7 @@ import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
 import SupplementsLogView from "./supplement_events_log/supplement_events_view";
-import ChartsView from "./analytics/sleep";
+import SleepAnalyticsView from "./analytics/sleep";
 import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
 import UserActivitiesEventLogView
   from "./user_activities_events_log/user_activites_events_view";
@@ -50,7 +50,9 @@ import { UserSettingsView } from "./user_settings/user_settings";
 const DashboardSupplementLogView = () => (
   <Dashboard view={SupplementsLogView} />
 );
-const DashboardSleepAnalyticsView = () => <Dashboard view={ChartsView} />;
+const DashboardSleepAnalyticsView = () => (
+  <Dashboard view={SleepAnalyticsView} />
+);
 const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView} />;
 const DashboardSupplementsView = () => <Dashboard view={SupplementView} />;
 const DashboardProductivityLogView = () => (
