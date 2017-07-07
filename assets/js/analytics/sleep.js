@@ -221,6 +221,55 @@ class SleepChartsView extends Component {
     );
   }
 
+  renderActivitiesSleepCorrelation() {
+    return (
+      <div className="card-columns cols-2">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            Supplements and Sleep Correlation
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Bar
+                data={SupplementsAndSleepCorrelationChart}
+                options={{
+                  maintainAspectRatio: true
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="float">
+          <Nav tabs>
+            {this.renderSupplementsCorrelationSelectionTab(
+              "Positively Correlated"
+            )}
+            {this.renderSupplementsCorrelationSelectionTab(
+              "Negatively Correlated"
+            )}
+          </Nav>
+          <div className="card">
+            <div className="card-block">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Supplement</th>
+                    <th>Correlation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.selectedCorrelatedSupplements.map(key => (
+                    <SupplementRow key={key} object={key} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderSupplementsSleepCorrelation() {
     return (
       <div className="card-columns cols-2">
@@ -277,6 +326,7 @@ class SleepChartsView extends Component {
         {/*Just do historical sleep analytics ... after. No one even has 90 days of history yet*/}
         {/*{this.renderHistoricalSleepAnalytics()}*/}
         {this.renderSupplementsSleepCorrelation()}
+        {/*{this.renderActivitiesSleepCorrelation()}*/}
       </div>
     );
   }

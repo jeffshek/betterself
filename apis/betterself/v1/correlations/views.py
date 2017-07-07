@@ -1,3 +1,5 @@
+import pandas as pd
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,7 +12,15 @@ from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
 def get_sorted_response(series):
     # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
-    sorted_response = [item for item in series.iteritems()]
+    # sorted_response = [item for item in series.iteritems()]
+    sorted_response = []
+    for index, value in series.iteritems():
+        if not pd.notnull(value):
+            value = None
+
+        data_point = (index, value)
+        sorted_response.append(data_point)
+
     return Response(sorted_response)
 
 
