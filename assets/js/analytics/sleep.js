@@ -86,16 +86,16 @@ class SleepChartsView extends Component {
       positivelyCorrelatedSupplements: [],
       negativelyCorrelatedSupplements: [],
       //
-      selectedCorrelatedActivitiesChart: ActivitiesAndSleepCorrelationChart,
-      selectedCorrelatedActivities: [],
-      selectedActivitiesCorrelationTab: "Positively Correlated",
-      positivelyCorrelatedActivities: [],
-      negativelyCorrelatedActivities: []
+      selectedCorrelatedUserActivitiesChart: ActivitiesAndSleepCorrelationChart,
+      selectedCorrelatedUserActivities: [],
+      selectedUserActivitiesCorrelationTab: "Positively Correlated",
+      positivelyCorrelatedUserActivities: [],
+      negativelyCorrelatedUserActivities: []
     };
     this.selectSupplementsCorrelationTab = this.selectSupplementsCorrelationTab.bind(
       this
     );
-    this.selectActivitiesCorrelationTab = this.selectActivitiesCorrelationTab.bind(
+    this.selectUserActivitiesCorrelationTab = this.selectUserActivitiesCorrelationTab.bind(
       this
     );
   }
@@ -129,7 +129,7 @@ class SleepChartsView extends Component {
     });
   }
 
-  selectActivitiesCorrelationTab(event) {
+  selectUserActivitiesCorrelationTab(event) {
     event.preventDefault();
 
     const target = event.target;
@@ -137,18 +137,18 @@ class SleepChartsView extends Component {
 
     if (name === "Positively Correlated") {
       this.setState({
-        selectedCorrelatedActivitiesChart: this.state
-          .positivelyCorrelatedActivities
+        selectedCorrelatedUserActivitiesChart: this.state
+          .positivelyCorrelatedUserActivities
       });
     } else if (name === "Negatively Correlated") {
       this.setState({
-        selectedCorrelatedActivitiesChart: this.state
-          .negativelyCorrelatedActivities
+        selectedCorrelatedUserActivitiesChart: this.state
+          .negativelyCorrelatedUserActivities
       });
     }
 
     this.setState({
-      selectedActivitiesCorrelationTab: name
+      selectedUserActivitiesCorrelationTab: name
     });
   }
 
@@ -207,8 +207,8 @@ class SleepChartsView extends Component {
           return data[1];
         });
 
-        this.state.selectedCorrelatedActivitiesChart.labels = labels;
-        this.state.selectedCorrelatedActivitiesChart.datasets[
+        this.state.selectedCorrelatedUserActivitiesChart.labels = labels;
+        this.state.selectedCorrelatedUserActivitiesChart.datasets[
           0
         ].data = dataValues;
 
@@ -221,11 +221,11 @@ class SleepChartsView extends Component {
 
         // Finally update state after we've done so much magic
         this.setState({
-          selectedCorrelatedActivitiesChart: this.state
+          selectedCorrelatedUserActivitiesChart: this.state
             .supplementsCorrelationChart,
-          selectedCorrelatedActivities: positivelyCorrelatedActivities,
-          positivelyCorrelatedActivities: positivelyCorrelatedActivities,
-          negativelyCorrelatedActivities: negativelyCorrelatedActivities
+          selectedCorrelatedUserActivities: positivelyCorrelatedActivities,
+          positivelyCorrelatedUserActivities: positivelyCorrelatedActivities,
+          negativelyCorrelatedUserActivities: negativelyCorrelatedActivities
         });
       });
   }
@@ -277,7 +277,7 @@ class SleepChartsView extends Component {
   }
 
   renderActivitiesCorrelationSelectionTab(tabName) {
-    if (this.state.selectedActivitiesCorrelationTab === tabName) {
+    if (this.state.selectedUserActivitiesCorrelationTab === tabName) {
       return (
         <NavItem className="selected-modal">
           <NavLink>
@@ -288,7 +288,10 @@ class SleepChartsView extends Component {
     }
     return (
       <NavItem className="default-background">
-        <NavLink onClick={this.selectSupplementsCorrelationTab} name={tabName}>
+        <NavLink
+          onClick={this.selectUserActivitiesCorrelationTab}
+          name={tabName}
+        >
           {tabName}
         </NavLink>
       </NavItem>
@@ -316,7 +319,7 @@ class SleepChartsView extends Component {
     );
   }
 
-  renderActivitiesSleepCorrelation() {
+  renderUserActivitiesSleepCorrelation() {
     return (
       <div className="card-columns cols-2">
         <div className="card">
@@ -336,10 +339,10 @@ class SleepChartsView extends Component {
         </div>
         <div className="float">
           <Nav tabs>
-            {this.renderSupplementsCorrelationSelectionTab(
+            {this.renderActivitiesCorrelationSelectionTab(
               "Positively Correlated"
             )}
-            {this.renderSupplementsCorrelationSelectionTab(
+            {this.renderActivitiesCorrelationSelectionTab(
               "Negatively Correlated"
             )}
           </Nav>
@@ -353,7 +356,7 @@ class SleepChartsView extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.selectedCorrelatedSupplements.map(key => (
+                  {this.state.selectedCorrelatedUserActivities.map(key => (
                     <SupplementRow key={key} object={key} />
                   ))}
                 </tbody>
@@ -418,10 +421,10 @@ class SleepChartsView extends Component {
     return (
       <div className="animated fadeIn">
         {this.renderSleepHistoryChart()}
-        {/*Just do historical sleep analytics ... after. No one even has 90 days of history yet*/}
-        {/*{this.renderHistoricalSleepAnalytics()}*/}
         {this.renderSupplementsSleepCorrelation()}
-        {this.renderActivitiesSleepCorrelation()}
+        {this.renderUserActivitiesSleepCorrelation()}
+        {/*Hold off on Historical Sleep Analytics, No one has 90 Days of History Yet*/}
+        {/*{this.renderHistoricalSleepAnalytics()}*/}
       </div>
     );
   }
