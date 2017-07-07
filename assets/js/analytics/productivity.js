@@ -16,6 +16,7 @@ export class ProductivityAnalyticsView extends Component {
     this.state = {
       productivityHistory: ProductivityHistoryChart
     };
+    this.state.productivityHistory.datasets[0].label = "Time (Minutes)";
   }
 
   componentDidMount() {
@@ -23,7 +24,7 @@ export class ProductivityAnalyticsView extends Component {
   }
 
   getHistory() {
-    fetch(`api/v1/sleep_activities/aggregates`, {
+    fetch("/api/v1/productivity_log/", {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -31,16 +32,35 @@ export class ProductivityAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
+        const reverseResponseData = responseData.results.reverse();
+        console.log(reverseResponseData);
+        const labelDates = reverseResponseData.map(key => key.date);
+        const arrayValues = reverseResponseData.map(
+          key => key.very_productive_time_minutes
+        );
+
+        this.state.productivityHistory.labels = labelDates;
+        this.state.productivityHistory.datasets[0].data = arrayValues;
+
+        this.setState({ productivityHistory: this.state.productivityHistory });
       });
   }
   renderHistoryChart() {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          Productivity History
-          <div className="card-actions" />
+          <span className="font-2xl">Productivity History</span>
+          <span className="float-right">
+            <input
+              type="text"
+              id="text-input"
+              name="text-input"
+              className="form-control center-source"
+              placeholder="Very Productive"
+            />
+          </span>
         </div>
+
         <div className="card-block">
           <div className="chart-wrapper">
             <Line

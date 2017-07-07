@@ -116,4 +116,6 @@
   border: none;
 }
 
-
+.chart-selector {
+  border-left: 5px
+}
