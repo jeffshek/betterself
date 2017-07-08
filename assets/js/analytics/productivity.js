@@ -5,11 +5,11 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { DefaultLineChartDataset } from "../constants/charts";
 import {
-  DISTRACTING_MINUTES,
-  NEUTRAL_MINUTES,
-  PRODUCTIVE_MINUTES,
-  VERY_DISTRACTING_MINUTES,
-  VERY_PRODUCTIVE_MINUTES
+  DISTRACTING_MINUTES_VARIABLE,
+  NEUTRAL_MINUTES_VARIABLE,
+  PRODUCTIVE_MINUTES_VARIABLE,
+  VERY_DISTRACTING_MINUTES_VARIABLE,
+  VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants";
 
 const ProductivityHistoryChart = {
@@ -18,11 +18,11 @@ const ProductivityHistoryChart = {
 };
 
 const ProductivityColumnMappingToKey = {
-  "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES,
-  "Productive Minutes": PRODUCTIVE_MINUTES,
-  "Neutral Minutes": NEUTRAL_MINUTES,
-  "Distracting Minutes": DISTRACTING_MINUTES,
-  "Very Distracting Minutes": VERY_DISTRACTING_MINUTES
+  "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
+  "Productive Minutes": PRODUCTIVE_MINUTES_VARIABLE,
+  "Neutral Minutes": NEUTRAL_MINUTES_VARIABLE,
+  "Distracting Minutes": DISTRACTING_MINUTES_VARIABLE,
+  "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
 };
 
 export class ProductivityAnalyticsView extends Component {

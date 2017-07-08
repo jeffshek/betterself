@@ -2,6 +2,12 @@ import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
+import {
+  NEUTRAL_MINUTES_VARIABLE,
+  PRODUCTIVE_MINUTES_VARIABLE,
+  VERY_DISTRACTING_MINUTES_VARIABLE,
+  VERY_PRODUCTIVE_MINUTES_VARIABLE
+} from "../constants";
 
 const confirmDelete = (uuid, eventDate) => {
   const answer = confirm(
@@ -27,11 +33,11 @@ const confirmDelete = (uuid, eventDate) => {
 const ProductivityHistoryRow = props => {
   const data = props.object;
 
-  const veryProductiveMinutes = data.very_productive_time_minutes;
-  const productiveMinutes = data.productive_time_minutes;
-  const neutralMinutes = data.neutral_time_minutes;
-  const distractingMinutes = data.distracting_time_minutes;
-  const veryDistractingMinutes = data.very_distracting_time_minutes;
+  const veryProductiveMinutes = data[VERY_PRODUCTIVE_MINUTES_VARIABLE];
+  const productiveMinutes = data[PRODUCTIVE_MINUTES_VARIABLE];
+  const neutralMinutes = data[NEUTRAL_MINUTES_VARIABLE];
+  const distractingMinutes = data[DISTRACTING_MINUTES_VARIABLE];
+  const veryDistractingMinutes = data[VERY_DISTRACTING_MINUTES_VARIABLE];
   const eventDate = data.date;
   const uuid = data.uuid;
 
