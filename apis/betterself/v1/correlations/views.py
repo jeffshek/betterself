@@ -24,7 +24,7 @@ def get_sorted_response(series):
     return Response(sorted_response)
 
 
-class SleepActivitiesCorrelationView(APIView):
+class SleepUserActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
@@ -76,6 +76,34 @@ class SleepSupplementsCorrelationView(APIView):
 
 
 class ProductivitySupplementsCorrelationView(APIView):
+    def get(self, request):
+        user = request.user
+
+        correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
+        if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
+            return Response('Invalid Correlation Driver Entered', status=400)
+
+        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        if aggregate_dataframe.empty:
+            return Response()
+
+        df_correlation = aggregate_dataframe.corr()
+        df_correlation_driver_series = df_correlation[correlation_driver]
+
+        # since this is a supplement only view, disregard how the other productivity drivers
+        # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
+        valid_index = [item for item in df_correlation_driver_series.index if item not in VALID_PRODUCTIVITY_DRIVERS]
+
+        # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
+        valid_index.append(correlation_driver)
+
+        filtered_correlation_series = df_correlation_driver_series[valid_index]
+        filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
+
+        return get_sorted_response(filtered_correlation_series)
+
+
+class ProductivityUserActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
