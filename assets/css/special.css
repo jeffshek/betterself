@@ -119,3 +119,8 @@
 .chart-selector {
   border-left: 5px
 }
+
+.form-control .chart-selector {
+  border-right: 5px;
+  font-weight: bold;
+}

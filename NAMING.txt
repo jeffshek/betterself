@@ -30,3 +30,5 @@ sleepSupplementsCorrelations
 # or if you can ... remove sleep from the name altogether
 supplementsCorrelations
 
+# try to put data near the end of variables
+historyChartData
