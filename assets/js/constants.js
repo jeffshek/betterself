@@ -10,3 +10,6 @@ export const NEUTRAL_MINUTES_VARIABLE = "neutral_time_minutes";
 export const DISTRACTING_MINUTES_VARIABLE = "distracting_time_minutes";
 export const VERY_DISTRACTING_MINUTES_VARIABLE =
   "very_distracting_time_minutes";
+
+export const POSITIVELY_CORRELATED_LABEL = "Positively Correlated";
+export const NEGATIVELY_CORRELATED_LABEL = "Negatively Correlated";

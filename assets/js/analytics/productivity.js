@@ -3,19 +3,25 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
-import { DefaultLineChartDataset } from "../constants/charts";
 import {
+  CHARTS_BACKGROUND_COLOR,
+  DataAnalyticsRow,
+  DefaultLineChartDataset
+} from "../constants/charts";
+import {
+  DISTRACTING_MINUTES_LABEL,
   DISTRACTING_MINUTES_VARIABLE,
+  NEGATIVELY_CORRELATED_LABEL,
+  NEUTRAL_MINUTES_LABEL,
   NEUTRAL_MINUTES_VARIABLE,
+  POSITIVELY_CORRELATED_LABEL,
+  PRODUCTIVE_MINUTES_LABEL,
   PRODUCTIVE_MINUTES_VARIABLE,
+  VERY_DISTRACTING_MINUTES_LABEL,
   VERY_DISTRACTING_MINUTES_VARIABLE,
+  VERY_PRODUCTIVE_MINUTES_LABEL,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants";
-
-const ProductivityHistoryChart = {
-  labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
-};
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -25,13 +31,61 @@ const ProductivityColumnMappingToKey = {
   "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
 };
 
+const ProductivityHistoryChart = {
+  labels: [],
+  datasets: [Object.assign({}, DefaultLineChartDataset)]
+};
+
+const SupplementsCorrelationsChart = {
+  labels: [],
+  datasets: [
+    {
+      label: "Productivity Correlation",
+      backgroundColor: CHARTS_BACKGROUND_COLOR,
+      borderColor: CHARTS_BACKGROUND_COLOR,
+      borderWidth: 1,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: []
+    }
+  ]
+};
+
+const ActivitiesCorrelationsChart = {
+  labels: [],
+  datasets: [
+    {
+      label: "Productivity Correlation",
+      backgroundColor: CHARTS_BACKGROUND_COLOR,
+      borderColor: CHARTS_BACKGROUND_COLOR,
+      borderWidth: 1,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: []
+    }
+  ]
+};
+
 export class ProductivityAnalyticsView extends Component {
   constructor() {
     super();
     this.state = {
-      historyChartData: [],
-      selectedProductivityHistoryType: "Very Productive Minutes",
-      productivityHistoryChart: ProductivityHistoryChart
+      productivityHistoryChart: ProductivityHistoryChart,
+      //
+      selectedProductivityHistoryChartData: [],
+      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL,
+      //
+      supplementsCorrelationsChart: SupplementsCorrelationsChart,
+      selectedSupplementsCorrelations: [],
+      selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
+      positiveSupplementsCorrelations: [],
+      negativeSupplementsCorrelations: [],
+      //
+      selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
+      selectedUserActivitiesCorrelations: [],
+      selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
+      positiveUserActivitiesCorrelations: [],
+      negativeUserActivitiesCorrelations: []
     };
     this.state.productivityHistoryChart.datasets[
       0
@@ -50,7 +104,9 @@ export class ProductivityAnalyticsView extends Component {
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
 
-    const arrayValues = this.state.historyChartData.map(key => key[column_key]);
+    const arrayValues = this.state.selectedProductivityHistoryChartData.map(
+      key => key[column_key]
+    );
 
     this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
     this.state.productivityHistoryChart.datasets[0].data = arrayValues;
@@ -84,9 +140,58 @@ export class ProductivityAnalyticsView extends Component {
 
         this.setState({
           productivityHistoryChart: this.state.productivityHistoryChart,
-          historyChartData: reverseResponseData
+          selectedProductivityHistoryChartData: reverseResponseData
         });
       });
+  }
+
+  renderSupplementsCorrelations() {
+    return (
+      <div className="card-columns cols-2">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            Supplements and Productivity Correlation
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Bar
+                data={SupplementsCorrelationsChart}
+                options={{
+                  maintainAspectRatio: true
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="float">
+          <div className="card">
+            <Nav tabs>
+              {this.renderSupplementsCorrelationSelectionTab(
+                POSITIVELY_CORRELATED_LABEL
+              )}
+              {this.renderSupplementsCorrelationSelectionTab(
+                NEGATIVELY_CORRELATED_LABEL
+              )}
+            </Nav>
+            <div className="card-block">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Supplement</th>
+                    <th>Correlation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.selectedSupplementsCorrelations.map(key => (
+                    <DataAnalyticsRow key={key} object={key} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   renderHistoryChart() {
@@ -102,11 +207,11 @@ export class ProductivityAnalyticsView extends Component {
               value={this.state.selectedProductivityHistoryType}
               size="1"
             >
-              <option>Very Productive Minutes</option>
-              <option>Productive Minutes</option>
-              <option>Neutral Minutes</option>
-              <option>Distracting Minutes</option>
-              <option>Very Distracting Minutes</option>
+              <option>{VERY_PRODUCTIVE_MINUTES_LABEL}</option>
+              <option>{PRODUCTIVE_MINUTES_LABEL}</option>
+              <option>{NEUTRAL_MINUTES_LABEL}</option>
+              <option>{DISTRACTING_MINUTES_LABEL}</option>
+              <option>{VERY_DISTRACTING_MINUTES_LABEL}</option>
             </select>
           </span>
         </div>
