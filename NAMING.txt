@@ -32,3 +32,6 @@ supplementsCorrelations
 
 # try to put data near the end of variables
 historyChartData
+
+# try to call the javascript files that just hold abstract classes
+base.js
