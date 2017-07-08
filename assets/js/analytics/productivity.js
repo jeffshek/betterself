@@ -49,6 +49,8 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       "api/v1/productivity_log/supplements/correlations";
     this.supplementsCorrelationsChartLabel =
       "Supplements and Productivity Correlation";
+    this.userActivitiesCorrelationsURL =
+      "api/v1/productivity/user_activities/correlations";
 
     this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this

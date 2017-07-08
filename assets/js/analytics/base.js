@@ -189,6 +189,28 @@ export class BaseAnalyticsView extends Component {
     });
   }
 
+  renderActivitiesCorrelationSelectionTab(tabName) {
+    if (this.state.selectedUserActivitiesCorrelationsTab === tabName) {
+      return (
+        <NavItem className="selected-modal">
+          <NavLink>
+            {tabName}
+          </NavLink>
+        </NavItem>
+      );
+    }
+    return (
+      <NavItem className="default-background">
+        <NavLink
+          onClick={this.selectUserActivitiesCorrelationsTab}
+          name={tabName}
+        >
+          {tabName}
+        </NavLink>
+      </NavItem>
+    );
+  }
+
   renderSupplementsCorrelationSelectionTab(tabName) {
     if (this.state.selectedSupplementsCorrelationsTab === tabName) {
       return (
@@ -208,6 +230,55 @@ export class BaseAnalyticsView extends Component {
     );
   }
 
+  renderUserActivitiesCorrelations() {
+    return (
+      <div className="card-columns cols-2">
+        <div className="card">
+          <div className="card-header analytics-text-box-label">
+            {this.userActivitiesCorrelationsChartLabel}
+          </div>
+          <div className="card-block">
+            <div className="chart-wrapper">
+              <Bar
+                data={this.state.selectedUserActivityCorrelationsChart}
+                options={{
+                  maintainAspectRatio: true
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="float">
+          <div className="card">
+            <Nav tabs>
+              {this.renderActivitiesCorrelationSelectionTab(
+                "Positively Correlated"
+              )}
+              {this.renderActivitiesCorrelationSelectionTab(
+                "Negatively Correlated"
+              )}
+            </Nav>
+            <div className="card-block">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Activity</th>
+                    <th>Correlation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.selectedUserActivitiesCorrelations.map(key => (
+                    <DataAnalyticsRow key={key} object={key} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderSupplementsCorrelations() {
     return (
       <div className="card-columns cols-2">
@@ -218,7 +289,7 @@ export class BaseAnalyticsView extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={SupplementsCorrelationsChart}
+                data={this.state.supplementsCorrelationsChart}
                 options={{
                   maintainAspectRatio: true
                 }}
