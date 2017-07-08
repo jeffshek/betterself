@@ -49,6 +49,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       "api/v1/productivity_log/supplements/correlations";
     this.supplementsCorrelationsChartLabel =
       "Supplements and Productivity Correlation";
+
+    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
+      this
+    );
   }
 
   componentDidMount() {

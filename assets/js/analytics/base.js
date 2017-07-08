@@ -48,12 +48,13 @@ export class BaseAnalyticsView extends Component {
     super();
 
     this.state = {
+      // Supplements Correlations
       supplementsCorrelationsChart: SupplementsCorrelationsChart,
       selectedSupplementsCorrelations: [],
       selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveSupplementsCorrelations: [],
       negativeSupplementsCorrelations: [],
-      //
+      // User Activities
       selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
@@ -62,9 +63,6 @@ export class BaseAnalyticsView extends Component {
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
-      this
-    );
-    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
     );
   }

@@ -11,6 +11,7 @@ import {
   DefaultLineChartDataset
 } from "../constants/charts";
 import { POSITIVELY_CORRELATED_LABEL } from "../constants";
+import { BaseAnalyticsView } from "./base";
 
 const SleepHistoryChart = {
   labels: [],
@@ -47,24 +48,14 @@ const ActivitiesCorrelationsChart = {
   ]
 };
 
-class SleepAnalyticsView extends Component {
+class SleepAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();
-    this.state = {
-      sleepHistory: SleepHistoryChart,
-      //
-      supplementsCorrelationsChart: SupplementsCorrelationsChart,
-      selectedSupplementsCorrelations: [],
-      selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
-      positiveSupplementsCorrelations: [],
-      negativeSupplementsCorrelations: [],
-      //
-      selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
-      selectedUserActivitiesCorrelations: [],
-      selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
-      positiveUserActivitiesCorrelations: [],
-      negativeUserActivitiesCorrelations: []
+    const updateState = {
+      sleepHistory: SleepHistoryChart
     };
+    this.state = Object.assign(this.state, updateState);
+
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
       this
     );
