@@ -18,7 +18,7 @@ supplementCorrelationCharts
 UserActivities
 
 # something that indicates selected goes before everything else!
-selectedSupplementCorrelations
+selectedSupplementsCorrelations
 
 # When in doubt of singular versus plural, just pick plural, so lean toward plural
 UserActivitiesEvents
@@ -35,3 +35,6 @@ historyChartData
 
 # try to call the javascript files that just hold abstract classes
 base.js
+
+# try to make correlations plural
+SleepSupplementsCorrelationsTests
