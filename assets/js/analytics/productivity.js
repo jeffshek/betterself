@@ -22,11 +22,11 @@ export class ProductivityAnalyticsView extends Component {
   constructor() {
     super();
     this.state = {
-      chartHistoryData: [],
+      historyChartData: [],
       selectedProductivityHistoryType: "Very Productive Minutes",
-      productivityHistory: ProductivityHistoryChart
+      productivityHistoryChart: ProductivityHistoryChart
     };
-    this.state.productivityHistory.datasets[
+    this.state.productivityHistoryChart.datasets[
       0
     ].label = this.state.selectedProductivityHistoryType;
     this.handleSelectedProductivityHistory = this.handleSelectedProductivityHistory.bind(
@@ -34,24 +34,26 @@ export class ProductivityAnalyticsView extends Component {
     );
   }
 
+  componentDidMount() {
+    this.getHistory();
+  }
+
   handleSelectedProductivityHistory(event) {
     const selectedProductivityHistoryType = event.target.value;
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
 
-    const arrayValues = this.state.chartHistoryData.map(key => key[column_key]);
+    const arrayValues = this.state.historyChartData.map(key => key[column_key]);
 
     this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
-    this.state.productivityHistory.datasets[0].data = arrayValues;
-    this.state.productivityHistory.datasets[
+    this.state.productivityHistoryChart.datasets[0].data = arrayValues;
+    this.state.productivityHistoryChart.datasets[
       0
     ].label = this.state.selectedProductivityHistoryType;
 
-    this.setState({ productivityHistory: this.state.productivityHistory });
-  }
-
-  componentDidMount() {
-    this.getHistory();
+    this.setState({
+      productivityHistoryChart: this.state.productivityHistoryChart
+    });
   }
 
   getHistory() {
@@ -70,15 +72,16 @@ export class ProductivityAnalyticsView extends Component {
           key => key.very_productive_time_minutes
         );
 
-        this.state.productivityHistory.labels = labelDates;
-        this.state.productivityHistory.datasets[0].data = arrayValues;
+        this.state.productivityHistoryChart.labels = labelDates;
+        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
 
         this.setState({
-          productivityHistory: this.state.productivityHistory,
-          chartHistoryData: reverseResponseData
+          productivityHistoryChart: this.state.productivityHistoryChart,
+          historyChartData: reverseResponseData
         });
       });
   }
+
   renderHistoryChart() {
     return (
       <div className="card">
@@ -103,7 +106,7 @@ export class ProductivityAnalyticsView extends Component {
         <div className="card-block">
           <div className="chart-wrapper">
             <Line
-              data={this.state.productivityHistory}
+              data={this.state.productivityHistoryChart}
               options={{
                 maintainAspectRatio: false
               }}
