@@ -6,7 +6,7 @@ import {
   CHART_HOVER_BORDER_COLOR,
   CHART_HOVER_COLOR,
   CHARTS_BACKGROUND_COLOR,
-  DataAnalyticsRow
+  CorrelationTableRow
 } from "../constants/charts";
 import {
   NEGATIVELY_CORRELATED_LABEL,
@@ -55,7 +55,7 @@ export class BaseAnalyticsView extends Component {
       positiveSupplementsCorrelations: [],
       negativeSupplementsCorrelations: [],
       // User Activities
-      selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
+      selectedUserActivitiesCorrelationsChart: ActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
@@ -112,7 +112,6 @@ export class BaseAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
         const labels = responseData.map(data => {
           return data[0];
         });
@@ -120,8 +119,8 @@ export class BaseAnalyticsView extends Component {
           return data[1];
         });
 
-        this.state.selectedUserActivityCorrelationsChart.labels = labels;
-        this.state.selectedUserActivityCorrelationsChart.datasets[
+        this.state.selectedUserActivitiesCorrelationsChart.labels = labels;
+        this.state.selectedUserActivitiesCorrelationsChart.datasets[
           0
         ].data = dataValues;
 
@@ -134,8 +133,8 @@ export class BaseAnalyticsView extends Component {
 
         // Finally update state after we've done so much magic
         this.setState({
-          selectedUserActivityCorrelationsChart: this.state
-            .selectedUserActivityCorrelationsChart,
+          selectedUserActivitiesCorrelationsChart: this.state
+            .selectedUserActivitiesCorrelationsChart,
           selectedUserActivitiesCorrelations: positivelyCorrelatedActivities,
           positiveUserActivitiesCorrelations: positivelyCorrelatedActivities,
           negativeUserActivitiesCorrelations: negativelyCorrelatedActivities
@@ -162,6 +161,7 @@ export class BaseAnalyticsView extends Component {
     }
 
     this.setState({
+      // Say either Positive Correlated or Negatively Correlated
       selectedSupplementsCorrelationsTab: name
     });
   }
@@ -185,6 +185,7 @@ export class BaseAnalyticsView extends Component {
     }
 
     this.setState({
+      // Say either Positive Correlated or Negatively Correlated
       selectedUserActivitiesCorrelationsTab: name
     });
   }
@@ -240,7 +241,7 @@ export class BaseAnalyticsView extends Component {
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={this.state.selectedUserActivityCorrelationsChart}
+                data={this.state.selectedUserActivitiesCorrelationsChart}
                 options={{
                   maintainAspectRatio: true
                 }}
@@ -252,10 +253,10 @@ export class BaseAnalyticsView extends Component {
           <div className="card">
             <Nav tabs>
               {this.renderActivitiesCorrelationSelectionTab(
-                "Positively Correlated"
+                POSITIVELY_CORRELATED_LABEL
               )}
               {this.renderActivitiesCorrelationSelectionTab(
-                "Negatively Correlated"
+                NEGATIVELY_CORRELATED_LABEL
               )}
             </Nav>
             <div className="card-block">
@@ -268,7 +269,7 @@ export class BaseAnalyticsView extends Component {
                 </thead>
                 <tbody>
                   {this.state.selectedUserActivitiesCorrelations.map(key => (
-                    <DataAnalyticsRow key={key} object={key} />
+                    <CorrelationTableRow key={key} object={key} />
                   ))}
                 </tbody>
               </table>
@@ -317,7 +318,7 @@ export class BaseAnalyticsView extends Component {
                 </thead>
                 <tbody>
                   {this.state.selectedSupplementsCorrelations.map(key => (
-                    <DataAnalyticsRow key={key} object={key} />
+                    <CorrelationTableRow key={key} object={key} />
                   ))}
                 </tbody>
               </table>
