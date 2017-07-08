@@ -50,7 +50,9 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.supplementsCorrelationsChartLabel =
       "Supplements and Productivity Correlation";
     this.userActivitiesCorrelationsURL =
-      "api/v1/productivity/user_activities/correlations";
+      "api/v1/productivity_log/user_activities/correlations";
+    this.userActivitiesCorrelationsChartLabel =
+      "User Activities and Productivity Correlation";
 
     this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
@@ -60,6 +62,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   componentDidMount() {
     this.getHistory();
     this.getSupplementsCorrelations();
+    // this.getUserActivitiesCorrelations();
   }
 
   // Choose between "Very Productive Minutes", "Neutral Minutes", "Negative Minutes" etc
