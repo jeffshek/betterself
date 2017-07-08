@@ -10,6 +10,7 @@ import {
   DataAnalyticsRow,
   DefaultLineChartDataset
 } from "../constants/charts";
+import { POSITIVELY_CORRELATED_LABEL } from "../constants";
 
 const SleepHistoryChart = {
   labels: [],
@@ -54,13 +55,13 @@ class SleepAnalyticsView extends Component {
       //
       supplementsCorrelationsChart: SupplementsCorrelationsChart,
       selectedSupplementsCorrelations: [],
-      selectedSupplementsCorrelationsTab: "Positively Correlated",
+      selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveSupplementsCorrelations: [],
       negativeSupplementsCorrelations: [],
       //
       selectedUserActivityCorrelationsChart: ActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
-      selectedUserActivitiesCorrelationsTab: "Positively Correlated",
+      selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: []
     };

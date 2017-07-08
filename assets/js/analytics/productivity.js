@@ -68,15 +68,11 @@ const ActivitiesCorrelationsChart = {
   ]
 };
 
-export class ProductivityAnalyticsView extends Component {
+export class BaseAnalyticsView extends Component {
   constructor() {
     super();
+
     this.state = {
-      productivityHistoryChart: ProductivityHistoryChart,
-      //
-      selectedProductivityHistoryChartData: [],
-      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL,
-      //
       supplementsCorrelationsChart: SupplementsCorrelationsChart,
       selectedSupplementsCorrelations: [],
       selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
@@ -89,10 +85,26 @@ export class ProductivityAnalyticsView extends Component {
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: []
     };
+  }
+}
+
+export class ProductivityAnalyticsView extends BaseAnalyticsView {
+  constructor() {
+    super();
+    const updateState = {
+      productivityHistoryChart: ProductivityHistoryChart,
+      //
+      selectedProductivityHistoryChartData: [],
+      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL
+    };
+    // Update state with whatever was done in the base class
+    this.state = Object.assign(this.state, updateState);
+
     this.state.productivityHistoryChart.datasets[
       0
     ].label = this.state.selectedProductivityHistoryType;
-    this.handleSelectedProductivityHistory = this.handleSelectedProductivityHistory.bind(
+
+    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
     );
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -105,7 +117,7 @@ export class ProductivityAnalyticsView extends Component {
     this.getSupplementsCorrelations();
   }
 
-  handleSelectedProductivityHistory(event) {
+  handleSelectedProductivityHistoryType(event) {
     const selectedProductivityHistoryType = event.target.value;
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
@@ -290,7 +302,7 @@ export class ProductivityAnalyticsView extends Component {
             Chart Selection
             <select
               className="form-control chart-selector"
-              onChange={this.handleSelectedProductivityHistory}
+              onChange={this.handleSelectedProductivityHistoryType}
               value={this.state.selectedProductivityHistoryType}
               size="1"
             >
