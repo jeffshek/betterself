@@ -85,63 +85,17 @@ export class BaseAnalyticsView extends Component {
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: []
     };
-  }
-}
 
-export class ProductivityAnalyticsView extends BaseAnalyticsView {
-  constructor() {
-    super();
-    const updateState = {
-      productivityHistoryChart: ProductivityHistoryChart,
-      //
-      selectedProductivityHistoryChartData: [],
-      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL
-    };
-    // Update state with whatever was done in the base class
-    this.state = Object.assign(this.state, updateState);
-
-    this.state.productivityHistoryChart.datasets[
-      0
-    ].label = this.state.selectedProductivityHistoryType;
-
-    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
-      this
-    );
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
       this
     );
-  }
-
-  componentDidMount() {
-    this.getHistory();
-    this.getSupplementsCorrelations();
-  }
-
-  handleSelectedProductivityHistoryType(event) {
-    const selectedProductivityHistoryType = event.target.value;
-    const column_key =
-      ProductivityColumnMappingToKey[selectedProductivityHistoryType];
-
-    const arrayValues = this.state.selectedProductivityHistoryChartData.map(
-      key => key[column_key]
+    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
+      this
     );
-
-    this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
-    this.state.productivityHistoryChart.datasets[0].data = arrayValues;
-    this.state.productivityHistoryChart.datasets[
-      0
-    ].label = this.state.selectedProductivityHistoryType;
-
-    this.setState({
-      productivityHistoryChart: this.state.productivityHistoryChart
-    });
   }
 
-  //
-  // API Calls
-  //
   getSupplementsCorrelations() {
-    fetch(`api/v1/productivity_log/supplements/correlations`, {
+    fetch(this.supplementCorrelationsURL, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -218,38 +172,12 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     );
   }
 
-  getHistory() {
-    fetch("/api/v1/productivity_log/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const reverseResponseData = responseData.results.reverse();
-
-        const labelDates = reverseResponseData.map(key => key.date);
-        const arrayValues = reverseResponseData.map(
-          key => key.very_productive_time_minutes
-        );
-
-        this.state.productivityHistoryChart.labels = labelDates;
-        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
-
-        this.setState({
-          productivityHistoryChart: this.state.productivityHistoryChart,
-          selectedProductivityHistoryChartData: reverseResponseData
-        });
-      });
-  }
-
   renderSupplementsCorrelations() {
     return (
       <div className="card-columns cols-2">
         <div className="card">
           <div className="card-header analytics-text-box-label">
-            Supplements and Productivity Correlation
+            {this.supplementsCorrelationsChartLabel}
           </div>
           <div className="card-block">
             <div className="chart-wrapper">
@@ -291,6 +219,81 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         </div>
       </div>
     );
+  }
+}
+
+export class ProductivityAnalyticsView extends BaseAnalyticsView {
+  constructor() {
+    super();
+    const updateState = {
+      productivityHistoryChart: ProductivityHistoryChart,
+      //
+      selectedProductivityHistoryChartData: [],
+      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL
+    };
+    // Update state (from base class) with the above
+    this.state = Object.assign(this.state, updateState);
+
+    this.state.productivityHistoryChart.datasets[
+      0
+    ].label = this.state.selectedProductivityHistoryType;
+
+    this.supplementCorrelationsURL =
+      "api/v1/productivity_log/supplements/correlations";
+    this.supplementsCorrelationsChartLabel =
+      "Supplements and Productivity Correlation";
+  }
+
+  componentDidMount() {
+    this.getHistory();
+    this.getSupplementsCorrelations();
+  }
+
+  // Choose between "Very Productive Minutes", "Neutral Minutes", "Negative Minutes" etc
+  handleSelectedProductivityHistoryType(event) {
+    const selectedProductivityHistoryType = event.target.value;
+    const column_key =
+      ProductivityColumnMappingToKey[selectedProductivityHistoryType];
+
+    const arrayValues = this.state.selectedProductivityHistoryChartData.map(
+      key => key[column_key]
+    );
+
+    this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
+    this.state.productivityHistoryChart.datasets[0].data = arrayValues;
+    this.state.productivityHistoryChart.datasets[
+      0
+    ].label = this.state.selectedProductivityHistoryType;
+
+    this.setState({
+      productivityHistoryChart: this.state.productivityHistoryChart
+    });
+  }
+
+  getHistory() {
+    fetch("/api/v1/productivity_log/", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const reverseResponseData = responseData.results.reverse();
+
+        const labelDates = reverseResponseData.map(key => key.date);
+        const arrayValues = reverseResponseData.map(
+          key => key.very_productive_time_minutes
+        );
+
+        this.state.productivityHistoryChart.labels = labelDates;
+        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
+
+        this.setState({
+          productivityHistoryChart: this.state.productivityHistoryChart,
+          selectedProductivityHistoryChartData: reverseResponseData
+        });
+      });
   }
 
   renderHistoryChart() {
