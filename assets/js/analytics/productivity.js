@@ -4,6 +4,13 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { DefaultLineChartDataset } from "../constants/charts";
+import {
+  DISTRACTING_MINUTES,
+  NEUTRAL_MINUTES,
+  PRODUCTIVE_MINUTES,
+  VERY_DISTRACTING_MINUTES,
+  VERY_PRODUCTIVE_MINUTES
+} from "../constants";
 
 const ProductivityHistoryChart = {
   labels: [],
@@ -11,11 +18,11 @@ const ProductivityHistoryChart = {
 };
 
 const ProductivityColumnMappingToKey = {
-  "Very Productive Minutes": "very_productive_time_minutes",
-  "Productive Minutes": "productive_time_minutes",
-  "Neutral Minutes": "neutral_time_minutes",
-  "Distracting Minutes": "distracting_time_minutes",
-  "Very Distracting Minutes": "very_distracting_time_minutes"
+  "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES,
+  "Productive Minutes": PRODUCTIVE_MINUTES,
+  "Neutral Minutes": NEUTRAL_MINUTES,
+  "Distracting Minutes": DISTRACTING_MINUTES,
+  "Very Distracting Minutes": VERY_DISTRACTING_MINUTES
 };
 
 export class ProductivityAnalyticsView extends Component {
