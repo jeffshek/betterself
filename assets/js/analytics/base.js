@@ -103,6 +103,46 @@ export class BaseAnalyticsView extends Component {
       });
   }
 
+  getUserActivitiesCorrelations() {
+    fetch(this.userActivitiesCorrelationsURL, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
+        const labels = responseData.map(data => {
+          return data[0];
+        });
+        const dataValues = responseData.map(data => {
+          return data[1];
+        });
+
+        this.state.selectedUserActivityCorrelationsChart.labels = labels;
+        this.state.selectedUserActivityCorrelationsChart.datasets[
+          0
+        ].data = dataValues;
+
+        const positivelyCorrelatedActivities = responseData.filter(data => {
+          return data[1] > 0;
+        });
+        const negativelyCorrelatedActivities = responseData.filter(data => {
+          return data[1] < 0;
+        });
+
+        // Finally update state after we've done so much magic
+        this.setState({
+          selectedUserActivityCorrelationsChart: this.state
+            .selectedUserActivityCorrelationsChart,
+          selectedUserActivitiesCorrelations: positivelyCorrelatedActivities,
+          positiveUserActivitiesCorrelations: positivelyCorrelatedActivities,
+          negativeUserActivitiesCorrelations: negativelyCorrelatedActivities
+        });
+      });
+  }
+
   selectSupplementsCorrelationsTab(event) {
     event.preventDefault();
 
@@ -123,6 +163,29 @@ export class BaseAnalyticsView extends Component {
 
     this.setState({
       selectedSupplementsCorrelationsTab: name
+    });
+  }
+
+  selectUserActivitiesCorrelationsTab(event) {
+    event.preventDefault();
+
+    const target = event.target;
+    const name = target.name;
+
+    if (name === POSITIVELY_CORRELATED_LABEL) {
+      this.setState({
+        selectedUserActivitiesCorrelations: this.state
+          .positiveUserActivitiesCorrelations
+      });
+    } else if (name === NEGATIVELY_CORRELATED_LABEL) {
+      this.setState({
+        selectedUserActivitiesCorrelations: this.state
+          .negativeUserActivitiesCorrelations
+      });
+    }
+
+    this.setState({
+      selectedUserActivitiesCorrelationsTab: name
     });
   }
 

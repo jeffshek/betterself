@@ -54,7 +54,9 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     const updateState = {
       sleepHistory: SleepHistoryChart
     };
+    // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState);
+    this.state.sleepHistory.datasets[0].label = "Sleep Time (Hours)";
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
       this
@@ -62,6 +64,13 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
       this
     );
+
+    this.supplementCorrelationsURL =
+      "api/v1/sleep_activities/supplements/correlations";
+    this.supplementsCorrelationsChartLabel =
+      "Supplements and Sleep Correlation";
+    this.userActivitiesCorrelationsURL =
+      "api/v1/sleep_activities/user_activities/correlations";
   }
 
   componentDidMount() {
@@ -70,129 +79,67 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     this.getUserActivitiesCorrelations();
   }
 
-  selectSupplementsCorrelationsTab(event) {
-    event.preventDefault();
-
-    const target = event.target;
-    const name = target.name;
-
-    if (name === "Positively Correlated") {
-      this.setState({
-        selectedSupplementsCorrelations: this.state
-          .positiveSupplementsCorrelations
-      });
-    } else if (name === "Negatively Correlated") {
-      this.setState({
-        selectedSupplementsCorrelations: this.state
-          .negativeSupplementsCorrelations
-      });
-    }
-
-    this.setState({
-      selectedSupplementsCorrelationsTab: name
-    });
-  }
-
-  selectUserActivitiesCorrelationsTab(event) {
-    event.preventDefault();
-
-    const target = event.target;
-    const name = target.name;
-
-    if (name === "Positively Correlated") {
-      this.setState({
-        selectedUserActivitiesCorrelations: this.state
-          .positiveUserActivitiesCorrelations
-      });
-    } else if (name === "Negatively Correlated") {
-      this.setState({
-        selectedUserActivitiesCorrelations: this.state
-          .negativeUserActivitiesCorrelations
-      });
-    }
-
-    this.setState({
-      selectedUserActivitiesCorrelationsTab: name
-    });
-  }
+  // selectSupplementsCorrelationsTab(event) {
+  //   event.preventDefault();
+  //
+  //   const target = event.target;
+  //   const name = target.name;
+  //
+  //   if (name === "Positively Correlated") {
+  //     this.setState({
+  //       selectedSupplementsCorrelations: this.state
+  //         .positiveSupplementsCorrelations
+  //     });
+  //   } else if (name === "Negatively Correlated") {
+  //     this.setState({
+  //       selectedSupplementsCorrelations: this.state
+  //         .negativeSupplementsCorrelations
+  //     });
+  //   }
+  //
+  //   this.setState({
+  //     selectedSupplementsCorrelationsTab: name
+  //   });
+  // }
 
   //
   // API Calls
   //
-  getSupplementsCorrelations() {
-    fetch(`api/v1/sleep_activities/supplements/correlations`, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const labels = responseData.map(data => {
-          return data[0];
-        });
-        const dataValues = responseData.map(data => {
-          return data[1];
-        });
-
-        this.state.supplementsCorrelationsChart.labels = labels;
-        this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
-
-        const positivelyCorrelatedSupplements = responseData.filter(data => {
-          return data[1] > 0;
-        });
-        const negativelyCorrelatedSupplements = responseData.filter(data => {
-          return data[1] < 0;
-        });
-
-        // Finally update state after we've done so much magic
-        this.setState({
-          supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
-          selectedSupplementsCorrelations: positivelyCorrelatedSupplements,
-          positiveSupplementsCorrelations: positivelyCorrelatedSupplements,
-          negativeSupplementsCorrelations: negativelyCorrelatedSupplements
-        });
-      });
-  }
-
-  getUserActivitiesCorrelations() {
-    fetch(`api/v1/sleep_activities/user_activities/correlations`, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const labels = responseData.map(data => {
-          return data[0];
-        });
-        const dataValues = responseData.map(data => {
-          return data[1];
-        });
-
-        this.state.selectedUserActivityCorrelationsChart.labels = labels;
-        this.state.selectedUserActivityCorrelationsChart.datasets[
-          0
-        ].data = dataValues;
-
-        const positivelyCorrelatedActivities = responseData.filter(data => {
-          return data[1] > 0;
-        });
-        const negativelyCorrelatedActivities = responseData.filter(data => {
-          return data[1] < 0;
-        });
-
-        // Finally update state after we've done so much magic
-        this.setState({
-          selectedUserActivityCorrelationsChart: this.state
-            .supplementsCorrelationsChart,
-          selectedUserActivitiesCorrelations: positivelyCorrelatedActivities,
-          positiveUserActivitiesCorrelations: positivelyCorrelatedActivities,
-          negativeUserActivitiesCorrelations: negativelyCorrelatedActivities
-        });
-      });
-  }
+  // getSupplementsCorrelations() {
+  //   fetch(`api/v1/sleep_activities/supplements/correlations`, {
+  //     method: "GET",
+  //     headers: JSON_AUTHORIZATION_HEADERS
+  //   })
+  //     .then(response => {
+  //       return response.json();
+  //     })
+  //     .then(responseData => {
+  //       const labels = responseData.map(data => {
+  //         return data[0];
+  //       });
+  //       const dataValues = responseData.map(data => {
+  //         return data[1];
+  //       });
+  //
+  //       this.state.supplementsCorrelationsChart.labels = labels;
+  //       this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
+  //
+  //       const positivelyCorrelatedSupplements = responseData.filter(data => {
+  //         return data[1] > 0;
+  //       });
+  //       const negativelyCorrelatedSupplements = responseData.filter(data => {
+  //         return data[1] < 0;
+  //       });
+  //
+  //       // Finally update state after we've done so much magic
+  //       this.setState({
+  //         supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
+  //         selectedSupplementsCorrelations: positivelyCorrelatedSupplements,
+  //         positiveSupplementsCorrelations: positivelyCorrelatedSupplements,
+  //         negativeSupplementsCorrelations: negativelyCorrelatedSupplements
+  //       });
+  //     });
+  // }
 
   getHistory() {
     fetch(`api/v1/sleep_activities/aggregates`, {
@@ -221,24 +168,24 @@ class SleepAnalyticsView extends BaseAnalyticsView {
       });
   }
 
-  renderSupplementsCorrelationSelectionTab(tabName) {
-    if (this.state.selectedSupplementsCorrelationsTab === tabName) {
-      return (
-        <NavItem className="selected-modal">
-          <NavLink>
-            {tabName}
-          </NavLink>
-        </NavItem>
-      );
-    }
-    return (
-      <NavItem className="default-background">
-        <NavLink onClick={this.selectSupplementsCorrelationsTab} name={tabName}>
-          {tabName}
-        </NavLink>
-      </NavItem>
-    );
-  }
+  // renderSupplementsCorrelationSelectionTab(tabName) {
+  //   if (this.state.selectedSupplementsCorrelationsTab === tabName) {
+  //     return (
+  //       <NavItem className="selected-modal">
+  //         <NavLink>
+  //           {tabName}
+  //         </NavLink>
+  //       </NavItem>
+  //     );
+  //   }
+  //   return (
+  //     <NavItem className="default-background">
+  //       <NavLink onClick={this.selectSupplementsCorrelationsTab} name={tabName}>
+  //         {tabName}
+  //       </NavLink>
+  //     </NavItem>
+  //   );
+  // }
 
   renderActivitiesCorrelationSelectionTab(tabName) {
     if (this.state.selectedUserActivitiesCorrelationsTab === tabName) {
@@ -292,7 +239,7 @@ class SleepAnalyticsView extends BaseAnalyticsView {
           <div className="card-block">
             <div className="chart-wrapper">
               <Bar
-                data={ActivitiesCorrelationsChart}
+                data={this.state.selectedUserActivityCorrelationsChart}
                 options={{
                   maintainAspectRatio: true
                 }}
@@ -331,54 +278,54 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     );
   }
 
-  renderSupplementsCorrelations() {
-    return (
-      <div className="card-columns cols-2">
-        <div className="card">
-          <div className="card-header analytics-text-box-label">
-            Supplements and Sleep Correlation
-          </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Bar
-                data={SupplementsCorrelationsChart}
-                options={{
-                  maintainAspectRatio: true
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="float">
-          <div className="card">
-            <Nav tabs>
-              {this.renderSupplementsCorrelationSelectionTab(
-                "Positively Correlated"
-              )}
-              {this.renderSupplementsCorrelationSelectionTab(
-                "Negatively Correlated"
-              )}
-            </Nav>
-            <div className="card-block">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Supplement</th>
-                    <th>Correlation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.selectedSupplementsCorrelations.map(key => (
-                    <DataAnalyticsRow key={key} object={key} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // renderSupplementsCorrelations() {
+  //   return (
+  //     <div className="card-columns cols-2">
+  //       <div className="card">
+  //         <div className="card-header analytics-text-box-label">
+  //           {this.supplementsCorrelationsChartLabel}
+  //         </div>
+  //         <div className="card-block">
+  //           <div className="chart-wrapper">
+  //             <Bar
+  //               data={SupplementsCorrelationsChart}
+  //               options={{
+  //                 maintainAspectRatio: true
+  //               }}
+  //             />
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="float">
+  //         <div className="card">
+  //           <Nav tabs>
+  //             {this.renderSupplementsCorrelationSelectionTab(
+  //               POSITIVELY_CORRELATED_LABEL
+  //             )}
+  //             {this.renderSupplementsCorrelationSelectionTab(
+  //               "Negatively Correlated"
+  //             )}
+  //           </Nav>
+  //           <div className="card-block">
+  //             <table className="table">
+  //               <thead>
+  //                 <tr>
+  //                   <th>Supplement</th>
+  //                   <th>Correlation</th>
+  //                 </tr>
+  //               </thead>
+  //               <tbody>
+  //                 {this.state.selectedSupplementsCorrelations.map(key => (
+  //                   <DataAnalyticsRow key={key} object={key} />
+  //                 ))}
+  //               </tbody>
+  //             </table>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   render() {
     return (
