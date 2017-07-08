@@ -3,6 +3,7 @@ import { CubeLoadingStyle } from "../constants/loading_styles";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import {
+  DISTRACTING_MINUTES_VARIABLE,
   NEUTRAL_MINUTES_VARIABLE,
   PRODUCTIVE_MINUTES_VARIABLE,
   VERY_DISTRACTING_MINUTES_VARIABLE,
