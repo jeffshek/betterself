@@ -4,6 +4,8 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import {
+  CHART_HOVER_BORDER_COLOR,
+  CHART_HOVER_COLOR,
   CHARTS_BACKGROUND_COLOR,
   DataAnalyticsRow,
   DefaultLineChartDataset
@@ -40,12 +42,12 @@ const SupplementsCorrelationsChart = {
   labels: [],
   datasets: [
     {
-      label: "Productivity Correlation",
+      label: "Very Productive Minutes Correlation",
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
+      hoverBackgroundColor: CHART_HOVER_COLOR,
+      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
       data: []
     }
   ]
@@ -59,8 +61,8 @@ const ActivitiesCorrelationsChart = {
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
+      hoverBackgroundColor: CHART_HOVER_COLOR,
+      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
       data: []
     }
   ]
@@ -93,10 +95,14 @@ export class ProductivityAnalyticsView extends Component {
     this.handleSelectedProductivityHistory = this.handleSelectedProductivityHistory.bind(
       this
     );
+    this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
+      this
+    );
   }
 
   componentDidMount() {
     this.getHistory();
+    this.getSupplementsCorrelations();
   }
 
   handleSelectedProductivityHistory(event) {
@@ -117,6 +123,87 @@ export class ProductivityAnalyticsView extends Component {
     this.setState({
       productivityHistoryChart: this.state.productivityHistoryChart
     });
+  }
+
+  //
+  // API Calls
+  //
+  getSupplementsCorrelations() {
+    fetch(`api/v1/productivity_log/supplements/correlations`, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const labels = responseData.map(data => {
+          return data[0];
+        });
+        const dataValues = responseData.map(data => {
+          return data[1];
+        });
+
+        this.state.supplementsCorrelationsChart.labels = labels;
+        this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
+
+        const positivelyCorrelatedSupplements = responseData.filter(data => {
+          return data[1] > 0;
+        });
+        const negativelyCorrelatedSupplements = responseData.filter(data => {
+          return data[1] < 0;
+        });
+
+        // Finally update state after we've done so much magic
+        this.setState({
+          supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
+          selectedSupplementsCorrelations: positivelyCorrelatedSupplements,
+          positiveSupplementsCorrelations: positivelyCorrelatedSupplements,
+          negativeSupplementsCorrelations: negativelyCorrelatedSupplements
+        });
+      });
+  }
+
+  selectSupplementsCorrelationsTab(event) {
+    event.preventDefault();
+
+    const target = event.target;
+    const name = target.name;
+
+    if (name === POSITIVELY_CORRELATED_LABEL) {
+      this.setState({
+        selectedSupplementsCorrelations: this.state
+          .positiveSupplementsCorrelations
+      });
+    } else if (name === NEGATIVELY_CORRELATED_LABEL) {
+      this.setState({
+        selectedSupplementsCorrelations: this.state
+          .negativeSupplementsCorrelations
+      });
+    }
+
+    this.setState({
+      selectedSupplementsCorrelationsTab: name
+    });
+  }
+
+  renderSupplementsCorrelationSelectionTab(tabName) {
+    if (this.state.selectedSupplementsCorrelationsTab === tabName) {
+      return (
+        <NavItem className="selected-modal">
+          <NavLink>
+            {tabName}
+          </NavLink>
+        </NavItem>
+      );
+    }
+    return (
+      <NavItem className="default-background">
+        <NavLink onClick={this.selectSupplementsCorrelationsTab} name={tabName}>
+          {tabName}
+        </NavLink>
+      </NavItem>
+    );
   }
 
   getHistory() {
@@ -233,6 +320,7 @@ export class ProductivityAnalyticsView extends Component {
     return (
       <div className="animated fadeIn">
         {this.renderHistoryChart()}
+        {this.renderSupplementsCorrelations()}
       </div>
     );
   }

@@ -4,6 +4,8 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import {
+  CHART_HOVER_BORDER_COLOR,
+  CHART_HOVER_COLOR,
   CHARTS_BACKGROUND_COLOR,
   DataAnalyticsRow,
   DefaultLineChartDataset
@@ -22,8 +24,8 @@ const SupplementsCorrelationsChart = {
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
+      hoverBackgroundColor: CHART_HOVER_COLOR,
+      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
       data: []
     }
   ]
@@ -37,8 +39,8 @@ const ActivitiesCorrelationsChart = {
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
+      hoverBackgroundColor: CHART_HOVER_COLOR,
+      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
       data: []
     }
   ]
@@ -409,7 +411,7 @@ export default SleepAnalyticsView;
 //       backgroundColor: CHARTS_BACKGROUND_COLOR,
 //       borderColor: "rgb(74, 86, 104)",
 //       borderWidth: 1,
-//       hoverBackgroundColor: "rgba(255,99,132,0.4)",
+//       hoverBackgroundColor: CHART_HOVER_COLOR,
 //       hoverBorderColor: "rgba(255,99,132,1)",
 //       data: []
 //     }

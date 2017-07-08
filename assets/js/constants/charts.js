@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from "react";
 
 export const CHARTS_BACKGROUND_COLOR = "#193441";
+export const CHART_HOVER_COLOR = "rgba(255,99,132,0.4)";
+export const CHART_HOVER_BORDER_COLOR = "rgba(255,99,132,1)";
 export const DefaultLineChartDataset = {
   label: "",
   fill: false,
