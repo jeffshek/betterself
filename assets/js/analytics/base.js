@@ -11,7 +11,7 @@ import {
 import {
   NEGATIVELY_CORRELATED_LABEL,
   POSITIVELY_CORRELATED_LABEL
-} from "../constants";
+} from "../constants/productivity";
 
 const SupplementsCorrelationsChart = {
   labels: [],

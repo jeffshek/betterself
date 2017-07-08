@@ -13,7 +13,7 @@ import {
   VERY_DISTRACTING_MINUTES_VARIABLE,
   VERY_PRODUCTIVE_MINUTES_LABEL,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
-} from "../constants";
+} from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 
 const ProductivityColumnMappingToKey = {
