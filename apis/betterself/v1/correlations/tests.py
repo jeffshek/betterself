@@ -13,8 +13,7 @@ User = get_user_model()
 
 # python manage.py test apis.betterself.v1.correlations.tests
 
-
-class ProductivitySupplementCorrelationTests(TestCase):
+class BaseCorrelationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
@@ -28,6 +27,8 @@ class ProductivitySupplementCorrelationTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(self.user)
 
+
+class ProductivitySupplementCorrelationTests(BaseCorrelationTests):
     def test_productivity_supplements_correlation_view(self):
         url = reverse('productivity-supplements-correlations')
         response = self.client.get(url)
@@ -65,20 +66,7 @@ class ProductivitySupplementCorrelationTests(TestCase):
         self.assertIsNone(response.data)
 
 
-class SleepCorrelationTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = User.objects.create(username='demo')
-
-        builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_historical_fixtures()
-
-        super().setUpTestData()
-
-    def setUp(self):
-        self.client = APIClient()
-        self.client.force_authenticate(self.user)
-
+class SleepCorrelationTests(BaseCorrelationTests):
     def test_sleep_activities_view(self):
         url = reverse('sleep-user-activities-correlations')
         response = self.client.get(url)
@@ -116,3 +104,19 @@ class SleepCorrelationTests(TestCase):
 
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
+
+
+class TestProductivityUserActivitiesCorrelations(BaseCorrelationTests):
+    pass
+    # @classmethod
+    # def setUpTestData(cls):
+    #     cls.user = User.objects.create(username='demo')
+    #
+    #     builder = DemoHistoricalDataBuilder(cls.user)
+    #     builder.create_historical_fixtures()
+    #
+    #     super().setUpTestData()
+    #
+    # def setUp(self):
+    #     self.client = APIClient()
+    #     self.client.force_authenticate(self.user)
