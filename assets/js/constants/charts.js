@@ -25,7 +25,7 @@ export const DefaultLineChartDataset = {
   data: []
 };
 
-export const DataAnalyticsRow = data => {
+export const CorrelationTableRow = data => {
   // Pretty sure this is not the right way to do this
   const details = data.object;
 
