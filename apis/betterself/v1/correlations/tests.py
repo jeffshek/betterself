@@ -95,7 +95,7 @@ class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelatio
         self.assertEqual(response.data[0][1], 1)
 
 
-class TestProductivityUserActivitiesCorrelations(BaseCorrelationsTests, BaseCorrelationsMixin):
+class ProductivityUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
     url_namespace = 'productivity-user-activities-correlations'
 
     def test_correlations_view(self):
