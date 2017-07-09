@@ -9,10 +9,12 @@ from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder,
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
+NO_DATA_RESPONSE = Response([], content_type='application/json')
+
 
 def get_sorted_response(series):
     if series.dropna().empty:
-        return Response()
+        return NO_DATA_RESPONSE
 
     # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
     # sorted_response = [item for item in series.iteritems()]
@@ -36,7 +38,7 @@ class SleepUserActivitiesCorrelationView(APIView):
         sleep_aggregate = sleep_serializer.get_sleep_history()
 
         if sleep_aggregate.empty:
-            return Response()
+            return NO_DATA_RESPONSE
 
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
@@ -88,7 +90,7 @@ class ProductivitySupplementsCorrelationView(APIView):
 
         aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
         if aggregate_dataframe.empty:
-            return Response()
+            return NO_DATA_RESPONSE
 
         df_correlation = aggregate_dataframe.corr()
         df_correlation_driver_series = df_correlation[correlation_driver]
@@ -119,7 +121,7 @@ class ProductivityUserActivitiesCorrelationView(APIView):
         productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder.get_productivity_log_dataframe(
             productivity_log)
         if productivity_log_dataframe.empty:
-            return Response()
+            return NO_DATA_RESPONSE
 
         productivity_series = productivity_log_dataframe[correlation_driver]
 
@@ -127,7 +129,7 @@ class ProductivityUserActivitiesCorrelationView(APIView):
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
         user_activity_dataframe = activity_serializer.get_user_activity_events()
         if user_activity_dataframe.empty:
-            return Response()
+            return NO_DATA_RESPONSE
 
         user_activity_dataframe[correlation_driver] = productivity_series
 
