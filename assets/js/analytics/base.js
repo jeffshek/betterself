@@ -242,15 +242,13 @@ export class BaseAnalyticsView extends Component {
           <div className="card-header analytics-text-box-label">
             {this.userActivitiesCorrelationsChartLabel}
           </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Bar
-                data={this.state.selectedUserActivitiesCorrelationsChart}
-                options={{
-                  maintainAspectRatio: true
-                }}
-              />
-            </div>
+          <div className="chart-wrapper">
+            <Bar
+              data={this.state.selectedUserActivitiesCorrelationsChart}
+              options={{
+                maintainAspectRatio: true
+              }}
+            />
           </div>
         </div>
         <div className="float">
