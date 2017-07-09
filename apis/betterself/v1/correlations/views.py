@@ -115,7 +115,7 @@ class ProductivityUserActivitiesCorrelationView(APIView):
             return Response('Invalid Correlation Driver Entered', status=400)
 
         productivity_log = DailyProductivityLog.objects.filter(user=user)
-        productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder._get_productivity_log_dataframe(
+        productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder.get_productivity_log_dataframe(
             productivity_log)
         if productivity_log_dataframe.empty:
             return Response()
