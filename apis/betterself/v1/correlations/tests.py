@@ -24,7 +24,7 @@ class BaseCorrelationsMixin(object):
         self.assertIsNone(response.data)
 
 
-class BaseCorrelationsTests(TestCase):
+class BaseCorrelationsTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.url = reverse(cls.url_namespace)
@@ -45,7 +45,7 @@ class BaseCorrelationsTests(TestCase):
         super().setUp()
 
 
-class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
+class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'productivity-supplements-correlations'
 
     def test_productivity_supplements_correlation_view(self):
@@ -71,7 +71,7 @@ class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrel
         self.assertCountEqual(supplements_in_response, user_supplements)
 
 
-class SleepSupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
+class SleepSupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'sleep-supplements-correlations'
 
     def test_sleep_supplements_view(self):
@@ -84,7 +84,7 @@ class SleepSupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsM
         self.assertEqual(response.status_code, 200)
 
 
-class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
+class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'sleep-user-activities-correlations'
 
     def test_sleep_activities_view(self):
@@ -95,7 +95,7 @@ class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelatio
         self.assertEqual(response.data[0][1], 1)
 
 
-class ProductivityUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
+class ProductivityUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'productivity-user-activities-correlations'
 
     def test_correlations_view(self):
