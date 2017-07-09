@@ -20,8 +20,10 @@ class BaseCorrelationsMixin(object):
         client.force_authenticate(user)
 
         response = client.get(self.url)
+        # using a standard response for no data, that way the logic for front and back
+        # end can be replicated and similar
+        self.assertEqual([], response.data)
         self.assertEqual(response.status_code, 200)
-        self.assertIsNone(response.data)
 
 
 class BaseCorrelationsTestCase(TestCase):
@@ -50,7 +52,6 @@ class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCor
 
     def test_productivity_supplements_correlation_view(self):
         response = self.client.get(self.url)
-
         self.assertEqual(response.status_code, 200)
         # the correlation of the productivity driver (which will be the first result of the dataset) will be 1
         self.assertEqual(response.data[0][1], 1)

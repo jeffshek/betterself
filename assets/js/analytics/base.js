@@ -78,11 +78,17 @@ export class BaseAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        const labels = responseData.map(data => {
+        const correlatedData = responseData.filter(data => {
+          // Some of the supplements might have no correlation
+          if (data[1]) {
+            return data;
+          }
+        });
+        const labels = correlatedData.map(data => {
           // Very Productive Minutes is way too long of a label
           return data[0].replace("Minutes", "");
         });
-        const dataValues = responseData.map(data => {
+        const dataValues = correlatedData.map(data => {
           return data[1];
         });
 
@@ -115,11 +121,18 @@ export class BaseAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        const labels = responseData.map(data => {
+        const correlatedData = responseData.filter(data => {
+          // Some of the supplements might have no correlation
+          if (data[1]) {
+            return data;
+          }
+        });
+
+        const labels = correlatedData.map(data => {
           // Very Productive Minutes is way too long of a label
           return data[0].replace("Minutes", "");
         });
-        const dataValues = responseData.map(data => {
+        const dataValues = correlatedData.map(data => {
           return data[1];
         });
 
