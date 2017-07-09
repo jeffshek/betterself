@@ -58,7 +58,7 @@ SUPPLEMENTS_FIXTURES = {
 
 USER_ACTIVITY_EVENTS = {
     'Meditation': {
-        'quantity_range': (0, 1),
+        'quantity_range': (0, 3),
         'duration': 30,
         'net_productivity_impact_per_quantity': 90,  # meditation has your been your # 1
         'peak_threshold_quantity': 3,

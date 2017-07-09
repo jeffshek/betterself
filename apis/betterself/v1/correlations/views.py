@@ -7,7 +7,7 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
     AggregateSupplementProductivityDataframeBuilder, VALID_PRODUCTIVITY_DRIVERS
 from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, UserActivityEvent, SupplementEvent
+from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
 
 def get_sorted_response(series):
@@ -114,21 +114,24 @@ class ProductivityUserActivitiesCorrelationView(APIView):
         if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
             return Response('Invalid Correlation Driver Entered', status=400)
 
-        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
-        if aggregate_dataframe.empty:
+        productivity_log = DailyProductivityLog.objects.filter(user=user)
+        productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder._get_productivity_log_dataframe(
+            productivity_log)
+        if productivity_log_dataframe.empty:
             return Response()
 
-        df_correlation = aggregate_dataframe.corr()
-        df_correlation_driver_series = df_correlation[correlation_driver]
+        productivity_series = productivity_log_dataframe[correlation_driver]
 
-        # since this is a supplement only view, disregard how the other productivity drivers
-        # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
-        valid_index = [item for item in df_correlation_driver_series.index if item not in VALID_PRODUCTIVITY_DRIVERS]
+        activity_events = UserActivityEvent.objects.filter(user=user)
+        activity_serializer = UserActivityEventDataframeBuilder(activity_events)
+        user_activity_dataframe = activity_serializer.get_user_activity_events()
+        if user_activity_dataframe.empty:
+            return Response()
 
-        # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
-        valid_index.append(correlation_driver)
+        user_activity_dataframe[correlation_driver] = productivity_series
 
-        filtered_correlation_series = df_correlation_driver_series[valid_index]
-        filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
+        correlation_dataframe = user_activity_dataframe.corr()
+        correlation_driver_series = correlation_dataframe[correlation_driver]
+        correlation_driver_series = correlation_driver_series.sort_values(ascending=False)
 
-        return get_sorted_response(filtered_correlation_series)
+        return get_sorted_response(correlation_driver_series)
