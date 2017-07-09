@@ -96,8 +96,6 @@ class SleepAnalyticsView extends BaseAnalyticsView {
         {this.renderHistoryChart()}
         {this.renderSupplementsCorrelations()}
         {this.renderUserActivitiesCorrelations()}
-        {/*Hold off on Historical Sleep Analytics, No one has 90 Days of History Yet*/}
-        {/*{this.renderHistoricalSleepAnalytics()}*/}
       </div>
     );
   }

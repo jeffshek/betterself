@@ -57,12 +57,15 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
     );
+    this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
+      this
+    );
   }
 
   componentDidMount() {
     this.getHistory();
     this.getSupplementsCorrelations();
-    // this.getUserActivitiesCorrelations();
+    this.getUserActivitiesCorrelations();
   }
 
   // Choose between "Very Productive Minutes", "Neutral Minutes", "Negative Minutes" etc
@@ -152,6 +155,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       <div className="animated fadeIn">
         {this.renderHistoryChart()}
         {this.renderSupplementsCorrelations()}
+        {this.renderUserActivitiesCorrelations()}
       </div>
     );
   }
