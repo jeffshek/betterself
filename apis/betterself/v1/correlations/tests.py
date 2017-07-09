@@ -21,6 +21,7 @@ class BaseCorrelationsMixin(object):
 
         response = client.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.data)
 
 
 class BaseCorrelationsTests(TestCase):
@@ -69,15 +70,6 @@ class ProductivitySupplementCorrelationsTests(BaseCorrelationsTests, BaseCorrela
 
         self.assertCountEqual(supplements_in_response, user_supplements)
 
-    def test_productivity_supplements_correlation_with_empty_user(self):
-        user = User.objects.create(username='something-new')
-        client = APIClient()
-        client.force_authenticate(user)
-
-        response = client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIsNone(response.data)
-
 
 class SleepSupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
     url_namespace = 'sleep-supplements-correlations'
@@ -91,14 +83,6 @@ class SleepSupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsM
         self.assertEqual(response.data[0][1], 1)
         self.assertEqual(response.status_code, 200)
 
-    def test_sleep_supplements_with_empty_user(self):
-        user = User.objects.create(username='something-new')
-        client = APIClient()
-        client.force_authenticate(user)
-
-        response = client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
 
 class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
     url_namespace = 'sleep-user-activities-correlations'
@@ -109,14 +93,6 @@ class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTests, BaseCorrelatio
         self.assertEqual(response.status_code, 200)
         # the correlation of sleep to itself will be one
         self.assertEqual(response.data[0][1], 1)
-
-    def test_sleep_activities_with_empty_user(self):
-        user = User.objects.create(username='something-new')
-        client = APIClient()
-        client.force_authenticate(user)
-
-        response = client.get(self.url)
-        self.assertEqual(response.status_code, 200)
 
 
 class TestProductivityUserActivitiesCorrelations(BaseCorrelationsTests, BaseCorrelationsMixin):

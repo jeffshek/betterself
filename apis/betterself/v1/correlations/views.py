@@ -11,6 +11,9 @@ from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
 
 def get_sorted_response(series):
+    if series.dropna().empty:
+        return Response()
+
     # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
     # sorted_response = [item for item in series.iteritems()]
     sorted_response = []
@@ -33,7 +36,7 @@ class SleepUserActivitiesCorrelationView(APIView):
         sleep_aggregate = sleep_serializer.get_sleep_history()
 
         if sleep_aggregate.empty:
-            return Response({})
+            return Response()
 
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
