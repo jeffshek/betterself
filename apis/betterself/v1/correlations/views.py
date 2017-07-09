@@ -7,10 +7,13 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
     AggregateSupplementProductivityDataframeBuilder, VALID_PRODUCTIVITY_DRIVERS
 from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, UserActivityEvent, SupplementEvent
+from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
 
 def get_sorted_response(series):
+    if series.dropna().empty:
+        return Response()
+
     # Do a odd sorted tuple response because Javascript sorting is an oddly difficult problem
     # sorted_response = [item for item in series.iteritems()]
     sorted_response = []
@@ -24,7 +27,7 @@ def get_sorted_response(series):
     return Response(sorted_response)
 
 
-class SleepActivitiesCorrelationView(APIView):
+class SleepUserActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
@@ -33,7 +36,7 @@ class SleepActivitiesCorrelationView(APIView):
         sleep_aggregate = sleep_serializer.get_sleep_history()
 
         if sleep_aggregate.empty:
-            return Response({})
+            return Response()
 
         # resample so that it goes from no frequency to a daily frequency
         # which matches UserActivityEvents, eventually need to be more elegant
@@ -101,3 +104,35 @@ class ProductivitySupplementsCorrelationView(APIView):
         filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
 
         return get_sorted_response(filtered_correlation_series)
+
+
+class ProductivityUserActivitiesCorrelationView(APIView):
+    # TODO - this view is garbage and should be cleaned up
+    def get(self, request):
+        user = request.user
+
+        correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
+        if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
+            return Response('Invalid Correlation Driver Entered', status=400)
+
+        productivity_log = DailyProductivityLog.objects.filter(user=user)
+        productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder.get_productivity_log_dataframe(
+            productivity_log)
+        if productivity_log_dataframe.empty:
+            return Response()
+
+        productivity_series = productivity_log_dataframe[correlation_driver]
+
+        activity_events = UserActivityEvent.objects.filter(user=user)
+        activity_serializer = UserActivityEventDataframeBuilder(activity_events)
+        user_activity_dataframe = activity_serializer.get_user_activity_events()
+        if user_activity_dataframe.empty:
+            return Response()
+
+        user_activity_dataframe[correlation_driver] = productivity_series
+
+        correlation_dataframe = user_activity_dataframe.corr()
+        correlation_driver_series = correlation_dataframe[correlation_driver]
+        correlation_driver_series = correlation_driver_series.sort_values(ascending=False)
+
+        return get_sorted_response(correlation_driver_series)

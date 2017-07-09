@@ -203,13 +203,13 @@ class AggregateSupplementProductivityDataframeBuilder(object):
         self.productivity_log_queryset = productivity_log_queryset
 
     @staticmethod
-    def _get_supplement_event_dataframe(queryset):
+    def get_supplement_event_dataframe(queryset):
         builder = SupplementEventsDataframeBuilder(queryset)
         supplement_event_dataframe = builder.get_flat_dataframe()
         return supplement_event_dataframe
 
     @staticmethod
-    def _get_productivity_log_dataframe(queryset):
+    def get_productivity_log_dataframe(queryset):
         builder = ProductivityLogEventsDataframeBuilder(queryset)
         productivity_log_dataframe = builder.build_dataframe()
         return productivity_log_dataframe
@@ -227,8 +227,8 @@ class AggregateSupplementProductivityDataframeBuilder(object):
         return dataframe
 
     def build_daily_dataframe(self):
-        productivity_log_dataframe = self._get_productivity_log_dataframe(self.productivity_log_queryset)
-        supplement_dataframe = self._get_supplement_event_dataframe(self.supplement_event_queryset)
+        productivity_log_dataframe = self.get_productivity_log_dataframe(self.productivity_log_queryset)
+        supplement_dataframe = self.get_supplement_event_dataframe(self.supplement_event_queryset)
 
         # if we don't have any data for either or of these, just return an empty dataset
         if productivity_log_dataframe.empty or supplement_dataframe.empty:

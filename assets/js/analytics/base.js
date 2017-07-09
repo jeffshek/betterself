@@ -11,13 +11,13 @@ import {
 import {
   NEGATIVELY_CORRELATED_LABEL,
   POSITIVELY_CORRELATED_LABEL
-} from "../constants";
+} from "../constants/productivity";
 
 const SupplementsCorrelationsChart = {
   labels: [],
   datasets: [
     {
-      label: "Very Productive Minutes Correlation",
+      label: "Correlation",
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
@@ -68,6 +68,8 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
+    // fetch is a little odd, but to pass parameters in a get - you have to hardcode the URL
+    // fetch(this.supplementCorrelationsURL+"?correlation_driver=Neutral Minutes", {
     fetch(this.supplementCorrelationsURL, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -77,7 +79,8 @@ export class BaseAnalyticsView extends Component {
       })
       .then(responseData => {
         const labels = responseData.map(data => {
-          return data[0];
+          // Very Productive Minutes is way too long of a label
+          return data[0].replace("Minutes", "");
         });
         const dataValues = responseData.map(data => {
           return data[1];
@@ -113,7 +116,8 @@ export class BaseAnalyticsView extends Component {
       })
       .then(responseData => {
         const labels = responseData.map(data => {
-          return data[0];
+          // Very Productive Minutes is way too long of a label
+          return data[0].replace("Minutes", "");
         });
         const dataValues = responseData.map(data => {
           return data[1];
@@ -190,7 +194,7 @@ export class BaseAnalyticsView extends Component {
     });
   }
 
-  renderActivitiesCorrelationSelectionTab(tabName) {
+  renderActivitiesCorrelationsSelectionTab(tabName) {
     if (this.state.selectedUserActivitiesCorrelationsTab === tabName) {
       return (
         <NavItem className="selected-modal">
@@ -212,7 +216,7 @@ export class BaseAnalyticsView extends Component {
     );
   }
 
-  renderSupplementsCorrelationSelectionTab(tabName) {
+  renderSupplementsCorrelationsSelectionTab(tabName) {
     if (this.state.selectedSupplementsCorrelationsTab === tabName) {
       return (
         <NavItem className="selected-modal">
@@ -238,24 +242,22 @@ export class BaseAnalyticsView extends Component {
           <div className="card-header analytics-text-box-label">
             {this.userActivitiesCorrelationsChartLabel}
           </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Bar
-                data={this.state.selectedUserActivitiesCorrelationsChart}
-                options={{
-                  maintainAspectRatio: true
-                }}
-              />
-            </div>
+          <div className="chart-wrapper">
+            <Bar
+              data={this.state.selectedUserActivitiesCorrelationsChart}
+              options={{
+                maintainAspectRatio: true
+              }}
+            />
           </div>
         </div>
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.renderActivitiesCorrelationSelectionTab(
+              {this.renderActivitiesCorrelationsSelectionTab(
                 POSITIVELY_CORRELATED_LABEL
               )}
-              {this.renderActivitiesCorrelationSelectionTab(
+              {this.renderActivitiesCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
               )}
             </Nav>
@@ -287,24 +289,22 @@ export class BaseAnalyticsView extends Component {
           <div className="card-header analytics-text-box-label">
             {this.supplementsCorrelationsChartLabel}
           </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Bar
-                data={this.state.supplementsCorrelationsChart}
-                options={{
-                  maintainAspectRatio: true
-                }}
-              />
-            </div>
+          <div className="chart-wrapper">
+            <Bar
+              data={this.state.supplementsCorrelationsChart}
+              options={{
+                maintainAspectRatio: true
+              }}
+            />
           </div>
         </div>
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.renderSupplementsCorrelationSelectionTab(
+              {this.renderSupplementsCorrelationsSelectionTab(
                 POSITIVELY_CORRELATED_LABEL
               )}
-              {this.renderSupplementsCorrelationSelectionTab(
+              {this.renderSupplementsCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
               )}
             </Nav>

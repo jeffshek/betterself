@@ -8,7 +8,7 @@ import {
   PRODUCTIVE_MINUTES_VARIABLE,
   VERY_DISTRACTING_MINUTES_VARIABLE,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
-} from "../constants";
+} from "../constants/productivity";
 
 const confirmDelete = (uuid, eventDate) => {
   const answer = confirm(

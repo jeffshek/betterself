@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
+from constants import SLEEP_MINUTES_COLUMN
 from events.models import SupplementEvent
 from supplements.models import Supplement
 
@@ -12,8 +13,23 @@ User = get_user_model()
 
 # python manage.py test apis.betterself.v1.correlations.tests
 
+class BaseCorrelationsMixin(object):
+    def test_view_with_user_and_no_data(self):
+        user = User.objects.create(username='something-new')
+        client = APIClient()
+        client.force_authenticate(user)
 
-class ProductivitySupplementCorrelationTests(TestCase):
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.data)
+
+
+class BaseCorrelationsTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.url = reverse(cls.url_namespace)
+        super().setUpClass()
+
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
@@ -26,19 +42,21 @@ class ProductivitySupplementCorrelationTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.client.force_authenticate(self.user)
+        super().setUp()
+
+
+class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
+    url_namespace = 'productivity-supplements-correlations'
 
     def test_productivity_supplements_correlation_view(self):
-        url = reverse('productivity-supplements-correlations')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        # the correlation of the productivity driver (which will be the first result of the dataset)
-        # will be 1
+        # the correlation of the productivity driver (which will be the first result of the dataset) will be 1
         self.assertEqual(response.data[0][1], 1)
 
     def test_productivity_supplements_response_includes_correct_supplements(self):
-        url = reverse('productivity-supplements-correlations')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         supplements_in_response = [item[0] for item in response.data]
         # don't include the productivity driver since that's not a supplement
@@ -52,13 +70,37 @@ class ProductivitySupplementCorrelationTests(TestCase):
 
         self.assertCountEqual(supplements_in_response, user_supplements)
 
-    def test_productivity_supplements_correlation_with_empty_user(self):
-        url = reverse('productivity-supplements-correlations')
 
-        user = User.objects.create(username='something-new')
-        client = APIClient()
-        client.force_authenticate(user)
+class SleepSupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
+    url_namespace = 'sleep-supplements-correlations'
 
-        response = client.get(url)
+    def test_sleep_supplements_view(self):
+        response = self.client.get(self.url)
+
+        self.assertTrue(SLEEP_MINUTES_COLUMN in response.data[0])
+        # Return back in a tuple format to preserve order when transmitting as JSON
+        self.assertEqual(response.data[0][0], SLEEP_MINUTES_COLUMN)
+        self.assertEqual(response.data[0][1], 1)
         self.assertEqual(response.status_code, 200)
-        self.assertIsNone(response.data)
+
+
+class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
+    url_namespace = 'sleep-user-activities-correlations'
+
+    def test_sleep_activities_view(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        # the correlation of sleep to itself will be one
+        self.assertEqual(response.data[0][1], 1)
+
+
+class ProductivityUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
+    url_namespace = 'productivity-user-activities-correlations'
+
+    def test_correlations_view(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        # the correlation of a variable to itself will be one
+        self.assertEqual(response.data[0][1], 1)
