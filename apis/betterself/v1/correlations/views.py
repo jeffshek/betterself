@@ -77,10 +77,6 @@ class SleepSupplementsCorrelationView(APIView):
         correlation = supplements_and_sleep_df.corr()
         sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
 
-        print ('-')
-
-        print (sleep_correlation)
-
         return get_sorted_response(sleep_correlation)
 
 
