@@ -194,7 +194,7 @@ export class BaseAnalyticsView extends Component {
     });
   }
 
-  renderActivitiesCorrelationSelectionTab(tabName) {
+  renderActivitiesCorrelationsSelectionTab(tabName) {
     if (this.state.selectedUserActivitiesCorrelationsTab === tabName) {
       return (
         <NavItem className="selected-modal">
@@ -216,7 +216,7 @@ export class BaseAnalyticsView extends Component {
     );
   }
 
-  renderSupplementsCorrelationSelectionTab(tabName) {
+  renderSupplementsCorrelationsSelectionTab(tabName) {
     if (this.state.selectedSupplementsCorrelationsTab === tabName) {
       return (
         <NavItem className="selected-modal">
@@ -254,10 +254,10 @@ export class BaseAnalyticsView extends Component {
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.renderActivitiesCorrelationSelectionTab(
+              {this.renderActivitiesCorrelationsSelectionTab(
                 POSITIVELY_CORRELATED_LABEL
               )}
-              {this.renderActivitiesCorrelationSelectionTab(
+              {this.renderActivitiesCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
               )}
             </Nav>
@@ -301,10 +301,10 @@ export class BaseAnalyticsView extends Component {
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.renderSupplementsCorrelationSelectionTab(
+              {this.renderSupplementsCorrelationsSelectionTab(
                 POSITIVELY_CORRELATED_LABEL
               )}
-              {this.renderSupplementsCorrelationSelectionTab(
+              {this.renderSupplementsCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
               )}
             </Nav>

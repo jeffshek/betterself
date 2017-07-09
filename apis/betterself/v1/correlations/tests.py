@@ -45,7 +45,7 @@ class BaseCorrelationsTests(TestCase):
         super().setUp()
 
 
-class ProductivitySupplementCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
+class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTests, BaseCorrelationsMixin):
     url_namespace = 'productivity-supplements-correlations'
 
     def test_productivity_supplements_correlation_view(self):

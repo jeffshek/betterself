@@ -107,10 +107,9 @@ class ProductivitySupplementsCorrelationView(APIView):
 
 
 class ProductivityUserActivitiesCorrelationView(APIView):
+    # TODO - this view is garbage and should be cleaned up
     def get(self, request):
         user = request.user
-
-        print (request.query_params)
 
         correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
         if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
