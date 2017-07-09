@@ -110,6 +110,8 @@ class ProductivityUserActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
+        print (request.query_params)
+
         correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
         if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
             return Response('Invalid Correlation Driver Entered', status=400)

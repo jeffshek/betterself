@@ -17,7 +17,7 @@ const SupplementsCorrelationsChart = {
   labels: [],
   datasets: [
     {
-      label: "Very Productive Minutes Correlation",
+      label: "Correlation",
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
@@ -68,6 +68,8 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
+    // fetch is a little odd, but to pass parameters in a get - you have to hardcode the URL
+    // fetch(this.supplementCorrelationsURL+"?correlation_driver=Neutral Minutes", {
     fetch(this.supplementCorrelationsURL, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -77,7 +79,8 @@ export class BaseAnalyticsView extends Component {
       })
       .then(responseData => {
         const labels = responseData.map(data => {
-          return data[0];
+          // Very Productive Minutes is way too long of a label
+          return data[0].replace("Minutes", "");
         });
         const dataValues = responseData.map(data => {
           return data[1];
@@ -113,7 +116,8 @@ export class BaseAnalyticsView extends Component {
       })
       .then(responseData => {
         const labels = responseData.map(data => {
-          return data[0];
+          // Very Productive Minutes is way too long of a label
+          return data[0].replace("Minutes", "");
         });
         const dataValues = responseData.map(data => {
           return data[1];
@@ -287,15 +291,13 @@ export class BaseAnalyticsView extends Component {
           <div className="card-header analytics-text-box-label">
             {this.supplementsCorrelationsChartLabel}
           </div>
-          <div className="card-block">
-            <div className="chart-wrapper">
-              <Bar
-                data={this.state.supplementsCorrelationsChart}
-                options={{
-                  maintainAspectRatio: true
-                }}
-              />
-            </div>
+          <div className="chart-wrapper">
+            <Bar
+              data={this.state.supplementsCorrelationsChart}
+              options={{
+                maintainAspectRatio: true
+              }}
+            />
           </div>
         </div>
         <div className="float">
