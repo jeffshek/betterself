@@ -54,12 +54,14 @@ export class BaseAnalyticsView extends Component {
       selectedSupplementsCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveSupplementsCorrelations: [],
       negativeSupplementsCorrelations: [],
+      neutralSupplementsCorrelations: [],
       // User Activities
       selectedUserActivitiesCorrelationsChart: ActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
-      negativeUserActivitiesCorrelations: []
+      negativeUserActivitiesCorrelations: [],
+      neutralUserActivitiesCorrelations: []
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -98,16 +100,30 @@ export class BaseAnalyticsView extends Component {
         const positivelyCorrelatedSupplements = responseData.filter(data => {
           return data[1] > 0;
         });
+
         const negativelyCorrelatedSupplements = responseData.filter(data => {
           return data[1] < 0;
         });
+
+        const neutralSupplementsCorrelationsData = responseData.filter(data => {
+          if (!data[1]) {
+            return true;
+          }
+        });
+
+        const neutralSupplementsCorrelations = neutralSupplementsCorrelationsData.map(
+          data => {
+            return data[0];
+          }
+        );
 
         // Finally update state after we've done so much magic
         this.setState({
           supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
           selectedSupplementsCorrelations: positivelyCorrelatedSupplements,
           positiveSupplementsCorrelations: positivelyCorrelatedSupplements,
-          negativeSupplementsCorrelations: negativelyCorrelatedSupplements
+          negativeSupplementsCorrelations: negativelyCorrelatedSupplements,
+          neutralSupplementsCorrelations: neutralSupplementsCorrelations
         });
       });
   }
@@ -148,13 +164,28 @@ export class BaseAnalyticsView extends Component {
           return data[1] < 0;
         });
 
+        const neutralUserActivitiesCorrelationsData = responseData.filter(
+          data => {
+            if (!data[1]) {
+              return true;
+            }
+          }
+        );
+
+        const neutralUserActivitiesCorrelations = neutralUserActivitiesCorrelationsData.map(
+          data => {
+            return data[0];
+          }
+        );
+
         // Finally update state after we've done so much magic
         this.setState({
           selectedUserActivitiesCorrelationsChart: this.state
             .selectedUserActivitiesCorrelationsChart,
           selectedUserActivitiesCorrelations: positivelyCorrelatedActivities,
           positiveUserActivitiesCorrelations: positivelyCorrelatedActivities,
-          negativeUserActivitiesCorrelations: negativelyCorrelatedActivities
+          negativeUserActivitiesCorrelations: negativelyCorrelatedActivities,
+          neutralUserActivitiesCorrelations: neutralUserActivitiesCorrelations
         });
       });
   }
@@ -269,6 +300,9 @@ export class BaseAnalyticsView extends Component {
             <Nav tabs>
               {this.renderActivitiesCorrelationsSelectionTab(
                 POSITIVELY_CORRELATED_LABEL
+              )}
+              {this.renderActivitiesCorrelationsSelectionTab(
+                NEGATIVELY_CORRELATED_LABEL
               )}
               {this.renderActivitiesCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
