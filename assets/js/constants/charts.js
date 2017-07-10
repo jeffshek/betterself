@@ -28,11 +28,20 @@ export const DefaultLineChartDataset = {
 export const CorrelationTableRow = data => {
   // Pretty sure this is not the right way to do this
   const details = data.object;
+  // const valueFormatted = details[1] ?
+  // if (details[1]){
+  //   let valueFormatted = details[1].toFixed(3)
+  // }
+  // else {
+  //   let valueFormatted = null
+  // }
+  // console.log(data)
+  const valueFormatted = details[1] ? details[1].toFixed(3) : null;
 
   return (
     <tr>
       <td>{details[0]}</td>
-      <td>{details[1].toFixed(3)}</td>
+      <td>{valueFormatted}</td>
     </tr>
   );
 };

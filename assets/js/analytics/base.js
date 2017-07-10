@@ -10,6 +10,7 @@ import {
 } from "../constants/charts";
 import {
   NEGATIVELY_CORRELATED_LABEL,
+  NOT_CORRELATED_LABEL,
   POSITIVELY_CORRELATED_LABEL
 } from "../constants/productivity";
 
@@ -17,7 +18,7 @@ const SupplementsCorrelationsChart = {
   labels: [],
   datasets: [
     {
-      label: "Correlation",
+      label: "Supplements Correlation",
       backgroundColor: CHARTS_BACKGROUND_COLOR,
       borderColor: CHARTS_BACKGROUND_COLOR,
       borderWidth: 1,
@@ -28,7 +29,7 @@ const SupplementsCorrelationsChart = {
   ]
 };
 
-const ActivitiesCorrelationsChart = {
+const UserActivitiesCorrelationsChart = {
   labels: [],
   datasets: [
     {
@@ -56,7 +57,7 @@ export class BaseAnalyticsView extends Component {
       negativeSupplementsCorrelations: [],
       neutralSupplementsCorrelations: [],
       // User Activities
-      selectedUserActivitiesCorrelationsChart: ActivitiesCorrelationsChart,
+      selectedUserActivitiesCorrelationsChart: UserActivitiesCorrelationsChart,
       selectedUserActivitiesCorrelations: [],
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
@@ -67,6 +68,58 @@ export class BaseAnalyticsView extends Component {
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
       this
     );
+    this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
+      this
+    );
+  }
+
+  getCorrelatedData(responseData) {
+    // Some of the supplements might have no correlation, so a filter
+    // at the first pass to only return correlatedData
+    const correlatedData = responseData.filter(data => {
+      if (data[1]) {
+        return data;
+      }
+    });
+    return correlatedData;
+  }
+
+  getChartLabels(correlatedData) {
+    const labels = correlatedData.map(data => {
+      // Very Productive Minutes is way too long of a label
+      return data[0].replace("Minutes", "");
+    });
+    return labels;
+  }
+
+  getChartData(correlatedData) {
+    const dataValues = correlatedData.map(data => {
+      return data[1];
+    });
+    return dataValues;
+  }
+
+  getPositivelyCorrelatedData(responseData) {
+    const positivelyCorrelated = responseData.filter(data => {
+      return data[1] > 0;
+    });
+    return positivelyCorrelated;
+  }
+
+  getNegativelyCorrelatedData(responseData) {
+    const negativelyCorrelated = responseData.filter(data => {
+      return data[1] < 0;
+    });
+    return negativelyCorrelated;
+  }
+
+  getNoCorrelatedData(responseData) {
+    const notCorrelatedData = responseData.filter(data => {
+      if (!data[1]) {
+        return true;
+      }
+    });
+    return notCorrelatedData;
   }
 
   getSupplementsCorrelations() {
@@ -80,49 +133,28 @@ export class BaseAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        const correlatedData = responseData.filter(data => {
-          // Some of the supplements might have no correlation
-          if (data[1]) {
-            return data;
-          }
-        });
-        const labels = correlatedData.map(data => {
-          // Very Productive Minutes is way too long of a label
-          return data[0].replace("Minutes", "");
-        });
-        const dataValues = correlatedData.map(data => {
-          return data[1];
-        });
+        const correlatedData = this.getCorrelatedData(responseData);
+        const labels = this.getChartLabels(correlatedData);
+        const dataValues = this.getChartData(correlatedData);
 
         this.state.supplementsCorrelationsChart.labels = labels;
         this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
 
-        const positivelyCorrelatedSupplements = responseData.filter(data => {
-          return data[1] > 0;
-        });
-
-        const negativelyCorrelatedSupplements = responseData.filter(data => {
-          return data[1] < 0;
-        });
-
-        const neutralSupplementsCorrelationsData = responseData.filter(data => {
-          if (!data[1]) {
-            return true;
-          }
-        });
-
-        const neutralSupplementsCorrelations = neutralSupplementsCorrelationsData.map(
-          data => {
-            return data[0];
-          }
+        const positiveSupplementCorrelations = this.getPositivelyCorrelatedData(
+          responseData
+        );
+        const negativeSupplementCorrelations = this.getNegativelyCorrelatedData(
+          responseData
+        );
+        const neutralSupplementsCorrelations = this.getNoCorrelatedData(
+          responseData
         );
 
-        // Finally update state after we've done so much magic
         this.setState({
           supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
-          selectedSupplementsCorrelations: positivelyCorrelatedSupplements,
-          positiveSupplementsCorrelations: positivelyCorrelatedSupplements,
-          negativeSupplementsCorrelations: negativelyCorrelatedSupplements,
+          selectedSupplementsCorrelations: positiveSupplementCorrelations,
+          positiveSupplementsCorrelations: positiveSupplementCorrelations,
+          negativeSupplementsCorrelations: negativeSupplementCorrelations,
           neutralSupplementsCorrelations: neutralSupplementsCorrelations
         });
       });
@@ -137,54 +169,31 @@ export class BaseAnalyticsView extends Component {
         return response.json();
       })
       .then(responseData => {
-        const correlatedData = responseData.filter(data => {
-          // Some of the supplements might have no correlation
-          if (data[1]) {
-            return data;
-          }
-        });
-
-        const labels = correlatedData.map(data => {
-          // Very Productive Minutes is way too long of a label
-          return data[0].replace("Minutes", "");
-        });
-        const dataValues = correlatedData.map(data => {
-          return data[1];
-        });
+        const correlatedData = this.getCorrelatedData(responseData);
+        const labels = this.getChartLabels(correlatedData);
+        const dataValues = this.getChartData(correlatedData);
 
         this.state.selectedUserActivitiesCorrelationsChart.labels = labels;
         this.state.selectedUserActivitiesCorrelationsChart.datasets[
           0
         ].data = dataValues;
 
-        const positivelyCorrelatedActivities = responseData.filter(data => {
-          return data[1] > 0;
-        });
-        const negativelyCorrelatedActivities = responseData.filter(data => {
-          return data[1] < 0;
-        });
-
-        const neutralUserActivitiesCorrelationsData = responseData.filter(
-          data => {
-            if (!data[1]) {
-              return true;
-            }
-          }
+        const positiveUserActivityCorrelations = this.getPositivelyCorrelatedData(
+          responseData
+        );
+        const negativeUserActivitiesCorrelations = this.getNegativelyCorrelatedData(
+          responseData
+        );
+        const neutralUserActivitiesCorrelations = this.getNoCorrelatedData(
+          responseData
         );
 
-        const neutralUserActivitiesCorrelations = neutralUserActivitiesCorrelationsData.map(
-          data => {
-            return data[0];
-          }
-        );
-
-        // Finally update state after we've done so much magic
         this.setState({
           selectedUserActivitiesCorrelationsChart: this.state
             .selectedUserActivitiesCorrelationsChart,
-          selectedUserActivitiesCorrelations: positivelyCorrelatedActivities,
-          positiveUserActivitiesCorrelations: positivelyCorrelatedActivities,
-          negativeUserActivitiesCorrelations: negativelyCorrelatedActivities,
+          selectedUserActivitiesCorrelations: positiveUserActivityCorrelations,
+          positiveUserActivitiesCorrelations: positiveUserActivityCorrelations,
+          negativeUserActivitiesCorrelations: negativeUserActivitiesCorrelations,
           neutralUserActivitiesCorrelations: neutralUserActivitiesCorrelations
         });
       });
@@ -196,21 +205,22 @@ export class BaseAnalyticsView extends Component {
     const target = event.target;
     const name = target.name;
 
+    let selectedSupplementsCorrelations;
     if (name === POSITIVELY_CORRELATED_LABEL) {
-      this.setState({
-        selectedSupplementsCorrelations: this.state
-          .positiveSupplementsCorrelations
-      });
+      selectedSupplementsCorrelations = this.state
+        .positiveSupplementsCorrelations;
     } else if (name === NEGATIVELY_CORRELATED_LABEL) {
-      this.setState({
-        selectedSupplementsCorrelations: this.state
-          .negativeSupplementsCorrelations
-      });
+      selectedSupplementsCorrelations = this.state
+        .negativeSupplementsCorrelations;
+    } else if (name === NOT_CORRELATED_LABEL) {
+      selectedSupplementsCorrelations = this.state
+        .neutralSupplementsCorrelations;
     }
 
     this.setState({
-      // Say either Positive Correlated or Negatively Correlated
-      selectedSupplementsCorrelationsTab: name
+      // Say either Positive Correlated, Negatively Correlated or Neutral
+      selectedSupplementsCorrelationsTab: name,
+      selectedSupplementsCorrelations: selectedSupplementsCorrelations
     });
   }
 
@@ -220,21 +230,22 @@ export class BaseAnalyticsView extends Component {
     const target = event.target;
     const name = target.name;
 
+    let selectedUserActivitiesCorrelations;
     if (name === POSITIVELY_CORRELATED_LABEL) {
-      this.setState({
-        selectedUserActivitiesCorrelations: this.state
-          .positiveUserActivitiesCorrelations
-      });
+      selectedUserActivitiesCorrelations = this.state
+        .positiveUserActivitiesCorrelations;
     } else if (name === NEGATIVELY_CORRELATED_LABEL) {
-      this.setState({
-        selectedUserActivitiesCorrelations: this.state
-          .negativeUserActivitiesCorrelations
-      });
+      selectedUserActivitiesCorrelations = this.state
+        .negativeUserActivitiesCorrelations;
+    } else if (name === NOT_CORRELATED_LABEL) {
+      selectedUserActivitiesCorrelations = this.state
+        .neutralUserActivitiesCorrelations;
     }
 
     this.setState({
       // Say either Positive Correlated or Negatively Correlated
-      selectedUserActivitiesCorrelationsTab: name
+      selectedUserActivitiesCorrelationsTab: name,
+      selectedUserActivitiesCorrelations: selectedUserActivitiesCorrelations
     });
   }
 
@@ -305,7 +316,7 @@ export class BaseAnalyticsView extends Component {
                 NEGATIVELY_CORRELATED_LABEL
               )}
               {this.renderActivitiesCorrelationsSelectionTab(
-                NEGATIVELY_CORRELATED_LABEL
+                NOT_CORRELATED_LABEL
               )}
             </Nav>
             <div className="card-block">
@@ -353,6 +364,9 @@ export class BaseAnalyticsView extends Component {
               )}
               {this.renderSupplementsCorrelationsSelectionTab(
                 NEGATIVELY_CORRELATED_LABEL
+              )}
+              {this.renderSupplementsCorrelationsSelectionTab(
+                NOT_CORRELATED_LABEL
               )}
             </Nav>
             <div className="card-block">
