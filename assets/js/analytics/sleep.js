@@ -20,13 +20,6 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     this.state = Object.assign(this.state, updateState);
     this.state.sleepHistory.datasets[0].label = "Sleep Time (Hours)";
 
-    this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
-      this
-    );
-    this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
-      this
-    );
-
     this.supplementCorrelationsURL =
       "api/v1/sleep_activities/supplements/correlations";
     this.supplementsCorrelationsChartLabel =

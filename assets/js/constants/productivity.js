@@ -13,3 +13,4 @@ export const VERY_DISTRACTING_MINUTES_VARIABLE =
 
 export const POSITIVELY_CORRELATED_LABEL = "Positively Correlated";
 export const NEGATIVELY_CORRELATED_LABEL = "Negatively Correlated";
+export const NOT_CORRELATED_LABEL = "Not Correlated";

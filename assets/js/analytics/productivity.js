@@ -57,9 +57,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
     );
-    this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
-      this
-    );
   }
 
   componentDidMount() {
