@@ -23,7 +23,8 @@ import {
   DEMO_SIGNUP_URL,
   DASHBOARD_SLEEP_LOGS_URL,
   SETTINGS_URL,
-  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL
+  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
+  EXPORT_ALL_DATA_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -114,6 +115,11 @@ const BetterSelfRouter = () => (
 
       <PrivateRoute
         path={SETTINGS_URL}
+        component={e => <Dashboard view={UserSettingsView} />}
+      />
+
+      <PrivateRoute
+        path={EXPORT_ALL_DATA_URL}
         component={e => <Dashboard view={UserSettingsView} />}
       />
 

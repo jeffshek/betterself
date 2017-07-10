@@ -11,7 +11,7 @@ import {
   DASHBOARD_USER_ACTIVITIES_URL,
   DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
-  EXPORT_ALL_DATA
+  EXPORT_ALL_DATA_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -83,7 +83,7 @@ const ExportSidebar = () => (
     <NavigationLink
       iconName="icon-cloud-download"
       label="All Data"
-      link={EXPORT_ALL_DATA}
+      link="www.google.com"
     />
   </div>
 );

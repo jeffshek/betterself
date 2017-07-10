@@ -25,4 +25,4 @@ export const DEMO_SIGNUP_URL = '/demo-signup/'
 
 // User Settings
 export const SETTINGS_URL = '/settings/'
-export const EXPORT_ALL_DATA = '/export-all-data/'
+export const EXPORT_ALL_DATA_URL = '/export-all-data/'
