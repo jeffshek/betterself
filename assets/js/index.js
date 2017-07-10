@@ -81,7 +81,7 @@ const BetterSelfRouter = () => (
       {/*Try this style of having unnamed functions with Dashboard views rather than explicitly naming them*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
-        component={e => <Dashboard view={SleepAnalyticsView} />}
+        component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
