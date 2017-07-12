@@ -283,6 +283,7 @@ class SleepActivityDataframeBuilder(object):
 
         # change from timedeltas to minutes, otherwise json response of timedelta is garbage
         sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
+        sleep_aggregate.name = 'Sleep Minutes'
         return sleep_aggregate
 
 
