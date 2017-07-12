@@ -3,7 +3,7 @@ export const HOME_URL = '/'
 export const DASHBOARD_INDEX_URL = '/dashboard/index'
 
 // Logs
-export const DASHBOARD_USER_EVENTS_LOGS_URL = '/dashboard/log/events'
+export const DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL = '/dashboard/log/events'
 export const DASHBOARD_HEART_RATE_LOGS_URL = '/dashboard/log/heart_rates'
 export const DASHBOARD_PRODUCTIVITY_LOGS_URL = '/dashboard/logs/productivity'
 export const DASHBOARD_SLEEP_LOGS_URL = '/dashboard/logs/sleep'
@@ -25,3 +25,4 @@ export const DEMO_SIGNUP_URL = '/demo-signup/'
 
 // User Settings
 export const SETTINGS_URL = '/settings/'
+export const EXPORT_ALL_DATA_URL = '/export-all-data/'

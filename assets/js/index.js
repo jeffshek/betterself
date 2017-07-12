@@ -17,13 +17,14 @@ import {
   DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
-  DASHBOARD_USER_EVENTS_LOGS_URL,
+  DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
   SIGNUP_URL,
   DEMO_SIGNUP_URL,
   DASHBOARD_SLEEP_LOGS_URL,
   SETTINGS_URL,
-  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL
+  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
+  EXPORT_ALL_DATA_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -32,10 +33,9 @@ import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
 
-import SupplementsLogView from "./supplement_events_log/supplement_events_view";
 import SleepAnalyticsView from "./analytics/sleep";
 import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
-import UserActivitiesEventLogView
+import UserActivitiesEventsLogView
   from "./user_activities_events_log/user_activites_events_view";
 import { SupplementView } from "./supplements_log/supplements_view";
 import ProductivityLogView from "./productivity_log/productivity_event_view";
@@ -48,40 +48,28 @@ import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
 import { UserSettingsView } from "./user_settings/user_settings";
 import { ProductivityAnalyticsView } from "./analytics/productivity";
 
-const DashboardSupplementLogView = () => (
-  <Dashboard view={SupplementsLogView} />
-);
-const DashboardHeartRateView = () => <Dashboard view={HeartRateLogView} />;
-const DashboardSupplementsView = () => <Dashboard view={SupplementView} />;
-const DashboardProductivityLogView = () => (
-  <Dashboard view={ProductivityLogView} />
-);
-const DashboardUserEventLogView = () => (
-  <Dashboard view={UserActivitiesEventLogView} />
-);
-const DashboardUserActivityView = () => (
-  <Dashboard view={UserActivitiesLogView} />
-);
-const DashboardSignupView = () => <Dashboard view={SignupView} />;
-const DashboardDemoUserView = () => <Dashboard view={CreateDemoUserView} />;
-const DashboardSleepView = () => <Dashboard view={SleepEventsLogView} />;
-const DashboardSettingsView = () => <Dashboard view={UserSettingsView} />;
-
 const BetterSelfRouter = () => (
   <Router>
     <div>
       {/*Public Routes*/}
       <Route exact path={HOME_URL} component={HomePage} />
-      <Route exact path={SIGNUP_URL} component={DashboardSignupView} />
-      <Route exact path={DEMO_SIGNUP_URL} component={DashboardDemoUserView} />
+      <Route
+        exact
+        path={SIGNUP_URL}
+        component={e => <Dashboard view={SignupView} />}
+      />
+      <Route
+        exact
+        path={DEMO_SIGNUP_URL}
+        component={e => <Dashboard view={CreateDemoUserView} />}
+      />
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
 
       {/*Private Routes*/}
-      {/*Try this style of having unnamed functions with Dashboard views rather than explicitly naming them*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
-        component={e => <Dashboard view={SleepAnalyticsView} />}
+        component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
@@ -93,39 +81,47 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
-        component={DashboardSupplementLogView}
+        component={e => <Dashboard view={SupplementView} />}
       />
       <PrivateRoute
         path={DASHBOARD_HEART_RATE_LOGS_URL}
-        component={DashboardHeartRateView}
+        component={e => <Dashboard view={HeartRateLogView} />}
       />
 
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}
-        component={DashboardSupplementsView}
+        component={e => <Dashboard view={SupplementView} />}
       />
 
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_LOGS_URL}
-        component={DashboardProductivityLogView}
+        component={e => <Dashboard view={ProductivityLogView} />}
       />
 
       <PrivateRoute
-        path={DASHBOARD_USER_EVENTS_LOGS_URL}
-        component={DashboardUserEventLogView}
+        path={DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL}
+        component={e => <Dashboard view={UserActivitiesEventsLogView} />}
       />
 
       <PrivateRoute
         path={DASHBOARD_USER_ACTIVITIES_URL}
-        component={DashboardUserActivityView}
+        component={e => <Dashboard view={UserActivitiesLogView} />}
       />
 
       <PrivateRoute
         path={DASHBOARD_SLEEP_LOGS_URL}
-        component={DashboardSleepView}
+        component={e => <Dashboard view={SleepEventsLogView} />}
       />
 
-      <PrivateRoute path={SETTINGS_URL} component={DashboardSettingsView} />
+      <PrivateRoute
+        path={SETTINGS_URL}
+        component={e => <Dashboard view={UserSettingsView} />}
+      />
+
+      <PrivateRoute
+        path={EXPORT_ALL_DATA_URL}
+        component={e => <Dashboard view={UserSettingsView} />}
+      />
 
     </div>
   </Router>

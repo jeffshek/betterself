@@ -14,3 +14,8 @@ class UserInfoView(APIView):
         user = request.user
         user.delete()
         return Response('User {} was deleted'.format(user), status=HTTP_202_ACCEPTED)
+
+
+class UserExportAllData(APIView):
+    def get(self, request):
+        return Response()

@@ -36,7 +36,8 @@ urlpatterns = [
 
     # To get API Token Back
     # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:8001/api-token-auth/
-    url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+    url(r'^api-token-auth/$', views.obtain_auth_token, name='api-token-auth'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced
