@@ -6,6 +6,8 @@ import { DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL } from "../constants/urls";
 
 export class UserExportAllDataView extends Component {
   componentDidMount() {
+    // get the download data and then immediately save it
+    // after this happens, render happens to another page
     this.getData();
   }
 

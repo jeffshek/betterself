@@ -40,5 +40,4 @@ class UserAdmin(AuthUserAdmin):
     add_form = MyUserCreationForm
 
 
-# @admin.register()
 admin.site.register(DemoUserLog)
