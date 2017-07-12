@@ -8,7 +8,7 @@ from apis.betterself.v1.correlations.views import SleepUserActivitiesCorrelation
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
-from apis.betterself.v1.users.views import UserInfoView
+from apis.betterself.v1.users.views import UserInfoView, UserExportAllData
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
@@ -45,7 +45,10 @@ urlpatterns = [
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
-    url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details')
+    url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details'),
+    # debate if you prefer this url structure instead of the current pattern
+    url(r'user/export-data/$', UserExportAllData.as_view(), name='api-user-export-all-data'),
+
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'
