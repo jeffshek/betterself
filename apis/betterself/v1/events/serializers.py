@@ -283,6 +283,7 @@ class SleepActivityDataframeBuilder(object):
 
         # change from timedeltas to minutes, otherwise json response of timedelta is garbage
         sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
+        sleep_aggregate.name = 'Sleep Minutes'
         return sleep_aggregate
 
 
@@ -316,5 +317,8 @@ class UserActivityEventDataframeBuilder(object):
         # switch to a flattened history of user activity dataframe instead
         df = df.pivot_table(index=pd.DatetimeIndex(df['time']), values='value', columns='activity', aggfunc=np.sum)
         df = df.asfreq('D')
+
+        # so the column doesn't look as bad in an output
+        df.index.name = 'Date'
 
         return df

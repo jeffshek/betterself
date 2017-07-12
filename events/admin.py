@@ -21,6 +21,7 @@ class DailyProductivityLogAdmin(admin.ModelAdmin):
         'neutral_time_minutes',
         'distracting_time_minutes',
         'very_distracting_time_minutes',
+        'user'
     ]
 
     class Meta:

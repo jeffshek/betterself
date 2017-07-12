@@ -83,7 +83,7 @@ const ExportSidebar = () => (
     <NavigationLink
       iconName="icon-cloud-download"
       label="All Data"
-      link={DASHBOARD_SLEEP_ANALYTICS_URL}
+      link={EXPORT_ALL_DATA_URL}
     />
   </div>
 );

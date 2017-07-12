@@ -51,6 +51,7 @@ import {
   UserActivitiesEventsLogView
 } from "./user_activities_events_log/user_activites_events_view";
 import { LoginView } from "./authentication/login";
+import { UserExportAllDataView } from "./export/export";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -116,7 +117,7 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={EXPORT_ALL_DATA_URL}
-        component={e => <Dashboard view={UserSettingsView} />}
+        component={e => <Dashboard view={UserExportAllDataView} />}
       />
     </div>
   </Router>

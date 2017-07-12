@@ -44,6 +44,13 @@ class DemoUserLog(BaseModel):
     """
     user = models.OneToOneField(User, unique=True)
 
+    class Meta:
+        verbose_name = 'Demo User Log'
+        verbose_name_plural = 'Demo User Logs'
+
+    def __str__(self):
+        return self.user.username
+
 
 # Create a signal to be able to delete all demo-users easily so this
 # can be cleaned up via admin

@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import User
+from .models import User, DemoUserLog
 
 
 # TODO - I don't really like this from CookieCutter
@@ -38,3 +38,6 @@ class MyUserCreationForm(UserCreationForm):
 class UserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
+
+
+admin.site.register(DemoUserLog)

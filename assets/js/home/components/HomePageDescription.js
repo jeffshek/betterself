@@ -44,7 +44,7 @@ class HomePageDescriptionSection extends React.Component {
                 <div className="col-sm-6">
                   <h5>Compound Improvements.</h5>
                   <p>
-                    Small improvements move glaciers. Track what's working for you (and what's not). Beautiful personalized analytics from best-in-class algorithms.
+                    Small improvements move glaciers. Track what's working for you (and what's not). Beautiful personalized analytics from historical data.
                   </p>
                 </div>
                 <div className="col-sm-6">
