@@ -69,7 +69,6 @@ const BetterSelfRouter = () => (
       />
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
-
       {/*Private Routes*/}
       <PrivateRoute
         path={DASHBOARD_INDEX_URL}
@@ -91,42 +90,34 @@ const BetterSelfRouter = () => (
         path={DASHBOARD_HEART_RATE_LOGS_URL}
         component={e => <Dashboard view={HeartRateLogView} />}
       />
-
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}
         component={e => <Dashboard view={SupplementView} />}
       />
-
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_LOGS_URL}
         component={e => <Dashboard view={ProductivityLogView} />}
       />
-
       <PrivateRoute
         path={DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL}
         component={e => <Dashboard view={UserActivitiesEventsLogView} />}
       />
-
       <PrivateRoute
         path={DASHBOARD_USER_ACTIVITIES_URL}
         component={e => <Dashboard view={UserActivitiesLogView} />}
       />
-
       <PrivateRoute
         path={DASHBOARD_SLEEP_LOGS_URL}
         component={e => <Dashboard view={SleepEventsLogView} />}
       />
-
       <PrivateRoute
         path={SETTINGS_URL}
         component={e => <Dashboard view={UserSettingsView} />}
       />
-
       <PrivateRoute
         path={EXPORT_ALL_DATA_URL}
         component={e => <Dashboard view={UserSettingsView} />}
       />
-
     </div>
   </Router>
 );
