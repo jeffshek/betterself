@@ -24,6 +24,8 @@ class UserInfoView(APIView):
 
 
 class UserExportAllData(APIView):
+    throttle_scope = 'user_export_all_data'
+
     def get(self, request):
         user = request.user
 
