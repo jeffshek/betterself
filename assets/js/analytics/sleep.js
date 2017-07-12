@@ -10,7 +10,7 @@ const SleepHistoryChart = {
   datasets: [Object.assign({}, DefaultLineChartDataset)]
 };
 
-class SleepAnalyticsView extends BaseAnalyticsView {
+export class SleepAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();
     const updateState = {
@@ -93,5 +93,3 @@ class SleepAnalyticsView extends BaseAnalyticsView {
     );
   }
 }
-
-export default SleepAnalyticsView;

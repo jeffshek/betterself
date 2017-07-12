@@ -12,7 +12,7 @@ const LoginPageSideImage = () => {
   );
 };
 
-export default class LoginView extends Component {
+export class LoginView extends Component {
   state = {
     redirectToReferrer: false
   };

@@ -186,7 +186,7 @@ const AddHeartRateLog = () => {
   );
 };
 
-class HeartRateLogView extends Component {
+export class HeartRateLogView extends Component {
   render() {
     return (
       <div>
@@ -206,5 +206,3 @@ class HeartRateLogView extends Component {
     );
   }
 }
-
-export default HeartRateLogView;

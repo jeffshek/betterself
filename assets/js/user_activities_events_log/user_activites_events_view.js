@@ -4,7 +4,7 @@ import { AddUserActivityEvent } from "./add_user_activities_event";
 import { UserActivityEventLogTable } from "./user_activities_events_table";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
-class UserActivitiesEventLogView extends EventLogView {
+export class UserActivitiesEventsLogView extends EventLogView {
   constructor() {
     super();
     this.resourceName = "user_activity_events";
@@ -54,5 +54,3 @@ class UserActivitiesEventLogView extends EventLogView {
     );
   }
 }
-
-export default UserActivitiesEventLogView;

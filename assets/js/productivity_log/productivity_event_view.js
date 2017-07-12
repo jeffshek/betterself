@@ -3,7 +3,7 @@ import { AddProductivityEvent } from "./add_productivity_event";
 import { ProductivityLogTable } from "./productivity_table";
 import { EventLogView } from "../resources_table/resource_view";
 
-class ProductivityLogView extends EventLogView {
+export class ProductivityLogView extends EventLogView {
   constructor() {
     super();
     this.state = {
@@ -30,5 +30,3 @@ class ProductivityLogView extends EventLogView {
     );
   }
 }
-
-export default ProductivityLogView;

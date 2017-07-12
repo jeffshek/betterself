@@ -28,17 +28,10 @@ import {
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
-import LoginView from "./authentication/login";
 import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
-
-import SleepAnalyticsView from "./analytics/sleep";
-import HeartRateLogView from "./heart_rate_log/legacy_heart_rate_log";
-import UserActivitiesEventsLogView
-  from "./user_activities_events_log/user_activites_events_view";
 import { SupplementView } from "./supplements_log/supplements_view";
-import ProductivityLogView from "./productivity_log/productivity_event_view";
 import {
   UserActivitiesLogView
 } from "./user_activities_log/user_activities_view";
@@ -47,6 +40,17 @@ import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
 import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
 import { UserSettingsView } from "./user_settings/user_settings";
 import { ProductivityAnalyticsView } from "./analytics/productivity";
+import {
+  SupplementEventsLogView
+} from "./supplement_events_log/supplement_events_view";
+import {
+  ProductivityLogView
+} from "./productivity_log/productivity_event_view";
+import { SleepAnalyticsView } from "./analytics/sleep";
+import {
+  UserActivitiesEventsLogView
+} from "./user_activities_events_log/user_activites_events_view";
+import { LoginView } from "./authentication/login";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -81,7 +85,7 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
-        component={e => <Dashboard view={SupplementView} />}
+        component={e => <Dashboard view={SupplementEventsLogView} />}
       />
       <PrivateRoute
         path={DASHBOARD_HEART_RATE_LOGS_URL}
