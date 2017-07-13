@@ -13,17 +13,17 @@ class HomePageFeaturesShortDescriptionSection extends React.Component {
             <FontAwesomeIconBox
               icon="fa fa-pencil"
               header="Simple"
-              description="Integrates with all major fitness trackers. Automatically gets data to give the most accurate snapshot of &nbsp;you."
+              description="BetterSelf accepts data in Excel files, and integrates with all major fitness trackers, syncing seamlessly to give the most accurate snapshot of you."
             />
             <FontAwesomeIconBox
               icon="fa fa-code"
               header="Privacy"
-              description="We respect privacy. Your data is confidential and we don't store names or emails. Comes with a purge data option. &nbsp;"
+              description="We respect your privacy. Your data is confidential, and we don't store names or emails. BetterSelf even comes with a purge data option, so you can really make sure your information is secure."
             />
             <FontAwesomeIconBox
               icon="fa fa-search"
               header="Analytics"
-              description="How many hours of sleep do you really need? Does fish oil actually help? We help you eliminate truth from placebo."
+              description="How many hours of sleep do you really need? Does fish oil actually help? BetterSelf helps you differentiate truth from placebo with real, measurable information."
             />
             <FontAwesomeIconBox
               icon="fa fa-mobile"
