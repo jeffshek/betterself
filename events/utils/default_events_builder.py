@@ -7,8 +7,8 @@ DEFAULT_ACTIVITIES = [
     'Went to the Gym',
     'Brushed Teeth',
     'Cold Shower',
-    'Ate Breakfast'
-    'Wrote in Journal'
+    'Ate Breakfast',
+    'Wrote in Journal',
     'Drank Alcohol',
     'Hungover',
     'Walked to Work',
