@@ -249,8 +249,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '1000/second',
-        'anon': '1000/second',
+        'user': '1000/hour',
+        'anon': '1000/hour',
         'signups': '3/day',
         'demo_signups': '10/day',  # let a user create a few more demo accounts
         'user_export_all_data': '20/day',

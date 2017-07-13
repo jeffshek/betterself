@@ -12,14 +12,19 @@ class HomePageAnalyticsDescriptionSection extends React.Component {
             <div className="col-lg-4 col-md-3 col-sm-12">
               <h1>Personalized Analytics</h1>
               <p styleName="lead-white">
-                Ever wonder how your body is being impacted by supplements, diet or habits? How sleep impacts decision making?
+                What do your most creative days and weeks have in common? Will a hangover still impact you three days after the binge? Does your productivity really take a hit with only five hours of sleep?
                 {" "}
               </p>
               <p styleName="lead-white">
-                Track decisions, activities, and supplements to see what's really impacting you. What do your most creative days and weeks have in common? You've come to the right place.
+                Track your decisions, activities, and supplements, to see what's really impacting you, in colourful, easy-to-understand graphs and charts.
               </p>
+              <p styleName="lead-white">
+                If you’ve ever wanted a meaningful way to see how your decisions affect your body, you've come to the right place.
+              </p>
+
             </div>
             <div className="col-lg-8">
+              <br />
               <img
                 className="img-responsive dashboard-example"
                 src={DASHBOARD_EXAMPLE_PATH}
