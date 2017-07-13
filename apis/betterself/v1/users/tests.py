@@ -39,7 +39,7 @@ class UserExportAllDataTests(TestCase):
         client.force_authenticate(user)
 
         response = client.get(self.url)
-        print (response.status_code)
+        self.assertEqual(response.status_code, 200)
 
     def test_export_view_not_logged_in(self):
         client = APIClient()

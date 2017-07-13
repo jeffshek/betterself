@@ -23,7 +23,8 @@ class DemoHistoricalDataBuilder(object):
         historical_data_points_quantity = 30
 
         # use pandas to generate a nifty index of timestamps, use timezone to remove warning signals
-        end_date = timezone.now()
+        # switch a day back since utc time starts forward by everyone's calendars so much
+        end_date = timezone.now() - datetime.timedelta(days=1)
         self.date_series = pd.date_range(end=end_date, freq='D', periods=historical_data_points_quantity)
 
         # build a series that shows the impact of what supplements/events have on sleep
