@@ -296,7 +296,7 @@ class UserActivityEventDataframeBuilder(object):
         except IndexError:
             self.user = None
 
-    def get_user_activity_events(self):
+    def get_flat_daily_dataframe(self):
         activity_events_values = self.user_activities.values('time', 'user_activity__name')
 
         if not self.user:

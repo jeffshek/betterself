@@ -33,7 +33,7 @@ class UserExportAllData(APIView):
         # user activity events
         activity_events = UserActivityEvent.objects.filter(user=user)
         df_builder = UserActivityEventDataframeBuilder(activity_events)
-        df = df_builder.get_user_activity_events()
+        df = df_builder.get_flat_daily_dataframe()
         df.to_excel(workbook, 'UserActivityEvents')
 
         # productivity logs

@@ -47,7 +47,7 @@ class SleepUserActivitiesCorrelationView(APIView):
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
 
-        user_activity_dataframe = activity_serializer.get_user_activity_events()
+        user_activity_dataframe = activity_serializer.get_flat_daily_dataframe()
         user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
 
         correlation = user_activity_dataframe.corr()
@@ -127,7 +127,7 @@ class ProductivityUserActivitiesCorrelationView(APIView):
 
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
-        user_activity_dataframe = activity_serializer.get_user_activity_events()
+        user_activity_dataframe = activity_serializer.get_flat_daily_dataframe()
         if user_activity_dataframe.empty:
             return NO_DATA_RESPONSE
 
