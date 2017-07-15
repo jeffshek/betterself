@@ -311,6 +311,7 @@ class UserActivityEventDataframeBuilder(object):
         df = pd.DataFrame({
             'time': time_index_localized,
             'activity': activity_names,
+            # value of 1 since we only allow one event to occur at a particular time
             'value': 1
         })
 
