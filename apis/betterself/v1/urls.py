@@ -8,7 +8,8 @@ from apis.betterself.v1.correlations.views import SleepUserActivitiesCorrelation
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
-from apis.betterself.v1.users.views import UserInfoView, UserExportAllData
+from apis.betterself.v1.users.views import UserInfoView
+from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
