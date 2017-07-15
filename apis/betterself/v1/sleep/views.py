@@ -34,7 +34,7 @@ class SleepAggregatesView(APIView):
         sleep_activities = SleepActivity.objects.filter(user=user)
 
         serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate = serializer.get_sleep_history()
+        sleep_aggregate = serializer.get_sleep_history_series()
 
         # because pandas uses a timeindex, when we go to json - it doesn't
         # play nicely with a typical json dump, so we do an additional load so drf can transmit nicely
@@ -56,7 +56,7 @@ class SleepAveragesView(APIView):
         sleep_activities = SleepActivity.objects.filter(user=user)
 
         serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate = serializer.get_sleep_history()
+        sleep_aggregate = serializer.get_sleep_history_series()
 
         sleep_average = sleep_aggregate.rolling(window=lookback).mean()
 

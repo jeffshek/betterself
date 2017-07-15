@@ -255,7 +255,7 @@ class SleepActivityDataframeBuilder(object):
         except IndexError:
             self.user = None
 
-    def get_sleep_history(self):
+    def get_sleep_history_series(self):
         if not self.user:
             return pd.Series()
 
@@ -318,6 +318,8 @@ class UserActivityEventDataframeBuilder(object):
         # switch to a flattened history of user activity dataframe instead
         df = df.pivot_table(index=pd.DatetimeIndex(df['time']), values='value', columns='activity', aggfunc=np.sum)
         df = df.asfreq('D')
+
+        df.index = df.index.date
 
         # so the column doesn't look as bad in an output
         df.index.name = 'Date'

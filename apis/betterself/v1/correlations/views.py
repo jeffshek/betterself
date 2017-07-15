@@ -35,7 +35,7 @@ class SleepUserActivitiesCorrelationView(APIView):
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate = sleep_serializer.get_sleep_history()
+        sleep_aggregate = sleep_serializer.get_sleep_history_series()
 
         if sleep_aggregate.empty:
             return NO_DATA_RESPONSE
@@ -64,7 +64,7 @@ class SleepSupplementsCorrelationView(APIView):
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate_series = sleep_serializer.get_sleep_history()
+        sleep_aggregate_series = sleep_serializer.get_sleep_history_series()
         try:
             # attempt to normalize to hold sleep_aggregate_series only dates
             sleep_aggregate_series.index = sleep_aggregate_series.index.date
