@@ -18,6 +18,10 @@ class AggregateDataFrameMixin(object):
         productivity_log_dataframe = builder.build_dataframe()
         return productivity_log_dataframe
 
+    @staticmethod
+    def get_sleep_log_dataframe(queryset):
+        pass
+
 
 class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameMixin):
     def __init__(self, supplement_event_queryset, productivity_log_queryset):

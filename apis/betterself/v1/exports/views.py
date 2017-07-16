@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    ProductivityLogEventsDataframeBuilder
-from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
+    ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from events.models import SupplementEvent, SleepActivity, UserActivityEvent, DailyProductivityLog
 
 

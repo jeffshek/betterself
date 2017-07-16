@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apis.betterself.v1.events.filters import SleepActivityFilter
-from apis.betterself.v1.events.serializers import SleepActivityReadSerializer, SleepActivityCreateSerializer, \
-    SleepActivityDataframeBuilder
+from apis.betterself.v1.events.serializers import SleepActivityReadSerializer, SleepActivityCreateSerializer
+from analytics.events.utils.dataframe_builders import SleepActivityDataframeBuilder
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from config.pagination import ModifiedPageNumberPagination
 from constants import LOOKBACK_PARAM_NAME
