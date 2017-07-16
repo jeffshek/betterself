@@ -100,7 +100,6 @@ class ProductivitySupplementsCorrelationView(APIView):
 
 
 class ProductivityUserActivitiesCorrelationView(APIView):
-    # TODO - this view is garbage and should be cleaned up
     def get(self, request):
         user = request.user
 
