@@ -165,7 +165,6 @@
     top: 0px;
 }
 .content-1-4 .image-container .background-image-holder {
-    background: #cccccc url('../../images/dark-logs-bg.jpg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -501,7 +500,6 @@ button:hover {
     background-color: #ffffff;
 }
 .promo-1 {
-    background: url("../../images/water-bg.jpg") center top no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
