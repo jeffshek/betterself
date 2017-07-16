@@ -95,8 +95,6 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         """
         Simplify the history of whatever supplements were taken - round the timestamps
         to dates and then sum the # taken up per supplement.
-
-        # TODO - these are now one and the same with get_flat_dataframe, rename them all to get_flat_daily
         """
         df = self.build_dataframe()
         if df.empty:
@@ -125,18 +123,6 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         flat_df = flat_df.asfreq('D')
         flat_df = flat_df.tz_localize(timezone)
 
-        return flat_df
-
-    def get_flat_dataframe(self):
-        """
-        Return a flattened view of all the supplements that were taken
-        """
-        df = self.build_dataframe()
-
-        if df.empty:
-            return df
-
-        flat_df = self._get_summed_df_by_daily_index(df, timezone=self.user.pytz_timezone)
         return flat_df
 
 
@@ -208,7 +194,7 @@ class AggregateSupplementProductivityDataframeBuilder(object):
     @staticmethod
     def get_supplement_event_dataframe(queryset):
         builder = SupplementEventsDataframeBuilder(queryset)
-        supplement_event_dataframe = builder.get_flat_dataframe()
+        supplement_event_dataframe = builder.get_flat_daily_dataframe()
         return supplement_event_dataframe
 
     @staticmethod
