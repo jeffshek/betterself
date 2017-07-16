@@ -1,7 +1,7 @@
 import pandas as pd
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    ProductivityLogEventsDataframeBuilder
+    ProductivityLogEventsDataframeBuilder, UserActivityEventDataframeBuilder, SleepActivityDataframeBuilder
 from events.models import SupplementEvent, DailyProductivityLog
 
 
@@ -19,8 +19,16 @@ class AggregateDataFrameMixin(object):
         return productivity_log_dataframe
 
     @staticmethod
-    def get_sleep_log_dataframe(queryset):
-        pass
+    def get_sleep_activity_series(queryset):
+        builder = SleepActivityDataframeBuilder(queryset)
+        series = builder.get_sleep_history_series()
+        return series
+
+    @staticmethod
+    def get_user_activity_dataframe(queryset):
+        builder = UserActivityEventDataframeBuilder(queryset)
+        user_activity_dataframe = builder.get_flat_daily_dataframe()
+        return user_activity_dataframe
 
 
 class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameMixin):

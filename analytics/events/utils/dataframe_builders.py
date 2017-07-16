@@ -193,6 +193,26 @@ class SleepActivityDataframeBuilder(object):
         except IndexError:
             self.user = None
 
+    @staticmethod
+    def round_timestamp_to_sleep_date(timeseries):
+        """
+        Not my proudest function ... this isn't as efficient as it could be, but struggling
+        with some pandas syntax to find the perfect pandas one-line
+
+        This can be much more performant, but need time to sit down and figure it out
+        """
+        sleep_dates = []
+        for value in timeseries:
+            if value.hour < SLEEP_CUTOFF_TIME:
+                result = value - pd.DateOffset(days=1)
+            else:
+                result = value
+
+            sleep_dates.append(result)
+
+        index = pd.DatetimeIndex(sleep_dates)
+        return index
+
     def get_sleep_history_series(self):
         if not self.user:
             return pd.Series()
@@ -212,7 +232,7 @@ class SleepActivityDataframeBuilder(object):
         dataframe = pd.DataFrame.from_records(sleep_activity_normalized_timezones)
         dataframe['sleep_time'] = dataframe['end_time'] - dataframe['start_time']
 
-        sleep_index = round_timestamp_to_sleep_date(dataframe['end_time'])
+        sleep_index = self.round_timestamp_to_sleep_date(dataframe['end_time'])
         sleep_series = pd.Series(dataframe['sleep_time'].values, index=sleep_index)
 
         # get the sum of time slept during days (so this includes naps)
@@ -261,23 +281,3 @@ class UserActivityEventDataframeBuilder(object):
         df.index.name = 'Date'
 
         return df
-
-
-def round_timestamp_to_sleep_date(timeseries):
-    """
-    Not my proudest function ... this isn't as efficient as it could be, but struggling
-    with some pandas syntax to find the perfect pandas one-line
-
-    This can be much more performant, but need time to sit down and figure it out
-    """
-    sleep_dates = []
-    for value in timeseries:
-        if value.hour < SLEEP_CUTOFF_TIME:
-            result = value - pd.DateOffset(days=1)
-        else:
-            result = value
-
-        sleep_dates.append(result)
-
-    index = pd.DatetimeIndex(sleep_dates)
-    return index
