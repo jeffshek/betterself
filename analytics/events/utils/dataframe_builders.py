@@ -106,7 +106,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         return flat_df
 
     @staticmethod
-    def _get_summed_df_by_daily_index(df, timezone=None):
+    def _get_summed_df_by_daily_index(df, timezone):
         # switch the index to something generic like a date so that we can sum daily iterations
         df.index = df.index.date
 
@@ -121,10 +121,9 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # back to float64
         flat_df = flat_df.astype('float64')
 
-        # if we provide a timezone, then we can explicitly set a daily dataframe
-        if timezone:
-            flat_df = flat_df.asfreq('D')
-            flat_df = flat_df.tz_localize(timezone)
+        # Set as a daily frequency and set it back to a timezone aware date
+        flat_df = flat_df.asfreq('D')
+        flat_df = flat_df.tz_localize(timezone)
 
         return flat_df
 
@@ -163,7 +162,6 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         if df.empty:
             return df
 
-        # df.index = df.index.date
         return df
 
     def get_productive_timeseries(self):
@@ -239,20 +237,8 @@ class AggregateSupplementProductivityDataframeBuilder(object):
         if productivity_log_dataframe.empty or supplement_dataframe.empty:
             return pd.DataFrame()
 
-        # because productivity is measured daily, and supplements can be measured
-        # at any time, we have to realign them to be the right time frequencies
-        daily_supplement_dataframe = supplement_dataframe.resample('D').sum()
-
-        # we can't compare things not timezone aware and naive, so make the aware -- > naive.
-        # an easier simplification to deal with all of this is to force the index to be a date
-        # supplement_date_index = daily_supplement_dataframe.index.date
-        # daily_supplement_dataframe.index = supplement_date_index
-        #
-        # # force the conversion of the productivity_log_dataframe to be a simple date index
-        # productivity_log_dataframe.index = productivity_log_dataframe.index.date
-
         # axis of zero means to align them based on column
         # we want to align it based on matching index, so axis=1
         # this seems kind of weird though for axis of 1 to mean the index, shrug
-        concat_df = pd.concat([daily_supplement_dataframe, productivity_log_dataframe], axis=1)
+        concat_df = pd.concat([supplement_dataframe, productivity_log_dataframe], axis=1)
         return concat_df
