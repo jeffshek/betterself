@@ -8887,8 +8887,6 @@ be a descendant of the grid when it is being dragged.
 .irs-line-right,
 .irs-bar,
 .irs-bar-edge,
-.irs-slider {
-  background: url(../img/sprite-skin-modern.png) repeat-x; }
 
 .irs {
   height: 50px; }
