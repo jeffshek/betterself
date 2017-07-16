@@ -44,6 +44,9 @@ class SleepUserActivitiesCorrelationView(APIView):
         # which matches UserActivityEvents, eventually need to be more elegant
         sleep_aggregate = sleep_aggregate.resample('D').last()
 
+        # one-off hack to adjust the date to match that of the index
+        sleep_aggregate.index = sleep_aggregate.index.date
+
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
 
@@ -122,6 +125,10 @@ class ProductivityUserActivitiesCorrelationView(APIView):
             productivity_log)
         if productivity_log_dataframe.empty:
             return NO_DATA_RESPONSE
+
+        # adjust the index to a daily one (this is a hack for the time being), switch this into the dataframe_builders
+        # file
+        productivity_log_dataframe.index = productivity_log_dataframe.index.date
 
         productivity_series = productivity_log_dataframe[correlation_driver]
 
