@@ -12,7 +12,6 @@ react_dashboard_template = 'react/dashboard.html'
 urlpatterns = [
     # General
     url(r'^$', TemplateView.as_view(template_name=react_home_template), name='home'),
-    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, include(admin.site.urls)),
