@@ -319,8 +319,6 @@ class UserActivityEventDataframeBuilder(object):
         df = df.pivot_table(index=pd.DatetimeIndex(df['time']), values='value', columns='activity', aggfunc=np.sum)
         df = df.asfreq('D')
 
-        df.index = df.index.date
-
         # so the column doesn't look as bad in an output
         df.index.name = 'Date'
 

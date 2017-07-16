@@ -45,7 +45,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         queryset = SupplementEvent.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
 
-        df = builder.get_flat_dataframe()
+        df = builder.get_flat_daily_dataframe()
         # get a list of all the "days" we have stored - ie. transform
         # a datetime to just a date. then compare that the builder's grouped daily
         times_values = SupplementEvent.objects.all().values_list('time', flat=True)
