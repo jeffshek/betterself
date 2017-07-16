@@ -40,13 +40,6 @@ class SleepUserActivitiesCorrelationView(APIView):
         if sleep_aggregate.empty:
             return NO_DATA_RESPONSE
 
-        # resample so that it goes from no frequency to a daily frequency
-        # which matches UserActivityEvents, eventually need to be more elegant
-        sleep_aggregate = sleep_aggregate.resample('D').last()
-
-        # one-off hack to adjust the date to match that of the index
-        sleep_aggregate.index = sleep_aggregate.index.date
-
         activity_events = UserActivityEvent.objects.filter(user=user)
         activity_serializer = UserActivityEventDataframeBuilder(activity_events)
 
@@ -68,11 +61,6 @@ class SleepSupplementsCorrelationView(APIView):
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
         sleep_aggregate_series = sleep_serializer.get_sleep_history_series()
-        try:
-            # attempt to normalize to hold sleep_aggregate_series only dates
-            sleep_aggregate_series.index = sleep_aggregate_series.index.date
-        except AttributeError:
-            pass
 
         supplements_and_sleep_df = supplements_flat_daily_df.copy()
         supplements_and_sleep_df[SLEEP_MINUTES_COLUMN] = sleep_aggregate_series
@@ -125,10 +113,6 @@ class ProductivityUserActivitiesCorrelationView(APIView):
             productivity_log)
         if productivity_log_dataframe.empty:
             return NO_DATA_RESPONSE
-
-        # adjust the index to a daily one (this is a hack for the time being), switch this into the dataframe_builders
-        # file
-        productivity_log_dataframe.index = productivity_log_dataframe.index.date
 
         productivity_series = productivity_log_dataframe[correlation_driver]
 

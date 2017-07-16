@@ -95,21 +95,21 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         """
         Simplify the history of whatever supplements were taken - round the timestamps
         to dates and then sum the # taken up per supplement.
+
+        # TODO - these are now one and the same with get_flat_dataframe, rename them all to get_flat_daily
         """
         df = self.build_dataframe()
         if df.empty:
             return df
 
-        df.index = df.index.date
-
-        flat_df = self._get_summed_df_by_index(df)
+        flat_df = self._get_summed_df_by_daily_index(df, timezone=self.user.pytz_timezone)
         return flat_df
 
     @staticmethod
-    def _get_summed_df_by_index(df):
-        # use a pivot_table and not a pivot because duplicates should be summed
-        # should there be duplicates though? ie. would anyone ever record
-        # taking two BCAAs at the same time??
+    def _get_summed_df_by_daily_index(df, timezone=None):
+        # switch the index to something generic like a date so that we can sum daily iterations
+        df.index = df.index.date
+
         flat_df = df.pivot_table(
             index=df.index,
             values=QUANTITY_COLUMN_NAME,
@@ -120,6 +120,11 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         # When doing a pivot, the dataframe type seems to convert from float64 back to object ... so here we force it
         # back to float64
         flat_df = flat_df.astype('float64')
+
+        # if we provide a timezone, then we can explicitly set a daily dataframe
+        if timezone:
+            flat_df = flat_df.asfreq('D')
+            flat_df = flat_df.tz_localize(timezone)
 
         return flat_df
 
@@ -132,7 +137,7 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         if df.empty:
             return df
 
-        flat_df = self._get_summed_df_by_index(df)
+        flat_df = self._get_summed_df_by_daily_index(df, timezone=self.user.pytz_timezone)
         return flat_df
 
 
@@ -158,7 +163,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         if df.empty:
             return df
 
-        df.index = df.index.date
+        # df.index = df.index.date
         return df
 
     def get_productive_timeseries(self):
@@ -240,11 +245,11 @@ class AggregateSupplementProductivityDataframeBuilder(object):
 
         # we can't compare things not timezone aware and naive, so make the aware -- > naive.
         # an easier simplification to deal with all of this is to force the index to be a date
-        supplement_date_index = daily_supplement_dataframe.index.date
-        daily_supplement_dataframe.index = supplement_date_index
-
-        # force the conversion of the productivity_log_dataframe to be a simple date index
-        productivity_log_dataframe.index = productivity_log_dataframe.index.date
+        # supplement_date_index = daily_supplement_dataframe.index.date
+        # daily_supplement_dataframe.index = supplement_date_index
+        #
+        # # force the conversion of the productivity_log_dataframe to be a simple date index
+        # productivity_log_dataframe.index = productivity_log_dataframe.index.date
 
         # axis of zero means to align them based on column
         # we want to align it based on matching index, so axis=1
