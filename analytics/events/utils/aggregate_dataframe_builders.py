@@ -40,12 +40,7 @@ class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameMixin):
         productivity_log_dataframe = self.get_productivity_log_dataframe(self.productivity_log_queryset)
         supplement_dataframe = self.get_supplement_event_dataframe(self.supplement_event_queryset)
 
-        # if we don't have any data for either or of these, just return an empty dataset
-        if productivity_log_dataframe.empty or supplement_dataframe.empty:
-            return pd.DataFrame()
-
-        # axis of zero means to align them based on column
-        # we want to align it based on matching index, so axis=1
-        # this seems kind of weird though for axis of 1 to mean the index, shrug
+        # axis of zero means to align them based on column we want to align it based on matching index, so axis=1
+        # this seems kind of weird though for axis of 1 to mean the index though
         concat_df = pd.concat([supplement_dataframe, productivity_log_dataframe], axis=1)
         return concat_df
