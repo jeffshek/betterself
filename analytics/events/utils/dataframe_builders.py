@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from events.models import SupplementEvent, DailyProductivityLog
+from constants import SLEEP_CUTOFF_TIME
 
 SOURCE_COLUMN_NAME = 'Source'
 QUANTITY_COLUMN_NAME = 'Quantity'
@@ -180,51 +180,104 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         return unproductive_timeseries
 
 
-class AggregateSupplementProductivityDataframeBuilder(object):
+class SleepActivityDataframeBuilder(object):
     """
-    Really want to name this MasterBuilder from the Lego Movie
+    Custom serializer to parse sleep logs in a meaningful way
 
-    Combines multi querysets to build a complete dashboard
+    Returns a dataframe of sleep activity
     """
-
-    def __init__(self, supplement_event_queryset, productivity_log_queryset):
-        self.supplement_event_queryset = supplement_event_queryset
-        self.productivity_log_queryset = productivity_log_queryset
+    def __init__(self, queryset):
+        self.sleep_activities = queryset
+        try:
+            self.user = self.sleep_activities[0].user
+        except IndexError:
+            self.user = None
 
     @staticmethod
-    def get_supplement_event_dataframe(queryset):
-        builder = SupplementEventsDataframeBuilder(queryset)
-        supplement_event_dataframe = builder.get_flat_daily_dataframe()
-        return supplement_event_dataframe
+    def round_timestamp_to_sleep_date(timeseries):
+        """
+        Not my proudest function ... this isn't as efficient as it could be, but struggling
+        with some pandas syntax to find the perfect pandas one-line
 
-    @staticmethod
-    def get_productivity_log_dataframe(queryset):
-        builder = ProductivityLogEventsDataframeBuilder(queryset)
-        productivity_log_dataframe = builder.build_dataframe()
-        return productivity_log_dataframe
+        This can be much more performant, but need time to sit down and figure it out
+        """
+        sleep_dates = []
+        for value in timeseries:
+            if value.hour < SLEEP_CUTOFF_TIME:
+                result = value - pd.DateOffset(days=1)
+            else:
+                result = value
 
-    @classmethod
-    def get_aggregate_dataframe_for_user(cls, user):
-        supplement_events = SupplementEvent.objects.filter(user=user)
-        productivity_log = DailyProductivityLog.objects.filter(user=user)
+            sleep_dates.append(result)
 
-        aggregate_dataframe = cls(
-            supplement_event_queryset=supplement_events,
-            productivity_log_queryset=productivity_log,
-        )
-        dataframe = aggregate_dataframe.build_daily_dataframe()
-        return dataframe
+        index = pd.DatetimeIndex(sleep_dates)
+        return index
 
-    def build_daily_dataframe(self):
-        productivity_log_dataframe = self.get_productivity_log_dataframe(self.productivity_log_queryset)
-        supplement_dataframe = self.get_supplement_event_dataframe(self.supplement_event_queryset)
+    def get_sleep_history_series(self):
+        if not self.user:
+            return pd.Series()
 
-        # if we don't have any data for either or of these, just return an empty dataset
-        if productivity_log_dataframe.empty or supplement_dataframe.empty:
+        user_timezone = self.user.pytz_timezone
+
+        sleep_activities_values = self.sleep_activities.values('start_time', 'end_time')
+        sleep_activity_normalized_timezones = []
+        for record in sleep_activities_values:
+            record_normalized = {key: user_timezone.normalize(value) for key, value in record.items()}
+            sleep_activity_normalized_timezones.append(record_normalized)
+
+        # for each given 24 hour period (ending at 11AM)
+        # Lot of mental debate here between calculating the sleep one gets from monday 10PM to tuesday 6AM which
+        # date it should be attributed to ... aka either a Monday or Tuesday night.
+        # I've decided to lean toward calculating that as Monday night
+        dataframe = pd.DataFrame.from_records(sleep_activity_normalized_timezones)
+        dataframe['sleep_time'] = dataframe['end_time'] - dataframe['start_time']
+
+        sleep_index = self.round_timestamp_to_sleep_date(dataframe['end_time'])
+        sleep_series = pd.Series(dataframe['sleep_time'].values, index=sleep_index)
+
+        # get the sum of time slept during days (so this includes naps)
+        # the result is timedeltas though, so convert below
+        sleep_aggregate = sleep_series.resample('D').sum()
+
+        # change from timedeltas to minutes, otherwise json response of timedelta is garbage
+        sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
+        sleep_aggregate.name = 'Sleep Minutes'
+        return sleep_aggregate
+
+
+class UserActivityEventDataframeBuilder(object):
+    def __init__(self, queryset):
+        self.user_activities = queryset
+
+        try:
+            self.user = self.user_activities[0].user
+        except IndexError:
+            self.user = None
+
+    def get_flat_daily_dataframe(self):
+        activity_events_values = self.user_activities.values('time', 'user_activity__name')
+
+        if not self.user:
             return pd.DataFrame()
 
-        # axis of zero means to align them based on column
-        # we want to align it based on matching index, so axis=1
-        # this seems kind of weird though for axis of 1 to mean the index, shrug
-        concat_df = pd.concat([supplement_dataframe, productivity_log_dataframe], axis=1)
-        return concat_df
+        user_timezone = self.user.pytz_timezone
+
+        time_index = [item['time'].astimezone(user_timezone).date() for item in activity_events_values]
+        time_index_localized = pd.DatetimeIndex(time_index).tz_localize(user_timezone)
+        activity_names = [item['user_activity__name'] for item in activity_events_values]
+
+        df = pd.DataFrame({
+            'time': time_index_localized,
+            'activity': activity_names,
+            # value of 1 since we only allow one event to occur at a particular time
+            'value': 1
+        })
+
+        # switch to a flattened history of user activity dataframe instead
+        df = df.pivot_table(index=pd.DatetimeIndex(df['time']), values='value', columns='activity', aggfunc=np.sum)
+        df = df.asfreq('D')
+
+        # so the column doesn't look as bad in an output
+        df.index.name = 'Date'
+
+        return df

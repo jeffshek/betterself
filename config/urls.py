@@ -21,8 +21,6 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     #
     url(r'^api/', include('apis.urls')),
-    #
-    url(r'^analytics/', include('analytics.urls')),
 
     # All React should redirect to the same pages
     # TODO - switch the regex to just pattern match instead of copy/pasting

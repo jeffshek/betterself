@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    ProductivityLogEventsDataframeBuilder
-from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
+    ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from events.models import SupplementEvent, SleepActivity, UserActivityEvent, DailyProductivityLog
 
 
@@ -49,6 +48,12 @@ class UserExportAllData(APIView):
         # include sleep which is a series and not a dataframe
         concat_dataframe['Sleep Minutes'] = sleep_activities_series
         concat_dataframe.to_excel(workbook, 'Cumulative Log')
+
+        cumulative_14_day_dataframe = concat_dataframe.fillna(0).rolling(window=14).sum()[14:]
+        cumulative_14_day_dataframe.to_excel(workbook, 'Aggregate 14 Log')
+
+        cumulative_28_day_dataframe = concat_dataframe.fillna(0).rolling(window=28).sum()[28:]
+        cumulative_28_day_dataframe.to_excel(workbook, 'Aggregate 28 Log')
 
         # make sure all the output gets writen to bytes io
         workbook.close()

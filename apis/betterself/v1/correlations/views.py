@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    AggregateSupplementProductivityDataframeBuilder, VALID_PRODUCTIVITY_DRIVERS
-from apis.betterself.v1.events.serializers import SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
+    VALID_PRODUCTIVITY_DRIVERS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
+from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
@@ -100,7 +100,6 @@ class ProductivitySupplementsCorrelationView(APIView):
 
 
 class ProductivityUserActivitiesCorrelationView(APIView):
-    # TODO - this view is garbage and should be cleaned up
     def get(self, request):
         user = request.user
 
