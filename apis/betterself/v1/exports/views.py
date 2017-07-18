@@ -49,6 +49,12 @@ class UserExportAllData(APIView):
         concat_dataframe['Sleep Minutes'] = sleep_activities_series
         concat_dataframe.to_excel(workbook, 'Cumulative Log')
 
+        cumulative_14_day_dataframe = concat_dataframe.fillna(0).rolling(window=14).sum()[14:]
+        cumulative_14_day_dataframe.to_excel(workbook, 'Aggregate 14 Log')
+
+        cumulative_28_day_dataframe = concat_dataframe.fillna(0).rolling(window=28).sum()[28:]
+        cumulative_28_day_dataframe.to_excel(workbook, 'Aggregate 28 Log')
+
         # make sure all the output gets writen to bytes io
         workbook.close()
 
