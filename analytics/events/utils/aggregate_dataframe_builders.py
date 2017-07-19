@@ -5,7 +5,19 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
 from events.models import SupplementEvent, DailyProductivityLog, UserActivityEvent
 
 
-class AggregateDataFrameMixin(object):
+class AggregateDataFrameBuilder(object):
+    def __init__(
+        self,
+        user_activities_events_queryset=None,
+        productivity_log_queryset=None,
+        supplement_event_queryset=None,
+    ):
+        # Have a dataframe builder that can accept a multiple set of kwargs that way we can one generic dataframe
+        # builder that can accept multiple different format
+        self.user_activities_events_queryset = user_activities_events_queryset
+        self.productivity_log_queryset = productivity_log_queryset
+        self.supplement_event_queryset = supplement_event_queryset
+
     @staticmethod
     def get_supplement_event_dataframe(queryset):
         builder = SupplementEventsDataframeBuilder(queryset)
@@ -30,11 +42,39 @@ class AggregateDataFrameMixin(object):
         user_activity_dataframe = builder.get_flat_daily_dataframe()
         return user_activity_dataframe
 
+    def build_daily_dataframe(self):
+        # if a queryset is passed, attempt to build a dataframe from the queryset
+        # and then concat all the dataframes in the array
+        contact_dfs = []
 
-class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameMixin):
+        if self.user_activities_events_queryset:
+            df = self.get_user_activity_events_dataframe(self.user_activities_events_queryset)
+            contact_dfs.append(df)
+
+        if self.productivity_log_queryset:
+            df = self.get_productivity_log_dataframe(self.productivity_log_queryset)
+            contact_dfs.append(df)
+
+        if self.supplement_event_queryset:
+            df = self.get_supplement_event_dataframe(self.supplement_event_queryset)
+            contact_dfs.append(df)
+
+        # axis of zero means to align them based on column we want to align it based on matching index, so axis=1
+        # this seems kind of weird though for axis of 1 to mean the index though
+        if contact_dfs:
+            concat_df = pd.concat(contact_dfs, axis=1)
+        else:
+            # concat doesn't work with an empty list, in the case of no data, return empty dataframe
+            concat_df = pd.DataFrame()
+        return concat_df
+
+
+class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameBuilder):
     def __init__(self, user_activities_events_queryset, productivity_log_queryset):
-        self.user_activities_events_queryset = user_activities_events_queryset
-        self.productivity_log_queryset = productivity_log_queryset
+        super().__init__(
+            user_activities_events_queryset=user_activities_events_queryset,
+            productivity_log_queryset=productivity_log_queryset
+        )
 
     @classmethod
     def get_aggregate_dataframe_for_user(cls, user):
@@ -48,20 +88,13 @@ class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameMixi
         dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe
 
-    def build_daily_dataframe(self):
-        user_activity_events_dataframe = self.get_user_activity_events_dataframe(self.user_activities_events_queryset)
-        productivity_log_dataframe = self.get_productivity_log_dataframe(self.productivity_log_queryset)
 
-        # axis of zero means to align them based on column we want to align it based on matching index, so axis=1
-        # this seems kind of weird though for axis of 1 to mean the index though
-        concat_df = pd.concat([user_activity_events_dataframe, productivity_log_dataframe], axis=1)
-        return concat_df
-
-
-class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameMixin):
+class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameBuilder):
     def __init__(self, supplement_event_queryset, productivity_log_queryset):
-        self.supplement_event_queryset = supplement_event_queryset
-        self.productivity_log_queryset = productivity_log_queryset
+        super().__init__(
+            supplement_event_queryset=supplement_event_queryset,
+            productivity_log_queryset=productivity_log_queryset
+        )
 
     @classmethod
     def get_aggregate_dataframe_for_user(cls, user):
@@ -74,12 +107,3 @@ class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameMixin):
         )
         dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe
-
-    def build_daily_dataframe(self):
-        productivity_log_dataframe = self.get_productivity_log_dataframe(self.productivity_log_queryset)
-        supplement_dataframe = self.get_supplement_event_dataframe(self.supplement_event_queryset)
-
-        # axis of zero means to align them based on column we want to align it based on matching index, so axis=1
-        # this seems kind of weird though for axis of 1 to mean the index though
-        concat_df = pd.concat([supplement_dataframe, productivity_log_dataframe], axis=1)
-        return concat_df

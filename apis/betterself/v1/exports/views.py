@@ -11,54 +11,73 @@ from events.models import SupplementEvent, SleepActivity, UserActivityEvent, Dai
 class UserExportAllData(APIView):
     throttle_scope = 'user_export_all_data'
 
+    @staticmethod
+    def _write_to_workbook(writer, dataframe, worksheet_name):
+        dataframe.to_excel(writer, worksheet_name)
+
+        worksheets = writer.sheets
+        worksheet = worksheets[worksheet_name]
+
+        # Setting the column this wide looks good for dates representation
+        # Freezing at 1, 1 makes being able to scroll not a burden
+        worksheet.set_column('A:A', 17)
+        worksheet.freeze_panes(1, 1)
+
     def get(self, request):
         user = request.user
 
         bytes_io = io.BytesIO()
-        workbook = pd.ExcelWriter(bytes_io, engine='xlsxwriter', options={'remove_timezone': True})
+        writer = pd.ExcelWriter(bytes_io, engine='xlsxwriter', options={'remove_timezone': True})
 
         # supplement events
+        supplement_events_worksheet_name = 'SupplementEvents'
         supplement_events = SupplementEvent.objects.filter(user=user)
         df_builder = SupplementEventsDataframeBuilder(supplement_events)
         supplement_events_df = df_builder.get_flat_daily_dataframe()
-        supplement_events_df.to_excel(workbook, 'SupplementEvents')
+        self._write_to_workbook(writer, supplement_events_df, supplement_events_worksheet_name)
 
         # sleep events
+        sleep_activities_worksheet_name = 'SleepActivities'
         sleep_activities = SleepActivity.objects.filter(user=user)
         df_builder = SleepActivityDataframeBuilder(sleep_activities)
         sleep_activities_series = df_builder.get_sleep_history_series()
-        sleep_activities_series.to_excel(workbook, 'SleepActivities')
+        self._write_to_workbook(writer, sleep_activities_series, sleep_activities_worksheet_name)
 
         # user activity events
+        user_activity_events_sheet_name = 'UserActivityEvents'
         user_activity_events = UserActivityEvent.objects.filter(user=user)
         df_builder = UserActivityEventDataframeBuilder(user_activity_events)
         user_activity_events_df = df_builder.get_flat_daily_dataframe()
-        user_activity_events_df.to_excel(workbook, 'UserActivityEvents')
+        self._write_to_workbook(writer, user_activity_events_df, user_activity_events_sheet_name)
 
         # productivity logs
+        productivity_log_sheet_name = 'DailyProductivityLog'
         productivity_log = DailyProductivityLog.objects.filter(user=user)
         df_builder = ProductivityLogEventsDataframeBuilder(productivity_log)
         # odd why this one isn't sorted the right way
         productivity_log_df = df_builder.get_flat_daily_dataframe().sort_index(ascending=True)
-        productivity_log_df.to_excel(workbook, 'DailyProductivityLog')
+        self._write_to_workbook(writer, productivity_log_df, productivity_log_sheet_name)
 
-        all_dataframes = [supplement_events_df, user_activity_events_df, productivity_log_df]
-
+        all_dataframes = [productivity_log_df, supplement_events_df, user_activity_events_df]
         concat_dataframe = pd.concat(all_dataframes, axis=1)
+
         # include sleep which is a series and not a dataframe
+        cumulative_log_sheet_name = 'Aggregate Log'
         concat_dataframe['Sleep Minutes'] = sleep_activities_series
-        concat_dataframe.to_excel(workbook, 'Cumulative Log')
+        self._write_to_workbook(writer, concat_dataframe, cumulative_log_sheet_name)
 
+        cumulative_14_day_dataframe_sheet_name = 'Aggregate 14 Log'
         cumulative_14_day_dataframe = concat_dataframe.fillna(0).rolling(window=14).sum()[14:]
-        cumulative_14_day_dataframe.to_excel(workbook, 'Aggregate 14 Log')
+        self._write_to_workbook(writer, cumulative_14_day_dataframe, cumulative_14_day_dataframe_sheet_name)
 
+        cumulative_28_day_dataframe_sheet_name = 'Aggregate 28 Log'
         cumulative_28_day_dataframe = concat_dataframe.fillna(0).rolling(window=28).sum()[28:]
-        cumulative_28_day_dataframe.to_excel(workbook, 'Aggregate 28 Log')
+        self._write_to_workbook(writer, cumulative_28_day_dataframe, cumulative_28_day_dataframe_sheet_name)
 
         # make sure all the output gets writen to bytes io
-        workbook.close()
+        writer.close()
 
-        # TODO - Find a switch way to do a DRF response
+        # http response because we are providing data and not doing any template / rendering
         response = HttpResponse(
             bytes_io.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
