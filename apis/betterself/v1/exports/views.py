@@ -18,6 +18,8 @@ class UserExportAllData(APIView):
         worksheets = writer.sheets
         worksheet = worksheets[worksheet_name]
 
+        # Setting the column this wide looks good for dates representation
+        # Freezing at 1, 1 makes being able to scroll not a burden
         worksheet.set_column('A:A', 17)
         worksheet.freeze_panes(1, 1)
 

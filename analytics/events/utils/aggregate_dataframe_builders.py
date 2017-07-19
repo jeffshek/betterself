@@ -12,18 +12,11 @@ class AggregateDataFrameBuilder(object):
         productivity_log_queryset=None,
         supplement_event_queryset=None,
     ):
-        self.user_activities_events_queryset = None
-        self.productivity_log_queryset = None
-        self.supplement_event_queryset = None
-
         # Have a dataframe builder that can accept a multiple set of kwargs that way we can one generic dataframe
         # builder that can accept multiple different format
-        if user_activities_events_queryset:
-            self.user_activities_events_queryset = user_activities_events_queryset
-        if productivity_log_queryset:
-            self.productivity_log_queryset = productivity_log_queryset
-        if supplement_event_queryset:
-            self.supplement_event_queryset = supplement_event_queryset
+        self.user_activities_events_queryset = user_activities_events_queryset
+        self.productivity_log_queryset = productivity_log_queryset
+        self.supplement_event_queryset = supplement_event_queryset
 
     @staticmethod
     def get_supplement_event_dataframe(queryset):
@@ -71,6 +64,7 @@ class AggregateDataFrameBuilder(object):
         if contact_dfs:
             concat_df = pd.concat(contact_dfs, axis=1)
         else:
+            # concat doesn't work with an empty list, in the case of no data, return empty dataframe
             concat_df = pd.DataFrame()
         return concat_df
 
