@@ -27,6 +27,45 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
 
         self.assertEqual(result.status_code, 404)
 
+    def test_put_requests_with_booleans(self):
+        data = self._get_initial_data()
+
+        # take the first object and update something within it
+        initial_result = data[0]
+        uuid = initial_result.pop('uuid')
+
+        # make a copied result to update with new parameters
+        copied_result = initial_result.copy()
+
+        # get only numbers params, but make sure that the numbers don't include true/false
+        copied_result = {k: v for k, v in copied_result.items()
+                         if isinstance(v, bool)}
+
+        # for any results, if its a string, update them to a constant
+        attributes_to_update = list(copied_result.keys())
+
+        for bool_update in [True, False]:
+            bool_update_parameter = bool_update
+
+            for attribute in attributes_to_update:
+                copied_result[attribute] = bool_update_parameter
+
+            # now add uuid back since that's the one value that should be immutable
+            copied_result['uuid'] = uuid
+
+            url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+            result = self.client_1.put(url, data=copied_result, format='json')
+
+            for attribute in attributes_to_update:
+                self.assertEqual(result.data[attribute], bool_update_parameter)
+
+            # now for safe measure, let's use a get to retrieve the same object via UUID
+            get_response = self._get_initial_data(data={'uuid': uuid})
+            second_result = get_response[0]
+
+            for attribute in attributes_to_update:
+                self.assertEqual(second_result[attribute], bool_update_parameter)
+
     def test_put_request_with_numbers(self):
         data = self._get_initial_data()
 
@@ -45,26 +84,27 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         # for any results, if its a string, update them to a constant
         attributes_to_update = list(copied_result.keys())
 
-        number_update_param = 10.0
+        for number_to_try in [5, 10.0]:
+            number_update_param = number_to_try
 
-        for attribute in attributes_to_update:
-            copied_result[attribute] = number_update_param
+            for attribute in attributes_to_update:
+                copied_result[attribute] = number_update_param
 
-        # now add uuid back since that's the one value that should be immutable
-        copied_result['uuid'] = uuid
+            # now add uuid back since that's the one value that should be immutable
+            copied_result['uuid'] = uuid
 
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        result = self.client_1.put(url, data=copied_result, format='json')
+            url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+            result = self.client_1.put(url, data=copied_result, format='json')
 
-        for attribute in attributes_to_update:
-            self.assertEqual(result.data[attribute], number_update_param)
+            for attribute in attributes_to_update:
+                self.assertEqual(result.data[attribute], number_update_param)
 
-        # now for safe measure, let's use a get to retrieve the same object via UUID
-        get_response = self._get_initial_data(data={'uuid': uuid})
-        second_result = get_response[0]
+            # now for safe measure, let's use a get to retrieve the same object via UUID
+            get_response = self._get_initial_data(data={'uuid': uuid})
+            second_result = get_response[0]
 
-        for attribute in attributes_to_update:
-            self.assertEqual(second_result[attribute], number_update_param)
+            for attribute in attributes_to_update:
+                self.assertEqual(second_result[attribute], number_update_param)
 
     def test_put_request_updates_for_strings(self):
         data = self._get_initial_data()
