@@ -1,5 +1,6 @@
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
@@ -125,7 +126,7 @@ class IngredientCompositionV1Tests(SupplementBaseTests, PostRequestsTestsMixin, 
         self.assertEqual(result_measurement_uuid, measurement_uuids_found.pop())
 
 
-class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.supplements.tests.SupplementV1Tests
     TEST_MODEL = Supplement
 
@@ -181,3 +182,69 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
     def test_valid_get_request_for_key_in_response(self):
         key = 'name'
         super().test_valid_get_request_for_key_in_response(key)
+
+    def test_put_parameter_updates_supplement_name(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        supplement_uuid = request.data[0]['uuid']
+
+        modified_supplement_name = 'Cheeseburgers'
+
+        data = {
+            'uuid': supplement_uuid,
+            'name': modified_supplement_name
+        }
+
+        response = self.client_1.put(url, data)
+        self.assertEqual(response.data['name'], modified_supplement_name)
+
+        # for good measure, let's send another request (this time via a GET) to make sure that it's updated correctly
+        uuid_filter = {'uuid': supplement_uuid}
+        response = self.client_1.get(url, uuid_filter)
+        self.assertEqual(response.data[0]['name'], modified_supplement_name)
+
+    def test_put_parameter_updates_ingredient_uuids_correctly(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+
+        supplement_uuid = request.data[0]['uuid']
+        supplement_ingredients = request.data[0]['ingredient_compositions']
+        supplement_ingredients_uuids = [item['uuid'] for item in supplement_ingredients]
+
+        # if the fixtures ever get modified / messed up, fixtures need to ensure this is greater than one
+        self.assertTrue(len(supplement_ingredients_uuids) > 1)
+
+        supplement_ingredients_uuid_to_use = supplement_ingredients_uuids[0]
+
+        data = {
+            'uuid': supplement_uuid,
+            'ingredient_compositions': [{'uuid': supplement_ingredients_uuid_to_use}]
+        }
+
+        response = self.client_1.put(url, data, format='json')
+
+        self.assertEqual(response.data['uuid'], supplement_uuid)
+        self.assertEqual(response.data['ingredient_compositions'][0]['uuid'], supplement_ingredients_uuid_to_use)
+
+    def test_put_parameter_when_ingredient_uuid_is_wrong(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+
+        supplement_uuid = request.data[0]['uuid']
+        supplement_ingredients = request.data[0]['ingredient_compositions']
+        supplement_ingredients_uuids = [item['uuid'] for item in supplement_ingredients]
+
+        # if the fixtures ever get modified / messed up, fixtures need to ensure this is greater than one
+        self.assertTrue(len(supplement_ingredients_uuids) > 1)
+
+        supplement_ingredients_uuid_to_use = supplement_ingredients_uuids[0]
+
+        data = {
+            'uuid': supplement_uuid,
+            # ingredient_compositions should be sent as a list of dictionaries, here we send it as a dictionary
+            'ingredient_compositions': {'uuid': supplement_ingredients_uuid_to_use}
+
+        }
+
+        response = self.client_1.put(url, data, format='json')
+        self.assertEqual(response.status_code, 400)

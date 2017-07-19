@@ -170,6 +170,7 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
         instance.user_activity_uuid = validated_data.get('user_activity', instance.user_activity.uuid)
         instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
         instance.time = validated_data.get('time', instance.time)
+        instance.source = validated_data.get('source', instance.source)
         instance.save()
         return instance
 
