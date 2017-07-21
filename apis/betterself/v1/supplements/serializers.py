@@ -97,7 +97,7 @@ class SimpleIngredientCompositionSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
 
 
-class SupplementCreateSerializer(serializers.Serializer):
+class SupplementCreateUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = SimpleIngredientCompositionSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
@@ -105,6 +105,7 @@ class SupplementCreateSerializer(serializers.Serializer):
 
     def validate(self, validated_data):
         if 'ingredient_compositions' in validated_data:
+
             ingredient_compositions = validated_data.pop('ingredient_compositions')
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 
@@ -134,3 +135,17 @@ class SupplementCreateSerializer(serializers.Serializer):
             supplement.ingredient_compositions.add(composition)
 
         return supplement
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+
+        # if compositions in the data, clear out any existing compositions that might have been there
+        # and reset it with any new ingredient compositions
+        if 'ingredient_compositions' in validated_data:
+            instance.ingredient_compositions.clear()
+
+            for composition in validated_data['ingredient_compositions']:
+                instance.ingredient_compositions.add(composition)
+
+        instance.save()
+        return instance

@@ -55,6 +55,6 @@ class UUIDUpdateMixin(object):
         if serializer.is_valid():
             serializer.save()
         else:
-            Response('Invalid Data Submitted {}'.format(data), status=400)
+            return Response('Invalid Data Submitted {}'.format(data), status=400)
 
         return Response(serializer.data)

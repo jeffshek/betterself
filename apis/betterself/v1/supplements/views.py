@@ -2,9 +2,9 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
-    SupplementCreateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
+    SupplementCreateUpdateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
-from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
+from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
 
@@ -54,9 +54,10 @@ class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser)
         return self.model.objects.filter(user=self.request.user)
 
 
-class SupplementView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
+class SupplementView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     read_serializer_class = SupplementReadOnlySerializer
-    write_serializer_class = SupplementCreateSerializer
+    write_serializer_class = SupplementCreateUpdateSerializer
+    update_serializer_class = SupplementCreateUpdateSerializer
     model = Supplement
     filter_class = SupplementFilter
 
