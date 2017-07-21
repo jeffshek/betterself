@@ -31,7 +31,7 @@ import { Authenticator } from "./authentication/auth";
 import { HomePage } from "./home/home";
 import { Dashboard } from "./dashboard";
 import { LogoutView } from "./authentication/logout";
-import { SupplementView } from "./supplements_log/supplements_view";
+import { SupplementView } from "./supplements/supplements_view";
 import {
   UserActivitiesLogView
 } from "./user_activities_log/user_activities_view";
