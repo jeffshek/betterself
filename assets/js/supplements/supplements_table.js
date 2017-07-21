@@ -6,6 +6,7 @@ import {
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class SupplementTable extends BaseEventLogTable {
   constructor() {
@@ -16,6 +17,7 @@ export class SupplementTable extends BaseEventLogTable {
       editObject: { name: null }
     };
 
+    this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/supplements/";
   }
@@ -24,7 +26,6 @@ export class SupplementTable extends BaseEventLogTable {
     this.getSupplements();
   }
 
-  // Generic Resource Table
   confirmDelete(uuid, name) {
     const answer = confirm(
       `WARNING: This will delete the following supplement \n\n${name} \n\nConfirm? `
@@ -33,6 +34,16 @@ export class SupplementTable extends BaseEventLogTable {
     if (answer) {
       this.deleteUUID(uuid);
     }
+  }
+
+  submitEdit() {
+    const params = {
+      uuid: this.state.editObject["uuid"],
+      name: this.state["supplementName"]
+    };
+
+    this.putParamsUpdate(params);
+    this.toggle();
   }
 
   getSupplements() {
@@ -72,6 +83,31 @@ export class SupplementTable extends BaseEventLogTable {
     );
   }
 
+  renderEditModal() {
+    return (
+      <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
+        <ModalBody>
+          <label className="form-control-label add-event-label">
+            Supplement Name
+          </label>
+          <input
+            name="supplementName"
+            type="text"
+            className="form-control"
+            defaultValue={this.state.editObject["name"]}
+            onChange={this.handleInputChange}
+          />
+          <br />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -80,6 +116,7 @@ export class SupplementTable extends BaseEventLogTable {
           <strong>Supplements</strong>
         </div>
         {this.state.ready ? this.renderTable() : ""}
+        {this.renderEditModal()}
       </div>
     );
   }
