@@ -1,8 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
 

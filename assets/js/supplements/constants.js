@@ -51,7 +51,7 @@ export const SupplementHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Name</th>
-      <th>Ingredients</th>
+      <th className="center-source">Ingredients</th>
       <th className="center-source">Actions</th>
       <th>Date Added</th>
     </tr>
@@ -74,10 +74,12 @@ export const SupplementRow = props => {
       <td>{ingredientsFormatted}</td>
       <td>
         <div className="center-icon">
-          <div onClick={e => confirmDelete(uuid, name)}>
-            <div className="remove-icon">
-              <i className="fa fa-remove" />
-            </div>
+          <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
+            <i className="fa fa-edit fa-1x" />
+          </div>
+          &nbsp;
+          <div className="remove-icon" onClick={e => confirmDelete(uuid, name)}>
+            <i className="fa fa-remove fa-1x" />
           </div>
         </div>
       </td>
