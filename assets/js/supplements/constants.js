@@ -27,25 +27,25 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
   return ingredientLabels.join(", ");
 };
 
-const confirmDelete = (uuid, name) => {
-  const answer = confirm(
-    `WARNING: This will delete ALL events related to ${name}!\n\nDelete supplement - ${name}? `
-  );
-  const params = {
-    uuid: uuid
-  };
-  if (answer) {
-    fetch("/api/v1/supplements/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
+// const confirmDelete = (uuid, name) => {
+//   const answer = confirm(
+//     `WARNING: This will delete ALL events related to ${name}!\n\nDelete supplement - ${name}? `
+//   );
+//   const params = {
+//     uuid: uuid
+//   };
+//   if (answer) {
+//     fetch("/api/v1/supplements/", {
+//       method: "DELETE",
+//       headers: JSON_POST_AUTHORIZATION_HEADERS,
+//       body: JSON.stringify(params)
+//     }).then(
+//       // After deleting, just refresh the entire page. In the future, remove
+//       // from the array and setState
+//       location.reload()
+//     );
+//   }
+// };
 
 export const SupplementHistoryTableHeader = () => (
   <thead>
@@ -78,7 +78,10 @@ export const SupplementRow = props => {
             <i className="fa fa-edit fa-1x" />
           </div>
           &nbsp;
-          <div className="remove-icon" onClick={e => confirmDelete(uuid, name)}>
+          <div
+            className="remove-icon"
+            onClick={e => props.confirmDelete(uuid, name)}
+          >
             <i className="fa fa-remove fa-1x" />
           </div>
         </div>

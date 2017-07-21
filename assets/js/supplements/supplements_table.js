@@ -1,18 +1,38 @@
 import React, { PropTypes, Component } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import {
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/util_constants";
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
+import { BaseEventLogTable } from "../resources_table/resource_table";
 
-export class SupplementTable extends Component {
+export class SupplementTable extends BaseEventLogTable {
   constructor() {
     super();
     this.state = {
-      ready: false
+      ready: false,
+      modal: false,
+      editObject: { name: null }
     };
+
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.resourceURL = "/api/v1/supplements/";
   }
 
   componentDidMount() {
     this.getSupplements();
+  }
+
+  // Generic Resource Table
+  confirmDelete(uuid, name) {
+    const answer = confirm(
+      `WARNING: This will delete the following supplement \n\n${name} \n\nConfirm? `
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
   }
 
   getSupplements() {
@@ -40,7 +60,12 @@ export class SupplementTable extends Component {
         <SupplementHistoryTableHeader />
         <tbody>
           {supplementsKeys.map(key => (
-            <SupplementRow key={key} object={supplements[key]} />
+            <SupplementRow
+              key={key}
+              object={supplements[key]}
+              selectModalEdit={this.selectModalEdit}
+              confirmDelete={this.confirmDelete}
+            />
           ))}
         </tbody>
       </table>
