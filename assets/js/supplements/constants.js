@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 const getIngredientsCompositionsLabels = ingredient_compositions => {
   let ingredientLabels = [];
@@ -26,26 +25,6 @@ const getIngredientsCompositionsLabels = ingredient_compositions => {
 
   return ingredientLabels.join(", ");
 };
-
-// const confirmDelete = (uuid, name) => {
-//   const answer = confirm(
-//     `WARNING: This will delete ALL events related to ${name}!\n\nDelete supplement - ${name}? `
-//   );
-//   const params = {
-//     uuid: uuid
-//   };
-//   if (answer) {
-//     fetch("/api/v1/supplements/", {
-//       method: "DELETE",
-//       headers: JSON_POST_AUTHORIZATION_HEADERS,
-//       body: JSON.stringify(params)
-//     }).then(
-//       // After deleting, just refresh the entire page. In the future, remove
-//       // from the array and setState
-//       location.reload()
-//     );
-//   }
-// };
 
 export const SupplementHistoryTableHeader = () => (
   <thead>
