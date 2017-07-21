@@ -34,7 +34,7 @@ const SupplementHistoryRow = props => {
   const servingSize = data.quantity;
   const source = data.source;
   const supplementTime = data.time;
-  const duration = data.duration_minutes;
+  // const duration = data.duration_minutes;
   const timeFormatted = moment(supplementTime).format(
     "dddd, MMMM Do YYYY, h:mm:ss a"
   );
@@ -44,7 +44,7 @@ const SupplementHistoryRow = props => {
       <td>{supplementName}</td>
       <td>{servingSize}</td>
       <td>{timeFormatted}</td>
-      <td>{duration}</td>
+      {/*<td>{duration}</td>*/}
       <td className="center-source">
         <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
           <div className="remove-icon">
@@ -65,7 +65,7 @@ const SupplementHistoryTableHeader = () => (
       <th>Supplement</th>
       <th>Serving Size</th>
       <th>Supplement Time</th>
-      <th>Duration (Minutes)</th>
+      {/*<th>Duration (Minutes)</th>*/}
       <th className="center-source">Actions</th>
       <th className="center-source">Source</th>
     </tr>
