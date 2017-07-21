@@ -11,6 +11,7 @@ django-extensions==1.7.6
 django-filter==1.0.4
 django-floppyforms==1.7.0
 django-model-utils==2.6.1
+django-redis==4.8.0
 django-secure==1.0.1
 django-webpack-loader==0.5
 djangorestframework==3.6.3
@@ -27,6 +28,7 @@ psycopg2==2.6.1
 pytz==2016.10
 raven==6.1.0
 readline==6.2.4.1
+redis==2.10.5
 # necessary for kendall / spearman correlations, default is pearson on pandas
 scipy==0.19.0
 unicode-slugify==0.1.3
