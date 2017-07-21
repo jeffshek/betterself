@@ -1,3 +1,4 @@
+contextlib2==0.5.5
 coverage==4.3.4
 cython==0.25.2
 django==1.11.2
@@ -24,6 +25,7 @@ patsy==0.4.1
 Pillow==3.2.0
 psycopg2==2.6.1
 pytz==2016.10
+raven==6.1.0
 readline==6.2.4.1
 # necessary for kendall / spearman correlations, default is pearson on pandas
 scipy==0.19.0
