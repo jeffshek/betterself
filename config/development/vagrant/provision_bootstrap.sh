@@ -28,8 +28,12 @@ if ! command -v psql; then
     # and save to local_settings
     # Create vagrant psql superuser
     su - postgres -c "createuser -s vagrant"
+    # This is just a demo password, recommend if you're running this locally to recreate a unique pass
     su - postgres psql -c "ALTER USER vagrant PASSWORD 'he3MZ7YfgTHq2uSl';"
     su - postgres -c "createdb betterself"
+    # Make sure to put the correct set up in your pg_hba files!
+    #    host    all             all             172.28.128.5/32         md5
+    #    host    all             all             10.0.2.2/32             md5
 fi
 
 pip install virtualenv

@@ -48,7 +48,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.supplementCorrelationsURL =
       "api/v1/productivity_log/supplements/correlations";
     this.supplementsCorrelationsChartLabel =
-      "Supplements and Productivity Correlation";
+      "Supplements and Productivity Correlation (Last 60 Days)";
     this.userActivitiesCorrelationsURL =
       "api/v1/productivity_log/user_activities/correlations";
     this.userActivitiesCorrelationsChartLabel =
