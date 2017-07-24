@@ -1,78 +1,34 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-
-const confirmDelete = (uuid, supplementName, supplementTime) => {
-  const answer = confirm(
-    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
-  );
-  const params = {
-    uuid: uuid
-  };
-
-  if (answer) {
-    fetch("/api/v1/supplement_events/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
-
-const SupplementHistoryRow = props => {
-  // Used to render the data from the API
-  const data = props.object;
-
-  const uuid = data.uuid;
-  const supplementName = data.supplement_name;
-  const servingSize = data.quantity;
-  const source = data.source;
-  const supplementTime = data.time;
-  // const duration = data.duration_minutes;
-  const timeFormatted = moment(supplementTime).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  );
-
-  return (
-    <tr>
-      <td>{supplementName}</td>
-      <td>{servingSize}</td>
-      <td>{timeFormatted}</td>
-      {/*<td>{duration}</td>*/}
-      <td className="center-source">
-        <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
-          </div>
-        </div>
-      </td>
-      <td className="center-source">
-        <span className="badge badge-success">{source}</span>
-      </td>
-    </tr>
-  );
-};
-
-const SupplementHistoryTableHeader = () => (
-  <thead>
-    <tr>
-      <th>Supplement</th>
-      <th>Serving Size</th>
-      <th>Supplement Time</th>
-      {/*<th>Duration (Minutes)</th>*/}
-      <th className="center-source">Actions</th>
-      <th className="center-source">Source</th>
-    </tr>
-  </thead>
-);
+import {
+  SupplementHistoryRow,
+  SupplementHistoryTableHeader
+} from "./constants";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
+  constructor() {
+    super();
+
+    this.state = {
+      modal: false,
+      editObject: { name: null }
+    };
+
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.resourceURL = "/api/v1/supplement_events/";
+  }
+
+  confirmDelete = (uuid, supplementName, supplementTime) => {
+    const answer = confirm(
+      `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
+  };
+
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
@@ -82,7 +38,11 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
         <SupplementHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementHistoryRow key={key} object={historicalData[key]} />
+            <SupplementHistoryRow
+              key={key}
+              object={historicalData[key]}
+              confirmDelete={this.confirmDelete}
+            />
           ))}
         </tbody>
       </table>
