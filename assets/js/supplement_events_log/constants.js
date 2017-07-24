@@ -21,14 +21,18 @@ export const SupplementHistoryRow = props => {
       <td>{supplementName}</td>
       <td>{servingSize}</td>
       <td>{timeFormatted}</td>
-      {/*<td>{duration}</td>*/}
-      <td className="center-source">
-        <div
-          onClick={e =>
-            props.confirmDelete(uuid, supplementName, timeFormatted)}
-        >
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
+      <td>
+        <div className="center-icon">
+          <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
+            <i className="fa fa-edit fa-1x" />
+          </div>
+          &nbsp;
+          <div
+            className="remove-icon"
+            onClick={e =>
+              props.confirmDelete(uuid, supplementName, timeFormatted)}
+          >
+            <i className="fa fa-remove fa-1x" />
           </div>
         </div>
       </td>
