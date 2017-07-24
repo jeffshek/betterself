@@ -90,16 +90,20 @@ class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameBuil
 
 
 class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameBuilder):
-    def __init__(self, supplement_event_queryset, productivity_log_queryset):
+    def __init__(self, supplement_event_queryset, productivity_log_queryset, cutoff_date=None):
         super().__init__(
             supplement_event_queryset=supplement_event_queryset,
             productivity_log_queryset=productivity_log_queryset
         )
 
     @classmethod
-    def get_aggregate_dataframe_for_user(cls, user):
+    def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
         supplement_events = SupplementEvent.objects.filter(user=user)
         productivity_log = DailyProductivityLog.objects.filter(user=user)
+
+        if cutoff_date:
+            supplement_events = supplement_events.filter(time__gte=cutoff_date)
+            productivity_log = productivity_log.filter(date__gte=cutoff_date)
 
         aggregate_dataframe = cls(
             supplement_event_queryset=supplement_events,

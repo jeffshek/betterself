@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     VALID_PRODUCTIVITY_DRIVERS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
+from betterself.utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
@@ -75,11 +76,16 @@ class ProductivitySupplementsCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
+        # TODO - Eventually make this a parameter instead to support different lookbacks
+        days_to_look_back = 60
+        cutoff_date = days_ago_from_current_day(days_to_look_back)
+
         correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
         if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
             return Response('Invalid Correlation Driver Entered', status=400)
 
-        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user)
+        aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user,
+            cutoff_date)
         if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
 
@@ -103,6 +109,9 @@ class ProductivityUserActivitiesCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
+        # TODO
+        # 1) Switch to using an AggregateDataframe Builder instead of doing it by hand
+        # 2) Include a hard-coded lookback of 60 days
         correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
         if correlation_driver not in VALID_PRODUCTIVITY_DRIVERS:
             return Response('Invalid Correlation Driver Entered', status=400)
