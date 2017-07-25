@@ -41,7 +41,7 @@ class TestSerializerUtils(TestCase):
             valid_daily_max_minutes(-50)
 
 
-class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
     TEST_MODEL = SupplementEvent
     PAGINATION = True

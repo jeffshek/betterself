@@ -59,6 +59,8 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
             # Supplement.objects.get(uuid=supplement_uuid)
             instance.supplement = supplement
 
+        instance.source = validated_data.get('source', instance.source)
+        instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.time = validated_data.get('time', instance.time)
         instance.save()
