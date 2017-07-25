@@ -1,18 +1,20 @@
 from rest_framework.generics import ListCreateAPIView
 
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter
-from apis.betterself.v1.events.serializers import SupplementEventCreateSerializer, SupplementEventReadOnlySerializer, \
-    ProductivityLogReadSerializer, ProductivityLogCreateSerializer, UserActivitySerializer, \
-    UserActivityEventCreateSerializer, UserActivityEventReadSerializer, UserActivityUpdateSerializer
+from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
+    SupplementEventReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
+    UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
+    UserActivityUpdateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 
 
-class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
+class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
-    write_serializer_class = SupplementEventCreateSerializer
+    write_serializer_class = SupplementEventCreateUpdateSerializer
+    update_serializer_class = SupplementEventCreateUpdateSerializer
     filter_class = SupplementEventFilter
     pagination_class = ModifiedPageNumberPagination
 

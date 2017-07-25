@@ -40,7 +40,6 @@ export class BaseEventLogTable extends Component {
   }
 
   selectModalEdit(object) {
-    console.log(object);
     this.setState({ editObject: object });
     // Turn on modal to show for editing
     this.toggle();

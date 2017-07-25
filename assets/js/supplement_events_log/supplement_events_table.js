@@ -52,10 +52,10 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
   };
 
   submitEdit() {
-    console.log(this.state.editObject);
     const params = {
       uuid: this.state.editObject["uuid"],
-      quantity: this.state["servingSizeUpdate"]
+      quantity: this.state["servingSizeUpdate"],
+      time: this.state.editObject["time"]
     };
 
     if (this.state.editObject["supplement_uuid"]) {
