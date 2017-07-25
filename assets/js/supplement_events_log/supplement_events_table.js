@@ -23,12 +23,18 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
 
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.handleActivityTypeChangeOnEditObject = this.handleActivityTypeChangeOnEditObject.bind(
+      this
+    );
     this.resourceURL = "/api/v1/supplement_events/";
   }
 
-  handleDatetimeChange(moment) {
+  handleActivityTypeChangeOnEditObject(event) {
+    const target = event.target;
+    const value = target.value;
+
     let editObject = this.state.editObject;
-    editObject.time = moment;
+    editObject["supplement"] = this.props.supplements[value];
 
     this.setState({ editObject: editObject });
   }
@@ -75,6 +81,14 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
   }
 
   renderEditModal() {
+    const supplementKeys = Object.keys(this.props.supplements);
+    const supplementNames = supplementKeys.map(
+      key => this.props.supplements[key].name
+    );
+    const indexOfSupplementSelected = supplementNames.indexOf(
+      this.state.editObject["supplement_name"]
+    );
+
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
@@ -83,13 +97,20 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
           <label className="form-control-label add-event-label">
             Supplement
           </label>
-          <input
-            name="supplementName"
-            type="text"
+
+          <select
             className="form-control"
-            defaultValue={this.state.editObject["supplement_name"]}
-            onChange={this.handleInputChange}
-          />
+            name="activityTypeIndexSelected"
+            onChange={this.handleActivityTypeChangeOnEditObject}
+            value={indexOfSupplementSelected}
+          >
+            {supplementKeys.map(key => (
+              <option value={key} key={key}>
+                {this.props.supplements[key].name}
+              </option>
+            ))}
+          </select>
+
           <br />
           <label className="form-control-label add-event-label">
             Serving Size
@@ -106,7 +127,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
             Time
           </label>
           <Datetime
-            onChange={this.handleDatetimeChange}
+            onChange={this.handleDatetimeChangeOnEditObject}
             value={this.state.editObject.time}
           />
         </ModalBody>
@@ -135,7 +156,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-        {this.renderEditModal()}
+        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div> </div>}
       </div>
     );
   }

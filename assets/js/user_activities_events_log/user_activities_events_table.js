@@ -14,21 +14,16 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     this.state = {
       modal: false
     };
-    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
+
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activity_events/";
-    this.handleActivityTypeChange = this.handleActivityTypeChange.bind(this);
+    this.handleActivityTypeChangeOnEditObject = this.handleActivityTypeChangeOnEditObject.bind(
+      this
+    );
   }
 
-  handleDatetimeChange(moment) {
-    let editObject = this.state.editObject;
-    editObject.time = moment;
-
-    this.setState({ editObject: editObject });
-  }
-
-  handleActivityTypeChange(event) {
+  handleActivityTypeChangeOnEditObject(event) {
     const target = event.target;
     const value = target.value;
 
@@ -98,7 +93,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
             Time
           </label>
           <Datetime
-            onChange={this.handleDatetimeChange}
+            onChange={this.handleDatetimeChangeOnEditObject}
             value={this.state.editObject.time}
           />
           <br />
@@ -109,7 +104,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           <select
             className="form-control"
             name="activityTypeIndexSelected"
-            onChange={this.handleActivityTypeChange}
+            onChange={this.handleActivityTypeChangeOnEditObject}
             value={indexOfActivityEditSelect}
           >
             {activitiesKeys.map(key => (
