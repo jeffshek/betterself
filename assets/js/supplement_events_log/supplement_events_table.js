@@ -33,10 +33,12 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
     const target = event.target;
     const value = target.value;
 
-    let editObject = this.state.editObject;
-    editObject["supplement"] = this.props.supplements[value];
+    const updatedSupplement = this.props.supplements[value];
 
-    this.setState({ editObject: editObject });
+    this.state.editObject["supplement_name"] = updatedSupplement.name;
+    this.state.editObject["supplement_uuid"] = updatedSupplement.uuid;
+
+    this.setState({ editObject: this.state.editObject });
   }
 
   confirmDelete = (uuid, supplementName, supplementTime) => {
@@ -50,10 +52,15 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
   };
 
   submitEdit() {
+    console.log(this.state.editObject);
     const params = {
       uuid: this.state.editObject["uuid"],
-      name: this.state["supplementName"]
+      quantity: this.state["servingSizeUpdate"]
     };
+
+    if (this.state.editObject["supplement_uuid"]) {
+      params["supplement_uuid"] = this.state.editObject["supplement_uuid"];
+    }
 
     this.putParamsUpdate(params);
     this.toggle();
@@ -116,7 +123,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
             Serving Size
           </label>
           <input
-            name="supplementName"
+            name="servingSizeUpdate"
             type="text"
             className="form-control"
             defaultValue={this.state.editObject["quantity"]}
