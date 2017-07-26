@@ -4,6 +4,7 @@ import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class AddProductivityEvent extends Component {
   constructor(props) {
@@ -86,7 +87,63 @@ export class AddProductivityEvent extends Component {
     this.setState({ inputDateTime: moment });
   }
 
-  render() {
+  renderImportModal() {
+    const supplementKeys = Object.keys(this.props.supplements);
+    const supplementNames = supplementKeys.map(
+      key => this.props.supplements[key].name
+    );
+    const indexOfSupplementSelected = supplementNames.indexOf(
+      this.state.editObject["supplement_name"]
+    );
+
+    return (
+      <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
+        <ModalBody>
+          <label className="form-control-label add-event-label">
+            Supplement
+          </label>
+          <select
+            className="form-control"
+            name="activityTypeIndexSelected"
+            onChange={this.handleSupplementChangeOnEditObject}
+            value={indexOfSupplementSelected}
+          >
+            {supplementKeys.map(key => (
+              <option value={key} key={key}>
+                {this.props.supplements[key].name}
+              </option>
+            ))}
+          </select>
+          <br />
+          <label className="form-control-label add-event-label">
+            Serving Size
+          </label>
+          <input
+            name="servingSizeUpdate"
+            type="text"
+            className="form-control"
+            defaultValue={this.state.editObject["quantity"]}
+            onChange={this.handleInputChange}
+          />
+          <br />
+          <label className="form-control-label add-event-label">
+            Time
+          </label>
+          <Datetime
+            onChange={this.handleDatetimeChangeOnEditObject}
+            value={this.state.editObject.time}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    );
+  }
+
+  renderAddProductivityTimeManually() {
     return (
       <div className="card">
         <div className="card-header">
@@ -139,6 +196,14 @@ export class AddProductivityEvent extends Component {
             </div>
           </form>
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderAddProductivityTimeManually()}
       </div>
     );
   }
