@@ -9,8 +9,18 @@ export class BaseEventLogTable extends Component {
     this.toggle = this.toggle.bind(this);
     this.selectModalEdit = this.selectModalEdit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDatetimeChangeOnEditObject = this.handleDatetimeChangeOnEditObject.bind(
+      this
+    );
     // Pagination
     this.getPageResults = this.getPageResults.bind(this);
+  }
+
+  handleDatetimeChangeOnEditObject(moment) {
+    let editObject = this.state.editObject;
+    editObject.time = moment;
+
+    this.setState({ editObject: editObject });
   }
 
   handleInputChange(event) {

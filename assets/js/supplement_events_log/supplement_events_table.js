@@ -1,78 +1,71 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-
-const confirmDelete = (uuid, supplementName, supplementTime) => {
-  const answer = confirm(
-    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
-  );
-  const params = {
-    uuid: uuid
-  };
-
-  if (answer) {
-    fetch("/api/v1/supplement_events/", {
-      method: "DELETE",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    }).then(
-      // After deleting, just refresh the entire page. In the future, remove
-      // from the array and setState
-      location.reload()
-    );
-  }
-};
-
-const SupplementHistoryRow = props => {
-  // Used to render the data from the API
-  const data = props.object;
-
-  const uuid = data.uuid;
-  const supplementName = data.supplement_name;
-  const servingSize = data.quantity;
-  const source = data.source;
-  const supplementTime = data.time;
-  // const duration = data.duration_minutes;
-  const timeFormatted = moment(supplementTime).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  );
-
-  return (
-    <tr>
-      <td>{supplementName}</td>
-      <td>{servingSize}</td>
-      <td>{timeFormatted}</td>
-      {/*<td>{duration}</td>*/}
-      <td className="center-source">
-        <div onClick={e => confirmDelete(uuid, supplementName, timeFormatted)}>
-          <div className="remove-icon">
-            <i className="fa fa-remove" />
-          </div>
-        </div>
-      </td>
-      <td className="center-source">
-        <span className="badge badge-success">{source}</span>
-      </td>
-    </tr>
-  );
-};
-
-const SupplementHistoryTableHeader = () => (
-  <thead>
-    <tr>
-      <th>Supplement</th>
-      <th>Serving Size</th>
-      <th>Supplement Time</th>
-      {/*<th>Duration (Minutes)</th>*/}
-      <th className="center-source">Actions</th>
-      <th className="center-source">Source</th>
-    </tr>
-  </thead>
-);
+import {
+  SupplementHistoryRow,
+  SupplementHistoryTableHeader
+} from "./constants";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Datetime from "react-datetime";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
+  constructor() {
+    super();
+
+    this.state = {
+      modal: false,
+      editObject: {
+        supplement: null,
+        time: null,
+        servingSize: null
+      }
+    };
+
+    this.submitEdit = this.submitEdit.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.handleSupplementChangeOnEditObject = this.handleSupplementChangeOnEditObject.bind(
+      this
+    );
+    this.resourceURL = "/api/v1/supplement_events/";
+  }
+
+  handleSupplementChangeOnEditObject(event) {
+    const target = event.target;
+    const value = target.value;
+
+    const updatedSupplement = this.props.supplements[value];
+
+    this.state.editObject["supplement_name"] = updatedSupplement.name;
+    this.state.editObject["supplement_uuid"] = updatedSupplement.uuid;
+
+    this.setState({ editObject: this.state.editObject });
+  }
+
+  confirmDelete = (uuid, supplementName, supplementTime) => {
+    const answer = confirm(
+      `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
+  };
+
+  submitEdit() {
+    const params = {
+      uuid: this.state.editObject["uuid"],
+      quantity: this.state["servingSizeUpdate"],
+      time: this.state.editObject["time"]
+    };
+
+    if (this.state.editObject["supplement_uuid"]) {
+      params["supplement_uuid"] = this.state.editObject["supplement_uuid"];
+    }
+
+    this.putParamsUpdate(params);
+    this.toggle();
+  }
+
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
@@ -82,10 +75,71 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
         <SupplementHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementHistoryRow key={key} object={historicalData[key]} />
+            <SupplementHistoryRow
+              key={key}
+              object={historicalData[key]}
+              confirmDelete={this.confirmDelete}
+              selectModalEdit={this.selectModalEdit}
+            />
           ))}
         </tbody>
       </table>
+    );
+  }
+
+  renderEditModal() {
+    const supplementKeys = Object.keys(this.props.supplements);
+    const supplementNames = supplementKeys.map(
+      key => this.props.supplements[key].name
+    );
+    const indexOfSupplementSelected = supplementNames.indexOf(
+      this.state.editObject["supplement_name"]
+    );
+
+    return (
+      <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
+        <ModalBody>
+          <label className="form-control-label add-event-label">
+            Supplement
+          </label>
+          <select
+            className="form-control"
+            name="activityTypeIndexSelected"
+            onChange={this.handleSupplementChangeOnEditObject}
+            value={indexOfSupplementSelected}
+          >
+            {supplementKeys.map(key => (
+              <option value={key} key={key}>
+                {this.props.supplements[key].name}
+              </option>
+            ))}
+          </select>
+          <br />
+          <label className="form-control-label add-event-label">
+            Serving Size
+          </label>
+          <input
+            name="servingSizeUpdate"
+            type="text"
+            className="form-control"
+            defaultValue={this.state.editObject["quantity"]}
+            onChange={this.handleInputChange}
+          />
+          <br />
+          <label className="form-control-label add-event-label">
+            Time
+          </label>
+          <Datetime
+            onChange={this.handleDatetimeChangeOnEditObject}
+            value={this.state.editObject.time}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     );
   }
 
@@ -106,7 +160,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
+        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div> </div>}
       </div>
     );
   }

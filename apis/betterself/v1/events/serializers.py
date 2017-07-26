@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
+from rest_framework.generics import get_object_or_404
 
 from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
@@ -14,7 +15,7 @@ def valid_daily_max_minutes(value):
         raise serializers.ValidationError('Less than 1 is not allowed.')
 
 
-class SupplementEventCreateSerializer(serializers.Serializer):
+class SupplementEventCreateUpdateSerializer(serializers.Serializer):
     supplement_uuid = serializers.UUIDField(source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
@@ -50,6 +51,19 @@ class SupplementEventCreateSerializer(serializers.Serializer):
         )
 
         return obj
+
+    def update(self, instance, validated_data):
+        if 'supplement' in validated_data:
+            supplement_uuid = validated_data.get('supplement')['uuid']
+            supplement = get_object_or_404(Supplement, uuid=supplement_uuid)
+            instance.supplement = supplement
+
+        instance.source = validated_data.get('source', instance.source)
+        instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.time = validated_data.get('time', instance.time)
+        instance.save()
+        return instance
 
 
 class SupplementEventReadOnlySerializer(serializers.Serializer):
