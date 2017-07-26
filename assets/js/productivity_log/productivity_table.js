@@ -117,7 +117,6 @@ export class ProductivityLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
       </div>
     );
   }
