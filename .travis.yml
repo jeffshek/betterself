@@ -3,7 +3,7 @@ language: python
 cache:
   pip: true
 python:
-  - "3.4.3"
+  - "3.6.2"
 before_script:
   - psql -c 'create database travisci;' -U postgres
 install:
