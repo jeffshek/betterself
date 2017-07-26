@@ -117,8 +117,8 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         copied_result = initial_result.copy()
         # don't update anything that's a list or a dictionary
         # also include an ignore list where certain attributes are read-only
-        ignore_parameters = ['supplement_name']
-        copied_result = {k: v for k, v in copied_result.items() if isinstance(v, str) and k not in ignore_parameters}
+        readonly_parameters = ['supplement_name']
+        copied_result = {k: v for k, v in copied_result.items() if isinstance(v, str) and k not in readonly_parameters}
 
         # for any results, if its a string, update them to a constant "aka" api, since we know that's accepted in
         # tuple validation
