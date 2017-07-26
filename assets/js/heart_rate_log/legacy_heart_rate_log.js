@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import moment from "moment";
-import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 
 const heartRateHistory = {
   labels: [

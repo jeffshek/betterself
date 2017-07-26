@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { YEAR_MONTH_DAY_FORMAT } from "../constants/datesAndTimes";
+import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates_and_times";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class AddProductivityEvent extends Component {
