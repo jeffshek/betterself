@@ -8,7 +8,7 @@ import {
 } from "./constants";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
-import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
   constructor() {

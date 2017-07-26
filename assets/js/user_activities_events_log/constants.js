@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { TrueCheckBox } from "../constants/designs";
 import moment from "moment";
-import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 
 export const UserActivityEventHistoryRow = props => {
   const data = props.object;
