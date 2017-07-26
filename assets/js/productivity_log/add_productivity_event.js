@@ -5,7 +5,6 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import {
   DATE_REQUEST_FORMAT,
-  READABLE_DATE_TIME_FORMAT,
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
@@ -21,17 +20,24 @@ export class AddProductivityEvent extends Component {
       neutralMinutes: 0,
       distractingMinutes: 0,
       veryDistractingMinutes: 0,
-      apiStartDate: moment(),
-      apiEndDate: moment()
+      // Picking a week ago just since that seems like a reasonable default
+      apiStartDate: moment().subtract(7, "days"),
+      apiEndDate: moment(),
+      apiRescueTimeKey: "RESCUETIME_API_KEY_SAMPLE-A32jWZ-219ZE-135ZFF"
     };
+    this.addInputRow = this.addInputRow.bind(this);
 
-    this.toggle = this.toggle.bind(this);
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
-    this.handleInputDatetimeChange = this.handleInputDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputDatetimeChange = this.handleInputDatetimeChange.bind(this);
+
+    // Used for the API Modals
+    this.toggle = this.toggle.bind(this);
     this.handleAPIStartTimeChange = this.handleAPIStartTimeChange.bind(this);
     this.handleAPIEndTimeChange = this.handleAPIEndTimeChange.bind(this);
-    this.addInputRow = this.addInputRow.bind(this);
+    this.submitUpdateRescueTimeAPIRequest = this.submitUpdateRescueTimeAPIRequest.bind(
+      this
+    );
   }
 
   toggle() {
@@ -82,6 +88,12 @@ export class AddProductivityEvent extends Component {
     );
   }
 
+  submitUpdateRescueTimeAPIRequest(e) {
+    e.preventDefault();
+
+    // TODO - Fill in the backend logic
+  }
+
   submitProductivityEvent(e) {
     e.preventDefault();
 
@@ -122,10 +134,11 @@ export class AddProductivityEvent extends Component {
             RescueTime API Key
           </label>
           <input
-            name="servingSizeUpdate"
+            name="apiRescueTimeKey"
             type="text"
             className="form-control"
-            defaultValue="RESCUETIME_API_KEY_SAMPLE-A32jWZ-219ZE-135ZFF"
+            defaultValue={this.state.apiRescueTimeKey}
+            onChange={this.handleInputChange}
           />
           <br />
           <label className="form-control-label add-event-label">
@@ -145,7 +158,12 @@ export class AddProductivityEvent extends Component {
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button
+            color="primary"
+            onClick={this.submitUpdateRescueTimeAPIRequest}
+          >
+            Update
+          </Button>
           <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
