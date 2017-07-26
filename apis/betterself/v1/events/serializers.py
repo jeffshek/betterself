@@ -56,7 +56,6 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         if 'supplement' in validated_data:
             supplement_uuid = validated_data.get('supplement')['uuid']
             supplement = get_object_or_404(Supplement, uuid=supplement_uuid)
-            # Supplement.objects.get(uuid=supplement_uuid)
             instance.supplement = supplement
 
         instance.source = validated_data.get('source', instance.source)

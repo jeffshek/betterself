@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 
 export const SupplementHistoryRow = props => {
-  // Used to render the data from the API
   const data = props.object;
 
   const uuid = data.uuid;

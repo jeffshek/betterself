@@ -23,13 +23,13 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
 
     this.submitEdit = this.submitEdit.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
-    this.handleActivityTypeChangeOnEditObject = this.handleActivityTypeChangeOnEditObject.bind(
+    this.handleSupplementChangeOnEditObject = this.handleSupplementChangeOnEditObject.bind(
       this
     );
     this.resourceURL = "/api/v1/supplement_events/";
   }
 
-  handleActivityTypeChangeOnEditObject(event) {
+  handleSupplementChangeOnEditObject(event) {
     const target = event.target;
     const value = target.value;
 
@@ -100,15 +100,13 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
         <ModalBody>
-          {/*Supplement*/}
           <label className="form-control-label add-event-label">
             Supplement
           </label>
-
           <select
             className="form-control"
             name="activityTypeIndexSelected"
-            onChange={this.handleActivityTypeChangeOnEditObject}
+            onChange={this.handleSupplementChangeOnEditObject}
             value={indexOfSupplementSelected}
           >
             {supplementKeys.map(key => (
@@ -117,7 +115,6 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               </option>
             ))}
           </select>
-
           <br />
           <label className="form-control-label add-event-label">
             Serving Size
