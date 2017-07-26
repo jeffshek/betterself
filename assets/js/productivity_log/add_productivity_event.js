@@ -87,45 +87,59 @@ export class AddProductivityEvent extends Component {
 
   render() {
     return (
-      <div className="card">
-        <div className="card-header">
-          <strong id="add-supplement-entry-text">
-            Add Daily Productivity Time
-          </strong>
-        </div>
+      <div>
 
-        <div className="card-block">
-          <form onSubmit={e => this.submitProductivityEvent(e)}>
-            <label className="add-event-label">
-              Productivity Log Date
-            </label>
-            <div className="form-group col-sm-4">
-              {/*Use the current datetime as a default */}
-              <Datetime
-                onChange={this.handleDatetimeChange}
-                value={this.state.inputDateTime.format("MMMM Do YYYY")}
-              />
-            </div>
-            <label className="add-event-label">
-              Productivity Time (Minutes)
-            </label>
-            {this.addInputRow("Very Productive", "veryProductiveMinutes")}
-            {this.addInputRow("Productive", "productiveMinutes")}
-            {this.addInputRow("Neutral", "neutralMinutes")}
-            {this.addInputRow("Distracting", "distractingMinutes")}
-            {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
-
+        <div className="card">
+          <div className="card-header">
+            <strong id="add-supplement-entry-text">
+              Add RescueTime Productivity
+            </strong>
             <div className="float-right">
               <button
                 type="submit"
-                id="event-dashboard-submit"
+                id="add-new-object-button"
                 className="btn btn-sm btn-success"
-                onClick={e => this.submitProductivityEvent(e)}
               >
-                <i className="fa fa-dot-circle-o" /> Log Productivity
+                <div id="white-text">
+                  <i className="fa fa-dot-circle-o" /> Import from RescueTime
+                </div>
               </button>
             </div>
-          </form>
+          </div>
+
+          <div className="card-block">
+            <form onSubmit={e => this.submitProductivityEvent(e)}>
+              <label className="add-event-label">
+                Productivity Date
+              </label>
+              <div className="form-group col-sm-4">
+                {/*Use the current datetime as a default */}
+                <Datetime
+                  onChange={this.handleDatetimeChange}
+                  value={this.state.inputDateTime.format("MMMM Do YYYY")}
+                />
+              </div>
+              <label className="add-event-label">
+                Productivity Time (In Minutes)
+              </label>
+              {this.addInputRow("Very Productive", "veryProductiveMinutes")}
+              {this.addInputRow("Productive", "productiveMinutes")}
+              {this.addInputRow("Neutral", "neutralMinutes")}
+              {this.addInputRow("Distracting", "distractingMinutes")}
+              {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
+
+              <div className="float-right">
+                <button
+                  type="submit"
+                  id="event-dashboard-submit"
+                  className="btn btn-sm btn-success"
+                  onClick={e => this.submitProductivityEvent(e)}
+                >
+                  <i className="fa fa-dot-circle-o" /> Log Productivity
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     );

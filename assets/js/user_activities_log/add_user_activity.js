@@ -121,7 +121,7 @@ export class AddUserActivity extends Component {
             <div className="float-right">
               <button
                 type="submit"
-                id="create-new-supplement-button"
+                id="add-new-object-button"
                 className="btn btn-sm btn-success"
                 onClick={e => this.submitEventDetails(e)}
               >
