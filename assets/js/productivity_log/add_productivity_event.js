@@ -3,7 +3,11 @@ import React, { Component, PropTypes } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates_and_times";
+import {
+  DATE_REQUEST_FORMAT,
+  READABLE_DATE_TIME_FORMAT,
+  YEAR_MONTH_DAY_FORMAT
+} from "../constants/dates_and_times";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class AddProductivityEvent extends Component {
@@ -16,13 +20,17 @@ export class AddProductivityEvent extends Component {
       productiveMinutes: 0,
       neutralMinutes: 0,
       distractingMinutes: 0,
-      veryDistractingMinutes: 0
+      veryDistractingMinutes: 0,
+      apiStartDate: moment(),
+      apiEndDate: moment()
     };
 
     this.toggle = this.toggle.bind(this);
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
-    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
+    this.handleInputDatetimeChange = this.handleInputDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAPIStartTimeChange = this.handleAPIStartTimeChange.bind(this);
+    this.handleAPIEndTimeChange = this.handleAPIEndTimeChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
   }
 
@@ -40,6 +48,18 @@ export class AddProductivityEvent extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  handleAPIStartTimeChange(moment) {
+    this.setState({ apiStartDate: moment });
+  }
+
+  handleAPIEndTimeChange(moment) {
+    this.setState({ apiEndDate: moment });
+  }
+
+  handleInputDatetimeChange(moment) {
+    this.setState({ inputDateTime: moment });
   }
 
   addInputRow(label, inputName) {
@@ -71,7 +91,7 @@ export class AddProductivityEvent extends Component {
       neutral_time_minutes: this.state.neutralMinutes,
       distracting_time_minutes: this.state.distractingMinutes,
       very_distracting_time_minutes: this.state.veryDistractingMinutes,
-      date: this.state.inputDateTime.format("YYYY-MM-D")
+      date: this.state.inputDateTime.format(DATE_REQUEST_FORMAT)
     };
 
     fetch("api/v1/productivity_log/", {
@@ -91,10 +111,6 @@ export class AddProductivityEvent extends Component {
       });
   }
 
-  handleDatetimeChange(moment) {
-    this.setState({ inputDateTime: moment });
-  }
-
   renderImportModal() {
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -105,12 +121,28 @@ export class AddProductivityEvent extends Component {
           <label className="form-control-label add-event-label">
             RescueTime API Key
           </label>
+          <input
+            name="servingSizeUpdate"
+            type="text"
+            className="form-control"
+            defaultValue="RESCUETIME_API_KEY_SAMPLE-A32jWZ-219ZE-135ZFF"
+          />
+          <br />
           <label className="form-control-label add-event-label">
             Start Date
           </label>
+          <Datetime
+            onChange={this.handleAPIStartTimeChange}
+            value={this.state.apiStartDate.format(YEAR_MONTH_DAY_FORMAT)}
+          />
+          <br />
           <label className="form-control-label add-event-label">
             End Date
           </label>
+          <Datetime
+            onChange={this.handleAPIEndTimeChange}
+            value={this.state.apiEndDate.format(YEAR_MONTH_DAY_FORMAT)}
+          />
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.submitEdit}>Update</Button>
@@ -149,7 +181,7 @@ export class AddProductivityEvent extends Component {
             <div className="form-group col-sm-4">
               {/*Use the current datetime as a default */}
               <Datetime
-                onChange={this.handleDatetimeChange}
+                onChange={this.handleInputDatetimeChange}
                 value={this.state.inputDateTime.format(YEAR_MONTH_DAY_FORMAT)}
               />
             </div>
