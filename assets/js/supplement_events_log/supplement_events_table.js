@@ -160,7 +160,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div> </div>}
+        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div />}
       </div>
     );
   }

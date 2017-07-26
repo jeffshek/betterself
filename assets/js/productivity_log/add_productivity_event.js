@@ -10,6 +10,7 @@ export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      modal: false,
       inputDateTime: moment(),
       veryProductiveMinutes: 0,
       productiveMinutes: 0,
@@ -88,52 +89,15 @@ export class AddProductivityEvent extends Component {
   }
 
   renderImportModal() {
-    const supplementKeys = Object.keys(this.props.supplements);
-    const supplementNames = supplementKeys.map(
-      key => this.props.supplements[key].name
-    );
-    const indexOfSupplementSelected = supplementNames.indexOf(
-      this.state.editObject["supplement_name"]
-    );
-
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
+        <ModalHeader toggle={this.toggle}>
+          Import from RescueTime's API
+        </ModalHeader>
         <ModalBody>
           <label className="form-control-label add-event-label">
-            Supplement
+            RescueTime API Key
           </label>
-          <select
-            className="form-control"
-            name="activityTypeIndexSelected"
-            onChange={this.handleSupplementChangeOnEditObject}
-            value={indexOfSupplementSelected}
-          >
-            {supplementKeys.map(key => (
-              <option value={key} key={key}>
-                {this.props.supplements[key].name}
-              </option>
-            ))}
-          </select>
-          <br />
-          <label className="form-control-label add-event-label">
-            Serving Size
-          </label>
-          <input
-            name="servingSizeUpdate"
-            type="text"
-            className="form-control"
-            defaultValue={this.state.editObject["quantity"]}
-            onChange={this.handleInputChange}
-          />
-          <br />
-          <label className="form-control-label add-event-label">
-            Time
-          </label>
-          <Datetime
-            onChange={this.handleDatetimeChangeOnEditObject}
-            value={this.state.editObject.time}
-          />
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.submitEdit}>Update</Button>
@@ -204,6 +168,9 @@ export class AddProductivityEvent extends Component {
     return (
       <div>
         {this.renderAddProductivityTimeManually()}
+        {this.state.modal
+          ? <div>{this.renderImportModal()}</div>
+          : <div> </div>}
       </div>
     );
   }
