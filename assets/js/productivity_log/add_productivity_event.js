@@ -234,7 +234,7 @@ export class AddProductivityEvent extends Component {
     return (
       <div>
         {this.renderAddProductivityTimeManually()}
-        {this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}
+        {/*{this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}*/}
       </div>
     );
   }
