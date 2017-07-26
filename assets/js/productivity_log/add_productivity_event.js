@@ -156,6 +156,8 @@ export class AddProductivityEvent extends Component {
             onChange={this.handleAPIEndTimeChange}
             value={this.state.apiEndDate.format(YEAR_MONTH_DAY_FORMAT)}
           />
+          <br />
+          This will OVERWRITE any days already stored from RescueTime. Data may take up to THIRTY minutes to be reflected.
         </ModalBody>
         <ModalFooter>
           <Button
