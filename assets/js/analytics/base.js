@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import {
   CHART_HOVER_BORDER_COLOR,
   CHART_HOVER_COLOR,

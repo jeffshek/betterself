@@ -1,6 +1,6 @@
 import { Link, Redirect } from "react-router-dom";
 import React, { Component, PropTypes } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { saveAs } from "file-saver";
 import { DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL } from "../constants/urls";
 

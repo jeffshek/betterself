@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { JSON_HEADERS } from "../constants/util_constants";
+import { JSON_HEADERS } from "../constants/requests";
 import { DASHBOARD_INDEX_URL } from "../constants/urls";
 import { Redirect } from "react-router-dom";
 

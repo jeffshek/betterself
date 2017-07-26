@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
+} from "../constants/requests";
 
 // All the code in this file is embarassing
 

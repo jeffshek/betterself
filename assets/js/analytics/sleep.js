@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DefaultLineChartDataset } from "../constants/charts";
 import { BaseAnalyticsView } from "./base";
