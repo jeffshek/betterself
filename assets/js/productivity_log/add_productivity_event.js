@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates";
+import { YEAR_MONTH_DAY_FORMAT } from "../constants/datesAndTimes";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class AddProductivityEvent extends Component {
@@ -19,10 +19,17 @@ export class AddProductivityEvent extends Component {
       veryDistractingMinutes: 0
     };
 
+    this.toggle = this.toggle.bind(this);
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   handleInputChange(event) {
@@ -92,11 +99,17 @@ export class AddProductivityEvent extends Component {
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
-          Import from RescueTime's API
+          Import Historically from RescueTime
         </ModalHeader>
         <ModalBody>
           <label className="form-control-label add-event-label">
             RescueTime API Key
+          </label>
+          <label className="form-control-label add-event-label">
+            Start Date
+          </label>
+          <label className="form-control-label add-event-label">
+            End Date
           </label>
         </ModalBody>
         <ModalFooter>
@@ -119,6 +132,7 @@ export class AddProductivityEvent extends Component {
               type="submit"
               id="add-new-object-button"
               className="btn btn-sm btn-success"
+              onClick={this.toggle}
             >
               <div id="white-text">
                 <i className="fa fa-dot-circle-o" /> Import from RescueTime

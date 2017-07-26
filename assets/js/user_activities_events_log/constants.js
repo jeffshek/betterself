@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { TrueCheckBox } from "../constants/designs";
 import moment from "moment";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
 
 export const UserActivityEventHistoryRow = props => {
   const data = props.object;
@@ -10,7 +11,7 @@ export const UserActivityEventHistoryRow = props => {
   const name = user_activity.name;
   const is_negative_activity = user_activity["is_negative_activity"];
   const is_significant_activity = user_activity["is_significant_activity"];
-  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
 
   return (
     <tr>

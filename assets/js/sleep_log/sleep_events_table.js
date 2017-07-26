@@ -2,15 +2,14 @@ import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
 
 const MinutesToHourMinutesFormat = minutes => {
   const durationFormattedRounded = Math.floor(minutes);
 
   const hoursSlept = Math.floor(durationFormattedRounded / 60);
   const minutesSlept = durationFormattedRounded % 60;
-  const timeSlept = `${hoursSlept} hours ${minutesSlept} minutes`;
-
-  return timeSlept;
+  return `${hoursSlept} hours ${minutesSlept} minutes`;
 };
 
 const SleepHistoryRow = props => {
@@ -22,8 +21,8 @@ const SleepHistoryRow = props => {
   const endTime = moment(data.end_time);
   const source = data.source;
 
-  const startTimeFormatted = startTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
-  const endTimeFormatted = endTime.format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const startTimeFormatted = startTime.format(READABLE_DATE_TIME_FORMAT);
+  const endTimeFormatted = endTime.format(READABLE_DATE_TIME_FORMAT);
   const duration = moment.duration(endTime.diff(startTime));
   const durationAsMinutes = duration.asMinutes();
 

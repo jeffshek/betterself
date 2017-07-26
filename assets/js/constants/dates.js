@@ -1,1 +1,0 @@
-export const YEAR_MONTH_DAY_FORMAT = "MMMM Do YYYY";
