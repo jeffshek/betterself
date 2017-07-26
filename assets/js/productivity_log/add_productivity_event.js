@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates";
 
 export class AddProductivityEvent extends Component {
   constructor(props) {
@@ -87,59 +88,56 @@ export class AddProductivityEvent extends Component {
 
   render() {
     return (
-      <div>
+      <div className="card">
+        <div className="card-header">
+          <strong id="add-supplement-entry-text">
+            Add RescueTime Productivity
+          </strong>
+          <div className="float-right">
+            <button
+              type="submit"
+              id="add-new-object-button"
+              className="btn btn-sm btn-success"
+            >
+              <div id="white-text">
+                <i className="fa fa-dot-circle-o" /> Import from RescueTime
+              </div>
+            </button>
+          </div>
+        </div>
 
-        <div className="card">
-          <div className="card-header">
-            <strong id="add-supplement-entry-text">
-              Add RescueTime Productivity
-            </strong>
+        <div className="card-block">
+          <form onSubmit={e => this.submitProductivityEvent(e)}>
+            <label className="add-event-label">
+              Productivity Date
+            </label>
+            <div className="form-group col-sm-4">
+              {/*Use the current datetime as a default */}
+              <Datetime
+                onChange={this.handleDatetimeChange}
+                value={this.state.inputDateTime.format(YEAR_MONTH_DAY_FORMAT)}
+              />
+            </div>
+            <label className="add-event-label">
+              Productivity Time (In Minutes)
+            </label>
+            {this.addInputRow("Very Productive", "veryProductiveMinutes")}
+            {this.addInputRow("Productive", "productiveMinutes")}
+            {this.addInputRow("Neutral", "neutralMinutes")}
+            {this.addInputRow("Distracting", "distractingMinutes")}
+            {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
+
             <div className="float-right">
               <button
                 type="submit"
-                id="add-new-object-button"
+                id="event-dashboard-submit"
                 className="btn btn-sm btn-success"
+                onClick={e => this.submitProductivityEvent(e)}
               >
-                <div id="white-text">
-                  <i className="fa fa-dot-circle-o" /> Import from RescueTime
-                </div>
+                <i className="fa fa-dot-circle-o" /> Log Productivity
               </button>
             </div>
-          </div>
-
-          <div className="card-block">
-            <form onSubmit={e => this.submitProductivityEvent(e)}>
-              <label className="add-event-label">
-                Productivity Date
-              </label>
-              <div className="form-group col-sm-4">
-                {/*Use the current datetime as a default */}
-                <Datetime
-                  onChange={this.handleDatetimeChange}
-                  value={this.state.inputDateTime.format("MMMM Do YYYY")}
-                />
-              </div>
-              <label className="add-event-label">
-                Productivity Time (In Minutes)
-              </label>
-              {this.addInputRow("Very Productive", "veryProductiveMinutes")}
-              {this.addInputRow("Productive", "productiveMinutes")}
-              {this.addInputRow("Neutral", "neutralMinutes")}
-              {this.addInputRow("Distracting", "distractingMinutes")}
-              {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
-
-              <div className="float-right">
-                <button
-                  type="submit"
-                  id="event-dashboard-submit"
-                  className="btn btn-sm btn-success"
-                  onClick={e => this.submitProductivityEvent(e)}
-                >
-                  <i className="fa fa-dot-circle-o" /> Log Productivity
-                </button>
-              </div>
-            </form>
-          </div>
+          </form>
         </div>
       </div>
     );
