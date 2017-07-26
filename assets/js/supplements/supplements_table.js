@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
 import { BaseEventLogTable } from "../resources_table/resource_table";

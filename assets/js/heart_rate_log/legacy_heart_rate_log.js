@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import moment from "moment";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
 
 const heartRateHistory = {
   labels: [
@@ -98,7 +99,7 @@ const heartRateData = [
 const HeartRateRowHistory = props => {
   const { time, input } = props.object;
   const heartRate = props.object.heart_rate;
-  const timeFormatted = moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
 
   return (
     <tr>

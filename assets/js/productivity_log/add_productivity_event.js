@@ -1,13 +1,16 @@
 import Datetime from "react-datetime";
 import React, { Component, PropTypes } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { YEAR_MONTH_DAY_FORMAT } from "../constants/datesAndTimes";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      modal: false,
       inputDateTime: moment(),
       veryProductiveMinutes: 0,
       productiveMinutes: 0,
@@ -16,10 +19,17 @@ export class AddProductivityEvent extends Component {
       veryDistractingMinutes: 0
     };
 
+    this.toggle = this.toggle.bind(this);
     this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addInputRow = this.addInputRow.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   handleInputChange(event) {
@@ -85,29 +95,66 @@ export class AddProductivityEvent extends Component {
     this.setState({ inputDateTime: moment });
   }
 
-  render() {
+  renderImportModal() {
+    return (
+      <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <ModalHeader toggle={this.toggle}>
+          Import Historically from RescueTime
+        </ModalHeader>
+        <ModalBody>
+          <label className="form-control-label add-event-label">
+            RescueTime API Key
+          </label>
+          <label className="form-control-label add-event-label">
+            Start Date
+          </label>
+          <label className="form-control-label add-event-label">
+            End Date
+          </label>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
+          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    );
+  }
+
+  renderAddProductivityTimeManually() {
     return (
       <div className="card">
         <div className="card-header">
           <strong id="add-supplement-entry-text">
-            Add Daily Productivity Time
+            Add RescueTime Productivity
           </strong>
+          <div className="float-right">
+            <button
+              type="submit"
+              id="add-new-object-button"
+              className="btn btn-sm btn-success"
+              onClick={this.toggle}
+            >
+              <div id="white-text">
+                <i className="fa fa-dot-circle-o" /> Import from RescueTime
+              </div>
+            </button>
+          </div>
         </div>
 
         <div className="card-block">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
             <label className="add-event-label">
-              Productivity Log Date
+              Productivity Date
             </label>
             <div className="form-group col-sm-4">
               {/*Use the current datetime as a default */}
               <Datetime
                 onChange={this.handleDatetimeChange}
-                value={this.state.inputDateTime.format("MMMM Do YYYY")}
+                value={this.state.inputDateTime.format(YEAR_MONTH_DAY_FORMAT)}
               />
             </div>
             <label className="add-event-label">
-              Productivity Time (Minutes)
+              Productivity Time (In Minutes)
             </label>
             {this.addInputRow("Very Productive", "veryProductiveMinutes")}
             {this.addInputRow("Productive", "productiveMinutes")}
@@ -127,6 +174,15 @@ export class AddProductivityEvent extends Component {
             </div>
           </form>
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderAddProductivityTimeManually()}
+        {this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}
       </div>
     );
   }

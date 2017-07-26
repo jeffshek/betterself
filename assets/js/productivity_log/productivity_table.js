@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import {
   DISTRACTING_MINUTES_VARIABLE,
@@ -117,7 +117,6 @@ export class ProductivityLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-
       </div>
     );
   }

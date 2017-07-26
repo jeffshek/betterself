@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { AddSupplementEvent } from "./add_supplement_event";
 import { SupplementEntryLogTable } from "./supplement_events_table";
 import { EventLogView } from "../resources_table/resource_view";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
 export class SupplementEventsLogView extends EventLogView {
   constructor() {

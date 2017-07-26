@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { Component, PropTypes } from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
@@ -7,6 +8,7 @@ import {
 } from "./constants";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
   constructor() {
@@ -132,7 +134,10 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
           </label>
           <Datetime
             onChange={this.handleDatetimeChangeOnEditObject}
-            value={this.state.editObject.time}
+            // Convoluted way to make this readable
+            value={moment(this.state.editObject.time).format(
+              READABLE_DATE_TIME_FORMAT
+            )}
           />
         </ModalBody>
         <ModalFooter>
@@ -160,7 +165,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
               {this.getTableRender()}
               {this.getNavPaginationControlRender()}
             </div>}
-        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div> </div>}
+        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div />}
       </div>
     );
   }

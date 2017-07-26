@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
+import { READABLE_DATE_TIME_FORMAT } from "../constants/datesAndTimes";
 
 export const SupplementHistoryRow = props => {
   const data = props.object;
@@ -11,7 +12,7 @@ export const SupplementHistoryRow = props => {
   const supplementTime = data.time;
   // const duration = data.duration_minutes;
   const timeFormatted = moment(supplementTime).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
+    READABLE_DATE_TIME_FORMAT
   );
 
   return (

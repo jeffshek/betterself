@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { EventLogView } from "../resources_table/resource_view";
 import { AddUserActivityEvent } from "./add_user_activities_event";
 import { UserActivityEventLogTable } from "./user_activities_events_table";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/util_constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
 export class UserActivitiesEventsLogView extends EventLogView {
   constructor() {

@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/util_constants";
+} from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../constants/urls";
@@ -118,7 +118,7 @@ export class AddUserActivityEvent extends Component {
           <div className="float-right">
             <button
               type="submit"
-              id="create-new-supplement-button"
+              id="add-new-object-button"
               className="btn btn-sm btn-success"
             >
               <div id="white-text">
