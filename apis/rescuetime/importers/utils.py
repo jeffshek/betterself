@@ -1,3 +1,28 @@
+VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Time'
+DISTRACTING_TIME_LABEL = 'Distracting Time'
+NEUTRAL_TIME_LABEL = 'Neutral Time'
+PRODUCTIVE_TIME_LABEL = 'Productive Time'
+VERY_PRODUCTIVE_TIME_LABEL = 'Very Productive Time'
+# 1-Off Header for Productivity Pulse (we don't get this data from RescueTime)
+PRODUCTIVITY_PULSE = 'Productivity Pulse'
+
+RESCUETIME_EFFICIENCY_HEADERS = [
+    VERY_DISTRACTING_TIME_LABEL,
+    DISTRACTING_TIME_LABEL,
+    NEUTRAL_TIME_LABEL,
+    PRODUCTIVE_TIME_LABEL,
+    VERY_PRODUCTIVE_TIME_LABEL
+]
+
+RESCUETIME_MAPPING_TO_INTERNAL_MODEL = {
+    VERY_DISTRACTING_TIME_LABEL: 'very_distracting_time_minutes',
+    DISTRACTING_TIME_LABEL: 'distracting_time_minutes',
+    NEUTRAL_TIME_LABEL: 'neutral_time_minutes',
+    PRODUCTIVE_TIME_LABEL: 'productive_time_minutes',
+    VERY_PRODUCTIVE_TIME_LABEL: 'very_productive_time_minutes',
+}
+
+
 def calculate_rescue_time_pulse(very_distracting, distracting, neutral, productive, very_productive):
     """
     Per RescueTime API
@@ -26,22 +51,6 @@ def calculate_rescue_time_pulse(very_distracting, distracting, neutral, producti
     total_time_spent_scaled = total_time_spent * 4
 
     return total_score / total_time_spent_scaled
-
-VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Time'
-DISTRACTING_TIME_LABEL = 'Distracting Time'
-NEUTRAL_TIME_LABEL = 'Neutral Time'
-PRODUCTIVE_TIME_LABEL = 'Productive Time'
-VERY_PRODUCTIVE_TIME_LABEL = 'Very Productive Time'
-# 1-Off Header for Productivity Pulse (we don't get this data from RescueTime)
-PRODUCTIVITY_PULSE = 'Productivity Pulse'
-
-RESCUETIME_EFFICIENCY_HEADERS = [
-    VERY_DISTRACTING_TIME_LABEL,
-    DISTRACTING_TIME_LABEL,
-    NEUTRAL_TIME_LABEL,
-    PRODUCTIVE_TIME_LABEL,
-    VERY_PRODUCTIVE_TIME_LABEL
-]
 
 
 def calculate_rescue_time_pulse_from_dataframe(dataframe):

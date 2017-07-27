@@ -80,7 +80,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 DEBUG = True
 
-SHELL_PLUS_PRINT_SQL = True
+# SHELL_PLUS_PRINT_SQL = True
 
 
 # use this file to rewrite over local db passwords

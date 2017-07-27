@@ -2,7 +2,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apis.rescuetime.v1.serializers import UpdateRescueTimeAPISerializer
+from apis.rescuetime.v1.serializers import RescueTimeAPIRequestSerializer
 
 
 class UpdateRescueTimeAPIView(APIView):
@@ -19,7 +19,7 @@ class UpdateRescueTimeAPIView(APIView):
         except (MultiValueDictKeyError, KeyError) as exc:
             return Response('Missing POST parameters {}'.format(exc), status=400)
 
-        serializer = UpdateRescueTimeAPISerializer(data=initial_data)
+        serializer = RescueTimeAPIRequestSerializer(data=initial_data)
         if not serializer.is_valid():
             return Response('{}'.format(serializer.errors), status=400)
 

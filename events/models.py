@@ -77,6 +77,9 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
         unique_together = (('date', 'user'),)
         ordering = ['-date']
 
+    def __str__(self):
+        return '{} Productivity Log'.format(self.date)
+
 
 class SleepActivity(BaseModelWithUserGeneratedContent):
     """
