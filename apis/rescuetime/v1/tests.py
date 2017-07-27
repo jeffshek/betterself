@@ -9,7 +9,7 @@ User = get_user_model()
 class TestRescueTimeAPIPostView(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.url = reverse('rescuetime-user-api-update')
+        cls.url = reverse('rescuetime-user-update-productivity-history')
         super().setUpClass()
 
     def setUp(self):
