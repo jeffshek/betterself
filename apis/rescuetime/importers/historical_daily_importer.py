@@ -51,7 +51,10 @@ class RescueTimeHistoricalDailyImporter(object):
         records = []
         for index, values in valid_dataframe.iterrows():
             values_serialized = values.to_dict()
-            log = DailyProductivityLog(user=self.user, date=index, **values_serialized)
+            log = DailyProductivityLog(
+                user=self.user, date=index, source='api',
+                **values_serialized
+            )
             records.append(log)
 
         DailyProductivityLog.objects.bulk_create(records)
