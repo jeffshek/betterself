@@ -281,3 +281,6 @@ LOGGING = {
         },
     },
 }
+
+# celery's autodiscover is slightly failing you
+CELERY_IMPORTS = ['apis.rescuetime.tasks', ]
