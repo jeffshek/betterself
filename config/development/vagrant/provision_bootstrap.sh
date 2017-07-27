@@ -16,6 +16,9 @@ apt-get install build-essential autoconf libtool pkg-config python-opengl python
 apt-get install graphviz -y
 apt-get install graphviz-dev -y
 
+# to make redis work
+apt-get install redis-server
+
 # load nvm to avoid a lot of headache ... add this to bashrc when you get time to refactor
 # switched to yarn, so this may / may not be necessary
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
