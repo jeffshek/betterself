@@ -2,6 +2,8 @@ sudo: true
 language: python
 cache:
   pip: true
+services:
+  - redis-server
 python:
   - "3.6.2"
 before_script:
