@@ -7,6 +7,9 @@ if settings.DJANGO_ENVIRONMENT == PRODUCTION:
     import celery
     import raven
     from raven.contrib.celery import register_signal, register_logger_signal
+    import environ
+    env = environ.Env()
+    broker_url = env('REDISCLOUD_URL')
 
     class Celery(celery.Celery):
         def on_configure(self):
@@ -19,9 +22,10 @@ if settings.DJANGO_ENVIRONMENT == PRODUCTION:
             register_signal(client)
 else:
     from celery import Celery
+    broker_url = 'redis://localhost:6379/0'
 
 app = Celery('betterself')
-app.conf.broker_url = 'redis://localhost:6379/0'
+app.conf.broker_url = broker_url
 
 # Using a string here means the worker don't have to serialize
 # the configuration object to child processes.
