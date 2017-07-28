@@ -12,7 +12,7 @@ class RescueTimeHistoricalDailyImporter(object):
     def __init__(self, user, rescuetime_api_key):
         self.user = user
         self.rescuetime_api_key = rescuetime_api_key
-        self.results = None
+        self.results = pd.DataFrame()
 
     def import_history(self, start_date, end_date):
         dataframe_columns = RESCUETIME_EFFICIENCY_HEADERS + [PRODUCTIVITY_PULSE]
@@ -22,6 +22,9 @@ class RescueTimeHistoricalDailyImporter(object):
 
         for query_date in query_dates:
             response = self._get_rescuetime_efficiency_for_date(query_date)
+
+            if response.status_code != 200:
+                continue
 
             efficiency_timeseries = self.get_efficiency_timeseries_from_response(response)
             pulse = calculate_rescue_time_pulse_from_dataframe(efficiency_timeseries)
@@ -34,6 +37,10 @@ class RescueTimeHistoricalDailyImporter(object):
         self.results = historical_df
 
     def save(self):
+        # if no valid data, don't save over anything as a safety precaution
+        if self.results.empty:
+            return
+
         # save over any productivity logs we might have historically had
         # drop any indices where all the data is null
         valid_dataframe = self.results.dropna(how='all', axis=1)
@@ -50,7 +57,7 @@ class RescueTimeHistoricalDailyImporter(object):
 
         records = []
         for index, values in valid_dataframe.iterrows():
-            values_serialized = values.to_dict()
+            values_serialized = values.fillna(0).to_dict()
             log = DailyProductivityLog(
                 user=self.user, date=index, source='api',
                 **values_serialized

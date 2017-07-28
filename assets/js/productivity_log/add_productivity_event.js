@@ -91,7 +91,33 @@ export class AddProductivityEvent extends Component {
   submitUpdateRescueTimeAPIRequest(e) {
     e.preventDefault();
 
-    // TODO - Fill in the backend logic
+    const postParams = {
+      start_date: this.state.apiStartDate.format(DATE_REQUEST_FORMAT),
+      end_date: this.state.apiEndDate.format(DATE_REQUEST_FORMAT),
+      rescuetime_api_key: this.state.apiRescueTimeKey
+    };
+
+    fetch("/api/v1/rescuetime/update-productivity-history", {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(postParams)
+    })
+      .then(response => {
+        // Turn off the modal after the request has been sent.
+        {
+          this.toggle();
+        }
+        return response;
+      })
+      .then(responseData => {
+        alert(
+          "User's RescueTime history will update in the next thirty minutes."
+        );
+        return responseData;
+      })
+      .catch(error => {
+        alert("Invalid Error Occurred When Submitting Data " + error);
+      });
   }
 
   submitProductivityEvent(e) {
@@ -119,7 +145,7 @@ export class AddProductivityEvent extends Component {
         return responseData;
       })
       .catch(error => {
-        alert("Invalid Error Occurred When Submitting Data");
+        alert("Invalid Error Occurred When Submitting Data " + error);
       });
   }
 
@@ -234,7 +260,7 @@ export class AddProductivityEvent extends Component {
     return (
       <div>
         {this.renderAddProductivityTimeManually()}
-        {/*{this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}*/}
+        {this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}
       </div>
     );
   }

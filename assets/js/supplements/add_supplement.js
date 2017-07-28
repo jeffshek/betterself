@@ -46,7 +46,8 @@ export class AddSupplementView extends Component {
         return response.json();
       })
       .then(responseData => {
-        return responseData;
+        // Update the page after success
+        window.location.refresh();
       });
   }
 
