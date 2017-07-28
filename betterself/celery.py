@@ -25,7 +25,6 @@ else:
     broker_url = 'redis://localhost:6379/0'
 
 app = Celery('betterself')
-app.conf.broker_url = broker_url
 
 # Using a string here means the worker don't have to serialize
 # the configuration object to child processes.
@@ -36,6 +35,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # later versions of celery switched to json, but since we're only dealing with python, keep as pickle
 app.conf.task_serializer = 'pickle'
 app.conf.accept_content = ['pickle']
+
+app.conf.broker_url = broker_url
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
