@@ -6,6 +6,8 @@ Local settings
 - Use console backend for emails
 - Add Django Debug Toolbar
 """
+from config.settings.constants import LOCAL
+
 print ('Using {} configurations'.format(__name__))
 
 import sys
@@ -16,6 +18,8 @@ from config.settings.common import *  # noqa
 # ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+
+DJANGO_ENVIRONMENT = LOCAL
 
 # SECRET CONFIGURATION
 # ------------------------------------------------------------------------------
