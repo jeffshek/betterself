@@ -47,3 +47,12 @@ class TestRescueTimeAPIPostView(TestCase):
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 202)
+
+    def test_view_with_invalid_start_and_end_date_greater(self):
+        data = {
+            'rescuetime_api_key': 'cat',
+            'start_date': '2017-2-1',
+            'end_date': '2017-01-01'
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 400)

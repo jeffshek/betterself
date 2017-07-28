@@ -66,7 +66,7 @@ export class AddUserActivity extends Component {
         return responseData;
       })
       .catch(error => {
-        alert("Invalid Error Occurred When Submitting Data");
+        alert("Invalid Error Occurred When Submitting Data " + error);
       });
   }
 

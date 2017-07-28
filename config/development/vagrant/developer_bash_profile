@@ -18,7 +18,7 @@ alias drun="python manage.py runserver [::]:8001"
 alias dplus="python manage.py shell_plus"
 alias dstatic="python manage.py collectstatic --noinput"
 # s to mean "start ... kind of stupid, i know"
-alias scelery="celery -A betterself worker -l info"
+alias startcelery="celery -A betterself worker -l info"
 
 # always show what's the git status
 git status
