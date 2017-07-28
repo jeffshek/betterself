@@ -7,32 +7,23 @@ being imported at tests.
 print ('Using {} configurations'.format(__name__))
 
 from config.settings.common import *  # noqa
+from config.settings.constants import TESTING
 
-# DEBUG
-# ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+DJANGO_ENVIRONMENT = TESTING
 
-# SECRET CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-# Note: This key only used for development and testing.
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='*v@g2i-82&uk+3jhsje_56_)9bmx_yg=o54!=1tqj*p#zf!d!m')
 
-# Mail settings
-# ------------------------------------------------------------------------------
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
                     default='django.core.mail.backends.console.EmailBackend')
 
+
 CACHES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
 
@@ -57,7 +48,7 @@ TEST_DB_SETTINGS = {
 DATABASES['default'] = TEST_DB_SETTINGS
 
 # Where API Endpoints should hit
-API_ENDPOINT = 'http://localhost:8081'
+API_ENDPOINT = 'http://localhost:9000'
 
 # don't check for throttling when testing
 REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']['signups'] = '500/sec'
