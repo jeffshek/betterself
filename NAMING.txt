@@ -27,8 +27,8 @@ UserActivitiesEvents
 # so if you're on sleep.js
 sleepSupplementsCorrelations
 
-# or if you can ... remove sleep from the name altogether
-supplementsCorrelations
+# or if you can ... remove sleep from the name altogether (if you're in the sleep folder)
+supplementsCorrelations (does this sound better with supplementCorrelations) instead?
 
 # try to put data near the end of variables
 historyChartData
