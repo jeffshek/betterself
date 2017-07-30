@@ -1,10 +1,17 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { DefaultLineChartDataset } from "../constants/charts";
+import { Nav, NavItem, NavLink } from "reactstrap";
+import {
+  CorrelationTableRow,
+  DefaultLineChartDataset
+} from "../constants/charts";
 import {
   DISTRACTING_MINUTES_VARIABLE,
+  NEGATIVELY_CORRELATED_LABEL,
   NEUTRAL_MINUTES_VARIABLE,
+  NOT_CORRELATED_LABEL,
+  POSITIVELY_CORRELATED_LABEL,
   PRODUCTIVE_MINUTES_VARIABLE,
   VERY_DISTRACTING_MINUTES_VARIABLE,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
@@ -203,11 +210,75 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     );
   }
 
+  renderSupplementHistoryTable() {
+    return (
+      <div className="float">
+        <div className="card">
+          <Nav tabs>
+            {this.renderSupplementsCorrelationsSelectionTab(
+              "Supplements Today"
+            )}
+            {this.renderSupplementsCorrelationsSelectionTab(
+              "Supplements Yesterday"
+            )}
+          </Nav>
+          <div className="card-block">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Supplement</th>
+                  <th>Correlation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.selectedSupplementsCorrelations.map(key => (
+                  <CorrelationTableRow key={key} object={key} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderUserActivitiesHistoryTable() {
+    return (
+      <div className="float">
+        <div className="card">
+          <Nav tabs>
+            {this.renderSupplementsCorrelationsSelectionTab(
+              "User Activities Today"
+            )}
+            {this.renderSupplementsCorrelationsSelectionTab(
+              "User Activities Yesterday"
+            )}
+          </Nav>
+          <div className="card-block">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Supplement</th>
+                  <th>Correlation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.selectedSupplementsCorrelations.map(key => (
+                  <CorrelationTableRow key={key} object={key} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderSupplementsAndUserActivitiesHistory() {
     return (
       <div className="card-columns cols-2">
-        {this.renderSupplementsCorrelationsData()}
-        {this.renderSupplementsCorrelationsData()}
+        {this.renderSupplementHistoryTable()}
+        {this.renderUserActivitiesHistoryTable()}
       </div>
     );
   }
