@@ -3,7 +3,6 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 
 const TableRow = props => {
   const data = props.details;
-  console.log(data);
   return (
     <tr>
       <td>{data[0]}</td>
