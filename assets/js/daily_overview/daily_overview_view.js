@@ -219,7 +219,11 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <div className="animated fadeIn">
         {this.renderWidgets()}
-        {this.renderSupplementsCorrelations()}
+        {/*{this.renderSupplementsCorrelations()}*/}
+        <div className="card-columns cols-2">
+          {this.renderSupplementsCorrelationsData()}
+          {this.renderSupplementsCorrelationsData()}
+        </div>
       </div>
     );
   }
