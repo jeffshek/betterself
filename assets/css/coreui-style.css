@@ -11615,16 +11615,16 @@ nav.top-nav {
         text-transform: uppercase; }
   .social-box.facebook i {
     color: #fff;
-    background: #3b5998; }
+    background: #193441; }
   .social-box.twitter i {
     color: #fff;
-    background: #00aced; }
+    background: gray; }
   .social-box.linkedin i {
     color: #fff;
-    background: #4875b4; }
+    background: #193441; }
   .social-box.google-plus i {
     color: #fff;
-    background: #bb4b39; }
+    background: gray; }
 
 .horizontal-bars {
   padding: 0;
