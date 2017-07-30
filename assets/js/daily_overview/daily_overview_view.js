@@ -1,22 +1,20 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { Nav, NavItem, NavLink } from "reactstrap";
+import { Nav } from "reactstrap";
 import {
   CorrelationTableRow,
   DefaultLineChartDataset
 } from "../constants/charts";
 import {
   DISTRACTING_MINUTES_VARIABLE,
-  NEGATIVELY_CORRELATED_LABEL,
   NEUTRAL_MINUTES_VARIABLE,
-  NOT_CORRELATED_LABEL,
-  POSITIVELY_CORRELATED_LABEL,
   PRODUCTIVE_MINUTES_VARIABLE,
   VERY_DISTRACTING_MINUTES_VARIABLE,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "../analytics/base";
+import { MultiTabTableView } from "../resources_table/multi_tab_table";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -59,6 +57,9 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
       this
     );
+
+    this.tableColumns = ["dog", "cat"];
+    this.tableData = [[0, 1], [2, 3]];
   }
 
   componentDidMount() {
@@ -288,6 +289,10 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       <div className="animated fadeIn">
         {this.renderWidgets()}
         {this.renderSupplementsAndUserActivitiesHistory()}
+        <MultiTabTableView
+          tableColumns={this.tableColumns}
+          tableData={this.tableData}
+        />
       </div>
     );
   }
