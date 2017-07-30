@@ -227,7 +227,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               <thead>
                 <tr>
                   <th>Supplement</th>
-                  <th>Correlation</th>
+                  <th>Time Taken</th>
                 </tr>
               </thead>
               <tbody>
@@ -258,8 +258,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Supplement</th>
-                  <th>Correlation</th>
+                  <th>User Activity</th>
+                  <th>Time Taken</th>
                 </tr>
               </thead>
               <tbody>
