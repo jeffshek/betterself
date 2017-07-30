@@ -3,15 +3,10 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { DefaultLineChartDataset } from "../constants/charts";
 import {
-  DISTRACTING_MINUTES_LABEL,
   DISTRACTING_MINUTES_VARIABLE,
-  NEUTRAL_MINUTES_LABEL,
   NEUTRAL_MINUTES_VARIABLE,
-  PRODUCTIVE_MINUTES_LABEL,
   PRODUCTIVE_MINUTES_VARIABLE,
-  VERY_DISTRACTING_MINUTES_LABEL,
   VERY_DISTRACTING_MINUTES_VARIABLE,
-  VERY_PRODUCTIVE_MINUTES_LABEL,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "../analytics/base";
@@ -112,46 +107,11 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       });
   }
 
-  renderHistoryChart() {
-    return (
-      <div className="card">
-        {/*<div className="card-header analytics-text-box-label">*/}
-        {/*<span className="font-2xl">Daily Overview - June 5th, 2017</span>*/}
-        {/*<span className="float-right">*/}
-        {/*Chart Selection*/}
-        {/*<select*/}
-        {/*className="form-control chart-selector"*/}
-        {/*onChange={this.handleSelectedProductivityHistoryType}*/}
-        {/*value={this.state.selectedProductivityHistoryType}*/}
-        {/*size="1"*/}
-        {/*>*/}
-        {/*<option>{VERY_PRODUCTIVE_MINUTES_LABEL}</option>*/}
-        {/*<option>{PRODUCTIVE_MINUTES_LABEL}</option>*/}
-        {/*<option>{NEUTRAL_MINUTES_LABEL}</option>*/}
-        {/*<option>{DISTRACTING_MINUTES_LABEL}</option>*/}
-        {/*<option>{VERY_DISTRACTING_MINUTES_LABEL}</option>*/}
-        {/*</select>*/}
-        {/*</span>*/}
-        {/*</div>*/}
-        <div className="card-block">
-          <div className="chart-wrapper">
-            <Line
-              data={this.state.productivityHistoryChart}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  renderOverviewWidgets() {
+  renderWidgets() {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          <span className="font-2xl">Daily Overview - June 5th, 2017</span>
+          <span className="font-2xl">Tuesday - June 5th, 2017</span>
         </div>
         <br />
         <div className="row">
@@ -258,10 +218,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
   render() {
     return (
       <div className="animated fadeIn">
-        {this.renderOverviewWidgets()}
-        {/*{this.renderHistoryChart()}*/}
+        {this.renderWidgets()}
         {this.renderSupplementsCorrelations()}
-        {this.renderUserActivitiesCorrelations()}
       </div>
     );
   }
