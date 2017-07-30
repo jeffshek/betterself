@@ -116,7 +116,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
         <br />
         <div className="row">
           <div className="col-sm-6 col-lg-3">
-            <div className="social-box facebook widgets">
+            <div className="social-box default-background">
               <i className="widgets-analytics icon-speedometer">
                 <span className="widget-font"> Productivity</span>
               </i>
@@ -137,7 +137,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
           </div>
 
           <div className="col-sm-6 col-lg-3">
-            <div className="social-box twitter">
+            <div className="social-box gray-background">
               <i className="widgets-analytics icon-ban">
                 <span className="widget-font"> Distractions</span>
               </i>
@@ -158,7 +158,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
           </div>
 
           <div className="col-sm-6 col-lg-3">
-            <div className="social-box linkedin">
+            <div className="social-box default-background">
               <i className="widgets-analytics icon-volume-off">
                 <span className="widget-font"> Sleep</span>
               </i>
@@ -179,7 +179,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
           </div>
 
           <div className="col-sm-6 col-lg-3">
-            <div className="social-box google-plus">
+            <div className="social-box gray-background">
               <i className="widgets-analytics icon-chemistry">
                 <span className="widget-font"> Supplements</span>
               </i>

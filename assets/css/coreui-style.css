@@ -11613,12 +11613,12 @@ nav.top-nav {
         font-weight: 500;
         color: #black;
         text-transform: uppercase; }
-  .social-box.facebook i {
+  .social-box.default-background i {
     color: #fff;
     background: #193441; }
-  .social-box.twitter i {
+  .social-box.gray-background i {
     color: #fff;
-    background: gray; }
+    background: gray;  }
   .social-box.linkedin i {
     color: #fff;
     background: #193441; }
