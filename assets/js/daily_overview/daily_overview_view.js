@@ -120,9 +120,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               <i className="widgets-analytics icon-speedometer">
                 <span className="widget-font"> Productivity</span>
               </i>
-              <div className="chart-wrapper">
-                <canvas id="social-box-chart-1" height="90" />
-              </div>
               <ul>
                 <li>
                   <strong>7.5 Hours</strong>
@@ -141,9 +138,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               <i className="widgets-analytics icon-ban">
                 <span className="widget-font"> Distractions</span>
               </i>
-              <div className="chart-wrapper">
-                <canvas id="social-box-chart-2" height="90" />
-              </div>
               <ul>
                 <li>
                   <strong>7.5 Hours</strong>
@@ -162,9 +156,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               <i className="widgets-analytics icon-volume-off">
                 <span className="widget-font"> Sleep</span>
               </i>
-              <div className="chart-wrapper">
-                <canvas id="social-box-chart-3" height="90" />
-              </div>
               <ul>
                 <li>
                   <strong>8:13 AM</strong>
@@ -183,9 +174,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               <i className="widgets-analytics icon-chemistry">
                 <span className="widget-font"> Supplements</span>
               </i>
-              <div className="chart-wrapper">
-                <canvas id="social-box-chart-4" height="90" />
-              </div>
               <ul>
                 <li>
                   <strong>23</strong>
