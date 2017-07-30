@@ -16,6 +16,7 @@ export const DASHBOARD_USER_ACTIVITIES_URL = '/dashboard/user_activities'
 // Analytics
 export const DASHBOARD_SLEEP_ANALYTICS_URL = '/dashboard/analytics/sleep'
 export const DASHBOARD_PRODUCTIVITY_ANALYTICS_URL = '/dashboard/analytics/productivity'
+export const DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/daily_overview'
 
 // Auth
 export const LOGIN_URL = '/login/'
