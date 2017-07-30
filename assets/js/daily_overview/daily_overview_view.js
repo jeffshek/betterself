@@ -116,7 +116,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          <span className="font-2xl">Daily Overview</span>
+          <span className="font-2xl">Daily Overview - June 5th, 2017</span>
           <span className="float-right">
             Chart Selection
             <select
@@ -147,10 +147,93 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     );
   }
 
+  renderOverviewWidgets() {
+    return (
+      <div className="row">
+        <div className="col-sm-6 col-lg-3">
+          <div className="social-box facebook widgets">
+            <i className="widgets-analytics">Productivity</i>
+            <div className="chart-wrapper">
+              <canvas id="social-box-chart-1" height="90" />
+            </div>
+            <ul>
+              <li>
+                <strong>7.5 Hours</strong>
+                <span>Today</span>
+              </li>
+              <li>
+                <strong>4.5 Hours</strong>
+                <span>Yesterday</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="col-sm-6 col-lg-3">
+          <div className="social-box twitter">
+            <i className="widgets-analytics">Distractions</i>
+            <div className="chart-wrapper">
+              <canvas id="social-box-chart-2" height="90" />
+            </div>
+            <ul>
+              <li>
+                <strong>7.5 Hours</strong>
+                <span>Today</span>
+              </li>
+              <li>
+                <strong>4.5 Hours</strong>
+                <span>Yesterday</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="col-sm-6 col-lg-3">
+          <div className="social-box linkedin">
+            <i className="widgets-analytics">Sleep</i>
+            <div className="chart-wrapper">
+              <canvas id="social-box-chart-3" height="90" />
+            </div>
+            <ul>
+              <li>
+                <strong>8:13 AM</strong>
+                <span>Wake Up Time</span>
+              </li>
+              <li>
+                <strong>6.5 Hours</strong>
+                <span>Total Rest</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="col-sm-6 col-lg-3">
+          <div className="social-box google-plus">
+            <i className="widgets-analytics">Supplements</i>
+            <div className="chart-wrapper">
+              <canvas id="social-box-chart-4" height="90" />
+            </div>
+            <ul>
+              <li>
+                <strong>23</strong>
+                <span>Today</span>
+              </li>
+              <li>
+                <strong>13</strong>
+                <span>Today</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
         {this.renderHistoryChart()}
+        {this.renderOverviewWidgets()}
         {this.renderSupplementsCorrelations()}
         {this.renderUserActivitiesCorrelations()}
       </div>
