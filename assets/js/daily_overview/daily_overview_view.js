@@ -215,15 +215,20 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     );
   }
 
+  renderSupplementsAndUserActivitiesHistory() {
+    return (
+      <div className="card-columns cols-2">
+        {this.renderSupplementsCorrelationsData()}
+        {this.renderSupplementsCorrelationsData()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
         {this.renderWidgets()}
-        {/*{this.renderSupplementsCorrelations()}*/}
-        <div className="card-columns cols-2">
-          {this.renderSupplementsCorrelationsData()}
-          {this.renderSupplementsCorrelationsData()}
-        </div>
+        {this.renderSupplementsAndUserActivitiesHistory()}
       </div>
     );
   }
