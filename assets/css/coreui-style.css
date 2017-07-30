@@ -11578,7 +11578,9 @@ nav.top-nav {
 
 .social-box {
   min-height: 160px;
-  margin-bottom: 1.5rem;
+  /*margin-bottom: 1rem;*/
+  margin-left: 1rem;
+  margin-right: .5rem;
   text-align: center;
   background: #fff;
   border: 1px solid #d1d4d7; }
