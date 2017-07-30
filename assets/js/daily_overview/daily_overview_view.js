@@ -36,7 +36,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       productivityHistoryChart: ProductivityHistoryChart,
       //
       selectedProductivityHistoryChartData: [],
-      selectedProductivityHistoryType: VERY_PRODUCTIVE_MINUTES_LABEL
+      selectedProductivityHistoryType: "Supplements Taken"
     };
     // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState);
@@ -115,24 +115,24 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
   renderHistoryChart() {
     return (
       <div className="card">
-        <div className="card-header analytics-text-box-label">
-          <span className="font-2xl">Daily Overview - June 5th, 2017</span>
-          <span className="float-right">
-            Chart Selection
-            <select
-              className="form-control chart-selector"
-              onChange={this.handleSelectedProductivityHistoryType}
-              value={this.state.selectedProductivityHistoryType}
-              size="1"
-            >
-              <option>{VERY_PRODUCTIVE_MINUTES_LABEL}</option>
-              <option>{PRODUCTIVE_MINUTES_LABEL}</option>
-              <option>{NEUTRAL_MINUTES_LABEL}</option>
-              <option>{DISTRACTING_MINUTES_LABEL}</option>
-              <option>{VERY_DISTRACTING_MINUTES_LABEL}</option>
-            </select>
-          </span>
-        </div>
+        {/*<div className="card-header analytics-text-box-label">*/}
+        {/*<span className="font-2xl">Daily Overview - June 5th, 2017</span>*/}
+        {/*<span className="float-right">*/}
+        {/*Chart Selection*/}
+        {/*<select*/}
+        {/*className="form-control chart-selector"*/}
+        {/*onChange={this.handleSelectedProductivityHistoryType}*/}
+        {/*value={this.state.selectedProductivityHistoryType}*/}
+        {/*size="1"*/}
+        {/*>*/}
+        {/*<option>{VERY_PRODUCTIVE_MINUTES_LABEL}</option>*/}
+        {/*<option>{PRODUCTIVE_MINUTES_LABEL}</option>*/}
+        {/*<option>{NEUTRAL_MINUTES_LABEL}</option>*/}
+        {/*<option>{DISTRACTING_MINUTES_LABEL}</option>*/}
+        {/*<option>{VERY_DISTRACTING_MINUTES_LABEL}</option>*/}
+        {/*</select>*/}
+        {/*</span>*/}
+        {/*</div>*/}
         <div className="card-block">
           <div className="chart-wrapper">
             <Line
@@ -149,82 +149,108 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
   renderOverviewWidgets() {
     return (
-      <div className="row">
-        <div className="col-sm-6 col-lg-3">
-          <div className="social-box facebook widgets">
-            <i className="widgets-analytics">Productivity</i>
-            <div className="chart-wrapper">
-              <canvas id="social-box-chart-1" height="90" />
+      <div className="card">
+        <div className="card-header analytics-text-box-label">
+          <span className="font-2xl">Daily Overview - June 5th, 2017</span>
+        </div>
+        <br />
+        <div className="row">
+          <div className="col-sm-6 col-lg-3">
+            <div className="social-box facebook widgets">
+              <i className="widgets-analytics icon-speedometer">
+                <span className="widget-font"> Productivity</span>
+              </i>
+              <div className="chart-wrapper">
+                <canvas id="social-box-chart-1" height="90" />
+              </div>
+              <ul>
+                <li>
+                  <strong>7.5 Hours</strong>
+                  <span>Today</span>
+                </li>
+                <li>
+                  <strong>4.5 Hours</strong>
+                  <span>Yesterday</span>
+                </li>
+              </ul>
             </div>
-            <ul>
-              <li>
-                <strong>7.5 Hours</strong>
-                <span>Today</span>
-              </li>
-              <li>
-                <strong>4.5 Hours</strong>
-                <span>Yesterday</span>
-              </li>
-            </ul>
+          </div>
+
+          <div className="col-sm-6 col-lg-3">
+            <div className="social-box twitter">
+              <i className="widgets-analytics icon-ban">
+                <span className="widget-font"> Distractions</span>
+              </i>
+              <div className="chart-wrapper">
+                <canvas id="social-box-chart-2" height="90" />
+              </div>
+              <ul>
+                <li>
+                  <strong>7.5 Hours</strong>
+                  <span>Today</span>
+                </li>
+                <li>
+                  <strong>4.5 Hours</strong>
+                  <span>Yesterday</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="col-sm-6 col-lg-3">
+            <div className="social-box linkedin">
+              <i className="widgets-analytics icon-volume-off">
+                <span className="widget-font"> Sleep</span>
+              </i>
+              <div className="chart-wrapper">
+                <canvas id="social-box-chart-3" height="90" />
+              </div>
+              <ul>
+                <li>
+                  <strong>8:13 AM</strong>
+                  <span>Wake Up Time</span>
+                </li>
+                <li>
+                  <strong>6.5 Hours</strong>
+                  <span>Total Rest</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="col-sm-6 col-lg-3">
+            <div className="social-box google-plus">
+              <i className="widgets-analytics icon-chemistry">
+                <span className="widget-font"> Supplements</span>
+              </i>
+              <div className="chart-wrapper">
+                <canvas id="social-box-chart-4" height="90" />
+              </div>
+              <ul>
+                <li>
+                  <strong>23</strong>
+                  <span>Today</span>
+                </li>
+                <li>
+                  <strong>13</strong>
+                  <span>Today</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="col-sm-6 col-lg-3">
-          <div className="social-box twitter">
-            <i className="widgets-analytics">Distractions</i>
-            <div className="chart-wrapper">
-              <canvas id="social-box-chart-2" height="90" />
-            </div>
-            <ul>
-              <li>
-                <strong>7.5 Hours</strong>
-                <span>Today</span>
-              </li>
-              <li>
-                <strong>4.5 Hours</strong>
-                <span>Yesterday</span>
-              </li>
-            </ul>
+        <div className="card-block">
+          <div className="chart-wrapper">
+            <Line
+              data={this.state.productivityHistoryChart}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
           </div>
         </div>
 
-        <div className="col-sm-6 col-lg-3">
-          <div className="social-box linkedin">
-            <i className="widgets-analytics">Sleep</i>
-            <div className="chart-wrapper">
-              <canvas id="social-box-chart-3" height="90" />
-            </div>
-            <ul>
-              <li>
-                <strong>8:13 AM</strong>
-                <span>Wake Up Time</span>
-              </li>
-              <li>
-                <strong>6.5 Hours</strong>
-                <span>Total Rest</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="col-sm-6 col-lg-3">
-          <div className="social-box google-plus">
-            <i className="widgets-analytics">Supplements</i>
-            <div className="chart-wrapper">
-              <canvas id="social-box-chart-4" height="90" />
-            </div>
-            <ul>
-              <li>
-                <strong>23</strong>
-                <span>Today</span>
-              </li>
-              <li>
-                <strong>13</strong>
-                <span>Today</span>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     );
   }
@@ -232,8 +258,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
   render() {
     return (
       <div className="animated fadeIn">
-        {this.renderHistoryChart()}
         {this.renderOverviewWidgets()}
+        {/*{this.renderHistoryChart()}*/}
         {this.renderSupplementsCorrelations()}
         {this.renderUserActivitiesCorrelations()}
       </div>

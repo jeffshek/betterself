@@ -127,5 +127,8 @@
 
 .widgets-analytics {
   font-style: normal;
-  font-weight: bold;
+}
+
+.widget-font {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
