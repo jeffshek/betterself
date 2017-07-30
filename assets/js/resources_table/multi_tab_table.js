@@ -1,6 +1,17 @@
 import React, { Component, PropTypes } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
+const TableRow = props => {
+  const data = props.details;
+  console.log(data);
+  return (
+    <tr>
+      <td>{data[0]}</td>
+      <td>{data[1]}</td>
+    </tr>
+  );
+};
+
 export class MultiTabTableView extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +44,26 @@ export class MultiTabTableView extends Component {
     );
   }
 
+  renderTableData() {
+    return (
+      <div className="card-block">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Correlation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.tableData.map(key => (
+              <TableRow key={key} details={key} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="float">
@@ -40,6 +71,7 @@ export class MultiTabTableView extends Component {
           <Nav tabs>
             {this.props.tableColumns.map(this.renderNavTabs)}
           </Nav>
+          {this.renderTableData()}
         </div>
       </div>
     );
