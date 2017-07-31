@@ -24,6 +24,16 @@ const ProductivityColumnMappingToKey = {
   "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
 };
 
+const TableRow = props => {
+  const { details } = props;
+  return (
+    <tr>
+      <td>{details[0]}</td>
+      <td>{details[1]}</td>
+    </tr>
+  );
+};
+
 const ProductivityHistoryChart = {
   labels: [],
   datasets: [Object.assign({}, DefaultLineChartDataset)]
@@ -295,6 +305,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
         <MultiTabTableView
           tableColumns={this.tableColumns}
           tableData={this.tableData}
+          tableRowRenderer={TableRow}
         />
       </div>
     );

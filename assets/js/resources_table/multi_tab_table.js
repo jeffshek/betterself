@@ -1,22 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
-const TableRow = props => {
-  const { details } = props;
-  return (
-    <tr>
-      <td>{details[0]}</td>
-      <td>{details[1]}</td>
-    </tr>
-  );
-};
-
 export class MultiTabTableView extends Component {
   constructor(props) {
     super(props);
 
     // Inputs are ...
-    // renderTableRow (maybe not yet)
+    // tableRowRenderer
     // tableColumns
     // tableData
 
@@ -56,6 +46,9 @@ export class MultiTabTableView extends Component {
   }
 
   renderTableData() {
+    // There may be a more elegant way of doing this, but I don't know it.
+    const TableRow = this.props.tableRowRenderer;
+
     return (
       <div className="card-block">
         <table className="table">
