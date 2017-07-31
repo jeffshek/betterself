@@ -124,3 +124,11 @@
   border-right: 5px;
   font-weight: bold;
 }
+
+.widgets-analytics {
+  font-style: normal;
+}
+
+.widget-font {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}

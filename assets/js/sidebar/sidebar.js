@@ -11,7 +11,8 @@ import {
   DASHBOARD_USER_ACTIVITIES_URL,
   DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
-  EXPORT_ALL_DATA_URL
+  EXPORT_ALL_DATA_URL,
+  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -137,6 +138,11 @@ class Sidebar extends Component {
             label="Productivity"
             link={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
           />
+          {/*<NavigationLink*/}
+          {/*iconName="icon-clock"*/}
+          {/*label="Daily Overview"*/}
+          {/*link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}*/}
+          {/*/>*/}
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)} />
           <li className="divider" />

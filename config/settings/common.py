@@ -252,6 +252,7 @@ REST_FRAMEWORK = {
         'user': '1000/hour',
         'anon': '1000/hour',
         'signups': '3/day',
+        'rescuetime-api-sync': '5/day',
         'demo_signups': '10/day',  # let a user create a few more demo accounts
         'user_export_all_data': '20/day',
     }

@@ -2483,7 +2483,7 @@ tbody.collapse.show {
     cursor: not-allowed; }
 
 .nav-tabs {
-  border-bottom: 1px solid #ddd; }
+  border-bottom: 0px solid #ddd; }
   .nav-tabs .nav-item {
     margin-bottom: -1px; }
   .nav-tabs .nav-link, .nav-tabs .navbar .dropdown-toggle, .navbar .nav-tabs .dropdown-toggle {
@@ -2910,7 +2910,7 @@ header.navbar {
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border: 1px solid #d1d4d7; }
+  border: 0px solid #d1d4d7; }
 
 .card-block {
   flex: 1 1 auto;
@@ -3074,6 +3074,7 @@ header.navbar {
     .card-columns .card {
       display: inline-block;
       width: 100%;
+      margin-left: 1rem;
       margin-bottom: 0.75rem; } }
 
 .card {
@@ -11576,16 +11577,18 @@ nav.top-nav {
   background: #20a8d8; }
 
 .social-box {
-  min-height: 160px;
-  margin-bottom: 1.5rem;
+  min-height: 130px;
+  /*margin-bottom: 1rem;*/
+  margin-left: 1rem;
+  margin-right: .5rem;
   text-align: center;
   background: #fff;
   border: 1px solid #d1d4d7; }
   .social-box i {
     display: block;
     margin: -1px -1px 0;
-    font-size: 40px;
-    line-height: 90px;
+    font-size: 30px;
+    line-height: 60px;
     background: #d1d4d7; }
   .social-box .chart-wrapper {
     height: 90px;
@@ -11608,20 +11611,20 @@ nav.top-nav {
       .social-box ul li span {
         font-size: 10px;
         font-weight: 500;
-        color: #d1d4d7;
+        color: #black;
         text-transform: uppercase; }
-  .social-box.facebook i {
+  .social-box.default-background i {
     color: #fff;
-    background: #3b5998; }
-  .social-box.twitter i {
+    background: #193441; }
+  .social-box.gray-background i {
     color: #fff;
-    background: #00aced; }
+    background: gray;  }
   .social-box.linkedin i {
     color: #fff;
-    background: #4875b4; }
+    background: #193441; }
   .social-box.google-plus i {
     color: #fff;
-    background: #bb4b39; }
+    background: gray; }
 
 .horizontal-bars {
   padding: 0;

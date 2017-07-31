@@ -14,7 +14,6 @@ import {
   LOGOUT_URL,
   DASHBOARD_SLEEP_ANALYTICS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
-  DASHBOARD_HEART_RATE_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
@@ -24,7 +23,8 @@ import {
   DASHBOARD_SLEEP_LOGS_URL,
   SETTINGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
-  EXPORT_ALL_DATA_URL
+  EXPORT_ALL_DATA_URL,
+  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -52,6 +52,9 @@ import {
 } from "./user_activities_events_log/user_activites_events_view";
 import { LoginView } from "./authentication/login";
 import { UserExportAllDataView } from "./export/export";
+import {
+  DailyOverviewAnalyticsView
+} from "./daily_overview/daily_overview_view";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -75,6 +78,7 @@ const BetterSelfRouter = () => (
         path={DASHBOARD_INDEX_URL}
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
+      {/*Analytics*/}
       <PrivateRoute
         path={DASHBOARD_SLEEP_ANALYTICS_URL}
         component={e => <Dashboard view={SleepAnalyticsView} />}
@@ -84,13 +88,17 @@ const BetterSelfRouter = () => (
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
+        path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
+        component={e => <Dashboard view={DailyOverviewAnalyticsView} />}
+      />
+      <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
         component={e => <Dashboard view={SupplementEventsLogView} />}
       />
-      <PrivateRoute
-        path={DASHBOARD_HEART_RATE_LOGS_URL}
-        component={e => <Dashboard view={HeartRateLogView} />}
-      />
+      {/*<PrivateRoute*/}
+      {/*path={DASHBOARD_HEART_RATE_LOGS_URL}*/}
+      {/*component={e => <Dashboard view={HeartRateLogView} />}*/}
+      {/*/>*/}
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}
         component={e => <Dashboard view={SupplementView} />}

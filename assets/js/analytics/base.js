@@ -290,50 +290,115 @@ export class BaseAnalyticsView extends Component {
     );
   }
 
+  renderUserActivitiesChart() {
+    return (
+      <div className="card">
+        <div className="card-header analytics-text-box-label">
+          {this.userActivitiesCorrelationsChartLabel}
+        </div>
+        <div className="chart-wrapper">
+          <Bar
+            data={this.state.selectedUserActivitiesCorrelationsChart}
+            options={{
+              maintainAspectRatio: true
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  renderUserActivitiesData() {
+    return (
+      <div className="float">
+        <div className="card">
+          <Nav tabs>
+            {this.renderActivitiesCorrelationsSelectionTab(
+              POSITIVELY_CORRELATED_LABEL
+            )}
+            {this.renderActivitiesCorrelationsSelectionTab(
+              NEGATIVELY_CORRELATED_LABEL
+            )}
+            {this.renderActivitiesCorrelationsSelectionTab(
+              NOT_CORRELATED_LABEL
+            )}
+          </Nav>
+          <div className="card-block">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Activity</th>
+                  <th>Correlation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.selectedUserActivitiesCorrelations.map(key => (
+                  <CorrelationTableRow key={key} object={key} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderUserActivitiesCorrelations() {
     return (
       <div className="card-columns cols-2">
-        <div className="card">
-          <div className="card-header analytics-text-box-label">
-            {this.userActivitiesCorrelationsChartLabel}
-          </div>
-          <div className="chart-wrapper">
-            <Bar
-              data={this.state.selectedUserActivitiesCorrelationsChart}
-              options={{
-                maintainAspectRatio: true
-              }}
-            />
-          </div>
+        {this.renderUserActivitiesChart()}
+        {this.renderUserActivitiesData()}
+      </div>
+    );
+  }
+
+  renderSupplementsCorrelationsChart() {
+    return (
+      <div className="card">
+        <div className="card-header analytics-text-box-label">
+          {this.supplementsCorrelationsChartLabel}
         </div>
-        <div className="float">
-          <div className="card">
-            <Nav tabs>
-              {this.renderActivitiesCorrelationsSelectionTab(
-                POSITIVELY_CORRELATED_LABEL
-              )}
-              {this.renderActivitiesCorrelationsSelectionTab(
-                NEGATIVELY_CORRELATED_LABEL
-              )}
-              {this.renderActivitiesCorrelationsSelectionTab(
-                NOT_CORRELATED_LABEL
-              )}
-            </Nav>
-            <div className="card-block">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Activity</th>
-                    <th>Correlation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.selectedUserActivitiesCorrelations.map(key => (
-                    <CorrelationTableRow key={key} object={key} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        <div className="chart-wrapper">
+          <Bar
+            data={this.state.supplementsCorrelationsChart}
+            options={{
+              maintainAspectRatio: true
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  renderSupplementsCorrelationsData() {
+    return (
+      <div className="float">
+        <div className="card">
+          <Nav tabs>
+            {this.renderSupplementsCorrelationsSelectionTab(
+              POSITIVELY_CORRELATED_LABEL
+            )}
+            {this.renderSupplementsCorrelationsSelectionTab(
+              NEGATIVELY_CORRELATED_LABEL
+            )}
+            {this.renderSupplementsCorrelationsSelectionTab(
+              NOT_CORRELATED_LABEL
+            )}
+          </Nav>
+          <div className="card-block">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Supplement</th>
+                  <th>Correlation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.selectedSupplementsCorrelations.map(key => (
+                  <CorrelationTableRow key={key} object={key} />
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -343,49 +408,8 @@ export class BaseAnalyticsView extends Component {
   renderSupplementsCorrelations() {
     return (
       <div className="card-columns cols-2">
-        <div className="card">
-          <div className="card-header analytics-text-box-label">
-            {this.supplementsCorrelationsChartLabel}
-          </div>
-          <div className="chart-wrapper">
-            <Bar
-              data={this.state.supplementsCorrelationsChart}
-              options={{
-                maintainAspectRatio: true
-              }}
-            />
-          </div>
-        </div>
-        <div className="float">
-          <div className="card">
-            <Nav tabs>
-              {this.renderSupplementsCorrelationsSelectionTab(
-                POSITIVELY_CORRELATED_LABEL
-              )}
-              {this.renderSupplementsCorrelationsSelectionTab(
-                NEGATIVELY_CORRELATED_LABEL
-              )}
-              {this.renderSupplementsCorrelationsSelectionTab(
-                NOT_CORRELATED_LABEL
-              )}
-            </Nav>
-            <div className="card-block">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Supplement</th>
-                    <th>Correlation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.selectedSupplementsCorrelations.map(key => (
-                    <CorrelationTableRow key={key} object={key} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        {this.renderSupplementsCorrelationsChart()}
+        {this.renderSupplementsCorrelationsData()}
       </div>
     );
   }

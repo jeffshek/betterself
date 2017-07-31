@@ -7,6 +7,9 @@ from apis.rescuetime.v1.serializers import RescueTimeAPIRequestSerializer
 
 
 class UpdateRescueTimeAPIView(APIView):
+    # don't slam rescuetime's servers, so you won't get banned
+    throttle_scope = 'rescuetime-api-sync'
+
     def post(self, request):
         user = request.user
         data = request.data
