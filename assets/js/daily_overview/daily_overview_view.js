@@ -303,12 +303,14 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       <div className="animated fadeIn">
         {this.renderWidgets()}
         {/*{this.renderSupplementsAndUserActivitiesHistory()}*/}
-        <MultiTabTableView
-          tableNavTabs={this.tableNavTabs}
-          tableColumnHeaders={["Jump", "High"]}
-          tableData={this.tableData}
-          tableRowRenderer={TableRow}
-        />
+        <div className="card-columns cols-2">
+          <MultiTabTableView
+            tableNavTabs={this.tableNavTabs}
+            tableColumnHeaders={["Jump", "High"]}
+            tableData={this.tableData}
+            tableRowRenderer={TableRow}
+          />
+        </div>
       </div>
     );
   }

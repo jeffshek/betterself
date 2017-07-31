@@ -71,22 +71,12 @@ export class MultiTabTableView extends Component {
 
   render() {
     return (
-      <div className="card-columns cols-2">
-        <div className="float">
-          <div className="card">
-            <Nav tabs>
-              {this.props.tableNavTabs.map(this.renderNavTabs)}
-            </Nav>
-            {this.renderTableData()}
-          </div>
-        </div>
-        <div className="float">
-          <div className="card">
-            <Nav tabs>
-              {this.props.tableNavTabs.map(this.renderNavTabs)}
-            </Nav>
-            {this.renderTableData()}
-          </div>
+      <div className="float">
+        <div className="card">
+          <Nav tabs>
+            {this.props.tableNavTabs.map(this.renderNavTabs)}
+          </Nav>
+          {this.renderTableData()}
         </div>
       </div>
     );
