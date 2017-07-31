@@ -138,11 +138,11 @@ class Sidebar extends Component {
             label="Productivity"
             link={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
           />
-          <NavigationLink
-            iconName="icon-clock"
-            label="Daily Overview"
-            link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
-          />
+          {/*<NavigationLink*/}
+          {/*iconName="icon-clock"*/}
+          {/*label="Daily Overview"*/}
+          {/*link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}*/}
+          {/*/>*/}
           <li className="divider" />
           <ExternalDataMenu onClick={this.handleClick.bind(this)} />
           <li className="divider" />
