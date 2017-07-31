@@ -1,14 +1,16 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
+import PropTypes from "prop-types";
 
 export class MultiTabTableView extends Component {
+  static propTypes = {
+    tableData: PropTypes.array.isRequired,
+    tableColumns: PropTypes.array.isRequired,
+    tableRowRenderer: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
-
-    // Inputs are ...
-    // tableRowRenderer
-    // tableColumns
-    // tableData
 
     this.state = {
       selectedTabLocation: 0
@@ -23,8 +25,8 @@ export class MultiTabTableView extends Component {
 
     const target = event.target;
     const name = target.name;
-
     const navCount = this.props.tableColumns.indexOf(name);
+
     this.setState({ selectedTabLocation: navCount });
   }
 
