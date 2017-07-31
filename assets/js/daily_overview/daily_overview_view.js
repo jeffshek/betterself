@@ -68,7 +68,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       this
     );
 
-    this.tableColumns = ["dog", "cat"];
+    this.tableNavTabs = ["dog", "cat"];
+    this.tableColumnHeaders = ["dog", "cat"];
     this.tableData = [
       [[0, 1], [2, 3], [4, 5], [9, 1], ["lo", 3], [41, 5]],
       [["a", 1], ["b", 3], ["c", 5], ["d", 1], ["e", 3], ["f", 5]]
@@ -303,7 +304,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
         {this.renderWidgets()}
         {/*{this.renderSupplementsAndUserActivitiesHistory()}*/}
         <MultiTabTableView
-          tableColumns={this.tableColumns}
+          tableNavTabs={this.tableNavTabs}
+          tableColumnHeaders={["Jump", "High"]}
           tableData={this.tableData}
           tableRowRenderer={TableRow}
         />

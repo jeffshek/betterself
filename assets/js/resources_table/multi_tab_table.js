@@ -5,33 +5,30 @@ import PropTypes from "prop-types";
 export class MultiTabTableView extends Component {
   static propTypes = {
     tableData: PropTypes.array.isRequired,
-    tableColumns: PropTypes.array.isRequired,
-    tableRowRenderer: PropTypes.func.isRequired
+    tableNavTabs: PropTypes.array.isRequired,
+    tableRowRenderer: PropTypes.func.isRequired,
+    tableColumnHeaders: PropTypes.array.isRequired
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
       selectedTabLocation: 0
     };
-
-    this.renderNavTabs = this.renderNavTabs.bind(this);
-    this.navLinkClickTab = this.navLinkClickTab.bind(this);
   }
 
-  navLinkClickTab(event) {
+  navLinkClickTab = event => {
     event.preventDefault();
 
     const target = event.target;
     const name = target.name;
-    const navCount = this.props.tableColumns.indexOf(name);
+    const navCount = this.props.tableNavTabs.indexOf(name);
 
     this.setState({ selectedTabLocation: navCount });
-  }
+  };
 
-  renderNavTabs(props) {
-    const navCount = this.props.tableColumns.indexOf(props);
+  renderNavTabs = props => {
+    const navCount = this.props.tableNavTabs.indexOf(props);
 
     if (this.state.selectedTabLocation === navCount) {
       return (
@@ -45,10 +42,11 @@ export class MultiTabTableView extends Component {
         <NavLink onClick={this.navLinkClickTab} name={props}>{props}</NavLink>
       </NavItem>
     );
-  }
+  };
 
   renderTableData() {
-    // There may be a more elegant way of doing this, but I don't know it.
+    // There may be a more elegant way of doing this (declaring a variable), just to use <TableRow> syntax
+    // but I don't know it.
     const TableRow = this.props.tableRowRenderer;
 
     return (
@@ -56,8 +54,9 @@ export class MultiTabTableView extends Component {
         <table className="table">
           <thead>
             <tr>
-              <th>Activity</th>
-              <th>Correlation</th>
+              {this.props.tableColumnHeaders.map(key => (
+                <th key={key}>{key}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -76,7 +75,7 @@ export class MultiTabTableView extends Component {
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.props.tableColumns.map(this.renderNavTabs)}
+              {this.props.tableNavTabs.map(this.renderNavTabs)}
             </Nav>
             {this.renderTableData()}
           </div>
@@ -84,7 +83,7 @@ export class MultiTabTableView extends Component {
         <div className="float">
           <div className="card">
             <Nav tabs>
-              {this.props.tableColumns.map(this.renderNavTabs)}
+              {this.props.tableNavTabs.map(this.renderNavTabs)}
             </Nav>
             {this.renderTableData()}
           </div>
