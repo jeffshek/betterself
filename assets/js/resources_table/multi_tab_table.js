@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
 const TableRow = props => {
-  const data = props.details;
+  const { details } = props;
   return (
     <tr>
-      <td>{data[0]}</td>
-      <td>{data[1]}</td>
+      <td>{details[0]}</td>
+      <td>{details[1]}</td>
     </tr>
   );
 };
@@ -15,7 +15,8 @@ export class MultiTabTableView extends Component {
   constructor(props) {
     super(props);
 
-    // renderTableRow
+    // Inputs are ...
+    // renderTableRow (maybe not yet)
     // tableColumns
     // tableData
 
@@ -24,6 +25,17 @@ export class MultiTabTableView extends Component {
     };
 
     this.renderNavTabs = this.renderNavTabs.bind(this);
+    this.navLinkClickTab = this.navLinkClickTab.bind(this);
+  }
+
+  navLinkClickTab(event) {
+    event.preventDefault();
+
+    const target = event.target;
+    const name = target.name;
+
+    const navCount = this.props.tableColumns.indexOf(name);
+    this.setState({ selectedTabLocation: navCount });
   }
 
   renderNavTabs(props) {
@@ -38,7 +50,7 @@ export class MultiTabTableView extends Component {
     }
     return (
       <NavItem className="default-background" key={props}>
-        <NavLink>{props}</NavLink>
+        <NavLink onClick={this.navLinkClickTab} name={props}>{props}</NavLink>
       </NavItem>
     );
   }
@@ -54,7 +66,7 @@ export class MultiTabTableView extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.tableData.map(key => (
+            {this.props.tableData[this.state.selectedTabLocation].map(key => (
               <TableRow key={key} details={key} />
             ))}
           </tbody>
@@ -65,12 +77,22 @@ export class MultiTabTableView extends Component {
 
   render() {
     return (
-      <div className="float">
-        <div className="card">
-          <Nav tabs>
-            {this.props.tableColumns.map(this.renderNavTabs)}
-          </Nav>
-          {this.renderTableData()}
+      <div className="card-columns cols-2">
+        <div className="float">
+          <div className="card">
+            <Nav tabs>
+              {this.props.tableColumns.map(this.renderNavTabs)}
+            </Nav>
+            {this.renderTableData()}
+          </div>
+        </div>
+        <div className="float">
+          <div className="card">
+            <Nav tabs>
+              {this.props.tableColumns.map(this.renderNavTabs)}
+            </Nav>
+            {this.renderTableData()}
+          </div>
         </div>
       </div>
     );

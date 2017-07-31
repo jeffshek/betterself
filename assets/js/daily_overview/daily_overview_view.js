@@ -59,7 +59,10 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     );
 
     this.tableColumns = ["dog", "cat"];
-    this.tableData = [[0, 1], [2, 3]];
+    this.tableData = [
+      [[0, 1], [2, 3], [4, 5], [9, 1], ["lo", 3], [41, 5]],
+      [["a", 1], ["b", 3], ["c", 5], ["d", 1], ["e", 3], ["f", 5]]
+    ];
   }
 
   componentDidMount() {
@@ -288,7 +291,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <div className="animated fadeIn">
         {this.renderWidgets()}
-        {this.renderSupplementsAndUserActivitiesHistory()}
+        {/*{this.renderSupplementsAndUserActivitiesHistory()}*/}
         <MultiTabTableView
           tableColumns={this.tableColumns}
           tableData={this.tableData}
