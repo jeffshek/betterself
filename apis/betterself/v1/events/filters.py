@@ -6,6 +6,8 @@ from events.models import SupplementEvent, UserActivity, UserActivityEvent, Slee
 
 class SupplementEventFilter(FilterSet):
     supplement_uuid = django_filters.UUIDFilter(name='supplement__uuid')
+    start_time = django_filters.IsoDateTimeFilter(name='time', lookup_expr='gte')
+    end_time = django_filters.IsoDateTimeFilter(name='time', lookup_expr='lte')
 
     class Meta:
         model = SupplementEvent
@@ -15,6 +17,8 @@ class SupplementEventFilter(FilterSet):
             'time',
             'source',
             'uuid',
+            'start_time',
+            'end_time',
         ]
 
 

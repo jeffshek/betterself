@@ -77,6 +77,49 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     this.state.productivityTimeYesterday = 0;
     this.state.distractingTimeYesterday = 0;
     this.state.distractingTimeToday = 0;
+
+    this.state.supplementsHistoryToday = [];
+    this.state.supplementsHistoryYesterday = [];
+  }
+
+  getUrlForSupplementsHistory(startDate) {
+    const endTime = moment(startDate).add(24, "hours");
+    // We don't want to get the full 24 hours since that will include the next day results
+    endTime.subtract(1, "seconds");
+
+    const startTimeString = startDate.toISOString();
+    const endTimeString = endTime.toISOString();
+
+    return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
+  }
+
+  getSupplementsHistoryToday() {
+    this.getSupplementsHistory(this.resourceDate, "supplementsHistoryToday");
+  }
+
+  getSupplementsHistoryYesterday() {
+    this.getSupplementsHistory(
+      this.previousResourceDate,
+      "supplementsHistoryYesterday"
+    );
+  }
+
+  getSupplementsHistory(historyDate, supplementHistoryKey) {
+    const url = this.getUrlForSupplementsHistory(historyDate);
+
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const { results } = responseData;
+        this.setState({
+          [supplementHistoryKey]: results
+        });
+      });
   }
 
   getProductivityHistory() {
@@ -131,6 +174,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
   componentDidMount() {
     this.getProductivityHistory();
+    this.getSupplementsHistoryToday();
+    this.getSupplementsHistoryYesterday();
   }
 
   renderWidgets() {
@@ -204,12 +249,14 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               </i>
               <ul>
                 <li>
-                  <strong>23</strong>
+                  <strong>{this.state.supplementsHistoryToday.length}</strong>
                   <span>Today</span>
                 </li>
                 <li>
-                  <strong>13</strong>
-                  <span>Today</span>
+                  <strong>
+                    {this.state.supplementsHistoryYesterday.length}
+                  </strong>
+                  <span>Yesterday</span>
                 </li>
               </ul>
             </div>
