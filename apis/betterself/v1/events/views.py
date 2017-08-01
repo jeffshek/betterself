@@ -1,6 +1,7 @@
 from rest_framework.generics import ListCreateAPIView
 
-from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter
+from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
+    DailyProductivityLogFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
     SupplementEventReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
@@ -30,15 +31,7 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = ProductivityLogReadSerializer
     write_serializer_class = ProductivityLogCreateSerializer
-    filter_fields = (
-        'very_productive_time_minutes',
-        'productive_time_minutes',
-        'neutral_time_minutes',
-        'distracting_time_minutes',
-        'very_distracting_time_minutes',
-        'uuid',
-        'date',
-    )
+    filter_class = DailyProductivityLogFilter
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()

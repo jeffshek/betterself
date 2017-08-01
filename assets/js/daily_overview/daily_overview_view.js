@@ -7,6 +7,7 @@ import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import moment from "moment";
+import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
 
 const TableRow = props => {
   const { details } = props;
@@ -16,6 +17,16 @@ const TableRow = props => {
       <td>{details[1]}</td>
     </tr>
   );
+};
+
+const minutesToHours = minutes => {
+  return (minutes / 60).toFixed(2);
+};
+
+const dateFilter = (result, dateString) => {
+  if (result.date === dateString) {
+    return result;
+  }
 };
 
 const ProductivityHistoryChart = {
@@ -29,8 +40,9 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
     const { match } = props;
 
-    // Parse the date from URL
+    // Parse date from URL
     let resourceDate = match.params.date;
+
     if (resourceDate) {
       resourceDate = moment(resourceDate);
       // If the date isn't valid, default to today
@@ -38,11 +50,11 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
         resourceDate = moment();
       }
     } else if (!resourceDate) {
-      console.log("No Date Found");
       resourceDate = moment();
     }
 
     this.resourceDate = resourceDate;
+    this.previousResourceDate = moment(resourceDate).subtract(1, "days");
 
     const updateState = {
       productivityHistoryChart: ProductivityHistoryChart
@@ -60,22 +72,22 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       [[0, 1], [2, 3], [4, 5], [9, 1], ["lo", 3], [41, 5]],
       [["a", 1], ["b", 3], ["c", 5], ["d", 1], ["e", 3], ["f", 5]]
     ];
+
+    this.state.productivityTimeToday = 0;
+    this.state.productivityTimeYesterday = 0;
+    this.state.distractingTimeYesterday = 0;
+    this.state.distractingTimeToday = 0;
   }
 
   getProductivityHistory() {
-    params = {};
-    fetch("/api/v1/productivity_log/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    });
-  }
+    const startDateString = this.previousResourceDate.format(
+      DATE_REQUEST_FORMAT
+    );
+    const endDateString = this.resourceDate.format(DATE_REQUEST_FORMAT);
 
-  componentDidMount() {
-    // this.getHistory();
-  }
+    const url = `/api/v1/productivity_log/?start_date=${startDateString}&end_date=${endDateString}`;
 
-  getHistory() {
-    fetch("/api/v1/productivity_log/", {
+    fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -83,21 +95,42 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
         return response.json();
       })
       .then(responseData => {
-        const reverseResponseData = responseData.results.reverse();
+        const { results } = responseData;
+        const startDateResult = results.filter(element =>
+          dateFilter(element, startDateString)
+        )[0];
+        const endDateResult = results.filter(element =>
+          dateFilter(element, endDateString)
+        )[0];
 
-        const labelDates = reverseResponseData.map(key => key.date);
-        const arrayValues = reverseResponseData.map(
-          key => key.very_productive_time_minutes
+        const distractingTimeYesterday = minutesToHours(
+          startDateResult.very_distracting_time_minutes +
+            startDateResult.distracting_time_minutes
+        );
+        const productivityTimeYesterday = minutesToHours(
+          startDateResult.very_productive_time_minutes +
+            startDateResult.productive_time_minutes
+        );
+        const distractingTimeToday = minutesToHours(
+          endDateResult.very_distracting_time_minutes +
+            endDateResult.distracting_time_minutes
+        );
+        const productivityTimeToday = minutesToHours(
+          endDateResult.very_productive_time_minutes +
+            endDateResult.productive_time_minutes
         );
 
-        this.state.productivityHistoryChart.labels = labelDates;
-        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
-
         this.setState({
-          productivityHistoryChart: this.state.productivityHistoryChart,
-          selectedProductivityHistoryChartData: reverseResponseData
+          distractingTimeToday: distractingTimeToday,
+          distractingTimeYesterday: distractingTimeYesterday,
+          productivityTimeToday: productivityTimeToday,
+          productivityTimeYesterday: productivityTimeYesterday
         });
       });
+  }
+
+  componentDidMount() {
+    this.getProductivityHistory();
   }
 
   renderWidgets() {
@@ -117,11 +150,11 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               </i>
               <ul>
                 <li>
-                  <strong>7.5 Hours</strong>
+                  <strong>{this.state.productivityTimeToday} Hours</strong>
                   <span>Today</span>
                 </li>
                 <li>
-                  <strong>4.5 Hours</strong>
+                  <strong>{this.state.productivityTimeYesterday} Hours</strong>
                   <span>Yesterday</span>
                 </li>
               </ul>
@@ -135,11 +168,11 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
               </i>
               <ul>
                 <li>
-                  <strong>7.5 Hours</strong>
+                  <strong>{this.state.distractingTimeToday} Hours</strong>
                   <span>Today</span>
                 </li>
                 <li>
-                  <strong>4.5 Hours</strong>
+                  <strong>{this.state.distractingTimeYesterday} Hours</strong>
                   <span>Yesterday</span>
                 </li>
               </ul>

@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from events.models import SupplementEvent, UserActivity, UserActivityEvent, SleepActivity
+from events.models import SupplementEvent, UserActivity, UserActivityEvent, SleepActivity, DailyProductivityLog
 
 
 class SupplementEventFilter(FilterSet):
@@ -47,4 +47,24 @@ class SleepActivityFilter(FilterSet):
             'uuid',
             'start_time',
             'end_time',
+        ]
+
+
+class DailyProductivityLogFilter(FilterSet):
+    start_date = django_filters.DateFilter(name='date', lookup_expr='gte')
+    end_date = django_filters.DateFilter(name='date', lookup_expr='lte')
+
+    class Meta:
+        model = DailyProductivityLog
+        fields = [
+            'uuid',
+            'date',
+            'source',
+            'very_productive_time_minutes',
+            'productive_time_minutes',
+            'neutral_time_minutes',
+            'distracting_time_minutes',
+            'very_distracting_time_minutes',
+            'start_date',
+            'end_date'
         ]
