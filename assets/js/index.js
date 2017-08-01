@@ -88,17 +88,20 @@ const BetterSelfRouter = () => (
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
+        exact
         path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
-        component={e => <Dashboard view={DailyOverviewAnalyticsView} />}
+        // component={e => <DailyOverviewAnalyticsView props={e}/>}
+        component={DailyOverviewAnalyticsView}
+      />
+      <PrivateRoute
+        exact
+        path={"/dashboard/analytics/daily_overview/:date"}
+        component={DailyOverviewAnalyticsView}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
         component={e => <Dashboard view={SupplementEventsLogView} />}
       />
-      {/*<PrivateRoute*/}
-      {/*path={DASHBOARD_HEART_RATE_LOGS_URL}*/}
-      {/*component={e => <Dashboard view={HeartRateLogView} />}*/}
-      {/*/>*/}
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}
         component={e => <Dashboard view={SupplementView} />}

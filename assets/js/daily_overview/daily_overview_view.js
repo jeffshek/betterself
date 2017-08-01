@@ -4,6 +4,9 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { DefaultLineChartDataset } from "../constants/charts";
 import { BaseAnalyticsView } from "../analytics/base";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
+import LoggedInHeader from "../header/internal_header";
+import Sidebar from "../sidebar/sidebar";
+import moment from "moment";
 
 const TableRow = props => {
   const { details } = props;
@@ -21,8 +24,26 @@ const ProductivityHistoryChart = {
 };
 
 export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { match } = props;
+
+    // Parse the date from URL
+    let resourceDate = match.params.date;
+    if (resourceDate) {
+      resourceDate = moment(resourceDate);
+      // If the date isn't valid, default to today
+      if (!resourceDate.isValid()) {
+        resourceDate = moment();
+      }
+    } else if (!resourceDate) {
+      console.log("No Date Found");
+      resourceDate = moment();
+    }
+
+    this.resourceDate = resourceDate;
+
     const updateState = {
       productivityHistoryChart: ProductivityHistoryChart
     };
@@ -41,8 +62,16 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     ];
   }
 
+  getProductivityHistory() {
+    params = {};
+    fetch("/api/v1/productivity_log/", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    });
+  }
+
   componentDidMount() {
-    this.getHistory();
+    // this.getHistory();
   }
 
   getHistory() {
@@ -76,7 +105,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       <div className="card">
         <div className="card-header analytics-text-box-label">
           <span className="font-2xl username-text">
-            Tuesday - June 5th, 2017
+            {this.resourceDate.format("dddd - MMMM Do YYYY")}
           </span>
         </div>
         <br />
@@ -202,10 +231,22 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
   render() {
     return (
-      <div className="animated fadeIn">
-        {this.renderWidgets()}
-        {this.renderSupplementsAndUserActivitiesHistory()}
-      </div>
+      // Need to get the param from the Routh path, which is why this renders the rest of the page
+      // Since I'm an idiot, I don't know how to do that just yet ...
+      (
+        <div className="app">
+          <LoggedInHeader />
+          <div className="app-body">
+            <Sidebar />
+            <main className="main">
+              <div className="animated fadeIn">
+                {this.renderWidgets()}
+                {this.renderSupplementsAndUserActivitiesHistory()}
+              </div>
+            </main>
+          </div>
+        </div>
+      )
     );
   }
 }
