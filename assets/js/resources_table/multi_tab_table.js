@@ -7,7 +7,8 @@ export class MultiTabTableView extends Component {
     tableData: PropTypes.array.isRequired,
     tableNavTabs: PropTypes.array.isRequired,
     tableRowRenderer: PropTypes.func.isRequired,
-    tableColumnHeaders: PropTypes.array.isRequired
+    tableColumnHeaders: PropTypes.array.isRequired,
+    tableName: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -74,8 +75,12 @@ export class MultiTabTableView extends Component {
   render() {
     return (
       <div className="float">
+
         <div className="card">
           <Nav tabs>
+            <NavItem className="selected-modal">
+              <NavLink>{this.props.tableName}</NavLink>
+            </NavItem>
             {this.props.tableNavTabs.map(this.renderNavTabs)}
           </Nav>
           {this.renderTableData()}

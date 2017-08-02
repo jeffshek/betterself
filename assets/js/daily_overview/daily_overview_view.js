@@ -311,6 +311,7 @@ export class DailyOverviewAnalyticsView extends Component {
         tableColumnHeaders={["Time", "Supplement"]}
         tableData={this.state.supplementsHistory}
         tableRowRenderer={TableRow}
+        tableName="Supplements Taken"
       />
     );
   }
