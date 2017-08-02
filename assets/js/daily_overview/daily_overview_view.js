@@ -142,6 +142,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
         const resultsWithHash = results.map(details => {
           // Table Row rendering needs to know what are unique keys
+          // Create a unique hash based on what we know about supplements and what time they're taken
           const uniqueKey = `${details.time}-${details.supplement_name}`;
           details.uniqueKey = uniqueKey;
           return details;
@@ -160,7 +161,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       DATE_REQUEST_FORMAT
     );
     const endDateString = this.resourceDate.format(DATE_REQUEST_FORMAT);
-
     const url = `/api/v1/productivity_log/?start_date=${startDateString}&end_date=${endDateString}`;
 
     fetch(url, {
@@ -172,6 +172,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       })
       .then(responseData => {
         const { results } = responseData;
+        // Filter any results that match the date
         const startDateResult = results.filter(element =>
           dateFilter(element, startDateString)
         )[0];
@@ -179,22 +180,32 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
           dateFilter(element, endDateString)
         )[0];
 
-        const distractingTimeYesterday = minutesToHours(
-          startDateResult.very_distracting_time_minutes +
-            startDateResult.distracting_time_minutes
-        );
-        const productivityTimeYesterday = minutesToHours(
-          startDateResult.very_productive_time_minutes +
-            startDateResult.productive_time_minutes
-        );
-        const distractingTimeToday = minutesToHours(
-          endDateResult.very_distracting_time_minutes +
-            endDateResult.distracting_time_minutes
-        );
-        const productivityTimeToday = minutesToHours(
-          endDateResult.very_productive_time_minutes +
-            endDateResult.productive_time_minutes
-        );
+        let distractingTimeYesterday = 0;
+        let productivityTimeYesterday = 0;
+        let distractingTimeToday = 0;
+        let productivityTimeToday = 0;
+
+        if (startDateResult) {
+          distractingTimeYesterday = minutesToHours(
+            startDateResult.very_distracting_time_minutes +
+              startDateResult.distracting_time_minutes
+          );
+          productivityTimeYesterday = minutesToHours(
+            startDateResult.very_productive_time_minutes +
+              startDateResult.productive_time_minutes
+          );
+        }
+
+        if (endDateResult) {
+          distractingTimeToday = minutesToHours(
+            (endDateResult.very_distracting_time_minutes || 0) +
+              endDateResult.distracting_time_minutes
+          );
+          productivityTimeToday = minutesToHours(
+            endDateResult.very_productive_time_minutes +
+              endDateResult.productive_time_minutes
+          );
+        }
 
         this.setState({
           distractingTimeToday: distractingTimeToday,
@@ -314,7 +325,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Jump", "High"]}
+        tableColumnHeaders={["Time", "Activity"]}
         tableData={this.tableData}
         tableRowRenderer={TableRow}
       />
@@ -325,7 +336,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Jump", "High"]}
+        tableColumnHeaders={["Time", "Supplement"]}
         tableData={this.state.supplementsHistory}
         tableRowRenderer={TableRow}
       />

@@ -50,8 +50,6 @@ export class MultiTabTableView extends Component {
     const TableRow = this.props.tableRowRenderer;
     const tableData = this.props.tableData[this.state.selectedTabLocation];
 
-    console.log(tableData);
-
     return (
       <div className="card-block">
         <table className="table">
