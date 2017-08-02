@@ -7,14 +7,19 @@ import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import moment from "moment";
-import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
+import {
+  DATE_REQUEST_FORMAT,
+  READABLE_TIME_FORMAT
+} from "../constants/dates_and_times";
 
 const TableRow = props => {
   const { details } = props;
+  const timeMoment = moment(details.time);
+  const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
   return (
     <tr>
-      <td>{details[0]}</td>
-      <td>{details[1]}</td>
+      <td>{timeMomentFormatted}</td>
+      <td>{details.supplement_name}</td>
     </tr>
   );
 };
@@ -66,7 +71,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       0
     ].label = this.state.selectedProductivityHistoryType;
 
-    this.tableNavTabs = ["dog", "cat"];
+    this.tableNavTabs = ["Today", "Yesterday"];
     this.tableColumnHeaders = ["dog", "cat"];
     this.tableData = [
       [[0, 1], [2, 3], [4, 5], [9, 1], ["lo", 3], [41, 5]],
@@ -78,6 +83,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     this.state.distractingTimeYesterday = 0;
     this.state.distractingTimeToday = 0;
 
+    this.state.supplementsHistory = [[], []];
     this.state.supplementsHistoryToday = [];
     this.state.supplementsHistoryYesterday = [];
   }
@@ -93,21 +99,38 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
   }
 
+  getSupplementsHistory() {
+    const historyToday = this.getSupplementsHistoryToday();
+    const historyYesterday = this.getSupplementsHistoryYesterday();
+
+    Promise.all([historyToday, historyYesterday]).then(result => {
+      const supplementsHistory = [
+        this.state.supplementsHistoryToday,
+        this.state.supplementsHistoryYesterday
+      ];
+
+      this.setState({ supplementsHistory: supplementsHistory });
+    });
+  }
+
   getSupplementsHistoryToday() {
-    this.getSupplementsHistory(this.resourceDate, "supplementsHistoryToday");
+    return this.fetchSupplementsHistory(
+      this.resourceDate,
+      "supplementsHistoryToday"
+    );
   }
 
   getSupplementsHistoryYesterday() {
-    this.getSupplementsHistory(
+    return this.fetchSupplementsHistory(
       this.previousResourceDate,
       "supplementsHistoryYesterday"
     );
   }
 
-  getSupplementsHistory(historyDate, supplementHistoryKey) {
+  fetchSupplementsHistory(historyDate, supplementHistoryKey) {
     const url = this.getUrlForSupplementsHistory(historyDate);
 
-    fetch(url, {
+    return fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -116,9 +139,19 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       })
       .then(responseData => {
         const { results } = responseData;
-        this.setState({
-          [supplementHistoryKey]: results
+
+        const resultsWithHash = results.map(details => {
+          // Table Row rendering needs to know what are unique keys
+          const uniqueKey = `${details.time}-${details.supplement_name}`;
+          details.uniqueKey = uniqueKey;
+          return details;
         });
+
+        // Dynamically set state
+        this.setState({
+          [supplementHistoryKey]: resultsWithHash
+        });
+        return results;
       });
   }
 
@@ -174,8 +207,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
   componentDidMount() {
     this.getProductivityHistory();
-    this.getSupplementsHistoryToday();
-    this.getSupplementsHistoryYesterday();
+    this.getSupplementsHistory();
   }
 
   renderWidgets() {
@@ -294,7 +326,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
         tableColumnHeaders={["Jump", "High"]}
-        tableData={this.tableData}
+        tableData={this.state.supplementsHistory}
         tableRowRenderer={TableRow}
       />
     );
@@ -304,7 +336,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     return (
       <div className="card-columns cols-2">
         {this.renderSupplementsHistory()}
-        {this.renderUserActivitiesHistory()}
+        {/*{this.renderUserActivitiesHistory()}*/}
       </div>
     );
   }

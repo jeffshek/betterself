@@ -48,6 +48,9 @@ export class MultiTabTableView extends Component {
     // There may be a more elegant way of doing this (declaring a variable), just to use <TableRow> syntax
     // but I don't know it.
     const TableRow = this.props.tableRowRenderer;
+    const tableData = this.props.tableData[this.state.selectedTabLocation];
+
+    console.log(tableData);
 
     return (
       <div className="card-block">
@@ -60,9 +63,10 @@ export class MultiTabTableView extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.tableData[this.state.selectedTabLocation].map(key => (
-              <TableRow key={key} details={key} />
-            ))}
+            {tableData.length > 0 &&
+              tableData.map(key => (
+                <TableRow key={key.uniqueKey} details={key} />
+              ))}
           </tbody>
         </table>
       </div>
