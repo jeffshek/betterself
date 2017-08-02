@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { DefaultLineChartDataset } from "../constants/charts";
-import { BaseAnalyticsView } from "../analytics/base";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
@@ -34,12 +32,7 @@ const dateFilter = (result, dateString) => {
   }
 };
 
-const ProductivityHistoryChart = {
-  labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
-};
-
-export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
+export class DailyOverviewAnalyticsView extends Component {
   constructor(props) {
     super(props);
 
@@ -61,16 +54,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
     this.resourceDate = resourceDate;
     this.previousResourceDate = moment(resourceDate).subtract(1, "days");
 
-    const updateState = {
-      productivityHistoryChart: ProductivityHistoryChart
-    };
-    // Update state (from base class) with the above
-    this.state = Object.assign(this.state, updateState);
-
-    this.state.productivityHistoryChart.datasets[
-      0
-    ].label = this.state.selectedProductivityHistoryType;
-
     this.tableNavTabs = ["Today", "Yesterday"];
     this.tableColumnHeaders = ["dog", "cat"];
     this.tableData = [
@@ -78,6 +61,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
       [["a", 1], ["b", 3], ["c", 5], ["d", 1], ["e", 3], ["f", 5]]
     ];
 
+    this.state = {};
     this.state.productivityTimeToday = 0;
     this.state.productivityTimeYesterday = 0;
     this.state.distractingTimeYesterday = 0;
@@ -198,7 +182,7 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
 
         if (endDateResult) {
           distractingTimeToday = minutesToHours(
-            (endDateResult.very_distracting_time_minutes || 0) +
+            endDateResult.very_distracting_time_minutes +
               endDateResult.distracting_time_minutes
           );
           productivityTimeToday = minutesToHours(
@@ -305,18 +289,6 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
             </div>
           </div>
         </div>
-
-        <div className="card-block">
-          <div className="chart-wrapper">
-            <Line
-              data={this.state.productivityHistoryChart}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
-        </div>
-
       </div>
     );
   }
@@ -362,10 +334,8 @@ export class DailyOverviewAnalyticsView extends BaseAnalyticsView {
           <div className="app-body">
             <Sidebar />
             <main className="main">
-              <div className="animated fadeIn">
-                {this.renderWidgets()}
-                {this.renderSupplementsAndUserActivitiesHistory()}
-              </div>
+              {this.renderWidgets()}
+              {this.renderSupplementsAndUserActivitiesHistory()}
             </main>
           </div>
         </div>
