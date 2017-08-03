@@ -1,36 +1,14 @@
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import moment from "moment";
+import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
+import { dateFilter, minutesToHours } from "./constants";
 import {
-  DATE_REQUEST_FORMAT,
-  READABLE_TIME_FORMAT
-} from "../constants/dates_and_times";
-
-const TableRow = props => {
-  const { details } = props;
-  const timeMoment = moment(details.time);
-  const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
-  return (
-    <tr>
-      <td>{timeMomentFormatted}</td>
-      <td>{details.supplement_name}</td>
-    </tr>
-  );
-};
-
-const minutesToHours = minutes => {
-  return (minutes / 60).toFixed(2);
-};
-
-const dateFilter = (result, dateString) => {
-  if (result.date === dateString) {
-    return result;
-  }
-};
+  SupplementsAndUserActivitiesMultiTab
+} from "./supplements_and_events_history";
 
 export class DailyOverviewAnalyticsView extends Component {
   constructor(props) {
@@ -53,13 +31,6 @@ export class DailyOverviewAnalyticsView extends Component {
 
     this.resourceDate = resourceDate;
     this.previousResourceDate = moment(resourceDate).subtract(1, "days");
-
-    this.tableNavTabs = ["Today", "Yesterday"];
-    this.tableColumnHeaders = ["dog", "cat"];
-    this.tableData = [
-      [[0, 1], [2, 3], [4, 5], [9, 1], ["lo", 3], [41, 5]],
-      [["a", 1], ["b", 3], ["c", 5], ["d", 1], ["e", 3], ["f", 5]]
-    ];
 
     this.state = {};
     this.state.productivityTimeToday = 0;
@@ -293,38 +264,6 @@ export class DailyOverviewAnalyticsView extends Component {
     );
   }
 
-  renderUserActivitiesHistory() {
-    return (
-      <MultiTabTableView
-        tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Time", "Activity"]}
-        tableData={this.tableData}
-        tableRowRenderer={TableRow}
-      />
-    );
-  }
-
-  renderSupplementsHistory() {
-    return (
-      <MultiTabTableView
-        tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Time", "Supplement"]}
-        tableData={this.state.supplementsHistory}
-        tableRowRenderer={TableRow}
-        tableName="Supplements Taken"
-      />
-    );
-  }
-
-  renderSupplementsAndUserActivitiesHistory() {
-    return (
-      <div className="card-columns cols-2">
-        {this.renderSupplementsHistory()}
-        {/*{this.renderUserActivitiesHistory()}*/}
-      </div>
-    );
-  }
-
   render() {
     return (
       // Need to get the param from the Routh path, which is why this renders the rest of the page
@@ -336,7 +275,9 @@ export class DailyOverviewAnalyticsView extends Component {
             <Sidebar />
             <main className="main">
               {this.renderWidgets()}
-              {this.renderSupplementsAndUserActivitiesHistory()}
+              <SupplementsAndUserActivitiesMultiTab
+                date={this.resourceDate.format(DATE_REQUEST_FORMAT)}
+              />
             </main>
           </div>
         </div>

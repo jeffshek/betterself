@@ -78,7 +78,7 @@ export class MultiTabTableView extends Component {
 
         <div className="card">
           <Nav tabs>
-            <NavItem className="selected-modal">
+            <NavItem className="default-background">
               <NavLink>{this.props.tableName}</NavLink>
             </NavItem>
             {this.props.tableNavTabs.map(this.renderNavTabs)}
