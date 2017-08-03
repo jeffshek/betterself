@@ -143,3 +143,7 @@
   margin-bottom: 8px;
   margin-left: 5px;
 }
+
+.card-block.card-block-no-padding-bottom {
+  padding-bottom: 0px;
+}

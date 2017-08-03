@@ -100,7 +100,7 @@ export class AddSupplementEvent extends Component {
     const supplementsKeys = Object.keys(this.state.supplements);
 
     return (
-      <div className="card-block">
+      <div className="card-block card-block-no-padding-bottom">
         <form onSubmit={e => this.submitSupplementEvent(e)}>
           <div className="row">
             <div className="col-sm-12">
