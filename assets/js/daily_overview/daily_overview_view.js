@@ -5,7 +5,11 @@ import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import moment from "moment";
 import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
-import { dateFilter, minutesToHours } from "./constants";
+import {
+  dateFilter,
+  getUrlForSupplementsHistory,
+  minutesToHours
+} from "./constants";
 import {
   SupplementsAndUserActivitiesMultiTab
 } from "./supplements_and_events_history";
@@ -43,16 +47,16 @@ export class DailyOverviewAnalyticsView extends Component {
     this.state.supplementsHistoryYesterday = [];
   }
 
-  getUrlForSupplementsHistory(startDate) {
-    const endTime = moment(startDate).add(24, "hours");
-    // We don't want to get the full 24 hours since that will include the next day results
-    endTime.subtract(1, "seconds");
-
-    const startTimeString = startDate.toISOString();
-    const endTimeString = endTime.toISOString();
-
-    return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
-  }
+  // getUrlForSupplementsHistory(startDate) {
+  //   const endTime = moment(startDate).add(24, "hours");
+  //   // We don't want to get the full 24 hours since that will include the next day results
+  //   endTime.subtract(1, "seconds");
+  //
+  //   const startTimeString = startDate.toISOString();
+  //   const endTimeString = endTime.toISOString();
+  //
+  //   return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
+  // }
 
   getSupplementsHistory() {
     const historyToday = this.getSupplementsHistoryToday();
@@ -83,7 +87,7 @@ export class DailyOverviewAnalyticsView extends Component {
   }
 
   fetchSupplementsHistory(historyDate, supplementHistoryKey) {
-    const url = this.getUrlForSupplementsHistory(historyDate);
+    const url = getUrlForSupplementsHistory(historyDate);
 
     return fetch(url, {
       method: "GET",

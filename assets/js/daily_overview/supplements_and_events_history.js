@@ -3,7 +3,12 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import moment from "moment";
-import { SupplementTableRow, UserActivityEventTableRow } from "./constants";
+import {
+  getUrlForSupplementsHistory,
+  getUrlForUserActivityEventsHistory,
+  SupplementTableRow,
+  UserActivityEventTableRow
+} from "./constants";
 
 export class SupplementsAndUserActivitiesMultiTab extends Component {
   constructor(props) {
@@ -24,28 +29,6 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
       userActivityEventsHistoryToday: [],
       userActivityEventsHistoryYesterday: []
     };
-  }
-
-  getUrlForSupplementsHistory(startDate) {
-    const endTime = moment(startDate).add(24, "hours");
-    // We don't want to get the full 24 hours since that will include the next day results
-    endTime.subtract(1, "seconds");
-
-    const startTimeString = startDate.toISOString();
-    const endTimeString = endTime.toISOString();
-
-    return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
-  }
-
-  getUrlForUserActivityEventsHistory(startDate) {
-    const endTime = moment(startDate).add(24, "hours");
-    // We don't want to get the full 24 hours since that will include the next day results
-    endTime.subtract(1, "seconds");
-
-    const startTimeString = startDate.toISOString();
-    const endTimeString = endTime.toISOString();
-
-    return `/api/v1/user_activity_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
   }
 
   getUserActivityEventsHistory() {
@@ -105,7 +88,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
   }
 
   fetchUserActivityEventsHistory(historyDate, userActivityEventHistoryKey) {
-    const url = this.getUrlForUserActivityEventsHistory(historyDate);
+    const url = getUrlForUserActivityEventsHistory(historyDate);
 
     return fetch(url, {
       method: "GET",
@@ -137,7 +120,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
   }
 
   fetchSupplementsHistory(historyDate, supplementHistoryKey) {
-    const url = this.getUrlForSupplementsHistory(historyDate);
+    const url = getUrlForSupplementsHistory(historyDate);
 
     return fetch(url, {
       method: "GET",

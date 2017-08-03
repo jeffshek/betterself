@@ -35,3 +35,25 @@ export const dateFilter = (result, dateString) => {
     return result;
   }
 };
+
+export const getUrlForSupplementsHistory = startDate => {
+  const endTime = moment(startDate).add(24, "hours");
+  // We don't want to get the full 24 hours since that will include the next day results
+  endTime.subtract(1, "seconds");
+
+  const startTimeString = startDate.toISOString();
+  const endTimeString = endTime.toISOString();
+
+  return `/api/v1/supplement_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
+};
+
+export const getUrlForUserActivityEventsHistory = startDate => {
+  const endTime = moment(startDate).add(24, "hours");
+  // We don't want to get the full 24 hours since that will include the next day results
+  endTime.subtract(1, "seconds");
+
+  const startTimeString = startDate.toISOString();
+  const endTimeString = endTime.toISOString();
+
+  return `/api/v1/user_activity_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
+};
