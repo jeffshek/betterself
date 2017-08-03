@@ -8,6 +8,15 @@ import {
   SupplementsAndUserActivitiesMultiTab
 } from "./supplements_and_events_historical_tables";
 import { DailyOverviewWidgetsView } from "./supplements_and_events_widgets";
+import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
+
+const updateWindowLocationOnInvalidDate = () => {
+  // if invalid url, get the current date and go there instead
+  const resourceDateString = moment().format(DATE_REQUEST_FORMAT);
+  // redirect to /dashboard/analytics/daily_overview/2017-08-01/ (or whatever today's date is)
+  const url = `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}/${resourceDateString}`;
+  window.location.assign(url);
+};
 
 export class DailyOverviewAnalyticsView extends Component {
   constructor(props) {
@@ -20,12 +29,11 @@ export class DailyOverviewAnalyticsView extends Component {
 
     if (resourceDate) {
       resourceDate = moment(resourceDate);
-      // If the date isn't valid, default to today
       if (!resourceDate.isValid()) {
-        resourceDate = moment();
+        updateWindowLocationOnInvalidDate();
       }
     } else if (!resourceDate) {
-      resourceDate = moment();
+      updateWindowLocationOnInvalidDate();
     }
 
     this.resourceDate = resourceDate;
