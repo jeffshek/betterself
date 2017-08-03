@@ -9,6 +9,8 @@ import {
   minutesToHours
 } from "./constants";
 
+const LEFT_ARROW = require("../../img/navigation/restart.svg");
+
 export class DailyOverviewWidgetsView extends Component {
   constructor(props) {
     super(props);
@@ -155,9 +157,21 @@ export class DailyOverviewWidgetsView extends Component {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
+          <img
+            src={LEFT_ARROW}
+            className="daily-overview-navigation"
+            width="40px"
+            height="30px"
+          />
           <span className="font-2xl username-text">
             {this.resourceDate.format("dddd - MMMM Do YYYY")}
           </span>
+          <img
+            src={LEFT_ARROW}
+            className="daily-overview-navigation-flip"
+            width="40px"
+            height="30px"
+          />
         </div>
         <br />
         <div className="row">

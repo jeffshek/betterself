@@ -42,7 +42,7 @@ export class DailyOverviewAnalyticsView extends Component {
   render() {
     return (
       // Need to get the param from the Routh path, which is why this renders the rest of the page
-      // Since I'm an idiot, I don't know how to do that just yet ...
+      // Most pages don't need a param, but this one is customized
       (
         <div className="app">
           <LoggedInHeader />
