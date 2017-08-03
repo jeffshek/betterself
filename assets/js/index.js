@@ -90,7 +90,6 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         exact
         path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
-        // component={e => <DailyOverviewAnalyticsView props={e}/>}
         component={DailyOverviewAnalyticsView}
       />
       <PrivateRoute

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
@@ -5,9 +6,11 @@ import moment from "moment";
 import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
 import {
   dateFilter,
+  getDailyOverViewURLFromDate,
   getUrlForSupplementsHistory,
   minutesToHours
 } from "./constants";
+import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 
 const LEFT_ARROW = require("../../img/navigation/restart.svg");
 
@@ -19,6 +22,7 @@ export class DailyOverviewWidgetsView extends Component {
 
     this.resourceDate = moment(date);
     this.previousResourceDate = moment(date).subtract(1, "days");
+    this.nextResourceDate = moment(date).add(1, "days");
 
     this.state = {
       productivityTimeToday: 0,
@@ -154,24 +158,34 @@ export class DailyOverviewWidgetsView extends Component {
   }
 
   render() {
+    const previousDayURL = getDailyOverViewURLFromDate(
+      this.previousResourceDate
+    );
+    const nextDayURL = getDailyOverViewURLFromDate(this.nextResourceDate);
+
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          <img
-            src={LEFT_ARROW}
-            className="daily-overview-navigation"
-            width="40px"
-            height="30px"
-          />
+          {/*This is garbage URL switching, but I am doing something wrong with Routing ...*/}
+          <a href={previousDayURL}>
+            <img
+              src={LEFT_ARROW}
+              className="daily-overview-navigation"
+              width="40px"
+              height="30px"
+            />
+          </a>
           <span className="font-2xl username-text">
             {this.resourceDate.format("dddd - MMMM Do YYYY")}
           </span>
-          <img
-            src={LEFT_ARROW}
-            className="daily-overview-navigation-flip"
-            width="40px"
-            height="30px"
-          />
+          <a href={nextDayURL}>
+            <img
+              src={LEFT_ARROW}
+              className="daily-overview-navigation-flip"
+              width="40px"
+              height="30px"
+            />
+          </a>
         </div>
         <br />
         <div className="row">
@@ -211,26 +225,28 @@ export class DailyOverviewWidgetsView extends Component {
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3">
-            <div className="social-box default-background">
-              <i className="widgets-analytics icon-volume-off">
-                <span className="widget-font"> Sleep</span>
-              </i>
-              <ul>
-                <li>
-                  <strong>8:13 AM</strong>
-                  <span>Wake Up Time</span>
-                </li>
-                <li>
-                  <strong>6.5 Hours</strong>
-                  <span>Total Rest</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {/*When you implement, uncomment out*/}
+          {/*<div className="col-sm-6 col-lg-3">*/}
+          {/*<div className="social-box default-background">*/}
+          {/*<i className="widgets-analytics icon-volume-off">*/}
+          {/*<span className="widget-font"> Sleep</span>*/}
+          {/*</i>*/}
+          {/*<ul>*/}
+          {/*<li>*/}
+          {/*<strong>8:13 AM</strong>*/}
+          {/*<span>Wake Up Time</span>*/}
+          {/*</li>*/}
+          {/*<li>*/}
+          {/*<strong>6.5 Hours</strong>*/}
+          {/*<span>Total Rest</span>*/}
+          {/*</li>*/}
+          {/*</ul>*/}
+          {/*</div>*/}
+          {/*</div>*/}
 
           <div className="col-sm-6 col-lg-3">
-            <div className="social-box gray-background">
+            {/*Switch to gray background when sleep is added*/}
+            <div className="social-box default-background">
               <i className="widgets-analytics icon-chemistry">
                 <span className="widget-font"> Supplements</span>
               </i>

@@ -249,7 +249,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '1000/hour',
+        'user': '1000/second',
         'anon': '1000/hour',
         'signups': '3/day',
         'rescuetime-api-sync': '5/day',

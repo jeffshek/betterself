@@ -1,6 +1,16 @@
 import React from "react";
-import { READABLE_TIME_FORMAT } from "../constants/dates_and_times";
+import {
+  DATE_REQUEST_FORMAT,
+  READABLE_TIME_FORMAT
+} from "../constants/dates_and_times";
 import moment from "moment";
+import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
+
+export const getDailyOverViewURLFromDate = date => {
+  const dateString = date.format(DATE_REQUEST_FORMAT);
+  // return `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}`
+  return `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}/${dateString}`;
+};
 
 export const SupplementTableRow = props => {
   const { details } = props;
