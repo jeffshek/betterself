@@ -33,6 +33,8 @@ class UserActivityFilter(FilterSet):
 
 class UserActivityEventFilter(FilterSet):
     user_activity_uuid = django_filters.UUIDFilter(name='user_activity__uuid')
+    start_time = django_filters.IsoDateTimeFilter(name='time', lookup_expr='gte')
+    end_time = django_filters.IsoDateTimeFilter(name='time', lookup_expr='lte')
 
     class Meta:
         model = UserActivityEvent
@@ -40,7 +42,9 @@ class UserActivityEventFilter(FilterSet):
             'uuid',
             'time',
             'duration_minutes',
-            'user_activity_uuid'
+            'user_activity_uuid',
+            'start_time',
+            'end_time',
         ]
 
 

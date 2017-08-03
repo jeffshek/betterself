@@ -2,7 +2,7 @@ import React from "react";
 import { READABLE_TIME_FORMAT } from "../constants/dates_and_times";
 import moment from "moment";
 
-export const TableRow = props => {
+export const SupplementTableRow = props => {
   const { details } = props;
   const timeMoment = moment(details.time);
   const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
@@ -10,6 +10,18 @@ export const TableRow = props => {
     <tr>
       <td>{timeMomentFormatted}</td>
       <td>{details.supplement_name}</td>
+    </tr>
+  );
+};
+
+export const UserActivityEventTableRow = props => {
+  const { details } = props;
+  const timeMoment = moment(details.time);
+  const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
+  return (
+    <tr>
+      <td>{timeMomentFormatted}</td>
+      <td>{details.user_activity.name}</td>
     </tr>
   );
 };

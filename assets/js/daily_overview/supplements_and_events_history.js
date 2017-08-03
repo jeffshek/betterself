@@ -3,7 +3,7 @@ import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import moment from "moment";
-import { TableRow } from "./constants";
+import { SupplementTableRow, UserActivityEventTableRow } from "./constants";
 
 export class SupplementsAndUserActivitiesMultiTab extends Component {
   constructor(props) {
@@ -48,17 +48,31 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     return `/api/v1/user_activity_events/?start_time=${startTimeString}&end_time=${endTimeString}`;
   }
 
+  getUserActivityEventsHistory() {
+    const historyToday = this.getUserActivityEventsHistoryToday();
+    const historyYesterday = this.getUserActivityEventsHistoryYesterday();
+
+    Promise.all([historyToday, historyYesterday]).then(result => {
+      const eventsHistory = [
+        this.state.userActivityEventsHistoryToday,
+        this.state.userActivityEventsHistoryYesterday
+      ];
+
+      this.setState({ userActivityEventsHistory: eventsHistory });
+    });
+  }
+
   getSupplementsHistory() {
     const historyToday = this.getSupplementsHistoryToday();
     const historyYesterday = this.getSupplementsHistoryYesterday();
 
     Promise.all([historyToday, historyYesterday]).then(result => {
-      const supplementsHistory = [
+      const eventsHistory = [
         this.state.supplementsHistoryToday,
         this.state.supplementsHistoryYesterday
       ];
 
-      this.setState({ supplementsHistory: supplementsHistory });
+      this.setState({ supplementsHistory: eventsHistory });
     });
   }
 
@@ -74,6 +88,49 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
       this.previousResourceDate,
       "supplementsHistoryYesterday"
     );
+  }
+
+  getUserActivityEventsHistoryToday() {
+    return this.fetchUserActivityEventsHistory(
+      this.resourceDate,
+      "userActivityEventsHistoryToday"
+    );
+  }
+
+  getUserActivityEventsHistoryYesterday() {
+    return this.fetchUserActivityEventsHistory(
+      this.previousResourceDate,
+      "userActivityEventsHistoryYesterday"
+    );
+  }
+
+  fetchUserActivityEventsHistory(historyDate, userActivityEventHistoryKey) {
+    const url = this.getUrlForUserActivityEventsHistory(historyDate);
+
+    return fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        const { results } = responseData;
+
+        const resultsWithHash = results.map(details => {
+          // Table Row rendering needs to know what are unique keys
+          // Create a unique hash based on what we know about supplements and what time they're taken
+          const uniqueKey = `${details.time}-${details.user_activity.name}`;
+          details.uniqueKey = uniqueKey;
+          return details;
+        });
+
+        // Dynamically set state
+        this.setState({
+          [userActivityEventHistoryKey]: resultsWithHash
+        });
+        return results;
+      });
   }
 
   fetchSupplementsHistory(historyDate, supplementHistoryKey) {
@@ -107,6 +164,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
 
   componentDidMount() {
     this.getSupplementsHistory();
+    this.getUserActivityEventsHistory();
   }
 
   renderUserActivitiesHistory() {
@@ -114,9 +172,9 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
         tableColumnHeaders={["Time", "Activity"]}
-        tableData={this.state.supplementsHistory}
-        tableRowRenderer={TableRow}
-        tableName="User Activities"
+        tableData={this.state.userActivityEventsHistory}
+        tableRowRenderer={UserActivityEventTableRow}
+        tableName="User Activity Events"
       />
     );
   }
@@ -127,7 +185,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
         tableNavTabs={this.tableNavTabs}
         tableColumnHeaders={["Time", "Supplement"]}
         tableData={this.state.supplementsHistory}
-        tableRowRenderer={TableRow}
+        tableRowRenderer={SupplementTableRow}
         tableName="Supplements Taken"
       />
     );
@@ -137,7 +195,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     return (
       <div className="card-columns cols-2">
         {this.renderSupplementsHistory()}
-        {/*{this.renderUserActivitiesHistory()}*/}
+        {this.renderUserActivitiesHistory()}
       </div>
     );
   }
