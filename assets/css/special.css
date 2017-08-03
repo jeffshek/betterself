@@ -132,3 +132,14 @@
 .widget-font {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
+
+.daily-overview-navigation {
+  margin-bottom: 8px;
+  margin-right: 5px;
+}
+
+.daily-overview-navigation-flip {
+  transform: rotate(180deg);
+  margin-bottom: 8px;
+  margin-left: 5px;
+}
