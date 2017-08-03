@@ -16,14 +16,14 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
 
     this.tableNavTabs = ["Today", "Yesterday"];
 
-    this.state = {};
-    this.state.supplementsHistory = [[], []];
-    this.state.supplementsHistoryToday = [];
-    this.state.supplementsHistoryYesterday = [];
-
-    this.state.userActivityEventsHistory = [[], []];
-    this.state.userActivityEventsHistoryToday = [];
-    this.state.userActivityEventsHistoryYesterday = [];
+    this.state = {
+      supplementsHistory: [[], []],
+      supplementsHistoryToday: [],
+      supplementsHistoryYesterday: [],
+      userActivityEventsHistory: [[], []],
+      userActivityEventsHistoryToday: [],
+      userActivityEventsHistoryYesterday: []
+    };
   }
 
   getUrlForSupplementsHistory(startDate) {
@@ -125,6 +125,9 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
           return details;
         });
 
+        // Sort in opposite order to make life prettier
+        resultsWithHash.reverse();
+
         // Dynamically set state
         this.setState({
           [userActivityEventHistoryKey]: resultsWithHash
@@ -153,6 +156,9 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
           details.uniqueKey = uniqueKey;
           return details;
         });
+
+        // Sort in opposite order to make life prettier
+        resultsWithHash.reverse();
 
         // Dynamically set state
         this.setState({
