@@ -37,7 +37,6 @@ export class DailyOverviewAnalyticsView extends Component {
     }
 
     this.resourceDate = resourceDate;
-    this.previousResourceDate = moment(resourceDate).subtract(1, "days");
   }
 
   render() {
