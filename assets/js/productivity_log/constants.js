@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import {
   DISTRACTING_MINUTES_VARIABLE,
@@ -7,6 +7,8 @@ import {
   VERY_DISTRACTING_MINUTES_VARIABLE,
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
+import moment from "moment";
+import { getDailyOverViewURLFromDate } from "../daily_overview/constants";
 
 const confirmDelete = (uuid, eventDate) => {
   const answer = confirm(
@@ -39,13 +41,11 @@ export const ProductivityHistoryRow = props => {
   const veryDistractingMinutes = data[VERY_DISTRACTING_MINUTES_VARIABLE];
   const eventDate = data.date;
   const uuid = data.uuid;
-
-  // TODO - Switch the minutes out to something that formats out to hours/mintutes
-  // and looks cleaner than the current logic
+  const dateOverviewLink = getDailyOverViewURLFromDate(moment(eventDate));
 
   return (
     <tr>
-      <td>{eventDate}</td>
+      <td><a href={dateOverviewLink}>{eventDate}</a></td>
       {/*Append minutes at any data set we have so its easier to comprehend*/}
       <td>{veryProductiveMinutes ? veryProductiveMinutes + " Minutes" : ""}</td>
       <td>{productiveMinutes ? productiveMinutes + " Minutes" : ""}</td>

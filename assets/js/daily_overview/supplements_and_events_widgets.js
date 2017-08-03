@@ -10,7 +10,6 @@ import {
   getUrlForSupplementsHistory,
   minutesToHours
 } from "./constants";
-import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 
 const LEFT_ARROW = require("../../img/navigation/restart.svg");
 
