@@ -134,7 +134,7 @@ export class AddUserActivityEvent extends Component {
   renderSubmitEventForm() {
     return (
       <div className="card">
-        <div className="card-block">
+        <div className="card-block card-block-no-padding-bottom">
           <form onSubmit={e => this.submitEventDetails(e)}>
             <div className="form-group col-sm-4">
               <label className="add-event-label">

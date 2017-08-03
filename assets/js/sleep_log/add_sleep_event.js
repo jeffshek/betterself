@@ -54,7 +54,7 @@ export class AddSleepEvent extends Component {
 
   renderSubmitSleepForm() {
     return (
-      <div className="card-block">
+      <div className="card-block card-block-no-padding-bottom">
         <form onSubmit={e => this.submitSleepEvent(e)}>
           <div className="row">
             <div className="form-group col-sm-4">
@@ -83,7 +83,7 @@ export class AddSleepEvent extends Component {
               className="btn btn-sm btn-success"
               onClick={e => this.submitSleepEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Add Sleep Entry
+              <i className="fa fa-dot-circle-o" /> Log Sleep Entry
             </button>
           </div>
         </form>

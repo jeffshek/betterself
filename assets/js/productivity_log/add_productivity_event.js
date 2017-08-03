@@ -219,7 +219,7 @@ export class AddProductivityEvent extends Component {
           </div>
         </div>
 
-        <div className="card-block">
+        <div className="card-block card-block-no-padding-bottom">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
             <label className="add-event-label">
               Productivity Date
