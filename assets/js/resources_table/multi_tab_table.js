@@ -75,7 +75,6 @@ export class MultiTabTableView extends Component {
   render() {
     return (
       <div className="float">
-
         <div className="card">
           <Nav tabs>
             <NavItem className="default-background">

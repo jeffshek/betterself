@@ -30,10 +30,10 @@ export class DailyOverviewAnalyticsView extends Component {
       resourceDate = moment(resourceDate);
       if (!resourceDate.isValid()) {
         updateWindowLocationOnInvalidDate();
-        resourceDate = moment();
       }
     } else if (!resourceDate) {
       updateWindowLocationOnInvalidDate();
+      // Set resourceDate to today just so render doesn't complain if it gets there prior to reloading
       resourceDate = moment();
     }
 
