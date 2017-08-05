@@ -67,11 +67,11 @@ class UserExportAllData(APIView):
         self._write_to_workbook(writer, concat_dataframe, cumulative_log_sheet_name)
 
         cumulative_14_day_dataframe_sheet_name = 'Aggregate 14 Log'
-        cumulative_14_day_dataframe = concat_dataframe.fillna(0).rolling(window=14).sum()[14:]
+        cumulative_14_day_dataframe = concat_dataframe.rolling(window=14, min_periods=1).sum()[14:]
         self._write_to_workbook(writer, cumulative_14_day_dataframe, cumulative_14_day_dataframe_sheet_name)
 
         cumulative_28_day_dataframe_sheet_name = 'Aggregate 28 Log'
-        cumulative_28_day_dataframe = concat_dataframe.fillna(0).rolling(window=28).sum()[28:]
+        cumulative_28_day_dataframe = concat_dataframe.rolling(window=28, min_periods=1).sum()[28:]
         self._write_to_workbook(writer, cumulative_28_day_dataframe, cumulative_28_day_dataframe_sheet_name)
 
         # make sure all the output gets writen to bytes io

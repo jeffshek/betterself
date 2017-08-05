@@ -5,6 +5,7 @@
     -   id: check-merge-conflict
     -   id: check-json
     -   id: check-added-large-files
+    -   id: check-xml
     -   id: debug-statements
         files: \.py$
     -   id: double-quote-string-fixer
@@ -20,7 +21,6 @@
     -   id: trailing-whitespace
         files: \.(py|sh|yaml|txt)$
     -   id: requirements-txt-fixer
-    -   id: debug-statements
 -   repo: https://github.com/awebdeveloper/pre-commit-prettier
     sha: "acd6976eb1f632daae277c01bf9ea9faf94c015d"
     hooks:
