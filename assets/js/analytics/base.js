@@ -63,8 +63,9 @@ export class BaseAnalyticsView extends Component {
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: [],
       neutralUserActivitiesCorrelations: [],
-      //
-      correlationLookBackDays: 60
+      // Parameters on how to query the data
+      correlationLookBackDays: 60,
+      cumulativeLookBackDays: 1
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -125,9 +126,8 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
-    // fetch is a little odd, but to pass parameters in a get - you have to hardcode the URL
-    console.log("got called");
-    fetch(this.supplementCorrelationsURL, {
+    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.correlationLookBackDays}&cumulative_lookback=${this.state.cumulativeLookBackDays}`;
+    fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })

@@ -100,6 +100,9 @@ class ProductivitySupplementsCorrelationView(APIView):
             # min_periods of 1 allows for periods with no data to still be summed
             aggregate_dataframe = aggregate_dataframe.rolling(cumulative_lookback, min_periods=1).sum()
 
+            # only include up to how many days the correlation lookback, otherwise incorrect overlap of correlations
+            aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
+
         df_correlation = aggregate_dataframe.corr()
         df_correlation_driver_series = df_correlation[correlation_driver]
 
