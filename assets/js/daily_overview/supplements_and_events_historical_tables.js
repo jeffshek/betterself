@@ -160,7 +160,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     return (
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Time", "Activity"]}
+        tableColumnHeaders={["Time", "Activity", "Duration"]}
         tableData={this.state.userActivityEventsHistory}
         tableRowRenderer={UserActivityEventTableRow}
         tableName="User Activity Events"
@@ -172,7 +172,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     return (
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Time", "Supplement"]}
+        tableColumnHeaders={["Time", "Supplement", "Quantity"]}
         tableData={this.state.supplementsHistory}
         tableRowRenderer={SupplementTableRow}
         tableName="Supplements Taken"

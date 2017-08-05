@@ -16,10 +16,12 @@ export const SupplementTableRow = props => {
   const { details } = props;
   const timeMoment = moment(details.time);
   const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
+
   return (
     <tr>
       <td>{timeMomentFormatted}</td>
       <td>{details.supplement_name}</td>
+      <td>{details.quantity}</td>
     </tr>
   );
 };
@@ -28,10 +30,12 @@ export const UserActivityEventTableRow = props => {
   const { details } = props;
   const timeMoment = moment(details.time);
   const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
+
   return (
     <tr>
       <td>{timeMomentFormatted}</td>
       <td>{details.user_activity.name}</td>
+      <td>{details.duration_minutes}</td>
     </tr>
   );
 };
