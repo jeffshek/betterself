@@ -225,7 +225,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </label>
           <div>
             Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of aggregate supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of zero means no aggregation.
-            {" "}
           </div>
           <br />
           <input
