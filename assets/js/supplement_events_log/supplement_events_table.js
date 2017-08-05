@@ -134,10 +134,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
           </label>
           <Datetime
             onChange={this.handleDatetimeChangeOnEditObject}
-            // Convoluted way to make this readable
-            value={moment(this.state.editObject.time).format(
-              READABLE_DATE_TIME_FORMAT
-            )}
+            value={this.state.editObject.time}
           />
         </ModalBody>
         <ModalFooter>
