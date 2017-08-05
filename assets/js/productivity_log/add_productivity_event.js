@@ -231,18 +231,21 @@ export class AddProductivityEvent extends Component {
                 {this.addInputRow("Distracting", "distractingMinutes")}
                 {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
               </div>
+
             </div>
+            <div className="float-right">
+              <button
+                type="submit"
+                id="event-dashboard-submit"
+                className="btn btn-sm btn-success"
+                onClick={e => this.submitProductivityEvent(e)}
+              >
+                <i className="fa fa-dot-circle-o" /> Log Productivity
+              </button>
+            </div>
+
           </form>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="event-dashboard-submit"
-              className="btn btn-sm btn-success"
-              onClick={e => this.submitProductivityEvent(e)}
-            >
-              <i className="fa fa-dot-circle-o" /> Log Productivity
-            </button>
-          </div>
+
         </div>
       </div>
     );
