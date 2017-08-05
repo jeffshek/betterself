@@ -37,8 +37,8 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const analyticsSettings = {
       correlationLookBackDays: 60,
       updateCorrelationLookBackDays: 60,
-      aggregateLookBackDays: 0,
-      updateAggregateLookBackDays: 0
+      cumulativeLookBackDays: 1,
+      updateCumulativeLookBackDays: 1
     };
 
     const updateState = {
@@ -77,15 +77,14 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   submitUpdate = () => {
-    // Set the new state and then fetch the correlations
-    this.setState({
-      correlationLookBackDays: this.state.updateCorrelationLookBackDays
-    });
-    this.setState({
-      aggregateLookBackDays: this.state.updateAggregateLookBackDays
-    });
-
-    this.getSupplementsCorrelations();
+    // Set the new state and then fetch the correlations, use a callback to call after updating
+    this.setState(
+      {
+        correlationLookBackDays: this.state.updateCorrelationLookBackDays,
+        cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
+      },
+      this.getSupplementsCorrelations
+    );
 
     this.toggle();
   };
@@ -176,8 +175,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const name = target.name;
     const value = target.value;
 
+    const intValue = parseInt(value);
+
     this.setState({
-      [name]: value
+      [name]: intValue
     });
   };
 
@@ -221,17 +222,17 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           />
           <br />
           <label className="form-control-label add-event-label">
-            Aggregation Lookback (Days, Integer)
+            Sum Cumulative Lookback (Days, Integer)
           </label>
           <div>
-            Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of aggregate supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of zero means no aggregation.
+            Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of cumulative supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of one means no aggregation.
           </div>
           <br />
           <input
-            name="updateAggregateLookBackDays"
+            name="updateCumulativeLookBackDays"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateAggregateLookBackDays}
+            defaultValue={this.state.updateCumulativeLookBackDays}
             onChange={this.handleSettingsChange}
           />
         </ModalBody>

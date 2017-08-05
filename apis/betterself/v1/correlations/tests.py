@@ -66,10 +66,67 @@ class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCor
         user_supplements_ids = SupplementEvent.objects.filter(user=self.user).values_list('supplement_id', flat=True)
         user_supplements_ids = set(user_supplements_ids)
         # the user filter is just for safe keeping, shouldn't really be necessary
-        user_supplements = Supplement.objects.filter(id__in=user_supplements_ids, user=self.user).values_list('name',
-                                                                                                              flat=True)
+        user_supplements = Supplement.objects.filter(
+            id__in=user_supplements_ids, user=self.user).values_list('name', flat=True)
 
         self.assertCountEqual(supplements_in_response, user_supplements)
+
+    def test_productivity_supplements_correlation_view_with_correlation_lookback_parameters(self):
+        # test by seeing the original output without params
+        no_params_response = self.client.get(self.url)
+        no_params_data = no_params_response.data
+
+        # now modify the parameter to only back 7 days
+        params = {
+            'correlation_lookback': 7,
+        }
+        params_response = self.client.get(self.url, params)
+        params_data = params_response.data
+
+        default_params = {
+            'correlation_lookback': 60,
+        }
+        default_params_response = self.client.get(self.url, default_params)
+        default_params_data = default_params_response.data
+
+        self.assertNotEqual(no_params_data, params_data)
+        # if we pass parameters that are just the defaults, should be the same
+        self.assertEqual(no_params_data, default_params_data)
+
+    def test_productivity_supplements_correlation_view_with_cumulative_lookback_parameters(self):
+        no_params_response = self.client.get(self.url)
+        no_params_data = no_params_response.data
+
+        # now modify the parameter to only back 7 days
+        params = {
+            'cumulative_lookback': 7,
+        }
+        params_response = self.client.get(self.url, params)
+        params_data = params_response.data
+
+        default_params = {
+            'cumulative_lookback': 1,
+        }
+        default_params_response = self.client.get(self.url, default_params)
+        default_params_data = default_params_response.data
+
+        self.assertNotEqual(no_params_data, params_data)
+        # if we pass parameters that are just the defaults, should be the same
+        self.assertEqual(no_params_data, default_params_data)
+
+    def test_productivity_supplements_correlation_view_with_invalid_correlation_parameters(self):
+        params = {
+            'correlation_lookback': 'cheeseburger',
+        }
+        params_response = self.client.get(self.url, params)
+        self.assertEqual(params_response.status_code, 400)
+
+    def test_productivity_supplements_correlation_view_with_invalid_cumulative_parameters(self):
+        params = {
+            'cumulative_lookback': 'cheeseburger',
+        }
+        params_response = self.client.get(self.url, params)
+        self.assertEqual(params_response.status_code, 400)
 
 
 class SleepSupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
