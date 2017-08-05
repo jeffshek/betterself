@@ -37,7 +37,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const analyticsSettings = {
       correlationLookBackDays: 60,
       updateCorrelationLookBackDays: 60,
-
       aggregateLookBackDays: 0,
       updateAggregateLookBackDays: 0
     };
@@ -63,10 +62,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       "api/v1/productivity_log/user_activities/correlations";
     this.userActivitiesCorrelationsChartLabel =
       "User Activities and Productivity Correlation";
-
-    this.handleSelectedProductivityHistoryType = this.handleSelectedProductivityHistoryType.bind(
-      this
-    );
   }
 
   componentDidMount() {
@@ -81,8 +76,22 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     });
   };
 
+  submitUpdate = () => {
+    // Set the new state and then fetch the correlations
+    this.setState({
+      correlationLookBackDays: this.state.updateCorrelationLookBackDays
+    });
+    this.setState({
+      aggregateLookBackDays: this.state.updateAggregateLookBackDays
+    });
+
+    this.getSupplementsCorrelations();
+
+    this.toggle();
+  };
+
   // Choose between "Very Productive Minutes", "Neutral Minutes", "Negative Minutes" etc
-  handleSelectedProductivityHistoryType(event) {
+  handleSelectedProductivityHistoryType = event => {
     const selectedProductivityHistoryType = event.target.value;
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
@@ -100,7 +109,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.setState({
       productivityHistoryChart: this.state.productivityHistoryChart
     });
-  }
+  };
 
   getHistory() {
     fetch("/api/v1/productivity_log/", {
@@ -146,19 +155,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
                 <i className="fa fa-dot-circle-o" /> Settings
               </span>
             </button>
-            {/*Chart Selection*/}
-            {/*<select*/}
-            {/*className="form-control chart-selector"*/}
-            {/*onChange={this.handleSelectedProductivityHistoryType}*/}
-            {/*value={this.state.selectedProductivityHistoryType}*/}
-            {/*size="1"*/}
-            {/*>*/}
-            {/*<option>{VERY_PRODUCTIVE_MINUTES_LABEL}</option>*/}
-            {/*<option>{PRODUCTIVE_MINUTES_LABEL}</option>*/}
-            {/*<option>{NEUTRAL_MINUTES_LABEL}</option>*/}
-            {/*<option>{DISTRACTING_MINUTES_LABEL}</option>*/}
-            {/*<option>{VERY_DISTRACTING_MINUTES_LABEL}</option>*/}
-            {/*</select>*/}
           </span>
         </div>
         <div className="card-block">
@@ -175,7 +171,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     );
   }
 
-  handleSettingsChange(event) {
+  handleSettingsChange = event => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -183,7 +179,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.setState({
       [name]: value
     });
-  }
+  };
 
   renderSettingsModal() {
     return (
@@ -210,22 +206,38 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </select>
           <br />
           <label className="form-control-label add-event-label">
-            Correlation Lookback (Days, Integer)
+            Correlation Cutoff (Days, Integer)
           </label>
-          <br />
-          Specify how far back the correlation should be run. Longer lookbacks are more likely to tell you what's truly working or not. Shorter lookbacks are useful to tell if a particular supplement is useful with your current regimen.
-          <br />
+          <div>
+            Specify how far back the correlation should be run against current date. Longer lookbacks are more likely to tell you what's working or not. Shorter lookbacks are useful to tell if a particular supplement is useful with your current regimen.
+          </div>
           <br />
           <input
             name="updateCorrelationLookBackDays"
             type="number"
             className="form-control"
             defaultValue={this.state.updateCorrelationLookBackDays}
-            onChange={this.handleInputChange}
+            onChange={this.handleSettingsChange}
+          />
+          <br />
+          <label className="form-control-label add-event-label">
+            Aggregation Lookback (Days, Integer)
+          </label>
+          <div>
+            Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of aggregate supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of zero means no aggregation.
+            {" "}
+          </div>
+          <br />
+          <input
+            name="updateAggregateLookBackDays"
+            type="number"
+            className="form-control"
+            defaultValue={this.state.updateAggregateLookBackDays}
+            onChange={this.handleSettingsChange}
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.toggle}>
+          <Button color="primary" onClick={this.submitUpdate}>
             Update
           </Button>
           <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
