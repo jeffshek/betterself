@@ -37,8 +37,8 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const analyticsSettings = {
       correlationLookBackDays: 60,
       updateCorrelationLookBackDays: 60,
-      cumulativeLookBackDays: 0,
-      updateCumulativeLookBackDays: 0
+      cumulativeLookBackDays: 1,
+      updateCumulativeLookBackDays: 1
     };
 
     const updateState = {
@@ -224,7 +224,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
             Sum Cumulative Lookback (Days, Integer)
           </label>
           <div>
-            Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of cumulative supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of zero means no aggregation.
+            Instead of performing analytics on a single day, sum consecutive days together by summing total supplement quantity with total productivity. IE. Instead of correlating a single input of Tea on a given date, correlate a week's worth of cumulative supplements taken against other weeks. Useful for supplements taken at odd hours (1-2AM) or if productivity has a high variance. Default of one means no aggregation.
           </div>
           <br />
           <input

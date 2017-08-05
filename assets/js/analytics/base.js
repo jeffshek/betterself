@@ -124,7 +124,6 @@ export class BaseAnalyticsView extends Component {
 
   getSupplementsCorrelations() {
     // fetch is a little odd, but to pass parameters in a get - you have to hardcode the URL
-    // fetch(this.supplementCorrelationsURL+"?correlation_driver=Neutral Minutes", {
     fetch(this.supplementCorrelationsURL, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS

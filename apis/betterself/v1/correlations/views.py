@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     VALID_PRODUCTIVITY_DRIVERS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
+from apis.betterself.v1.correlations.serializers import CorrelationAnalyticsSerializer
 from betterself.utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
@@ -76,8 +77,14 @@ class ProductivitySupplementsCorrelationView(APIView):
     def get(self, request):
         user = request.user
 
-        # TODO - Eventually make this a parameter instead to support different lookbacks
-        days_to_look_back = 60
+        serializer = CorrelationAnalyticsSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        correlation_lookback = serializer.validated_data['correlation_lookback']
+        cumulative_lookback = serializer.validated_data['cumulative_lookback']
+
+        # if we sum up cumulative days, need to look back even further to sum up the data
+        days_to_look_back = correlation_lookback * cumulative_lookback
         cutoff_date = days_ago_from_current_day(days_to_look_back)
 
         correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
@@ -88,6 +95,10 @@ class ProductivitySupplementsCorrelationView(APIView):
             cutoff_date)
         if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
+
+        if cumulative_lookback > 1:
+            # min_periods of 1 allows for periods with no data to still be summed
+            aggregate_dataframe = aggregate_dataframe.rolling(cumulative_lookback, min_periods=1).sum()
 
         df_correlation = aggregate_dataframe.corr()
         df_correlation_driver_series = df_correlation[correlation_driver]
