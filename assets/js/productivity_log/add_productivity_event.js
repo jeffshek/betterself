@@ -25,28 +25,15 @@ export class AddProductivityEvent extends Component {
       apiEndDate: moment(),
       apiRescueTimeKey: "RESCUETIME_API_KEY_SAMPLE-A32jWZ-219ZE-135ZFF"
     };
-    this.addInputRow = this.addInputRow.bind(this);
-
-    this.submitProductivityEvent = this.submitProductivityEvent.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputDatetimeChange = this.handleInputDatetimeChange.bind(this);
-
-    // Used for the API Modals
-    this.toggle = this.toggle.bind(this);
-    this.handleAPIStartTimeChange = this.handleAPIStartTimeChange.bind(this);
-    this.handleAPIEndTimeChange = this.handleAPIEndTimeChange.bind(this);
-    this.submitUpdateRescueTimeAPIRequest = this.submitUpdateRescueTimeAPIRequest.bind(
-      this
-    );
   }
 
-  toggle() {
+  toggle = () => {
     this.setState({
       modal: !this.state.modal
     });
-  }
+  };
 
-  handleInputChange(event) {
+  handleInputChange = event => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -54,21 +41,21 @@ export class AddProductivityEvent extends Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
-  handleAPIStartTimeChange(moment) {
+  handleAPIStartTimeChange = moment => {
     this.setState({ apiStartDate: moment });
-  }
+  };
 
-  handleAPIEndTimeChange(moment) {
+  handleAPIEndTimeChange = moment => {
     this.setState({ apiEndDate: moment });
-  }
+  };
 
-  handleInputDatetimeChange(moment) {
+  handleInputDatetimeChange = moment => {
     this.setState({ inputDateTime: moment });
-  }
+  };
 
-  addInputRow(label, inputName) {
+  addInputRow = (label, inputName) => {
     return (
       <div className="col-sm-4">
         <div className="form-group row">
@@ -88,9 +75,9 @@ export class AddProductivityEvent extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  submitUpdateRescueTimeAPIRequest(e) {
+  submitUpdateRescueTimeAPIRequest = e => {
     e.preventDefault();
 
     const postParams = {
@@ -120,9 +107,9 @@ export class AddProductivityEvent extends Component {
       .catch(error => {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
-  }
+  };
 
-  submitProductivityEvent(e) {
+  submitProductivityEvent = e => {
     e.preventDefault();
 
     const postParams = {
@@ -149,7 +136,7 @@ export class AddProductivityEvent extends Component {
       .catch(error => {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
-  }
+  };
 
   renderImportModal() {
     return (
