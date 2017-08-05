@@ -72,7 +72,9 @@ export class AddProductivityEvent extends Component {
     return (
       <div className="col-sm-4">
         <div className="form-group row">
-          <label className="col-md-3 form-control-label">{label} </label>
+          <label className="col-md-3 form-control-label label-no-bottom-padding">
+            {label}{" "}
+          </label>
           <div className="col-sm-9">
             <input
               type="number"

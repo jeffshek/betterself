@@ -151,3 +151,7 @@
 .productivity-analytics-margin-left {
   margin-left: 4rem;
 }
+
+.col-md-3.form-control-label.label-no-bottom-padding {
+  margin-bottom: 0px;
+}
