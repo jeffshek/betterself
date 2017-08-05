@@ -77,15 +77,14 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   submitUpdate = () => {
-    // Set the new state and then fetch the correlations
-    this.setState({
-      correlationLookBackDays: this.state.updateCorrelationLookBackDays
-    });
-    this.setState({
-      cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
-    });
-
-    this.getSupplementsCorrelations();
+    // Set the new state and then fetch the correlations, use a callback to call after updating
+    this.setState(
+      {
+        correlationLookBackDays: this.state.updateCorrelationLookBackDays,
+        cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
+      },
+      this.getSupplementsCorrelations
+    );
 
     this.toggle();
   };
@@ -176,8 +175,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const name = target.name;
     const value = target.value;
 
+    const intValue = parseInt(value);
+
     this.setState({
-      [name]: value
+      [name]: intValue
     });
   };
 

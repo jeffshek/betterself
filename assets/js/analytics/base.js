@@ -62,7 +62,9 @@ export class BaseAnalyticsView extends Component {
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: [],
-      neutralUserActivitiesCorrelations: []
+      neutralUserActivitiesCorrelations: [],
+      //
+      correlationLookBackDays: 60
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -124,6 +126,7 @@ export class BaseAnalyticsView extends Component {
 
   getSupplementsCorrelations() {
     // fetch is a little odd, but to pass parameters in a get - you have to hardcode the URL
+    console.log("got called");
     fetch(this.supplementCorrelationsURL, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -352,10 +355,11 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
+    const supplementsCorrelationsChartLabel = `Supplements and Productivity Correlation (Last ${this.state.correlationLookBackDays} Days)`;
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          {this.supplementsCorrelationsChartLabel}
+          {supplementsCorrelationsChartLabel}
         </div>
         <div className="chart-wrapper">
           <Bar
