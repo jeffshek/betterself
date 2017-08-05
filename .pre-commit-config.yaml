@@ -5,6 +5,7 @@
     -   id: check-merge-conflict
     -   id: check-json
     -   id: check-added-large-files
+    -   id: check-xml
     -   id: debug-statements
         files: \.py$
     -   id: double-quote-string-fixer
