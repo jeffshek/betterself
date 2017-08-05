@@ -6,6 +6,11 @@
   margin-bottom: 0;
 }
 
+#explain-rescuetime {
+  margin-bottom: 0;
+  background-color: #193441;
+}
+
 #create-username {
   background-color: #193441;
 }

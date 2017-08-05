@@ -193,7 +193,19 @@ export class AddProductivityEvent extends Component {
           <strong id="add-supplement-entry-text">
             Add RescueTime Productivity
           </strong>
+
           <div className="float-right">
+            <button
+              type="submit"
+              id="explain-rescuetime"
+              className="btn btn-sm btn-success"
+              onClick={this.toggle}
+            >
+              <div id="white-text">
+                <i className="fa fa-dot-circle-o" /> What is RescueTime?
+              </div>
+            </button>
+            &nbsp;
             <button
               type="submit"
               id="add-new-object-button"
