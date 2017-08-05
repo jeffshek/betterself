@@ -60,7 +60,7 @@ export class AddProductivityEvent extends Component {
       <div className="col-sm-4">
         <div className="form-group row">
           <label className="col-md-3 form-control-label label-no-bottom-padding">
-            {label}{" "}
+            {label}
           </label>
           <div className="col-sm-9">
             <input
@@ -92,7 +92,6 @@ export class AddProductivityEvent extends Component {
       body: JSON.stringify(postParams)
     })
       .then(response => {
-        // Turn off the modal after the request has been sent.
         {
           this.toggle();
         }
@@ -209,37 +208,43 @@ export class AddProductivityEvent extends Component {
         </div>
 
         <div className="card-block card-block-no-padding-bottom">
-          <form onSubmit={e => this.submitProductivityEvent(e)}>
-            <label className="add-event-label">
-              Productivity Date
-            </label>
-            <div className="form-group col-sm-4">
-              {/*Use the current datetime as a default */}
-              <Datetime
-                onChange={this.handleInputDatetimeChange}
-                value={this.state.inputDateTime.format(YEAR_MONTH_DAY_FORMAT)}
-              />
-            </div>
-            <label className="add-event-label">
-              Productivity Time (In Minutes)
-            </label>
-            {this.addInputRow("Very Productive", "veryProductiveMinutes")}
-            {this.addInputRow("Productive", "productiveMinutes")}
-            {this.addInputRow("Neutral", "neutralMinutes")}
-            {this.addInputRow("Distracting", "distractingMinutes")}
-            {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
 
-            <div className="float-right">
-              <button
-                type="submit"
-                id="event-dashboard-submit"
-                className="btn btn-sm btn-success"
-                onClick={e => this.submitProductivityEvent(e)}
-              >
-                <i className="fa fa-dot-circle-o" /> Log Productivity
-              </button>
+          <div className="row">
+            <div className="col-sm-12">
+              <form onSubmit={e => this.submitProductivityEvent(e)}>
+                <label className="add-event-label">
+                  Productivity Date
+                </label>
+                <div className="form-group col-sm-4">
+                  <Datetime
+                    onChange={this.handleInputDatetimeChange}
+                    value={this.state.inputDateTime.format(
+                      YEAR_MONTH_DAY_FORMAT
+                    )}
+                  />
+                </div>
+                <label className="add-event-label">
+                  Productivity Time (In Minutes)
+                </label>
+                {this.addInputRow("Very Productive", "veryProductiveMinutes")}
+                {this.addInputRow("Productive", "productiveMinutes")}
+                {this.addInputRow("Neutral", "neutralMinutes")}
+                {this.addInputRow("Distracting", "distractingMinutes")}
+                {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
+              </form>
             </div>
-          </form>
+          </div>
+
+          <div className="float-right">
+            <button
+              type="submit"
+              id="event-dashboard-submit"
+              className="btn btn-sm btn-success"
+              onClick={e => this.submitProductivityEvent(e)}
+            >
+              <i className="fa fa-dot-circle-o" /> Log Productivity
+            </button>
+          </div>
         </div>
       </div>
     );
