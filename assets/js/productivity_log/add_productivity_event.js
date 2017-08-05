@@ -57,12 +57,12 @@ export class AddProductivityEvent extends Component {
 
   addInputRow = (label, inputName) => {
     return (
-      <div className="col-sm-4">
+      <div className="col-sm-8">
         <div className="form-group row">
-          <label className="col-md-3 form-control-label label-no-bottom-padding">
+          <label className="col-sm-7 form-control-label label-no-bottom-padding">
             {label}
           </label>
-          <div className="col-sm-9">
+          <div className="col-sm-5">
             <input
               type="number"
               id="number-input"
@@ -208,14 +208,13 @@ export class AddProductivityEvent extends Component {
         </div>
 
         <div className="card-block card-block-no-padding-bottom">
-
-          <div className="row">
-            <div className="col-sm-12">
-              <form onSubmit={e => this.submitProductivityEvent(e)}>
+          <form onSubmit={e => this.submitProductivityEvent(e)}>
+            <div className="row">
+              <div className="cols-2 col-sm-5">
                 <label className="add-event-label">
                   Productivity Date
                 </label>
-                <div className="form-group col-sm-4">
+                <div className="form-group col-sm-6">
                   <Datetime
                     onChange={this.handleInputDatetimeChange}
                     value={this.state.inputDateTime.format(
@@ -231,10 +230,9 @@ export class AddProductivityEvent extends Component {
                 {this.addInputRow("Neutral", "neutralMinutes")}
                 {this.addInputRow("Distracting", "distractingMinutes")}
                 {this.addInputRow("Very Distracting", "veryDistractingMinutes")}
-              </form>
+              </div>
             </div>
-          </div>
-
+          </form>
           <div className="float-right">
             <button
               type="submit"
