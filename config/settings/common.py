@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'webpack_loader',
     'django_filters',
+    'fitapp'
 )
 
 # Apps specific for this project go here.
@@ -93,9 +94,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (
-    ('Jeff Shek', 'jeffshek@gmail.com'),
-)
+ADMINS = []
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -257,6 +256,9 @@ REST_FRAMEWORK = {
         'user_export_all_data': '20/day',
     }
 }
+
+FITAPP_CONSUMER_KEY = env('FITAPP_CONSUMER_KEY', default='FITAPP_CONSUMER_KEY')
+FITAPP_CONSUMER_SECRET = env('FITAPP_CONSUMER_SECRET', default='FITAPP_CONSUMER_SECRET')
 
 
 # TODO - Reorganize all of these to be different based on staging/production
