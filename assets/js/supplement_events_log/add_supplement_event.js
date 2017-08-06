@@ -20,6 +20,10 @@ export class AddSupplementEvent extends Component {
     this.handleDateInputChange = this.handleDateInputChange.bind(this);
   }
 
+  componentDidMount() {
+    this.getPossibleSupplements();
+  }
+
   getPossibleSupplements() {
     fetch("/api/v1/supplements/", {
       method: "GET",
@@ -31,10 +35,6 @@ export class AddSupplementEvent extends Component {
       .then(responseData => {
         this.setState({ supplements: responseData });
       });
-  }
-
-  componentDidMount() {
-    this.getPossibleSupplements();
   }
 
   submitSupplementEvent(e) {

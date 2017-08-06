@@ -6,6 +6,11 @@
   margin-bottom: 0;
 }
 
+#explain-rescuetime {
+  margin-bottom: 0;
+  background-color: #193441;
+}
+
 #create-username {
   background-color: #193441;
 }
@@ -150,4 +155,8 @@
 
 .productivity-analytics-margin-left {
   margin-left: 4rem;
+}
+
+.col-sm-7.form-control-label.label-no-bottom-padding {
+  margin-bottom: 0px;
 }

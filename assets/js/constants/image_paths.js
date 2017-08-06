@@ -11,3 +11,8 @@ export const DASHBOARD_HEART_RATE = require("../../../betterself/static/images/d
 export const DASHBOARD_SUPPLEMENTS_HISTORY = require("../../../betterself/static/images/dashboard/dashboard_supplements_events_history.jpg");
 export const HEADER_BRAIN_PATH = require("../../../betterself/static/images/header/control_panel/brain.png");
 export const HEADER_HEART_PATH = require("../../../betterself/static/images/header/control_panel/heart.png");
+
+export const RESCUETIME_LOGO = require("../../img/rescuetime/rescuetime_logo.jpg");
+export const RESCUETIME_DESCRIPTION = require("../../img/rescuetime/rescuetime_description.jpg");
+export const RESCUETIME_EXAMPLE = require("../../img/rescuetime/rescuetime_example.jpg");
+export const RESCUETIME_EXAMPLE_BREAKDOWN = require("../../img/rescuetime/rescuetime_example_breakdown.jpg");
