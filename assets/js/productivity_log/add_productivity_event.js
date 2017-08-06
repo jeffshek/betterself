@@ -8,12 +8,17 @@ import {
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import {
+  LOGIN_SIDE_PHOTO_PATH,
+  RESCUETIME_LOGO
+} from "../constants/image_paths";
 
 export class AddProductivityEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
+      rescueTimeModal: false,
       inputDateTime: moment(),
       veryProductiveMinutes: 0,
       productiveMinutes: 0,
@@ -30,6 +35,12 @@ export class AddProductivityEvent extends Component {
   toggle = () => {
     this.setState({
       modal: !this.state.modal
+    });
+  };
+
+  toggleRescueTimeHelper = () => {
+    this.setState({
+      rescueTimeModal: !this.state.rescueTimeModal
     });
   };
 
@@ -137,6 +148,22 @@ export class AddProductivityEvent extends Component {
       });
   };
 
+  renderRescueTimeExplainModal() {
+    return (
+      <Modal
+        isOpen={this.state.rescueTimeModal}
+        toggle={this.toggleRescueTimeHelper}
+      >
+        <ModalHeader toggle={this.toggleRescueTimeHelper}>
+          What is RescueTime?
+        </ModalHeader>
+        <ModalBody>
+          <img src={RESCUETIME_LOGO} width="100%" />
+        </ModalBody>
+      </Modal>
+    );
+  }
+
   renderImportModal() {
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -190,22 +217,19 @@ export class AddProductivityEvent extends Component {
     return (
       <div className="card">
         <div className="card-header">
-          <strong id="add-supplement-entry-text">
-            Add RescueTime Productivity
-          </strong>
-
-          <div className="float-right">
+          <div className="float-left">
             <button
               type="submit"
               id="explain-rescuetime"
               className="btn btn-sm btn-success"
-              onClick={this.toggle}
+              onClick={this.toggleRescueTimeHelper}
             >
               <div id="white-text">
                 <i className="fa fa-dot-circle-o" /> What is RescueTime?
               </div>
             </button>
-            &nbsp;
+          </div>
+          <div className="float-right">
             <button
               type="submit"
               id="add-new-object-button"
@@ -235,7 +259,7 @@ export class AddProductivityEvent extends Component {
                   />
                 </div>
                 <label className="add-event-label">
-                  Productivity Time (In Minutes)
+                  Log Productivity Time (In Minutes)
                 </label>
                 {this.addInputRow("Very Productive", "veryProductiveMinutes")}
                 {this.addInputRow("Productive", "productiveMinutes")}
@@ -268,6 +292,9 @@ export class AddProductivityEvent extends Component {
       <div>
         {this.renderAddProductivityTimeManually()}
         {this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}
+        {this.state.rescueTimeModal
+          ? <div>{this.renderRescueTimeExplainModal()}</div>
+          : <div />}
       </div>
     );
   }
