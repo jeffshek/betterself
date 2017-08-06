@@ -165,16 +165,16 @@ export class AddProductivityEvent extends Component {
           <br />
           <br />
           <div>
-            RescueTime is an application that runs securely and privately in the background tracking time spent on applications and websites, giving an accurate picture of the day. RescueTime helps you understand your daily habits so you can focus and be more productive.
+            RescueTime is an application that runs securely and privately in the background tracking time spent on applications and websites, giving an accurate picture of the day. RescueTime helps you understand your daily habits so you can focus and be more productive.&nbsp;
             <b>
-              Click
+              Click&nbsp;
               <a
                 href="https://www.rescuetime.com/rp/betterhealth"
                 target="_blank"
               >
                 here
               </a>
-              or the image below for a referral link.
+              &nbsp;or the image below for a referral link.
             </b>
           </div>
 
