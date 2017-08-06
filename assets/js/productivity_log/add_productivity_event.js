@@ -277,7 +277,8 @@ export class AddProductivityEvent extends Component {
         <div className="card-block card-block-no-padding-bottom">
           <form onSubmit={e => this.submitProductivityEvent(e)}>
             <div className="row">
-              <div className="cols-2 col-sm-5">
+              {/*Tweak col-sm-x around to make them all adjust*/}
+              <div className="cols-2 col-sm-7">
                 <label className="add-event-label">
                   Productivity Date
                 </label>
