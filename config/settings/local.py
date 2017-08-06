@@ -28,6 +28,7 @@ DJANGO_ENVIRONMENT = LOCAL
 #
 # If you're kind enough to contribute to this, I'd recommend changing this
 # and the postgresql default in provision_bootstrap
+# NOTE - Yours in local_secret_settings, check there!
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='*v@g2i-82&uk+3jhsje_56_)9bmx_yg=o54!=1tqj*p#zf!d!m')
 
 # Mail settings

@@ -259,6 +259,7 @@ REST_FRAMEWORK = {
 
 FITAPP_CONSUMER_KEY = env('FITAPP_CONSUMER_KEY', default='FITAPP_CONSUMER_KEY')
 FITAPP_CONSUMER_SECRET = env('FITAPP_CONSUMER_SECRET', default='FITAPP_CONSUMER_SECRET')
+FITAPP_LOGIN_REDIRECT = '/dashboard/logs/sleep'
 
 
 # TODO - Reorganize all of these to be different based on staging/production

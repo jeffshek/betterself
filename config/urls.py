@@ -32,11 +32,18 @@ urlpatterns = [
     url(r'^settings/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-settings'),
 
     # To get API Token Back
-    # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:8001/api-token-auth/
+    # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/$', views.obtain_auth_token, name='api-token-auth'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # FitBit Urls
-    url(r'^fitbit/', include('fitapp.urls')),
+    # /api/fitbit/complete/	fitapp.views.complete	fitbit-complete
+    # /api/fitbit/error/	fitapp.views.error	fitbit-error
+    # /api/fitbit/get_data/<category>/<resource>/	fitapp.views.get_data	fitbit-data
+    # /api/fitbit/get_steps/	fitapp.views.get_steps	fitbit-steps
+    # /api/fitbit/login/	fitapp.views.login	fitbit-login
+    # /api/fitbit/logout/	fitapp.views.logout	fitbit-logout
+    # /api/fitbit/update/	fitapp.views.update	fitbit-update
+    url(r'^api/fitbit/', include('fitapp.urls')),
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced
