@@ -226,7 +226,7 @@ export class AddProductivityEvent extends Component {
                 <label className="add-event-label">
                   Productivity Date
                 </label>
-                <div className="form-group col-sm-6">
+                <div className="form-group col-sm-8">
                   <Datetime
                     onChange={this.handleInputDatetimeChange}
                     value={this.state.inputDateTime.format(
