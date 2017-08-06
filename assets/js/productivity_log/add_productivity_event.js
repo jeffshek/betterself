@@ -9,7 +9,8 @@ import {
 } from "../constants/dates_and_times";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import {
-  LOGIN_SIDE_PHOTO_PATH,
+  RESCUETIME_EXAMPLE,
+  RESCUETIME_EXAMPLE_BREAKDOWN,
   RESCUETIME_LOGO
 } from "../constants/image_paths";
 
@@ -158,7 +159,42 @@ export class AddProductivityEvent extends Component {
           What is RescueTime?
         </ModalHeader>
         <ModalBody>
-          <img src={RESCUETIME_LOGO} width="100%" />
+          <a href="https://www.rescuetime.com/rp/betterhealth" target="_blank">
+            <img src={RESCUETIME_LOGO} width="100%" />
+          </a>
+          <br />
+          <br />
+          <div>
+            RescueTime is an application that runs securely and privately in the background tracking time spent on applications and websites, giving an accurate picture of the day. RescueTime helps you understand your daily habits so you can focus and be more productive.
+            {" "}
+            <b>
+              {" "}
+              Click
+              {" "}
+              <a
+                href="https://www.rescuetime.com/rp/betterhealth"
+                target="_blank"
+              >
+                here
+              </a>
+              {" "}
+              or the image below for a referral link.
+              {" "}
+            </b>
+          </div>
+
+          <br />
+          <div>
+            <a
+              href="https://www.rescuetime.com/rp/betterhealth"
+              target="_blank"
+            >
+              <img src={RESCUETIME_EXAMPLE} width="100%" />
+              <br />
+              <img src={RESCUETIME_EXAMPLE_BREAKDOWN} width="100%" />
+            </a>
+          </div>
+
         </ModalBody>
       </Modal>
     );

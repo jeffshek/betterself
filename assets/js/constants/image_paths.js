@@ -14,3 +14,5 @@ export const HEADER_HEART_PATH = require("../../../betterself/static/images/head
 
 export const RESCUETIME_LOGO = require("../../img/rescuetime/rescuetime_logo.jpg");
 export const RESCUETIME_DESCRIPTION = require("../../img/rescuetime/rescuetime_description.jpg");
+export const RESCUETIME_EXAMPLE = require("../../img/rescuetime/rescuetime_example.jpg");
+export const RESCUETIME_EXAMPLE_BREAKDOWN = require("../../img/rescuetime/rescuetime_example_breakdown.jpg");
