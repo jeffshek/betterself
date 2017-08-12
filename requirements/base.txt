@@ -12,7 +12,6 @@ django-crispy-forms==1.6.1
 django-environ==0.4.3
 django-extensions==1.8.1
 django-filter==1.0.4
-django-fitbit==0.3.0
 django-floppyforms==1.7.0
 django-model-utils==3.0.0
 django-redis==4.8.0
