@@ -1,6 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+
+# Taken from django-fitbit, many thanks to them! Package is good, just wanted CBVs
+# https://github.com/orcasgit/django-fitbit/blob/master/fitapp/models.py
+
 USER_MODEL = get_user_model()
 
 
