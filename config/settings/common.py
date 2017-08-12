@@ -39,7 +39,6 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'webpack_loader',
     'django_filters',
-    'fitapp'
 )
 
 # Apps specific for this project go here.
@@ -48,6 +47,7 @@ LOCAL_APPS = (
     'supplements',
     'vendors',
     'apis',
+    'apis.fitbit',
     'events',
     'analytics',
 )
