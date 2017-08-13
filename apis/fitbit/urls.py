@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
-from apis.fitbit.views import FitBitLoginView
+from apis.fitbit.views import FitbitLoginView, FitbitCompleteView
 
 urlpatterns = [
-    url(r'^fitbit/login$', FitBitLoginView, 'betterself-fitbit-login'),
+    url(r'^login/$', FitbitLoginView, name='fitbit-login'),
+    url(r'^complete/$', FitbitCompleteView, name='fitbit-complete'),
 ]

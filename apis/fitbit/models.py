@@ -11,9 +11,11 @@ USER_MODEL = get_user_model()
 class UserFitbit(models.Model):
     """ A user's fitbit credentials, allowing API access """
     user = models.OneToOneField(USER_MODEL)
+    # feel like a better representation is if this was called id
     fitbit_user = models.CharField(max_length=32, unique=True)
     access_token = models.TextField()
     refresh_token = models.TextField()
+    # not sure why this a floatfield
     expires_at = models.FloatField()
 
     def __str__(self):
@@ -36,7 +38,7 @@ class UserFitbit(models.Model):
         }
 
 
-class TimeSeriesDataType(models.Model):
+class FitbitTimeSeriesDataType(models.Model):
     """
     This model is intended to store information about Fitbit's time series
     resources, documentation for which can be found here:
@@ -70,7 +72,7 @@ class TimeSeriesDataType(models.Model):
         return '/'.join([self.get_category_display(), self.resource])
 
 
-class TimeSeriesData(models.Model):
+class FitbitTimeSeriesData(models.Model):
     """
     The purpose of this model is to store Fitbit user data obtained from their
     time series API:
@@ -79,21 +81,10 @@ class TimeSeriesData(models.Model):
     https://dev.fitbit.com/docs/sleep/#sleep-time-series
     https://dev.fitbit.com/docs/body/#body-time-series
     """
-
-    user = models.ForeignKey(USER_MODEL, help_text="The data's user")
-    resource_type = models.ForeignKey(
-        TimeSeriesDataType, help_text='The type of time series data')
-    date = models.DateField(help_text='The date the data was recorded')
-    value = models.CharField(
-        null=True,
-        default=None,
-        max_length=32,
-        help_text=(
-            'The value of the data. This is typically a number, though saved '
-            'as a string here. The units can be inferred from the data type. '
-            'For example, for step data the value might be "9783" (the units) '
-            'would be "steps"'
-        ))
+    user = models.ForeignKey(USER_MODEL)
+    resource_type = models.ForeignKey(FitbitTimeSeriesDataType)
+    date = models.DateField()
+    value = models.CharField(null=True, default=None, max_length=32)
 
     class Meta:
         unique_together = ('user', 'resource_type', 'date')
