@@ -1,4 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
@@ -6,7 +9,9 @@ from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
 
 
-class FitbitLoginView(APIView):
+class FitbitLoginView(TemplateView):
+
+    @method_decorator(login_required)
     def get(self, request):
         next_url = request.GET.get('next', None)
         if next_url:
@@ -19,6 +24,7 @@ class FitbitLoginView(APIView):
         token_url, code = fb.client.authorize_token_url(redirect_uri=callback_uri)
 
         return redirect(token_url)
+        # return Response({})
 
 
 class FitbitCompleteView(APIView):
