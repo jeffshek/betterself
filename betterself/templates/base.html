@@ -22,21 +22,10 @@
       <link href="{% static "css/special.css" %}" rel="stylesheet">
   </head>
   <body>
-    <div class="m-b">
-      <nav class="navbar navbar-dark navbar-static-top bg-inverse">
-        <div class="container">
-          <a class="navbar-brand" id="white-text" href="/">BetterSelf</a>
-        </div>
-      </nav>
-    </div>
-    <br /> {#Hack, but not going to deal with css line breaks just yet #}
-    <div class="container">
-      {% block content %}
-      {% endblock content %}
-    </div>
+    {% block content %}
+    {% endblock content %}
     {% block modal %}
     {% endblock modal %}
-
   </body>
 </html>
 
