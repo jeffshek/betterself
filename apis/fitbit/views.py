@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http.response import Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -24,10 +25,11 @@ class FitbitLoginView(TemplateView):
         token_url, code = fb.client.authorize_token_url(redirect_uri=callback_uri)
 
         return redirect(token_url)
-        # return Response({})
 
 
 class FitbitCompleteView(APIView):
+
+    @method_decorator(login_required)
     def get(self, request):
         try:
             code = request.GET['code']
@@ -42,10 +44,7 @@ class FitbitCompleteView(APIView):
             access_token = token['access_token']
             fitbit_user = token['user_id']
         except KeyError:
-            return redirect(reverse('fitbit-error'))
-
-        # if UserFitbit.objects.filter(fitbit_user=fitbit_user).exists():
-        #     return redirect(reverse('fitbit-error'))
+            raise Http404('Invalid Token')
 
         user = request.user
         fbuser, _ = UserFitbit.objects.update_or_create(user=user, defaults={
@@ -54,10 +53,6 @@ class FitbitCompleteView(APIView):
             'refresh_token': token['refresh_token'],
             'expires_at': token['expires_at'],
         })
-
-        # Add the Fitbit user info to the session
-        # fb = utils.create_fitbit(**fbuser.get_user_data())
-        # request.session['fitbit_profile'] = fb.user_profile_get()
 
         next_url = request.session.pop('fitbit_next', None) or utils.get_setting(
             'FITAPP_LOGIN_REDIRECT')

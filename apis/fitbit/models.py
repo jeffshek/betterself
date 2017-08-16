@@ -47,11 +47,11 @@ class FitbitTimeSeriesDataType(models.Model):
     https://dev.fitbit.com/docs/sleep/#sleep-time-series
     https://dev.fitbit.com/docs/body/#body-time-series
     """
-
     foods = 0
     activities = 1
     sleep = 2
     body = 3
+
     CATEGORY_CHOICES = (
         (foods, 'foods'),
         (activities, 'activities'),
