@@ -55,6 +55,6 @@ class FitbitCompleteView(APIView):
         })
 
         next_url = request.session.pop('fitbit_next', None) or utils.get_setting(
-            'FITAPP_LOGIN_REDIRECT')
+            'FITBIT_LOGIN_REDIRECT')
 
         return redirect(next_url)

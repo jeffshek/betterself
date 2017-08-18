@@ -13,9 +13,9 @@ def create_fitbit(consumer_key=None, consumer_secret=None, **kwargs):
     specified in settings are used.
     """
     if consumer_key is None:
-        consumer_key = get_setting('FITAPP_CONSUMER_KEY')
+        consumer_key = get_setting('FITBIT_CONSUMER_KEY')
     if consumer_secret is None:
-        consumer_secret = get_setting('FITAPP_CONSUMER_SECRET')
+        consumer_secret = get_setting('FITBIT_CONSUMER_SECRET')
 
     if consumer_key is None or consumer_secret is None:
         raise ImproperlyConfigured(
