@@ -1,16 +1,3 @@
-# Not sure of how much of this I want to actually keep
-
-# Your Fitbit access credentials, which must be requested from Fitbit.
-# You must provide these in your project's settings.
-FITAPP_CONSUMER_KEY = None
-FITAPP_CONSUMER_SECRET = None
-
-# The verification code for verifying subscriber endpoints
-FITAPP_VERIFICATION_CODE = None
-
-# Where to redirect to after Fitbit authentication is successfully completed.
-FITAPP_LOGIN_REDIRECT = '/'
-
 # Where to redirect to after Fitbit authentication credentials have been
 # removed.
 FITAPP_LOGOUT_REDIRECT = '/'
