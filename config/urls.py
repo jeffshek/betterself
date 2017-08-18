@@ -1,3 +1,4 @@
+from allauth.account.views import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -25,16 +26,18 @@ urlpatterns = [
     # All React should redirect to the same pages
     # TODO - switch the regex to just pattern match instead of copy/pasting
     url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
-    url(r'^login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
-    url(r'^logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
-    url(r'^signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
+    url(r'^dashboard-login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
+    url(r'^dashboard-logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
+    url(r'^dashboard-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
     url(r'^demo-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
     url(r'^settings/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-settings'),
 
     # To get API Token Back
-    # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:8001/api-token-auth/
+    # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/$', views.obtain_auth_token, name='api-token-auth'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^login/$', LoginView.as_view()),
+    url(r'^logout/$', LogoutView.as_view()),
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced

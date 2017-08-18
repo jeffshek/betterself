@@ -19,9 +19,9 @@ export const DASHBOARD_PRODUCTIVITY_ANALYTICS_URL = '/dashboard/analytics/produc
 export const DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/daily_overview'
 
 // Auth
-export const LOGIN_URL = '/login/'
-export const LOGOUT_URL = '/logout/'
-export const SIGNUP_URL = '/signup/'
+export const LOGIN_URL = '/dashboard-login/'
+export const LOGOUT_URL = '/dashboard-logout/'
+export const SIGNUP_URL = '/dashboard-signup/'
 export const DEMO_SIGNUP_URL = '/demo-signup/'
 
 // User Settings

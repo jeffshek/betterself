@@ -3,72 +3,29 @@
 <html lang="en" >
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}BetterSelf{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Property of BetterHealth">
-    <meta name="author" content="BetterHealth, Jeffrey Shek">
+    <title>BetterSelf - Your Body's Dashboard</title>
+      <link rel="shortcut icon" href="{% static "images/logos/logojoy/favicon.png" %}" />
 
-    <link rel="shortcut icon" href="{% static "images/logos/logojoy/favicon.png" %}" />
-    <meta name="theme-color" content="#ffffff">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" />
 
+      <link href="{% static "css/coreui-style.css" %}" rel="stylesheet" />
+
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+      <link href="{% static "css/glyphicons.css" %}" rel="stylesheet" />
+      <link href="{% static "css/glyphicons-filetypes.css" %}" rel="stylesheet" />
+      <link href="{% static "css/glyphicons-social.css" %}" rel="stylesheet" />
+      <link href="{% static "css/simple-line-icons.css" %}" rel="stylesheet" />
+
+      <link href="{% static "css/pinegrow/legacy.css" %}" rel="stylesheet">
+      <link href="{% static "css/react-datetime-picker.css" %}" rel="stylesheet">
+      <link href="{% static "css/special.css" %}" rel="stylesheet">
   </head>
   <body>
-    <div class="m-b">
-      <nav class="navbar navbar-dark navbar-static-top bg-inverse">
-        <div class="container">
-          <a class="navbar-brand" href="/">BetterSelf</a>
-          <button type="button" class="navbar-toggler hidden-sm-up pull-xs-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            &#9776;
-          </button>
-
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
-              </li>
-            </ul>
-
-            <ul class="nav navbar-nav pull-xs-right">
-              {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Logout" %}</a>
-                </li>
-              {% else %}
-                <li class="nav-item">
-                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-                </li>
-                <li class="nav-item">
-                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <br /> {#Hack, but not going to deal with css line breaks just yet #}
-    <div class="container">
-
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
-      {% endif %}
-
-      {% block content %}
-        <p></p>
-      {% endblock content %}
-
-    </div> <!-- /container -->
-
+    {% block content %}
+    {% endblock content %}
     {% block modal %}
     {% endblock modal %}
-
   </body>
 </html>
 
