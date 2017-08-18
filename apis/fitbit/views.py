@@ -22,7 +22,8 @@ class FitbitLoginView(TemplateView):
 
         callback_uri = request.build_absolute_uri(reverse('fitbit-complete'))
         fb = utils.create_fitbit(callback_uri=callback_uri)
-        token_url, code = fb.client.authorize_token_url(redirect_uri=callback_uri)
+        # returns back token_url and code ... set as _ for flake8
+        token_url, _ = fb.client.authorize_token_url(redirect_uri=callback_uri)
 
         return redirect(token_url)
 
@@ -47,7 +48,7 @@ class FitbitCompleteView(APIView):
             raise Http404('Invalid Token')
 
         user = request.user
-        fbuser, _ = UserFitbit.objects.update_or_create(user=user, defaults={
+        UserFitbit.objects.update_or_create(user=user, defaults={
             'fitbit_user': fitbit_user,
             'access_token': access_token,
             'refresh_token': token['refresh_token'],
