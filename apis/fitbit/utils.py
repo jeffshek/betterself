@@ -6,6 +6,9 @@ from fitbit import Fitbit
 from apis.fitbit import defaults
 from apis.fitbit.models import UserFitbit
 
+# Taken from django-fitbit, many thanks to them! Package is good, just wanted CBVs
+# https://github.com/orcasgit/django-fitbit/blob/master/fitapp/models.py
+
 
 def create_fitbit(consumer_key=None, consumer_secret=None, **kwargs):
     """Shortcut to create a Fitbit instance.
