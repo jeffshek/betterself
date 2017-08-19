@@ -24,8 +24,7 @@ class UpdateRescueTimeAPIView(APIView):
             return Response('Missing POST parameters {}'.format(exc), status=400)
 
         serializer = RescueTimeAPIRequestSerializer(data=initial_data)
-        if not serializer.is_valid():
-            return Response('{}'.format(serializer.errors), status=400)
+        serializer.is_valid(raise_exception=True)
 
         # send the job off to celery so it's an async task
         import_user_history_via_api.delay(user=user, **serializer.validated_data)

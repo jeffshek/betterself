@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import Http404
 from django.shortcuts import redirect
+from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from rest_framework.permissions import IsAuthenticated
@@ -10,6 +11,7 @@ from rest_framework.views import APIView
 
 from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
+from apis.fitbit.serializers import FitbitAPIRequestSerializer
 from apis.fitbit.utils import is_integrated
 
 
@@ -76,6 +78,23 @@ class FitbitUserAuthCheck(APIView):
 class FitbitUserUpdateSleepHistory(APIView):
     # This concept isn't really RESTful (and more akin to SOA), but I can't tell if it's really worth it either
     permission_classes = (IsAuthenticated,)
+    url = 'fitbit-user-update-sleep-history'
 
     def post(self, request):
-        return Response({})
+        data = request.data
+
+        try:
+            initial_data = {
+                'start_date': data['start_date'],
+                'end_date': data['end_date'],
+            }
+        except (MultiValueDictKeyError, KeyError) as exc:
+            return Response('Missing POST parameters {}'.format(exc), status=400)
+
+        serializer = FitbitAPIRequestSerializer(data=initial_data)
+        serializer.is_valid(raise_exception=True)
+
+        # send the job off to celery so it's an async task
+        # import_user_history_via_api.delay(user=user, **serializer.validated_data)
+
+        return Response(status=202)
