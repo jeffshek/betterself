@@ -13,6 +13,7 @@ from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
 from apis.fitbit.serializers import FitbitAPIRequestSerializer
 from apis.fitbit.utils import is_integrated
+from apis.fitbit.tasks import import_user_fitbit_history_via_api
 
 
 class FitbitLoginView(TemplateView):
@@ -83,6 +84,7 @@ class FitbitUserUpdateSleepHistory(APIView):
 
     def post(self, request):
         data = request.data
+        user = request.user
 
         try:
             initial_data = {
@@ -96,6 +98,6 @@ class FitbitUserUpdateSleepHistory(APIView):
         serializer.is_valid(raise_exception=True)
 
         # send the job off to celery so it's an async task
-        # import_user_history_via_api.delay(user=user, **serializer.validated_data)
+        import_user_fitbit_history_via_api.delay(user=user, **serializer.validated_data)
 
         return Response(status=202)
