@@ -9,8 +9,19 @@ export class AddSleepEvent extends Component {
     super(props);
     this.state = {
       eventStartTime: moment(),
-      eventEndTime: moment()
+      eventEndTime: moment(),
+      fitbitAuthorized: false
     };
+  }
+
+  componentDidMount() {
+    this.checkIfFitbitAuthorized();
+  }
+
+  checkIfFitbitAuthorized() {
+    this.setState({
+      fitbitAuthorized: true
+    });
   }
 
   submitSleepEvent = e => {
@@ -48,19 +59,25 @@ export class AddSleepEvent extends Component {
     this.setState({ eventEndTime: moment });
   };
 
+  renderFitbitButton() {
+    return (
+      <div className="float-right">
+        <button
+          type="submit"
+          id="setup-fitbit-button"
+          className="btn btn-sm btn-success"
+        >
+          <i className="fa fa-dot-circle-o" /> Setup FitBit Access
+        </button>
+      </div>
+    );
+  }
+
   renderSubmitSleepForm() {
     return (
       <div className="card">
         <div className="card-block card-block-no-padding-bottom">
-          <div className="float-right">
-            <button
-              type="submit"
-              id="setup-fitbit-button"
-              className="btn btn-sm btn-success"
-            >
-              <i className="fa fa-dot-circle-o" /> Setup FitBit
-            </button>
-          </div>
+          {this.renderFitbitButton()}
           <form onSubmit={e => this.submitSleepEvent(e)}>
             <div className="row">
               <div className="form-group col-sm-4">
