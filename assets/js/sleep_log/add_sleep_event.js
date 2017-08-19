@@ -73,6 +73,7 @@ export class AddSleepEvent extends Component {
   };
 
   renderFitbitButton() {
+    // Either show a logged in Fitbit Button (ie. import) or a setup FitBit
     if (this.state.fitbitAuthorized) {
       return (
         <div className="float-right">
