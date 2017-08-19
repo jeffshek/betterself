@@ -1,5 +1,5 @@
 import Datetime from "react-datetime";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
