@@ -311,9 +311,7 @@ export class AddProductivityEvent extends Component {
                 <i className="fa fa-dot-circle-o" /> Log Productivity
               </button>
             </div>
-
           </form>
-
         </div>
       </div>
     );
