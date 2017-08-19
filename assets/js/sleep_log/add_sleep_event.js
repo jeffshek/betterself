@@ -88,13 +88,15 @@ export class AddSleepEvent extends Component {
     } else {
       return (
         <div className="float-right">
-          <button
-            type="submit"
-            id="setup-fitbit-button"
-            className="btn btn-sm btn-success"
-          >
-            <i className="fa fa-dot-circle-o" /> Setup FitBit Access
-          </button>
+          <a href="/api/fitbit/oauth2/login/">
+            <button
+              type="submit"
+              id="setup-fitbit-button"
+              className="btn btn-sm btn-success"
+            >
+              <i className="fa fa-dot-circle-o" /> Setup FitBit Access
+            </button>
+          </a>
         </div>
       );
     }
