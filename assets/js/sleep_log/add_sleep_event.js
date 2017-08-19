@@ -11,13 +11,9 @@ export class AddSleepEvent extends Component {
       eventStartTime: moment(),
       eventEndTime: moment()
     };
-
-    this.submitSleepEvent = this.submitSleepEvent.bind(this);
-    this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
-    this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
   }
 
-  submitSleepEvent(e) {
+  submitSleepEvent = e => {
     e.preventDefault();
 
     const params = {
@@ -42,15 +38,15 @@ export class AddSleepEvent extends Component {
       .then(responseData => {
         this.props.addEventEntry(responseData);
       });
-  }
+  };
 
-  handleStartTimeChange(moment) {
+  handleStartTimeChange = moment => {
     this.setState({ eventStartTime: moment });
-  }
+  };
 
-  handleEndTimeChange(moment) {
+  handleEndTimeChange = moment => {
     this.setState({ eventEndTime: moment });
-  }
+  };
 
   renderSubmitSleepForm() {
     return (
