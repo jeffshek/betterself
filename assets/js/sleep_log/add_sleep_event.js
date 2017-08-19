@@ -138,6 +138,7 @@ export class AddSleepEvent extends Component {
         </div>
       );
     } else {
+      // if user doesn't have oauth setup with us yet, need to get it setup
       return (
         <div className="float-right">
           <a href="/api/fitbit/oauth2/login/">
@@ -177,18 +178,10 @@ export class AddSleepEvent extends Component {
             value={this.state.apiEndDate.format(YEAR_MONTH_DAY_FORMAT)}
           />
           <br />
-          This will
-          {" "}
-          <b>OVERWRITE</b>
-          {" "}
-          any
-          {" "}
-          <b>OVERLAPPING</b>
-          {" "}
+          {/*the curse of prettier*/}
+          This will <b> OVERWRITE </b> any <b> OVERLAPPING </b>
           days stored. Data may take up to
-          {" "}
-          <b>THIRTY</b>
-          {" "}
+          <b> THIRTY </b>
           minutes to be reflected.
           <br />
         </ModalBody>
