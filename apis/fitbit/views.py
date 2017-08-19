@@ -69,6 +69,7 @@ class FitbitCompleteView(APIView):
 class FitbitUserAuthCheck(APIView):
     # Simple class to check if a user has authorized Fitbit Credentials
     permission_classes = (IsAuthenticated, )
+    url = 'fitbit-user-auth-check'
 
     def get(self, request):
         data = is_integrated(request.user)
