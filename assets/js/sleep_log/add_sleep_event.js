@@ -2,7 +2,10 @@ import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
+import {
+  JSON_AUTHORIZATION_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/requests";
 
 export class AddSleepEvent extends Component {
   constructor(props) {
@@ -18,11 +21,21 @@ export class AddSleepEvent extends Component {
     this.checkIfFitbitAuthorized();
   }
 
-  checkIfFitbitAuthorized() {
-    this.setState({
-      fitbitAuthorized: true
-    });
-  }
+  checkIfFitbitAuthorized = () => {
+    const url = "/api/fitbit/user-auth-check";
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.setState({
+          fitbitAuthorized: responseData
+        });
+      });
+  };
 
   submitSleepEvent = e => {
     e.preventDefault();
@@ -60,17 +73,31 @@ export class AddSleepEvent extends Component {
   };
 
   renderFitbitButton() {
-    return (
-      <div className="float-right">
-        <button
-          type="submit"
-          id="setup-fitbit-button"
-          className="btn btn-sm btn-success"
-        >
-          <i className="fa fa-dot-circle-o" /> Setup FitBit Access
-        </button>
-      </div>
-    );
+    if (this.state.fitbitAuthorized) {
+      return (
+        <div className="float-right">
+          <button
+            type="submit"
+            id="setup-fitbit-button"
+            className="btn btn-sm btn-success"
+          >
+            <i className="fa fa-dot-circle-o" /> Import from FitBit
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="float-right">
+          <button
+            type="submit"
+            id="setup-fitbit-button"
+            className="btn btn-sm btn-success"
+          >
+            <i className="fa fa-dot-circle-o" /> Setup FitBit Access
+          </button>
+        </div>
+      );
+    }
   }
 
   renderSubmitSleepForm() {

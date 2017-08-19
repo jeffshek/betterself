@@ -3,11 +3,14 @@ from django.http.response import Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
+from apis.fitbit.utils import is_integrated
 
 
 class FitbitLoginView(TemplateView):
@@ -59,3 +62,12 @@ class FitbitCompleteView(APIView):
             'FITBIT_LOGIN_REDIRECT')
 
         return redirect(next_url)
+
+
+class FitbitUserAuthCheck(APIView):
+    # Simple class to check if a user has authorized Fitbit Credentials
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request):
+        data = is_integrated(request.user)
+        return Response(data)
