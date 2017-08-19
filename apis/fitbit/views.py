@@ -71,3 +71,11 @@ class FitbitUserAuthCheck(APIView):
     def get(self, request):
         data = is_integrated(request.user)
         return Response(data)
+
+
+class FitbitUserUpdateSleepHistory(APIView):
+    # This concept isn't really RESTful (and more akin to SOA), but I can't tell if it's really worth it either
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        return Response({})
