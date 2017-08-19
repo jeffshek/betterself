@@ -54,46 +54,57 @@ export class AddSleepEvent extends Component {
 
   renderSubmitSleepForm() {
     return (
-      <div className="card-block card-block-no-padding-bottom">
-        <form onSubmit={e => this.submitSleepEvent(e)}>
-          <div className="row">
-            <div className="form-group col-sm-4">
-              <label className="add-event-label">
-                Sleep Start Time
-              </label>
-              <Datetime
-                onChange={this.handleStartTimeChange}
-                value={this.state.eventStartTime}
-              />
-            </div>
-            <div className="form-group col-sm-4">
-              <label className="add-event-label">
-                Sleep End Time
-              </label>
-              <Datetime
-                onChange={this.handleEndTimeChange}
-                value={this.state.eventEndTime}
-              />
-            </div>
-          </div>
+      <div className="card">
+        <div className="card-block card-block-no-padding-bottom">
           <div className="float-right">
             <button
               type="submit"
-              id="event-dashboard-submit"
+              id="setup-fitbit-button"
               className="btn btn-sm btn-success"
-              onClick={e => this.submitSleepEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Log Sleep Entry
+              <i className="fa fa-dot-circle-o" /> Setup FitBit
             </button>
           </div>
-        </form>
+          <form onSubmit={e => this.submitSleepEvent(e)}>
+            <div className="row">
+              <div className="form-group col-sm-4">
+                <label className="add-event-label">
+                  Sleep Start Time
+                </label>
+                <Datetime
+                  onChange={this.handleStartTimeChange}
+                  value={this.state.eventStartTime}
+                />
+              </div>
+              <div className="form-group col-sm-4">
+                <label className="add-event-label">
+                  Sleep End Time
+                </label>
+                <Datetime
+                  onChange={this.handleEndTimeChange}
+                  value={this.state.eventEndTime}
+                />
+              </div>
+            </div>
+            <div className="float-left">
+              <button
+                type="submit"
+                id="event-dashboard-submit"
+                className="btn btn-sm btn-success"
+                onClick={e => this.submitSleepEvent(e)}
+              >
+                <i className="fa fa-dot-circle-o" /> Log Sleep Entry
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
 
   render() {
     return (
-      <div className="card">
+      <div>
         {this.renderSubmitSleepForm()}
       </div>
     );
