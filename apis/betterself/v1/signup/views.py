@@ -23,20 +23,20 @@ class CreateUserView(APIView):
 
     def post(self, request):
         serializer = CreateUserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-
-            token, _ = Token.objects.get_or_create(user=user)
-            json_response = serializer.data
-            json_response['token'] = token.key
-
-            # build default events for new-users
-            builder = DefaultEventsBuilder(user)
-            builder.build_defaults()
-
-            return Response(json_response, status=HTTP_201_CREATED)
-        else:
+        if not serializer.is_valid():
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        user = serializer.save()
+
+        token, _ = Token.objects.get_or_create(user=user)
+        json_response = serializer.data
+        json_response['token'] = token.key
+
+        # build default events for new-users
+        builder = DefaultEventsBuilder(user)
+        builder.build_defaults()
+
+        return Response(json_response, status=HTTP_201_CREATED)
 
 
 class CreateDemoUserView(APIView):
