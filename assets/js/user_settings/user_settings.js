@@ -1,24 +1,34 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Authenticator } from "../authentication/auth";
+import { Nav, NavItem, NavLink } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 export class UserSettingsView extends Component {
   constructor() {
     super();
-    this.deleteUser = this.deleteUser.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
+
+    this.state = {
+      userTimeZoneModal: false
+    };
   }
 
-  confirmDelete() {
+  toggle = () => {
+    this.setState({
+      userTimeZoneModal: !this.state.userTimeZoneModal
+    });
+  };
+
+  confirmDelete = () => {
     const userConfirmedDelete = confirm(
       "Are you sure you want to delete? This user's info will be permanently deleted!"
     );
     if (userConfirmedDelete) {
       this.deleteUser();
     }
-  }
+  };
 
-  deleteUser(cb) {
+  deleteUser = cb => {
     fetch("/api/v1/user-info/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS
@@ -29,6 +39,24 @@ export class UserSettingsView extends Component {
       .then(responseData => {
         Authenticator.logout(cb);
       });
+  };
+
+  renderTimeZoneSelectionModal() {
+    if (this.state.userTimeZoneModal) {
+      return (
+        <Modal isOpen={this.state.userTimeZoneModal} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>
+            Change Timezone Preference
+          </ModalHeader>
+          <ModalFooter>
+            <Button color="primary" onClick={this.submitUpdate}>
+              Save
+            </Button>
+            <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      );
+    }
   }
 
   render() {
@@ -48,7 +76,7 @@ export class UserSettingsView extends Component {
                   <button
                     type="button"
                     className="btn btn-outline btn-lg active"
-                    onClick={this.confirmDelete}
+                    onClick={this.toggle}
                   >
                     Change Time Zone
                   </button>
@@ -66,6 +94,7 @@ export class UserSettingsView extends Component {
           </div>
         </div>
         <div id="special-signup-footer" />
+        {this.renderTimeZoneSelectionModal()}
       </div>
     );
   }
