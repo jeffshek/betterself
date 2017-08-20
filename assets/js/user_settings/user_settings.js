@@ -47,6 +47,14 @@ export class UserSettingsView extends Component {
                 <div className="card-block">
                   <button
                     type="button"
+                    className="btn btn-outline btn-lg active"
+                    onClick={this.confirmDelete}
+                  >
+                    Change Time Zone
+                  </button>
+                  &nbsp;&nbsp;
+                  <button
+                    type="button"
                     className="btn btn-outline-danger btn-lg active"
                     onClick={this.confirmDelete}
                   >
