@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from apis.fitbit.models import UserFitbit
+from apis.fitbit.serializers import FitbitResponseSleepActivitySerializer
 from apis.fitbit.views import FitbitUserUpdateSleepHistory, FitbitUserAuthCheck
 
 User = get_user_model()
@@ -40,11 +41,14 @@ class FitBitUserAuthCheckViewTests(TestCase):
         self.assertEqual(response.data, True)
 
 
-class FitbitSerializerTests(TestCase):
+class FitbitAPIRequestSerializerTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user, _ = User.objects.get_or_create(username='default')
         self.client.force_authenticate(self.user)
+
+        # create an imaginary userfit with some records to pass validation checks
+        UserFitbit.objects.create(user=self.user, fitbit_user=1, access_token=1, refresh_token=1, expires_at=1)
 
         super().setUp()
 
@@ -86,3 +90,25 @@ class FitbitSerializerTests(TestCase):
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 400)
+
+
+class FitbitSleepActivityResponseSerializerTests(TestCase):
+    def setUp(self):
+        self.user, _ = User.objects.get_or_create(username='the-test-user')
+        super().setUp()
+
+    def test_serializer(self):
+        data = {
+            'user': self.user.id,
+            'start_time': '2017-07-21T09:51:30.000',
+            'end_time': '2017-08-01T09:51:30.000'
+        }
+        serializer = FitbitResponseSleepActivitySerializer(data=data)
+
+        validity = serializer.is_valid()
+        serializer.save()
+
+        self.assertTrue(validity)
+        self.assertEqual(serializer.data['user'], self.user.id)
+        # this should default to api if brought from fitbit
+        self.assertEqual(serializer.data['source'], 'api')

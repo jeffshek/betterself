@@ -102,7 +102,7 @@ export class AddSleepEvent extends Component {
       end_date: this.state.apiEndDate.format(DATE_REQUEST_FORMAT)
     };
 
-    fetch("/api/fitbit/update-sleep-history", {
+    fetch("/api/fitbit/update-sleep-history/", {
       method: "POST",
       headers: JSON_POST_AUTHORIZATION_HEADERS,
       body: JSON.stringify(postParams)
@@ -147,7 +147,7 @@ export class AddSleepEvent extends Component {
               id="setup-fitbit-button"
               className="btn btn-sm btn-success"
             >
-              <i className="fa fa-dot-circle-o" /> Setup FitBit Access
+              <i className="fa fa-dot-circle-o" />Setup FitBit Access
             </button>
           </a>
         </div>
