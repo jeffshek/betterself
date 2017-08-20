@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/requests";
 import { DASHBOARD_INDEX_URL } from "../constants/urls";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 export class SignupView extends Component {
   constructor() {
@@ -24,7 +25,8 @@ export class SignupView extends Component {
     } else {
       const postParams = {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        timezone: moment.tz.guess()
       };
 
       fetch("api/v1/user-signup/", {
