@@ -13,11 +13,9 @@ export class SignupView extends Component {
       password: "",
       password_confirm: ""
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
 
     if (this.state.password !== this.state.password_confirm) {
@@ -58,9 +56,9 @@ export class SignupView extends Component {
           }
         });
     }
-  }
+  };
 
-  handleChange(event) {
+  handleChange = event => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -68,7 +66,7 @@ export class SignupView extends Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
   render() {
     return (
