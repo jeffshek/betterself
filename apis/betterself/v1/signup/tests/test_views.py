@@ -43,6 +43,38 @@ class AccountsTest(TestCase):
         self.assertEqual(response.data['token'], token.key)
         self.assertFalse('password' in response.data)
 
+    def test_create_user_with_timezone(self):
+        """
+        Ensure we can create a new user and a valid token is created with it.
+        """
+        data = {
+            'username': 'foobar',
+            'password': 'somepassword',
+            'timezone': 'America/New_York'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.data['username'], data['username'])
+        self.assertFalse('password' in response.data)
+
+        created_user = User.objects.get(username=data['username'])
+        self.assertEqual(created_user.timezone, data['timezone'])
+
+    def test_create_user_with_invalid_timezone(self):
+        """
+        Ensure we can create a new user and a valid token is created with it.
+        """
+        data = {
+            'username': 'foobar',
+            'password': 'somepassword',
+            'timezone': 'WILLY-WONKA'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, 400)
+        # if invalid, should contain error about timezone
+        self.assertTrue('timezone' in response.data)
+
     def test_create_user_with_short_password(self):
         """
         Ensures user is not created for password lengths less than 8.
