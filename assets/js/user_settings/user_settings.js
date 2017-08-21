@@ -1,24 +1,22 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Authenticator } from "../authentication/auth";
 
 export class UserSettingsView extends Component {
   constructor() {
     super();
-    this.deleteUser = this.deleteUser.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
   }
 
-  confirmDelete() {
+  confirmDelete = () => {
     const userConfirmedDelete = confirm(
       "Are you sure you want to delete? This user's info will be permanently deleted!"
     );
     if (userConfirmedDelete) {
       this.deleteUser();
     }
-  }
+  };
 
-  deleteUser(cb) {
+  deleteUser = cb => {
     fetch("/api/v1/user-info/", {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS
@@ -29,7 +27,7 @@ export class UserSettingsView extends Component {
       .then(responseData => {
         Authenticator.logout(cb);
       });
-  }
+  };
 
   render() {
     return (
@@ -45,6 +43,15 @@ export class UserSettingsView extends Component {
               </div>
               <div className="animated fadeIn">
                 <div className="card-block">
+                  <a href="/users/~update/">
+                    <button
+                      type="button"
+                      className="btn btn-outline btn-lg active"
+                    >
+                      Change Time Zone
+                    </button>
+                  </a>
+                  &nbsp;&nbsp;
                   <button
                     type="button"
                     className="btn btn-outline-danger btn-lg active"

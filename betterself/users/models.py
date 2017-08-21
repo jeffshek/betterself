@@ -12,6 +12,8 @@ from rest_framework.authtoken.models import Token
 
 from betterself.base_models import BaseModel
 
+TIMEZONE_CHOICES = [(x, x) for x in pytz.common_timezones]
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -23,7 +25,7 @@ class User(AbstractUser):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
     # since this is dealing with a lot of different timezones - enforce a user input
-    timezone = models.CharField(max_length=50, choices=[(x, x) for x in pytz.common_timezones], default='US/Eastern')
+    timezone = models.CharField(max_length=50, choices=TIMEZONE_CHOICES, default='US/Eastern')
 
     def __str__(self):
         return self.username
