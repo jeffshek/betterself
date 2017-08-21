@@ -10,52 +10,47 @@ export class SignupView extends Component {
 
     this.state = {
       username: "",
-      password: "",
-      password_confirm: ""
+      password: ""
     };
   }
 
   handleSubmit = event => {
     event.preventDefault();
 
-    if (this.state.password !== this.state.password_confirm) {
-      alert("Passwords does not match confirm password. Please try again.");
-    } else {
-      const postParams = {
-        username: this.state.username,
-        password: this.state.password,
-        timezone: moment.tz.guess()
-      };
+    const postParams = {
+      username: this.state.username,
+      password: this.state.password,
+      timezone: moment.tz.guess()
+    };
 
-      fetch("api/v1/user-signup/", {
-        method: "POST",
-        headers: JSON_HEADERS,
-        body: JSON.stringify(postParams)
+    fetch("api/v1/user-signup/", {
+      method: "POST",
+      headers: JSON_HEADERS,
+      body: JSON.stringify(postParams)
+    })
+      .then(response => {
+        if (response.status === 400) {
+          response.json().then(responseData => {
+            if ("username" in responseData) {
+              alert("Username : " + responseData["username"]);
+            } else if ("password" in responseData) {
+              alert("Password : " + responseData["password"]);
+            }
+          });
+          // Don't return anything if its not working
+          return;
+        }
+        return response.json();
       })
-        .then(response => {
-          if (response.status === 400) {
-            response.json().then(responseData => {
-              if ("username" in responseData) {
-                alert("Username : " + responseData["username"]);
-              } else if ("password" in responseData) {
-                alert("Password : " + responseData["password"]);
-              }
-            });
-            // Don't return anything if its not working
-            return;
-          }
-          return response.json();
-        })
-        .then(responseData => {
-          if ("token" in responseData) {
-            // If the token is in the response, set the storage
-            // and then redirect to the dashboard
-            localStorage.token = responseData["token"];
-            localStorage.userName = responseData["username"];
-            window.location.assign(DASHBOARD_INDEX_URL);
-          }
-        });
-    }
+      .then(responseData => {
+        if ("token" in responseData) {
+          // If the token is in the response, set the storage
+          // and then redirect to the dashboard
+          localStorage.token = responseData["token"];
+          localStorage.userName = responseData["username"];
+          window.location.assign(DASHBOARD_INDEX_URL);
+        }
+      });
   };
 
   handleChange = event => {
@@ -114,19 +109,6 @@ export class SignupView extends Component {
                       <span className="help-block">
                         {" "}Minimum of 8 Characters
                       </span>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" />
-                    <div className="col-md-9">
-                      <input
-                        name="password_confirm"
-                        type="password"
-                        className="form-control"
-                        value={this.state.password_confirm}
-                        onChange={this.handleChange}
-                        placeholder="Confirm Password.."
-                      />
                     </div>
                   </div>
                 </form>
