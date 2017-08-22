@@ -98,7 +98,6 @@ class FitbitUserUpdateSleepHistory(APIView):
         serializer.is_valid(raise_exception=True)
 
         # send the job off to celery so it's an async task
-        # import_user_fitbit_history_via_api.delay(user=user, **serializer.validated_data)
-        import_user_fitbit_history_via_api(user=user, **serializer.validated_data)
+        import_user_fitbit_history_via_api.delay(user=user, **serializer.validated_data)
 
         return Response(status=202)
