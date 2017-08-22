@@ -35,7 +35,7 @@ class TestRescueTimeAPIPostView(TestCase):
             'end_date': '2017-01-01'
         }
         response = self.client.post(self.url, data=data)
-        self.assertTrue('wrong format' in response.data)
+        self.assertTrue('start_date' in response.data)
         self.assertEqual(response.status_code, 400)
 
     def test_view_with_valid_parameters(self):

@@ -1,13 +1,19 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import Http404
 from django.shortcuts import redirect
+from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
+from apis.fitbit.serializers import FitbitAPIRequestSerializer
+from apis.fitbit.utils import is_integrated
+from apis.fitbit.tasks import import_user_fitbit_history_via_api
 
 
 class FitbitLoginView(TemplateView):
@@ -43,13 +49,13 @@ class FitbitCompleteView(APIView):
         try:
             token = fb.client.fetch_access_token(code, callback_uri)
             access_token = token['access_token']
-            fitbit_user = token['user_id']
+            fitbit_user_id = token['user_id']
         except KeyError:
             raise Http404('Invalid Token')
 
         user = request.user
         UserFitbit.objects.update_or_create(user=user, defaults={
-            'fitbit_user': fitbit_user,
+            'fitbit_user_id': fitbit_user_id,
             'access_token': access_token,
             'refresh_token': token['refresh_token'],
             'expires_at': token['expires_at'],
@@ -59,3 +65,42 @@ class FitbitCompleteView(APIView):
             'FITBIT_LOGIN_REDIRECT')
 
         return redirect(next_url)
+
+
+class FitbitUserAuthCheck(APIView):
+    # Simple class to check if a user has authorized Fitbit Credentials
+    # Used by the frontend to decide which modal to display
+    permission_classes = (IsAuthenticated, )
+    url = 'fitbit-user-auth-check'
+
+    def get(self, request):
+        data = is_integrated(request.user)
+        return Response(data)
+
+
+class FitbitUserUpdateSleepHistory(APIView):
+    # This concept isn't really RESTful (and more akin to SOA),
+    # but I can't tell if it's really worth it either to make it a resource
+    permission_classes = (IsAuthenticated,)
+    throttle_scope = 'fitbit-api-sync'
+    url = 'fitbit-user-update-sleep-history'
+
+    def post(self, request):
+        data = request.data
+        user = request.user
+
+        try:
+            initial_data = {
+                'start_date': data['start_date'],
+                'end_date': data['end_date'],
+            }
+        except (MultiValueDictKeyError, KeyError) as exc:
+            return Response('Missing POST parameters {}'.format(exc), status=400)
+
+        serializer = FitbitAPIRequestSerializer(data=initial_data)
+        serializer.is_valid(raise_exception=True)
+
+        # send the job off to celery so it's an async task
+        import_user_fitbit_history_via_api.delay(user=user, **serializer.validated_data)
+
+        return Response(status=202)

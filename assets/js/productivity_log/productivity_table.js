@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import {
