@@ -2,7 +2,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apis.rescuetime.tasks import import_user_history_via_api
+from apis.rescuetime.tasks import import_user_rescuetime_history_via_api
 from apis.rescuetime.v1.serializers import RescueTimeAPIRequestSerializer
 
 
@@ -27,6 +27,6 @@ class UpdateRescueTimeAPIView(APIView):
         serializer.is_valid(raise_exception=True)
 
         # send the job off to celery so it's an async task
-        import_user_history_via_api.delay(user=user, **serializer.validated_data)
+        import_user_rescuetime_history_via_api.delay(user=user, **serializer.validated_data)
 
         return Response(status=202)
