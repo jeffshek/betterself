@@ -147,7 +147,7 @@ export class AddSleepEvent extends Component {
               id="setup-fitbit-button"
               className="btn btn-sm btn-success"
             >
-              <i className="fa fa-dot-circle-o" />Setup FitBit Access
+              <i className="fa fa-dot-circle-o" /> Setup FitBit Access
             </button>
           </a>
         </div>

@@ -35,7 +35,7 @@ class FitBitUserAuthCheckViewTests(TestCase):
         user, _ = User.objects.get_or_create(username='fitman-logged')
         client = APIClient()
         client.force_authenticate(user)
-        UserFitbit.objects.create(user=user, fitbit_user=1, access_token=1, refresh_token=1, expires_at=1)
+        UserFitbit.objects.create(user=user, fitbit_user_id=1, access_token=1, refresh_token=1, expires_at=1)
 
         response = client.get(self.url)
         self.assertEqual(response.data, True)
@@ -48,7 +48,7 @@ class FitbitAPIRequestSerializerTests(TestCase):
         self.client.force_authenticate(self.user)
 
         # create an imaginary userfit with some records to pass validation checks
-        UserFitbit.objects.create(user=self.user, fitbit_user=1, access_token=1, refresh_token=1, expires_at=1)
+        UserFitbit.objects.create(user=self.user, fitbit_user_id=1, access_token=1, refresh_token=1, expires_at=1)
 
         super().setUp()
 

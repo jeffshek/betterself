@@ -49,13 +49,13 @@ class FitbitCompleteView(APIView):
         try:
             token = fb.client.fetch_access_token(code, callback_uri)
             access_token = token['access_token']
-            fitbit_user = token['user_id']
+            fitbit_user_id = token['user_id']
         except KeyError:
             raise Http404('Invalid Token')
 
         user = request.user
         UserFitbit.objects.update_or_create(user=user, defaults={
-            'fitbit_user': fitbit_user,
+            'fitbit_user_id': fitbit_user_id,
             'access_token': access_token,
             'refresh_token': token['refresh_token'],
             'expires_at': token['expires_at'],
