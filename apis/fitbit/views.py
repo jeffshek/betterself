@@ -69,6 +69,7 @@ class FitbitCompleteView(APIView):
 
 class FitbitUserAuthCheck(APIView):
     # Simple class to check if a user has authorized Fitbit Credentials
+    # Used by the frontend to decide which modal to display
     permission_classes = (IsAuthenticated, )
     url = 'fitbit-user-auth-check'
 
@@ -78,8 +79,10 @@ class FitbitUserAuthCheck(APIView):
 
 
 class FitbitUserUpdateSleepHistory(APIView):
-    # This concept isn't really RESTful (and more akin to SOA), but I can't tell if it's really worth it either
+    # This concept isn't really RESTful (and more akin to SOA),
+    # but I can't tell if it's really worth it either to make it a resource
     permission_classes = (IsAuthenticated,)
+    throttle_scope = 'fitbit-api-sync'
     url = 'fitbit-user-update-sleep-history'
 
     def post(self, request):
