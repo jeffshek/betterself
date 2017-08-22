@@ -12,6 +12,7 @@ class UserFitbit(models.Model):
     """ A user's fitbit credentials, allowing API access """
     user = models.OneToOneField(USER_MODEL)
     # feel like a better representation is if this was called id
+    # really hate this field name
     fitbit_user = models.CharField(max_length=32, unique=True)
     access_token = models.TextField()
     refresh_token = models.TextField()

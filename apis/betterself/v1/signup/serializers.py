@@ -22,9 +22,5 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Override create in this serializer so we can use the function create_user
         # thus resulting in salted password hashes
-        username = validated_data.pop('username')
-        password = validated_data.pop('password')
-        timezone = validated_data.pop('timezone')
-
-        user = User.objects.create_user(username=username, password=password, timezone=timezone)
+        user = User.objects.create_user(**validated_data)
         return user
