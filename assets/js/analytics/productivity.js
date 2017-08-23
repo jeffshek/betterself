@@ -158,7 +158,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         </div>
         <div className="card-block">
           <div className="chart-wrapper">
-            <Line
+            <Bar
               data={this.state.productivityHistoryChart}
               options={{
                 maintainAspectRatio: false

@@ -71,7 +71,7 @@ export class SleepAnalyticsView extends BaseAnalyticsView {
         </div>
         <div className="card-block">
           <div className="chart-wrapper">
-            <Line
+            <Bar
               data={this.state.sleepHistory}
               options={{
                 maintainAspectRatio: false
