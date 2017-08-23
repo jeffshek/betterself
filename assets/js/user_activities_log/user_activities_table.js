@@ -131,19 +131,19 @@ export class UserActivityLogTable extends BaseEventLogTable {
   }
 
   renderReady() {
-    if (this.props.renderReady) {
-      return (
-        <div className="card-block">
-          <div className="float-right">
-            {this.getNavPaginationControlRender()}
-          </div>
-          {this.getTableRender()}
-          {this.getNavPaginationControlRender()}
-        </div>
-      );
-    } else {
+    if (!this.props.renderReady) {
       return <CubeLoadingStyle />;
     }
+
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
   }
 
   render() {
