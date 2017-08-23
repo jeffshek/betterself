@@ -1,9 +1,6 @@
 import Datetime from "react-datetime";
-import React, { Component, PropTypes } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/requests";
+import React, { Component } from "react";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../constants/urls";

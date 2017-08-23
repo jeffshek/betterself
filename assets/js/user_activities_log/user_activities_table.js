@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
@@ -35,7 +35,8 @@ export class UserActivityLogTable extends BaseEventLogTable {
       uuid: this.state.editObject["uuid"],
       name: this.state["activityName"],
       is_significant_activity: this.state["isSignificantActivity"],
-      is_negative_activity: this.state["isNegativeActivity"]
+      is_negative_activity: this.state["isNegativeActivity"],
+      is_all_day_activity: this.state["isAllDayActivity"]
     };
 
     this.putParamsUpdate(params);
@@ -94,7 +95,6 @@ export class UserActivityLogTable extends BaseEventLogTable {
             <option value={false}>False</option>
           </select>
           <br />
-
           <label className="form-control-label add-event-label">
             Is Negative
           </label>
@@ -103,6 +103,20 @@ export class UserActivityLogTable extends BaseEventLogTable {
             className="form-control"
             size="1"
             defaultValue={this.state.editObject["is_negative_activity"]}
+            onChange={this.handleInputChange}
+          >
+            <option value={true}>True</option>
+            <option value={false}>False</option>
+          </select>
+          <br />
+          <label className="form-control-label add-event-label">
+            Is All Day
+          </label>
+          <select
+            name="isAllDayActivity"
+            className="form-control"
+            size="1"
+            defaultValue={this.state.editObject["is_all_day_activity"]}
             onChange={this.handleInputChange}
           >
             <option value={true}>True</option>
