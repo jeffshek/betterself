@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from "react";
+import React from "react";
 import { TrueCheckBox } from "../constants/designs";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
@@ -11,6 +11,7 @@ export const UserActivityEventHistoryRow = props => {
   const name = user_activity.name;
   const is_negative_activity = user_activity["is_negative_activity"];
   const is_significant_activity = user_activity["is_significant_activity"];
+  const is_all_day_activity = user_activity["is_all_day_activity"];
   const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
 
   return (
@@ -18,8 +19,9 @@ export const UserActivityEventHistoryRow = props => {
       <td>{timeFormatted}</td>
       <td>{name}</td>
       <td>{duration_minutes} minutes</td>
-      <td>{is_significant_activity ? <TrueCheckBox /> : ""}</td>
-      <td>{is_negative_activity ? <TrueCheckBox /> : ""}</td>
+      <td>{is_significant_activity ? <TrueCheckBox /> : <div />}</td>
+      <td>{is_negative_activity ? <TrueCheckBox /> : <div />}</td>
+      <td>{is_all_day_activity ? <TrueCheckBox /> : <div />}</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
@@ -49,6 +51,7 @@ export const UserActivityEventHistoryTableHeader = () => (
       <th>Duration (Minutes)</th>
       <th className="center-source">Significant</th>
       <th className="center-source">Negative</th>
+      <th className="center-source">All Day</th>
       <th className="center-source">Source</th>
       <th className="center-source">Actions</th>
     </tr>

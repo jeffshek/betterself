@@ -15,15 +15,10 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
       modal: false
     };
 
-    this.submitEdit = this.submitEdit.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activity_events/";
-    this.handleActivityTypeChangeOnEditObject = this.handleActivityTypeChangeOnEditObject.bind(
-      this
-    );
   }
 
-  handleActivityTypeChangeOnEditObject(event) {
+  handleActivityTypeChangeOnEditObject = event => {
     const target = event.target;
     const value = target.value;
 
@@ -31,9 +26,9 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     editObject["user_activity"] = this.props.userActivityTypes[value];
 
     this.setState({ editObject: editObject });
-  }
+  };
 
-  confirmDelete(uuid, name, eventDate) {
+  confirmDelete = (uuid, name, eventDate) => {
     const answer = confirm(
       `WARNING: This will delete the following Activity \n\n${name} on ${eventDate} \n\nConfirm?`
     );
@@ -41,9 +36,9 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     if (answer) {
       this.deleteUUID(uuid);
     }
-  }
+  };
 
-  submitEdit() {
+  submitEdit = () => {
     const params = {
       uuid: this.state.editObject["uuid"],
       time: this.state.editObject["time"],
@@ -53,7 +48,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
 
     this.putParamsUpdate(params);
     this.toggle();
-  }
+  };
 
   getTableRender() {
     const historicalData = this.props.eventHistory;
@@ -77,6 +72,11 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
   }
 
   renderEditModal() {
+    // If not ready, can't render anything yet
+    if (!this.state.modal) {
+      return <div />;
+    }
+
     const activitiesKeys = Object.keys(this.props.userActivityTypes);
     const activitiesNames = activitiesKeys.map(
       key => this.props.userActivityTypes[key].name
@@ -135,6 +135,22 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -142,17 +158,8 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Event History</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
-        {this.state.modal ? <div> {this.renderEditModal()} </div> : <div />}
+        {this.renderReady()}
+        {this.renderEditModal()}
       </div>
     );
   }
