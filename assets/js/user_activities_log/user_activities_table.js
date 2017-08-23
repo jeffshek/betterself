@@ -15,12 +15,10 @@ export class UserActivityLogTable extends BaseEventLogTable {
       editObject: { name: null }
     };
 
-    this.submitEdit = this.submitEdit.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activities/";
   }
 
-  confirmDelete(uuid, name) {
+  confirmDelete = (uuid, name) => {
     const answer = confirm(
       `WARNING: This will delete the following Activity \n\n${name} \n\nConfirm? `
     );
@@ -28,9 +26,9 @@ export class UserActivityLogTable extends BaseEventLogTable {
     if (answer) {
       this.deleteUUID(uuid);
     }
-  }
+  };
 
-  submitEdit() {
+  submitEdit = () => {
     const params = {
       uuid: this.state.editObject["uuid"],
       name: this.state["activityName"],
@@ -41,7 +39,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
 
     this.putParamsUpdate(params);
     this.toggle();
-  }
+  };
 
   getTableRender() {
     const historicalData = this.props.eventHistory;
@@ -132,6 +130,22 @@ export class UserActivityLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (this.props.renderReady) {
+      return (
+        <div className="card-block">
+          <div className="float-right">
+            {this.getNavPaginationControlRender()}
+          </div>
+          {this.getTableRender()}
+          {this.getNavPaginationControlRender()}
+        </div>
+      );
+    } else {
+      return <CubeLoadingStyle />;
+    }
+  }
+
   render() {
     return (
       <div className="card">
@@ -139,16 +153,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Activities List</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
+        {this.renderReady()}
         {this.renderEditModal()}
       </div>
     );
