@@ -2304,6 +2304,12 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
+ladda@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ladda/-/ladda-1.0.1.tgz#83b7ac1dc88edf5b6a1c8b949eb6442ec7f4ae4d"
+  dependencies:
+    spin.js "^2.0.0"
+
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
@@ -3309,6 +3315,13 @@ react-hot-loader@^1.3.1:
     react-hot-api "^0.4.5"
     source-map "^0.4.4"
 
+react-ladda@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/react-ladda/-/react-ladda-5.0.7.tgz#84d706cccd45e1eccc742f0d7b20c7254893df82"
+  dependencies:
+    ladda "^1.0.0"
+    prop-types "^15.5.8"
+
 react-onclickoutside@^5.9.0:
   version "5.11.1"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-5.11.1.tgz#00314e52567cf55faba94cabbacd119619070623"
@@ -3688,6 +3701,10 @@ spdx-expression-parse@~1.0.0:
 spdx-license-ids@^1.0.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-1.2.2.tgz#c9df7a3424594ade6bd11900d596696dc06bac57"
+
+spin.js@^2.0.0:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-2.3.2.tgz#6caa56d520673450fd5cfbc6971e6d0772c37a1a"
 
 sprintf-js@~1.0.2:
   version "1.0.3"
