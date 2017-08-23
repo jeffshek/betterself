@@ -46,7 +46,7 @@ class FitbitResponseSleepActivitySerializer(serializers.ModelSerializer):
         end_time = data['end_time'].replace(tzinfo=None)
 
         # fitbit doesn't give timezone aware objects, so convert it here prior to saving
-        # NOTE: Don't use replace to swap out UTC to another timezone, it has very odd
+        # Don't use replace to swap out UTC to another timezone, it has very odd
         # consequences! In short, just assume it's buggy and try to use it almost never!
         start_time_local = user.pytz_timezone.localize(start_time)
         end_time_local = user.pytz_timezone.localize(end_time)

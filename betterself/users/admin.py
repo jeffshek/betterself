@@ -6,10 +6,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import User, DemoUserLog
+from betterself.users.models import User, DemoUserLog
 
-
-# TODO - I don't really like this from CookieCutter
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
