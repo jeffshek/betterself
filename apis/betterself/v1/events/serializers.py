@@ -112,6 +112,7 @@ class UserActivitySerializer(serializers.Serializer):
     name = serializers.CharField()
     is_significant_activity = serializers.BooleanField(required=False)
     is_negative_activity = serializers.BooleanField(required=False)
+    is_all_day_activity = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
         create_model = self.context['view'].model
@@ -136,13 +137,17 @@ class UserActivityUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(required=False)
     is_significant_activity = serializers.BooleanField(required=False)
     is_negative_activity = serializers.BooleanField(required=False)
+    is_all_day_activity = serializers.BooleanField(required=False)
 
     def update(self, instance, validated_data):
+        # Maybe you're doing this wrong ... don't think you should need to do all of this
         instance.name = validated_data.get('name', instance.name)
         instance.is_significant_activity = validated_data.get('is_significant_activity',
                                                               instance.is_significant_activity)
         instance.is_negative_activity = validated_data.get('is_negative_activity', instance.is_negative_activity)
+        instance.is_all_day_activity = validated_data.get('is_all_day_activity', instance.is_all_day_activity)
         instance.save()
+
         return instance
 
 

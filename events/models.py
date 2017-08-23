@@ -145,6 +145,8 @@ class UserActivity(BaseModelWithUserGeneratedContent):
     # Are there certain foods that will likely cause a negative user_activity?
     # Personally - Eating foods with lots of preservatives causes depression/flu like symptoms that last for 1-2 days
     is_negative_activity = models.BooleanField(default=False)
+    # I find certain events are complete days, ie. Being sick with an impacted wisdom tooth was the worst.
+    is_all_day_activity = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (('name', 'user'),)
