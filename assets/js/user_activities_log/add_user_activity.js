@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -50,6 +50,7 @@ export class AddUserActivity extends Component {
     const postParams = {
       is_significant_activity: this.isSignificant.value,
       is_negative_activity: this.isNegative.value,
+      is_all_day_activity: this.isAllDay.value,
       name: this.state["activityName"]
     };
 
@@ -112,6 +113,24 @@ export class AddUserActivity extends Component {
                 size="1"
                 defaultValue={false}
                 ref={input => this.isNegative = input}
+              >
+                &gt;
+                <option value={true}>True</option>
+                <option value={false}>False</option>
+              </select>
+            </div>
+            <br />
+            <label className="col-md-3 form-control-label add-event-label">
+              Is All Day?
+            </label>
+            <div className="col-md-4">
+              <select
+                id="select"
+                name="select"
+                className="form-control"
+                size="1"
+                defaultValue={false}
+                ref={input => this.isAllDay = input}
               >
                 &gt;
                 <option value={true}>True</option>

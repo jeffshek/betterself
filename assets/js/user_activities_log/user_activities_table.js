@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
@@ -15,12 +15,10 @@ export class UserActivityLogTable extends BaseEventLogTable {
       editObject: { name: null }
     };
 
-    this.submitEdit = this.submitEdit.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/user_activities/";
   }
 
-  confirmDelete(uuid, name) {
+  confirmDelete = (uuid, name) => {
     const answer = confirm(
       `WARNING: This will delete the following Activity \n\n${name} \n\nConfirm? `
     );
@@ -28,19 +26,20 @@ export class UserActivityLogTable extends BaseEventLogTable {
     if (answer) {
       this.deleteUUID(uuid);
     }
-  }
+  };
 
-  submitEdit() {
+  submitEdit = () => {
     const params = {
       uuid: this.state.editObject["uuid"],
       name: this.state["activityName"],
       is_significant_activity: this.state["isSignificantActivity"],
-      is_negative_activity: this.state["isNegativeActivity"]
+      is_negative_activity: this.state["isNegativeActivity"],
+      is_all_day_activity: this.state["isAllDayActivity"]
     };
 
     this.putParamsUpdate(params);
     this.toggle();
-  }
+  };
 
   getTableRender() {
     const historicalData = this.props.eventHistory;
@@ -94,7 +93,6 @@ export class UserActivityLogTable extends BaseEventLogTable {
             <option value={false}>False</option>
           </select>
           <br />
-
           <label className="form-control-label add-event-label">
             Is Negative
           </label>
@@ -103,6 +101,20 @@ export class UserActivityLogTable extends BaseEventLogTable {
             className="form-control"
             size="1"
             defaultValue={this.state.editObject["is_negative_activity"]}
+            onChange={this.handleInputChange}
+          >
+            <option value={true}>True</option>
+            <option value={false}>False</option>
+          </select>
+          <br />
+          <label className="form-control-label add-event-label">
+            Is All Day
+          </label>
+          <select
+            name="isAllDayActivity"
+            className="form-control"
+            size="1"
+            defaultValue={this.state.editObject["is_all_day_activity"]}
             onChange={this.handleInputChange}
           >
             <option value={true}>True</option>
@@ -118,6 +130,22 @@ export class UserActivityLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -125,16 +153,7 @@ export class UserActivityLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Activities List</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
+        {this.renderReady()}
         {this.renderEditModal()}
       </div>
     );

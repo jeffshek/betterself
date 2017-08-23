@@ -1,15 +1,22 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { TrueCheckBox } from "../constants/designs";
 
 export const UserActivityHistoryRow = props => {
   const data = props.object;
-  const { name, is_significant_activity, is_negative_activity, uuid } = data;
+  const {
+    name,
+    is_significant_activity,
+    is_negative_activity,
+    uuid,
+    is_all_day_activity
+  } = data;
 
   return (
     <tr>
       <td>{name}</td>
       <td>{is_significant_activity ? <TrueCheckBox /> : <div />}</td>
       <td>{is_negative_activity ? <TrueCheckBox /> : <div />}</td>
+      <td>{is_all_day_activity ? <TrueCheckBox /> : <div />}</td>
       <td>
         <div className="center-icon">
           <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
@@ -34,6 +41,7 @@ export const UserActivityHistoryTableHeader = () => (
       <th>Activity Name</th>
       <th className="center-source">Significant</th>
       <th className="center-source">Negative</th>
+      <th className="center-source">All Day</th>
       <th className="center-source">Actions</th>
     </tr>
   </thead>
