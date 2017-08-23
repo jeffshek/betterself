@@ -293,10 +293,12 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderUserActivitiesChart() {
+    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.correlationLookBackDays} Days)`;
+
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          {this.userActivitiesCorrelationsChartLabel}
+          {userActivitiesCorrelationsChartLabel}
         </div>
         <div className="chart-wrapper">
           <Bar
@@ -355,7 +357,8 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
-    const supplementsCorrelationsChartLabel = `Supplements and Productivity Correlation (Last ${this.state.correlationLookBackDays} Days)`;
+    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookBackDays} Days)`;
+
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">

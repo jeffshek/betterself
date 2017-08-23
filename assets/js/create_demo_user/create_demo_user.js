@@ -1,23 +1,33 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { DASHBOARD_INDEX_URL } from "../constants/urls";
+import LaddaButton, { EXPAND_LEFT } from "react-ladda";
+
+const ShowLoading = () => {
+  return (
+    <LaddaButton
+      className="btn btn-sm btn-success btn-ladda float-right"
+      loading={true}
+      data-color="green"
+      data-style={EXPAND_LEFT}
+    >
+      Creating Demo User History
+    </LaddaButton>
+  );
+};
 
 export class CreateDemoUserView extends Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      onClickDisabled: false,
-      createDemoUserText: "Create Demo User",
-      createDemoUserState: "CREATE DEMO USER"
+      onClickDisabled: false
     };
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({
-      onClickDisabled: true,
-      createDemoUserState: "GENERATING DEMO USER ... PLEASE WAIT ( ~ TEN SECONDS )"
+      onClickDisabled: true
     });
 
     return fetch("/api/v1/user-signup-demo/", {
@@ -37,6 +47,24 @@ export class CreateDemoUserView extends Component {
         }
         return responseData;
       });
+  };
+
+  renderSubmitButton() {
+    if (this.state.onClickDisabled) {
+      return <ShowLoading />;
+    } else
+      return (
+        <button
+          type="submit"
+          className="btn btn-sm btn-success float-right"
+          id="create-username"
+          onClick={this.handleSubmit}
+          disabled={this.state.onClickDisabled}
+        >
+          <i className="fa fa-dot-circle-o" />
+          {" "}Create Demo User
+        </button>
+      );
   }
 
   render() {
@@ -49,7 +77,7 @@ export class CreateDemoUserView extends Component {
             <div className="card">
               <div className="card-header">
                 <br />
-                <h3><strong>&nbsp;{this.state.createDemoUserText}</strong></h3>
+                <h3><strong>&nbsp;Create Demo User</strong></h3>
               </div>
               <div className="card-block">
                 <form method="post" className="form-horizontal ">
@@ -69,17 +97,7 @@ export class CreateDemoUserView extends Component {
                 </form>
               </div>
               <div className="card-footer">
-                <button
-                  type="submit"
-                  className="btn btn-sm btn-success float-right"
-                  id="create-username"
-                  onClick={this.handleSubmit}
-                  disabled={this.state.onClickDisabled}
-                >
-                  <i className="fa fa-dot-circle-o" />
-                  {" "}
-                  {this.state.createDemoUserState}
-                </button>&nbsp;
+                {this.renderSubmitButton()}
               </div>
             </div>
           </div>
