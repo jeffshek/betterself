@@ -355,7 +355,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
-    const supplementsCorrelationsChartLabel = `Supplements and Productivity Correlation (Last ${this.state.correlationLookBackDays} Days)`;
+    let supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookBackDays} Days)`;
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
