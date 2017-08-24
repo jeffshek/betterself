@@ -16,12 +16,11 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
 
     const { date } = props;
 
-    this.resourceDate = moment(date);
-    this.previousResourceDate = moment(date).subtract(1, "days");
-
     this.tableNavTabs = ["Today", "Yesterday"];
 
     this.state = {
+      resourceDate: moment(date),
+      previousResourceDate: moment(date).subtract(1, "days"),
       supplementsHistory: [[], []],
       supplementsHistoryToday: [],
       supplementsHistoryYesterday: [],
@@ -30,6 +29,27 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
       userActivityEventsHistoryYesterday: []
     };
   }
+
+  componentDidMount() {
+    this.updateResources();
+  }
+
+  componentWillReceiveProps(props) {
+    const { date } = props;
+
+    this.setState(
+      {
+        resourceDate: moment(date),
+        previousResourceDate: moment(date).subtract(1, "days")
+      },
+      this.updateResources
+    );
+  }
+
+  updateResources = () => {
+    this.getSupplementsHistory();
+    this.getUserActivityEventsHistory();
+  };
 
   getUserActivityEventsHistory() {
     const historyToday = this.getUserActivityEventsHistoryToday();
@@ -61,28 +81,28 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
 
   getSupplementsHistoryToday() {
     return this.fetchSupplementsHistory(
-      this.resourceDate,
+      this.state.resourceDate,
       "supplementsHistoryToday"
     );
   }
 
   getSupplementsHistoryYesterday() {
     return this.fetchSupplementsHistory(
-      this.previousResourceDate,
+      this.state.previousResourceDate,
       "supplementsHistoryYesterday"
     );
   }
 
   getUserActivityEventsHistoryToday() {
     return this.fetchUserActivityEventsHistory(
-      this.resourceDate,
+      this.state.resourceDate,
       "userActivityEventsHistoryToday"
     );
   }
 
   getUserActivityEventsHistoryYesterday() {
     return this.fetchUserActivityEventsHistory(
-      this.previousResourceDate,
+      this.state.previousResourceDate,
       "userActivityEventsHistoryYesterday"
     );
   }
@@ -149,11 +169,6 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
         });
         return results;
       });
-  }
-
-  componentDidMount() {
-    this.getSupplementsHistory();
-    this.getUserActivityEventsHistory();
   }
 
   renderUserActivitiesHistory() {

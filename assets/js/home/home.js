@@ -1,5 +1,4 @@
-import React, { PropTypes, Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import LoggedOutHeader from "../header/external_header";
 import Footer from "../footer/footer";
 import HomePageDescriptionSection from "./components/HomePageDescription";

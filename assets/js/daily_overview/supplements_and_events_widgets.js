@@ -19,11 +19,10 @@ export class DailyOverviewWidgetsView extends Component {
 
     const { date } = props;
 
-    this.resourceDate = moment(date);
-    this.previousResourceDate = moment(date).subtract(1, "days");
-    this.nextResourceDate = moment(date).add(1, "days");
-
     this.state = {
+      resourceDate: moment(date),
+      previousResourceDate: moment(date).subtract(1, "days"),
+      nextResourceDate: moment(date).add(1, "days"),
       productivityTimeToday: 0,
       productivityTimeYesterday: 0,
       distractingTimeYesterday: 0,
@@ -33,6 +32,28 @@ export class DailyOverviewWidgetsView extends Component {
       supplementsHistoryYesterday: []
     };
   }
+
+  componentDidMount() {
+    this.updateResources();
+  }
+
+  componentWillReceiveProps(props) {
+    const { date } = props;
+
+    this.setState(
+      {
+        resourceDate: moment(date),
+        previousResourceDate: moment(date).subtract(1, "days"),
+        nextResourceDate: moment(date).add(1, "days")
+      },
+      this.updateResources
+    );
+  }
+
+  updateResources = () => {
+    this.getProductivityHistory();
+    this.getSupplementsHistory();
+  };
 
   getSupplementsHistory() {
     const historyToday = this.getSupplementsHistoryToday();
@@ -50,14 +71,14 @@ export class DailyOverviewWidgetsView extends Component {
 
   getSupplementsHistoryToday() {
     return this.fetchSupplementsHistory(
-      this.resourceDate,
+      this.state.resourceDate,
       "supplementsHistoryToday"
     );
   }
 
   getSupplementsHistoryYesterday() {
     return this.fetchSupplementsHistory(
-      this.previousResourceDate,
+      this.state.previousResourceDate,
       "supplementsHistoryYesterday"
     );
   }
@@ -87,15 +108,16 @@ export class DailyOverviewWidgetsView extends Component {
         this.setState({
           [supplementHistoryKey]: resultsWithHash
         });
+
         return results;
       });
   }
 
   getProductivityHistory() {
-    const startDateString = this.previousResourceDate.format(
+    const startDateString = this.state.previousResourceDate.format(
       DATE_REQUEST_FORMAT
     );
-    const endDateString = this.resourceDate.format(DATE_REQUEST_FORMAT);
+    const endDateString = this.state.resourceDate.format(DATE_REQUEST_FORMAT);
     const url = `/api/v1/productivity_log/?start_date=${startDateString}&end_date=${endDateString}`;
 
     fetch(url, {
@@ -151,41 +173,48 @@ export class DailyOverviewWidgetsView extends Component {
       });
   }
 
-  componentDidMount() {
-    this.getProductivityHistory();
-    this.getSupplementsHistory();
+  renderHeader() {
+    const previousDayURL = getDailyOverViewURLFromDate(
+      this.state.previousResourceDate
+    );
+    const nextDayURL = getDailyOverViewURLFromDate(this.state.nextResourceDate);
+
+    return (
+      <div className="card-header analytics-text-box-label">
+        <Link to={previousDayURL}>
+          <img
+            src={LEFT_ARROW}
+            className="daily-overview-navigation"
+            width="40px"
+            height="30px"
+            onClick={e =>
+              this.props.resourceDateController(
+                this.state.previousResourceDate
+              )}
+          />
+        </Link>
+
+        <span className="font-2xl username-text">
+          {this.state.resourceDate.format("dddd - MMMM Do YYYY")}
+        </span>
+        <Link to={nextDayURL}>
+          <img
+            src={LEFT_ARROW}
+            className="daily-overview-navigation-flip"
+            width="40px"
+            height="30px"
+            onClick={e =>
+              this.props.resourceDateController(this.state.nextResourceDate)}
+          />
+        </Link>
+      </div>
+    );
   }
 
   render() {
-    const previousDayURL = getDailyOverViewURLFromDate(
-      this.previousResourceDate
-    );
-    const nextDayURL = getDailyOverViewURLFromDate(this.nextResourceDate);
-
     return (
       <div className="card">
-        <div className="card-header analytics-text-box-label">
-          {/*This is garbage URL switching, but I am doing something wrong with Routing ...*/}
-          <a href={previousDayURL}>
-            <img
-              src={LEFT_ARROW}
-              className="daily-overview-navigation"
-              width="40px"
-              height="30px"
-            />
-          </a>
-          <span className="font-2xl username-text">
-            {this.resourceDate.format("dddd - MMMM Do YYYY")}
-          </span>
-          <a href={nextDayURL}>
-            <img
-              src={LEFT_ARROW}
-              className="daily-overview-navigation-flip"
-              width="40px"
-              height="30px"
-            />
-          </a>
-        </div>
+        {this.renderHeader()}
         <br />
         <div className="row">
           <div className="col-sm-6 col-lg-3">
@@ -205,7 +234,6 @@ export class DailyOverviewWidgetsView extends Component {
               </ul>
             </div>
           </div>
-
           <div className="col-sm-6 col-lg-3">
             <div className="social-box gray-background">
               <i className="widgets-analytics icon-ban">
@@ -223,28 +251,7 @@ export class DailyOverviewWidgetsView extends Component {
               </ul>
             </div>
           </div>
-
-          {/*When you implement, uncomment out*/}
-          {/*<div className="col-sm-6 col-lg-3">*/}
-          {/*<div className="social-box default-background">*/}
-          {/*<i className="widgets-analytics icon-volume-off">*/}
-          {/*<span className="widget-font"> Sleep</span>*/}
-          {/*</i>*/}
-          {/*<ul>*/}
-          {/*<li>*/}
-          {/*<strong>8:13 AM</strong>*/}
-          {/*<span>Wake Up Time</span>*/}
-          {/*</li>*/}
-          {/*<li>*/}
-          {/*<strong>6.5 Hours</strong>*/}
-          {/*<span>Total Rest</span>*/}
-          {/*</li>*/}
-          {/*</ul>*/}
-          {/*</div>*/}
-          {/*</div>*/}
-
           <div className="col-sm-6 col-lg-3">
-            {/*Switch to gray background when sleep is added*/}
             <div className="social-box default-background">
               <i className="widgets-analytics icon-chemistry">
                 <span className="widget-font"> Supplements</span>

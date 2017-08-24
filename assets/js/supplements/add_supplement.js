@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import { Link } from "react-router-dom";
+import React, { Component } from "react";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
@@ -248,6 +249,7 @@ export class AddSupplementView extends Component {
         <div className="card-header">
           <strong>Create Supplement</strong> (Per Serving)
         </div>
+
         <div className="card-block">
           <form onSubmit={e => this.addSupplementFormData(e)}>
             <div className="row">
@@ -261,7 +263,6 @@ export class AddSupplementView extends Component {
                 />
               </div>
             </div>
-
             <div className="row">
               <div className="form-group col-sm-4">
                 <label><strong>Ingredients</strong><sup>1</sup></label>
