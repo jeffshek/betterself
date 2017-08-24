@@ -187,6 +187,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   renderSettingsModal() {
+    if (!this.state.modal) {
+      return <div />;
+    }
+
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
@@ -256,7 +260,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         {this.renderHistoryChart()}
         {this.renderSupplementsCorrelations()}
         {this.renderUserActivitiesCorrelations()}
-        {this.state.modal ? <div>{this.renderSettingsModal()}</div> : <div />}
+        {this.renderSettingsModal()}
       </div>
     );
   }
