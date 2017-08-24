@@ -50,10 +50,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState, analyticsSettings);
-    //
-    // this.state.productivityHistoryChart.datasets[
-    //   0
-    // ].label = this.state.selectedProductivityHistoryType;
 
     this.state.productivityHistoryChart.datasets[
       0
