@@ -214,6 +214,13 @@ class SleepActivityDataframeBuilder(object):
         return index
 
     def get_sleep_history_series(self):
+        """
+
+        This returns data as how much sleep did you sleep on Monday night?
+
+        So if you sleep from Monday 10PM to Tuesday 3AM, this will report Monday as 5 Hours! However, this can look
+        weird in a graph as being a day off.
+        """
         if not self.user:
             return pd.Series()
 
