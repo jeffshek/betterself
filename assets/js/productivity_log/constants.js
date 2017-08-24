@@ -9,6 +9,7 @@ import {
 } from "../constants/productivity";
 import moment from "moment";
 import { getDailyOverViewURLFromDate } from "../daily_overview/constants";
+import { Link } from "react-router-dom";
 
 const confirmDelete = (uuid, eventDate) => {
   const answer = confirm(
@@ -45,7 +46,8 @@ export const ProductivityHistoryRow = props => {
 
   return (
     <tr>
-      <td><a href={dateOverviewLink}>{eventDate}</a></td>
+
+      <td><Link to={dateOverviewLink}>{eventDate}</Link></td>
       {/*Append minutes at any data set we have so its easier to comprehend*/}
       <td>{veryProductiveMinutes ? veryProductiveMinutes + " Minutes" : ""}</td>
       <td>{productiveMinutes ? productiveMinutes + " Minutes" : ""}</td>

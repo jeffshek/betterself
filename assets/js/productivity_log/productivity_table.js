@@ -23,6 +23,22 @@ export class ProductivityLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -30,16 +46,7 @@ export class ProductivityLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Productivity History</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
+        {this.renderReady()}
       </div>
     );
   }
