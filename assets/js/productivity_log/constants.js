@@ -46,7 +46,6 @@ export const ProductivityHistoryRow = props => {
 
   return (
     <tr>
-
       <td><Link to={dateOverviewLink}>{eventDate}</Link></td>
       {/*Append minutes at any data set we have so its easier to comprehend*/}
       <td>{veryProductiveMinutes ? veryProductiveMinutes + " Minutes" : ""}</td>

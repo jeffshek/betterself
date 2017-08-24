@@ -244,8 +244,6 @@ export class AddSupplementView extends Component {
   }
 
   render() {
-    const testString = "/dashboard/analytics/daily_overview/2017-08-15";
-
     return (
       <div className="card">
         <div className="card-header">
@@ -265,8 +263,6 @@ export class AddSupplementView extends Component {
                 />
               </div>
             </div>
-            <Link to={testString}>This should change the testString!</Link>
-
             <div className="row">
               <div className="form-group col-sm-4">
                 <label><strong>Ingredients</strong><sup>1</sup></label>

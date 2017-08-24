@@ -15,9 +15,6 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     super(props);
 
     const { date } = props;
-    //
-    // this.resourceDate = moment(date);
-    // this.previousResourceDate = moment(date).subtract(1, "days");
 
     this.tableNavTabs = ["Today", "Yesterday"];
 
