@@ -50,7 +50,7 @@ export class SleepAnalyticsView extends BaseAnalyticsView {
         sleepDates.sort();
 
         const sleepDatesFormatted = sleepDates.map(key =>
-          moment(key).format("MMMM D YYYY")
+          moment(key).format("l dd")
         );
 
         const dataParsed = sleepDates.map(key => {

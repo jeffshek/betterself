@@ -16,6 +16,7 @@ import {
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
+import moment from "moment";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -122,7 +123,9 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       .then(responseData => {
         const reverseResponseData = responseData.results.reverse();
 
-        const labelDates = reverseResponseData.map(key => key.date);
+        const labelDates = reverseResponseData.map(key =>
+          moment(key.date).format("l dd")
+        );
         const arrayValues = reverseResponseData.map(key => {
           return (key.very_productive_time_minutes / 60).toFixed(2);
         });
