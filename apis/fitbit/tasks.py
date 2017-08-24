@@ -1,7 +1,7 @@
 import logging
-
 import fitbit
 import pandas as pd
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 

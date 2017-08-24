@@ -1,13 +1,18 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SUPPLEMENT_EVENT_COLUMN_MAP, \
-    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder
+    TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
+from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog
+from events.models import SupplementEvent, DailyProductivityLog, SleepActivity
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
+
+
+User = get_user_model()
 
 
 # python manage.py test analytics.events.tests.test_dataframe_builders
@@ -161,3 +166,30 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         dataframe = builder.build_daily_dataframe()
 
         self.assertTrue(dataframe.empty)
+
+
+class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
+    # shares some overlap with the tests in api/*, but those tests are probably doing a bit too much.
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='flying-duck')
+
+        builder = DemoHistoricalDataBuilder(cls.user)
+        builder.create_sleep_fixtures()
+
+        super().setUpTestData()
+
+    def test_sleep_dataframe_map_correct_date_to_sleep_time(self):
+        sleep_queryset = SleepActivity.objects.filter(user=self.user)
+        builder = SleepActivityDataframeBuilder(sleep_queryset)
+        dataframe = builder.get_sleep_history_series()
+
+        latest_sleep_record = sleep_queryset[0]
+        latest_sleep_record_start_date = latest_sleep_record.start_time.date()
+        latest_sleep_record_end_date = latest_sleep_record.end_time.date()
+
+        # because the dataframe builder will represent sleep as a showcase of how much you slept that night ...
+        # ie if you sleep on monday from 8pm to 8am, it will show monday as 12 hours, you would expect the dataframe
+        # index to contain monday, but not tuesday's date (at least per the latest record)
+        self.assertTrue(latest_sleep_record_start_date in dataframe.index)
+        self.assertFalse(latest_sleep_record_end_date in dataframe.index)

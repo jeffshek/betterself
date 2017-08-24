@@ -16,6 +16,7 @@ import {
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
+import moment from "moment";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -53,7 +54,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = this.state.selectedProductivityHistoryType;
+    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.supplementCorrelationsURL =
       "api/v1/productivity_log/supplements/correlations";
@@ -104,7 +105,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.state.productivityHistoryChart.datasets[0].data = arrayValues;
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = this.state.selectedProductivityHistoryType;
+    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.setState({
       productivityHistoryChart: this.state.productivityHistoryChart
@@ -122,10 +123,12 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       .then(responseData => {
         const reverseResponseData = responseData.results.reverse();
 
-        const labelDates = reverseResponseData.map(key => key.date);
-        const arrayValues = reverseResponseData.map(
-          key => key.very_productive_time_minutes
+        const labelDates = reverseResponseData.map(key =>
+          moment(key.date).format("l dd")
         );
+        const arrayValues = reverseResponseData.map(key => {
+          return (key.very_productive_time_minutes / 60).toFixed(2);
+        });
 
         this.state.productivityHistoryChart.labels = labelDates;
         this.state.productivityHistoryChart.datasets[0].data = arrayValues;
@@ -184,6 +187,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   renderSettingsModal() {
+    if (!this.state.modal) {
+      return <div />;
+    }
+
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
@@ -253,7 +260,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         {this.renderHistoryChart()}
         {this.renderSupplementsCorrelations()}
         {this.renderUserActivitiesCorrelations()}
-        {this.state.modal ? <div>{this.renderSettingsModal()}</div> : <div />}
+        {this.renderSettingsModal()}
       </div>
     );
   }
