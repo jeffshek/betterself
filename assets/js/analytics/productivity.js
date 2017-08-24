@@ -50,10 +50,14 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState, analyticsSettings);
+    //
+    // this.state.productivityHistoryChart.datasets[
+    //   0
+    // ].label = this.state.selectedProductivityHistoryType;
 
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = this.state.selectedProductivityHistoryType;
+    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.supplementCorrelationsURL =
       "api/v1/productivity_log/supplements/correlations";
@@ -104,7 +108,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.state.productivityHistoryChart.datasets[0].data = arrayValues;
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = this.state.selectedProductivityHistoryType;
+    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.setState({
       productivityHistoryChart: this.state.productivityHistoryChart
@@ -123,9 +127,9 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         const reverseResponseData = responseData.results.reverse();
 
         const labelDates = reverseResponseData.map(key => key.date);
-        const arrayValues = reverseResponseData.map(
-          key => key.very_productive_time_minutes
-        );
+        const arrayValues = reverseResponseData.map(key => {
+          return (key.very_productive_time_minutes / 60).toFixed(2);
+        });
 
         this.state.productivityHistoryChart.labels = labelDates;
         this.state.productivityHistoryChart.datasets[0].data = arrayValues;
