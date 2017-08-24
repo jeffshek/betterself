@@ -1,30 +1,30 @@
-import React, { PropTypes, Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import {
   BrowserRouter as Router,
-  Route,
   Redirect,
+  Route,
   withRouter
 } from "react-router-dom";
 
 import {
+  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
   DASHBOARD_INDEX_URL,
-  LOGIN_URL,
-  HOME_URL,
-  LOGOUT_URL,
+  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
+  DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_SLEEP_ANALYTICS_URL,
+  DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
-  DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
-  SIGNUP_URL,
   DEMO_SIGNUP_URL,
-  DASHBOARD_SLEEP_LOGS_URL,
-  SETTINGS_URL,
-  DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
   EXPORT_ALL_DATA_URL,
-  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL
+  HOME_URL,
+  LOGIN_URL,
+  LOGOUT_URL,
+  SETTINGS_URL,
+  SIGNUP_URL
 } from "./constants/urls";
 
 import { Authenticator } from "./authentication/auth";
@@ -87,24 +87,15 @@ const BetterSelfRouter = () => (
         path={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
-      {/*<PrivateRoute*/}
-      {/*path={"/dashboard/analytics/daily_overview/:date"}*/}
-      {/*component={DailyOverviewAnalyticsView}*/}
-      {/*/>*/}
-      <Route
+      <PrivateRoute
         path={"/dashboard/analytics/daily_overview/:date"}
         component={DailyOverviewAnalyticsView}
       />
-      {/*<PrivateRoute*/}
-      {/*exact*/}
-      {/*path={"/dashboard/analytics/daily_overview/2017-08-13"}*/}
-      {/*component={DailyOverviewAnalyticsView}*/}
-      {/*/>*/}
-      {/*<PrivateRoute*/}
-      {/*exact*/}
-      {/*path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}*/}
-      {/*component={DailyOverviewAnalyticsView}*/}
-      {/*/>*/}
+      <PrivateRoute
+        exact
+        path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
+        component={DailyOverviewAnalyticsView}
+      />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
         component={e => <Dashboard view={SupplementEventsLogView} />}
