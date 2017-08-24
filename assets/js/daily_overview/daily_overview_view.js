@@ -39,12 +39,20 @@ export class DailyOverviewAnalyticsView extends Component {
       resourceDate = moment();
     }
 
-    this.resourceDate = resourceDate;
+    this.state = {
+      resourceDate: resourceDate
+    };
   }
+
+  updateResourceDate = date => {
+    this.setState({
+      resourceDate: date
+    });
+  };
 
   render() {
     return (
-      // Need to get the param from the Routh path, which is why this renders the rest of the page
+      // Need to get the param from the Route path, which is why this renders the rest of the page
       // Most pages don't need a param, but this one is customized
       (
         <div className="app">
@@ -53,10 +61,11 @@ export class DailyOverviewAnalyticsView extends Component {
             <Sidebar />
             <main className="main">
               <DailyOverviewWidgetsView
-                date={this.resourceDate.format(DATE_REQUEST_FORMAT)}
+                date={this.state.resourceDate.format(DATE_REQUEST_FORMAT)}
+                resourceDateController={this.updateResourceDate}
               />
               <SupplementsAndUserActivitiesMultiTab
-                date={this.resourceDate.format(DATE_REQUEST_FORMAT)}
+                date={this.state.resourceDate.format(DATE_REQUEST_FORMAT)}
               />
             </main>
           </div>

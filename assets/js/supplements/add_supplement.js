@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import { Link } from "react-router-dom";
+import React, { Component } from "react";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
@@ -243,11 +244,14 @@ export class AddSupplementView extends Component {
   }
 
   render() {
+    const testString = "/dashboard/analytics/daily_overview/2017-08-15";
+
     return (
       <div className="card">
         <div className="card-header">
           <strong>Create Supplement</strong> (Per Serving)
         </div>
+
         <div className="card-block">
           <form onSubmit={e => this.addSupplementFormData(e)}>
             <div className="row">
@@ -261,6 +265,7 @@ export class AddSupplementView extends Component {
                 />
               </div>
             </div>
+            <Link to={testString}>This should change the testString!</Link>
 
             <div className="row">
               <div className="form-group col-sm-4">

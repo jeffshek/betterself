@@ -8,7 +8,6 @@ import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 
 export const getDailyOverViewURLFromDate = date => {
   const dateString = date.format(DATE_REQUEST_FORMAT);
-  // return `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}`
   return `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}/${dateString}`;
 };
 
