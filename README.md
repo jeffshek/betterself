@@ -1,16 +1,11 @@
-.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
-.. image:: https://travis-ci.org/jeffshek/betterself.svg?branch=master
-    :target: https://travis-ci.org/jeffshek/betterself
 
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
-     :target: https://github.com/pydanny/cookiecutter-django/
+![MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Travis](https://travis-ci.org/jeffshek/betterself.svg?branch=master)
+![CookieCutter](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg)
 
-
-
-
-        
-BetterSelf
+BetterSelf - Your Body's Dashboard
 ==============================
+![Analytics](https://user-images.githubusercontent.com/392678/29753400-b58d00b4-8b3e-11e7-93eb-60c9eb206d16.png)
 
 Figure out what works (and what doesn't) to be a better version of your self.
 
@@ -20,6 +15,15 @@ Figure out what works (and what doesn't) to be a better version of your self.
 - Easy export of all your data. We have no intention to hold your data hostage.
 - Easy import of data. Import your data via an Excel file, use our RESTful API, or use vendors (if provided).
 - Allow different analytical methods to learn the usefulness of a supplement/events. Ever wonder if hangovers still impact you three days from the binge? Or if your productivity really takes a hit with only 5 hours of sleep?
+
+
+![Overview](https://user-images.githubusercontent.com/392678/29753424-259da854-8b3f-11e7-8869-667aa6a12007.png)
+
+![Fitbit And Sleep](https://user-images.githubusercontent.com/392678/29753405-ccc2ad06-8b3e-11e7-8536-75736ece9e9b.png)
+        
+BetterSelf
+==============================
+
 
 For the nerds ...
 
