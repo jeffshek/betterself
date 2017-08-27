@@ -21,10 +21,6 @@ Figure out what works (and what doesn't) to be a better version of your self.
 
 ![Fitbit And Sleep](https://user-images.githubusercontent.com/392678/29753405-ccc2ad06-8b3e-11e7-8536-75736ece9e9b.png)
         
-BetterSelf
-==============================
-
-
 For the nerds ...
 
 - RESTful architecture (I'm just not convinced about Level 3). We eat our own dog food and use it to create all events you send us. All events and tracking is done through an API. Rest assured, it's meant to be developer friendly.
@@ -38,7 +34,3 @@ Why are we (unfortunately, just me) doing this?
 - I want an app that doesn't care about my name and what I'm doing (we don't ask for anything besides email and a password to start). If you're scared, hit the big "delete all my data" button. We do have database backups, but those only go a month back.
 - With enough data, we can build reports that show correlations across supplements, what is synergistic, what isn't.
 - I want a app that is more robust than Excel, allow me to choose different correlation methods to productivity (Simple / Exponential / whatever I can think of)
-
-
-
-
