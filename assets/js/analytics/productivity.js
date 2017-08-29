@@ -165,6 +165,18 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       });
   }
 
+  handleSettingsChange = event => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+
+    const intValue = parseInt(value);
+
+    this.setState({
+      [name]: intValue
+    });
+  };
+
   renderHistoryChart() {
     return (
       <div className="card">
@@ -196,18 +208,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       </div>
     );
   }
-
-  handleSettingsChange = event => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-
-    const intValue = parseInt(value);
-
-    this.setState({
-      [name]: intValue
-    });
-  };
 
   renderSettingsModal() {
     if (!this.state.modal) {
