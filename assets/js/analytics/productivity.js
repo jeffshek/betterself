@@ -17,7 +17,10 @@ import {
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
-import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates_and_times";
+import {
+  DATE_REQUEST_FORMAT,
+  YEAR_MONTH_DAY_FORMAT
+} from "../constants/dates_and_times";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -37,6 +40,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     super();
 
     const analyticsSettings = {
+      // All these variables sound terrible after a while, rename them all
       correlationLookBackDays: 60,
       updateCorrelationLookBackDays: 60,
       cumulativeLookBackDays: 1,
@@ -70,6 +74,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   }
 
   componentDidMount() {
+    this.updateData();
+  }
+
+  updateData() {
     this.getHistory();
     this.getSupplementsCorrelations();
     this.getUserActivitiesCorrelations();
@@ -108,7 +116,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         correlationLookBackDays: this.state.updateCorrelationLookBackDays,
         cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
       },
-      this.getSupplementsCorrelations
+      this.updateData
     );
 
     this.toggle();
@@ -136,7 +144,11 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   getHistory() {
-    fetch("/api/v1/productivity_log/", {
+    const startDate = moment()
+      .subtract(this.state.correlationLookBackDays, "days")
+      .format(DATE_REQUEST_FORMAT);
+
+    fetch(`/api/v1/productivity_log/?page_size=1000&start_date=${startDate}`, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
