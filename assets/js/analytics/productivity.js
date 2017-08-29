@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { DefaultLineChartDataset } from "../constants/charts";
 import {
