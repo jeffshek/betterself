@@ -17,6 +17,7 @@ import {
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
+import { YEAR_MONTH_DAY_FORMAT } from "../constants/dates_and_times";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -39,7 +40,9 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       correlationLookBackDays: 60,
       updateCorrelationLookBackDays: 60,
       cumulativeLookBackDays: 1,
-      updateCumulativeLookBackDays: 1
+      updateCumulativeLookBackDays: 1,
+      startDate: moment(),
+      endDate: moment()
     };
 
     const updateState = {
@@ -70,6 +73,26 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.getHistory();
     this.getSupplementsCorrelations();
     this.getUserActivitiesCorrelations();
+  }
+
+  renderPageTitleBlock() {
+    return (
+      <span className="font-2xl productivity-analytics-margin-left">
+        Productivity Analytics |
+        {" "}
+        {this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)}
+        {" "}
+        -
+        {" "}
+        {this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)}
+        {" "}
+        |
+        {" "}
+        {this.state.cumulativeLookBackDays}
+        {" "}
+        Day Aggregate
+      </span>
+    );
   }
 
   toggle = () => {
@@ -134,6 +157,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         this.state.productivityHistoryChart.datasets[0].data = arrayValues;
 
         this.setState({
+          startDate: moment(reverseResponseData[0].date),
           productivityHistoryChart: this.state.productivityHistoryChart,
           selectedProductivityHistoryChartData: reverseResponseData
         });
@@ -144,9 +168,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          <span className="font-2xl productivity-analytics-margin-left">
-            Productivity Analytics
-          </span>
+          {this.renderPageTitleBlock()}
           <span className="float-right">
             <button
               type="submit"
