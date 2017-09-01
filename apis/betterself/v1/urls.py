@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView
+    UserActivityEventView, AggregateProductivityLogView
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
 from apis.betterself.v1.correlations.views import SleepUserActivitiesCorrelationView, SleepSupplementsCorrelationView, \
     ProductivitySupplementsCorrelationView, ProductivityUserActivitiesCorrelationView
@@ -29,11 +29,10 @@ urlpatterns = [
             url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
             url(r'^user_activities/correlations$', ProductivityUserActivitiesCorrelationView.as_view(), name='productivity-user-activities-correlations'),  # noqa
             url(r'^supplements/correlations$', ProductivitySupplementsCorrelationView.as_view(), name='productivity-supplements-correlations'),  # noqa
+            url(r'^aggregates/$', AggregateProductivityLogView.as_view(), name='productivity-aggregates'),  # noqa
         ])),
-    url(r'^{0}/$'.format(UserActivity.RESOURCE_NAME), UserActivityView.as_view(),
-        name=UserActivity.RESOURCE_NAME),
-    url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(),
-        name=UserActivityEvent.RESOURCE_NAME),
+    url(r'^{0}/$'.format(UserActivity.RESOURCE_NAME), UserActivityView.as_view(), name=UserActivity.RESOURCE_NAME),
+    url(r'^{0}/$'.format(UserActivityEvent.RESOURCE_NAME), UserActivityEventView.as_view(), name=UserActivityEvent.RESOURCE_NAME),  # noqa
     url(r'^{0}/'.format(SleepActivity.RESOURCE_NAME),
         include([
             url(r'^$', SleepActivityView.as_view(), name=SleepActivity.RESOURCE_NAME),
@@ -49,7 +48,6 @@ urlpatterns = [
     url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details'),
     # debate if you prefer this url structure instead of the current pattern
     url(r'user/export-data/$', UserExportAllData.as_view(), name='api-user-export-all-data'),
-
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'

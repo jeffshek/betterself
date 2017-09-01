@@ -86,7 +86,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   renderPageTitleBlock() {
     const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeLookBackDays} Day Aggregate`;
     return (
-      <span className="font-2xl productivity-analytics-margin-left">
+      <span className="font-1xl productivity-analytics-margin-left">
         {title}
       </span>
     );

@@ -1,4 +1,7 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     DailyProductivityLogFilter
@@ -33,11 +36,25 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
     write_serializer_class = ProductivityLogCreateSerializer
     filter_class = DailyProductivityLogFilter
 
+    def get(self, *args, **kwargs):
+        return super().get(*args, **kwargs)
+
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+
+class AggregateProductivityLogView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request):
+        user = request.user
+
+        productivity_logs = DailyProductivityLog.objects.filter(user=user)
+        serializer = ProductivityLogReadSerializer(productivity_logs, many=True)
+        return Response(serializer.data)
 
 
 class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
