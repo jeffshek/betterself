@@ -61,7 +61,6 @@ class ProductivityLogAggregatesView(APIView):
         results = dataframe_builder.get_flat_daily_dataframe()
 
         data_formatted = json.loads(results.to_json(date_format='iso', orient='index', double_precision=2))
-
         return Response(data_formatted)
 
 
