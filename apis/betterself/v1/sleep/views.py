@@ -40,7 +40,7 @@ class SleepAggregatesView(APIView):
         # play nicely with a typical json dump, so we do an additional load so drf can transmit nicely
         result = sleep_aggregate.to_json(date_format='iso')
         result = json.loads(result)
-        return Response(data=result, content_type='application/json')
+        return Response(data=result)
 
 
 class SleepAveragesView(APIView):

@@ -273,7 +273,8 @@ class TestAggregateProductivityViews(TestCase):
 
     def test_view_without_passing_parameters(self):
         response = self.client.get(self.url)
-        print(response.data)
+        data = response.data
+        self.assertEqual(len(data), DailyProductivityLog.objects.filter(user=self.default_user).count())
         self.assertEqual(response.status_code, 200)
 
     def test_view_without_login(self):

@@ -38,3 +38,7 @@ base.js
 
 # try to make correlations plural
 SleepSupplementsCorrelationsTests
+
+# try to have aggregate come after the resource
+ProductivityLogAggregatesView
+SleepAggregatesView

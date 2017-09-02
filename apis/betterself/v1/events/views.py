@@ -1,8 +1,11 @@
+import json
+
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     DailyProductivityLogFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
@@ -46,15 +49,20 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
         return self.model.objects.filter(user=self.request.user)
 
 
-class AggregateProductivityLogView(APIView):
-    permission_classes = (IsAuthenticated, )
+class ProductivityLogAggregatesView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         user = request.user
 
         productivity_logs = DailyProductivityLog.objects.filter(user=user)
-        serializer = ProductivityLogReadSerializer(productivity_logs, many=True)
-        return Response(serializer.data)
+
+        dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs)
+        results = dataframe_builder.get_flat_daily_dataframe()
+
+        data_formatted = json.loads(results.to_json(date_format='iso', orient='index', double_precision=2))
+
+        return Response(data_formatted)
 
 
 class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
