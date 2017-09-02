@@ -46,12 +46,12 @@ class SleepAggregatesView(APIView):
 class SleepAveragesView(APIView):
     def get(self, request):
         try:
-            lookback = int(request.query_params[LOOKBACK_PARAM_NAME])
+            window = int(request.query_params[LOOKBACK_PARAM_NAME])
         except MultiValueDictKeyError:
             # MultiValueDictKeyError happens when a key doesn't exist
-            lookback = 1
+            window = 1
         except ValueError:
-            # ValueError if something entered for a lookback that couldn't be interpreted
+            # ValueError if something entered for a window that couldn't be interpreted
             return Response(status=400)
 
         user = request.user
@@ -60,7 +60,7 @@ class SleepAveragesView(APIView):
         builder = SleepActivityDataframeBuilder(sleep_activities)
 
         sleep_aggregate = builder.get_sleep_history_series()
-        sleep_average = sleep_aggregate.rolling(window=lookback).mean()
+        sleep_average = sleep_aggregate.rolling(window=window).mean()
 
         result = sleep_average.to_json(date_format='iso')
         result = json.loads(result)
