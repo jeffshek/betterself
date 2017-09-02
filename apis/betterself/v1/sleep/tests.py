@@ -113,6 +113,11 @@ class SleepAverageTests(TestCase):
 
         self.assertNotEqual(default_response.data, second_response.data)
 
+    def test_sleep_averages_with_not_logged_in_user(self):
+        client = APIClient()
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
     def test_sleep_averages_with_user_and_no_data(self):
         user = User.objects.create(username='jack-in-box')
         client = APIClient()
