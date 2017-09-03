@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from betterself.django_utils import create_django_choice_tuple_from_list
+from betterself.utils.django_utils import create_django_choice_tuple_from_list
 
 
 class DataUtilsTester(TestCase):

@@ -15,7 +15,7 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.django_utils import UTC_TZ
+from betterself.utils.django_utils import UTC_TZ
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator

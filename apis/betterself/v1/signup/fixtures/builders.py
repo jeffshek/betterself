@@ -1,13 +1,13 @@
 import datetime
+
 import numpy as np
 import pandas as pd
 import random
-
 from django.utils import timezone
 
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
-from betterself.django_utils import UTC_TZ
+from betterself.utils.django_utils import UTC_TZ
 from events.models import DailyProductivityLog, SleepActivity
 
 
