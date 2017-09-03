@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from betterself.utils import UTC_TZ
+from betterself.django_utils import UTC_TZ
 from events.models import SleepActivity
 
 User = get_user_model()

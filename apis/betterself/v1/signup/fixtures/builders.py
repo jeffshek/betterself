@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
-from betterself.utils import UTC_TZ
+from betterself.django_utils import UTC_TZ
 from events.models import DailyProductivityLog, SleepActivity
 
 

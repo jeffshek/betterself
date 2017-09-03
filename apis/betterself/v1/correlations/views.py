@@ -7,7 +7,7 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
     VALID_PRODUCTIVITY_DRIVERS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
 from apis.betterself.v1.correlations.serializers import CorrelationAnalyticsSerializer
-from betterself.utils import days_ago_from_current_day
+from betterself.django_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
 
