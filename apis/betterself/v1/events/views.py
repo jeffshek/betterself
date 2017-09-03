@@ -39,9 +39,6 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
     write_serializer_class = ProductivityLogCreateSerializer
     filter_class = DailyProductivityLogFilter
 
-    def get(self, *args, **kwargs):
-        return super().get(*args, **kwargs)
-
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
 
@@ -62,8 +59,7 @@ class ProductivityLogAggregatesView(APIView):
         query_start_date = query_params['start_date']
         query_cumulative_window = query_params['cumulative_window']
 
-        productivity_logs = DailyProductivityLog.objects.filter(
-            user=user, date__gte=query_start_date)
+        productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=query_start_date)
 
         # data is consumed by front-end, so don't rename columns
         dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)

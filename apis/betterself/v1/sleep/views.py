@@ -60,7 +60,7 @@ class SleepAveragesView(APIView):
         builder = SleepActivityDataframeBuilder(sleep_activities)
 
         sleep_aggregate = builder.get_sleep_history_series()
-        sleep_average = sleep_aggregate.rolling(window=window).mean()
+        sleep_average = sleep_aggregate.rolling(window=window, min_periods=1).mean()
 
         result = sleep_average.to_json(date_format='iso')
         result = json.loads(result)
