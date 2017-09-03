@@ -147,10 +147,14 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           return moment(e).format(ABBREVIATED_CHART_DATE);
         });
 
+        const selectedHistoryVariable =
+          ProductivityColumnMappingToKey[
+            this.state.selectedProductivityHistoryType
+          ];
+
         const responseValues = labelDates.map(e => {
-          const very_productive_time =
-            responseData[e].very_productive_time_minutes;
-          return minutesToHours(very_productive_time);
+          const selectedVariableData = responseData[e][selectedHistoryVariable];
+          return minutesToHours(selectedVariableData);
         });
 
         this.state.productivityHistoryChart.labels = labelDatesFormatted;
