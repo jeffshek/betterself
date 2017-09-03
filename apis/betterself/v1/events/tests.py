@@ -289,3 +289,22 @@ class TestAggregateProductivityViews(TestCase):
 
         response = client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+    def test_with_start_date(self):
+        import datetime
+        today = datetime.date.today()
+
+        five_days_ago = today - relativedelta(days=5)
+        six_days_ago = today - relativedelta(days=6)
+
+        params = {
+            'start_date': five_days_ago.isoformat()
+        }
+        response = self.client.get(self.url, data=params)
+
+        data = response.data
+        dates = list(data.keys())
+        dates_serialized = [dateutil.parser.parse(x).date() for x in dates]
+
+        self.assertIn(five_days_ago, dates_serialized)
+        self.assertNotIn(six_days_ago, dates_serialized)

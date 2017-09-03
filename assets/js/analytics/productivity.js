@@ -130,10 +130,9 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       .subtract(this.state.correlationLookBackDays, "days")
       .format(DATE_REQUEST_FORMAT);
 
-    const new_url = "/api/v1/productivity_log/aggregates/";
-    // const old_url = `/api/v1/productivity_log/?page_size=1000&start_date=${startDate}`
+    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.cumulativeLookBackDays}`;
 
-    fetch(new_url, {
+    fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })

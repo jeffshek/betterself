@@ -150,9 +150,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         Simplify the history of the model and condense it to a daily metric
         """
         df = self.build_dataframe()
-        if df.empty:
-            return df
-
+        # ProductivityLogs are already in a daily format, so no need to flatten
         return df
 
     def get_productive_timeseries(self):
@@ -223,7 +221,6 @@ class SleepActivityDataframeBuilder(object):
 
     def get_sleep_history_series(self):
         """
-
         This returns data as how much sleep did you sleep on Monday night?
 
         So if you sleep from Monday 10PM to Tuesday 3AM, this will report Monday as 5 Hours! However, this can look
