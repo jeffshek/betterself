@@ -43,10 +43,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     const analyticsSettings = {
       // All these variables sound terrible after a while, rename them all
-      correlationLookBackDays: 60,
-      updateCorrelationLookBackDays: 60,
-      cumulativeLookBackDays: 1,
-      updateCumulativeLookBackDays: 1,
+      correlationLookback: 60,
+      updateCorrelationLookback: 60,
+      cumulativeWindow: 1,
+      updateCumulativeWindow: 1,
       startDate: moment(),
       endDate: moment()
     };
@@ -95,8 +95,8 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     // Set the new state and then fetch the correlations, use a callback to call after updating
     this.setState(
       {
-        correlationLookBackDays: this.state.updateCorrelationLookBackDays,
-        cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
+        correlationLookback: this.state.updateCorrelationLookback,
+        cumulativeWindow: this.state.updateCumulativeWindow
       },
       this.updateData
     );
@@ -127,10 +127,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
   getHistory() {
     const startDate = moment()
-      .subtract(this.state.correlationLookBackDays, "days")
+      .subtract(this.state.correlationLookback, "days")
       .format(DATE_REQUEST_FORMAT);
 
-    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.cumulativeLookBackDays}`;
+    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.cumulativeWindow}`;
 
     fetch(url, {
       method: "GET",
@@ -181,7 +181,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   renderPageTitleBlock() {
-    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeLookBackDays} Day Aggregate`;
+    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeWindow} Day Aggregate`;
     return (
       <span className="font-1xl productivity-analytics-margin-left">
         {title}
@@ -257,10 +257,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCorrelationLookBackDays"
+            name="updateCorrelationLookback"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCorrelationLookBackDays}
+            defaultValue={this.state.updateCorrelationLookback}
             onChange={this.handleSettingsChange}
           />
           <br />
@@ -272,10 +272,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCumulativeLookBackDays"
+            name="updateCumulativeWindow"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCumulativeLookBackDays}
+            defaultValue={this.state.updateCumulativeWindow}
             onChange={this.handleSettingsChange}
           />
         </ModalBody>
