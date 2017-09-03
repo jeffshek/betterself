@@ -1,11 +1,9 @@
-import datetime
-
-from dateutil import relativedelta
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
 from rest_framework.generics import get_object_or_404
 
+from betterself.utils.date_utils import get_current_date_months_ago
 from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
 
@@ -240,13 +238,7 @@ class SleepActivityCreateSerializer(serializers.Serializer):
         return obj
 
 
-def get_three_months_ago():
-    today = datetime.date.today()
-    three_months_ago = today - relativedelta.relativedelta(months=3)
-    return three_months_ago
-
-
 class ProductivityLogRequestParametersSerializer(serializers.Serializer):
-    start_date = serializers.DateField(default=get_three_months_ago())
+    start_date = serializers.DateField(default=get_current_date_months_ago(3))
     # not really sure who would want to cumulatively aggregate a whole year, but maybe?
     cumulative_window = serializers.IntegerField(default=1, min_value=1, max_value=365)

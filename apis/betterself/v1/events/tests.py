@@ -15,7 +15,7 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.utils.django_utils import UTC_TZ
+from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
@@ -291,11 +291,8 @@ class TestAggregateProductivityViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_with_start_date(self):
-        import datetime
-        today = datetime.date.today()
-
-        five_days_ago = today - relativedelta(days=5)
-        six_days_ago = today - relativedelta(days=6)
+        five_days_ago = get_current_date_days_ago(5)
+        six_days_ago = get_current_date_days_ago(6)
 
         params = {
             'start_date': five_days_ago.isoformat()
