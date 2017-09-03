@@ -18,7 +18,9 @@ import {
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
 import {
+  ABBREVIATED_CHART_DATE,
   DATE_REQUEST_FORMAT,
+  minutesToHours,
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 
@@ -83,15 +85,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     this.getUserActivitiesCorrelations();
   }
 
-  renderPageTitleBlock() {
-    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeLookBackDays} Day Aggregate`;
-    return (
-      <span className="font-1xl productivity-analytics-margin-left">
-        {title}
-      </span>
-    );
-  }
-
   toggle = () => {
     this.setState({
       modal: !this.state.modal
@@ -137,7 +130,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       .subtract(this.state.correlationLookBackDays, "days")
       .format(DATE_REQUEST_FORMAT);
 
-    fetch(`/api/v1/productivity_log/?page_size=1000&start_date=${startDate}`, {
+    const new_url = "/api/v1/productivity_log/aggregates/";
+    // const old_url = `/api/v1/productivity_log/?page_size=1000&start_date=${startDate}`
+
+    fetch(new_url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -145,22 +141,26 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         return response.json();
       })
       .then(responseData => {
-        const reverseResponseData = responseData.results.reverse();
+        const labelDates = Object.keys(responseData);
+        labelDates.sort();
 
-        const labelDates = reverseResponseData.map(key =>
-          moment(key.date).format("l dd")
-        );
-        const arrayValues = reverseResponseData.map(key => {
-          return (key.very_productive_time_minutes / 60).toFixed(2);
+        const labelDatesFormatted = labelDates.map(e => {
+          return moment(e).format(ABBREVIATED_CHART_DATE);
         });
 
-        this.state.productivityHistoryChart.labels = labelDates;
-        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
+        const responseValues = labelDates.map(e => {
+          const very_productive_time =
+            responseData[e].very_productive_time_minutes;
+          return minutesToHours(very_productive_time);
+        });
+
+        this.state.productivityHistoryChart.labels = labelDatesFormatted;
+        this.state.productivityHistoryChart.datasets[0].data = responseValues;
 
         this.setState({
-          startDate: moment(reverseResponseData[0].date),
+          startDate: moment(labelDates[0]),
           productivityHistoryChart: this.state.productivityHistoryChart,
-          selectedProductivityHistoryChartData: reverseResponseData
+          selectedProductivityHistoryChartData: responseValues
         });
       });
   }
@@ -176,6 +176,15 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       [name]: intValue
     });
   };
+
+  renderPageTitleBlock() {
+    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeLookBackDays} Day Aggregate`;
+    return (
+      <span className="font-1xl productivity-analytics-margin-left">
+        {title}
+      </span>
+    );
+  }
 
   renderHistoryChart() {
     return (

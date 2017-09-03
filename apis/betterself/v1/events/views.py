@@ -57,7 +57,8 @@ class ProductivityLogAggregatesView(APIView):
 
         productivity_logs = DailyProductivityLog.objects.filter(user=user)
 
-        dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs)
+        # we want the data to be used by the front-end, so don't rename columns
+        dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)
         results = dataframe_builder.get_flat_daily_dataframe()
 
         data_formatted = json.loads(results.to_json(date_format='iso', orient='index', double_precision=2))

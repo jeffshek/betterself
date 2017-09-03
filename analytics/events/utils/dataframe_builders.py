@@ -43,6 +43,8 @@ PRODUCTIVITY_LOG_COLUMN_MAP = {
 
 
 class DataFrameBuilder(object):
+    rename_columns = True
+
     def build_dataframe(self):
         if not self.values.exists():
             return pd.DataFrame()
@@ -52,7 +54,8 @@ class DataFrameBuilder(object):
         df = pd.DataFrame.from_records(self.values, index=self.index_column)
 
         # make the columns and labels prettier
-        df = df.rename(columns=self.column_mapping)
+        if self.rename_columns:
+            df = df.rename(columns=self.column_mapping)
 
         df.index.name = TIME_COLUMN_NAME
         try:
@@ -130,7 +133,9 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
     index_column = 'date'
     column_mapping = PRODUCTIVITY_LOG_COLUMN_MAP
 
-    def __init__(self, queryset):
+    def __init__(self, queryset, rename_columns=True):
+        self.rename_columns = rename_columns
+
         self.queryset = queryset
         values_columns = self.column_mapping.keys()
         self.values = self.queryset.values(*values_columns)
@@ -170,7 +175,7 @@ class ProductivityLogEventsDataframeBuilder(DataFrameBuilder):
         unproductive_columns = [
             item for item in df.keys()
             if 'Productive' not in item
-            and 'Minutes' in item
+               and 'Minutes' in item
         ]
         # exclude "source" too
         unproductive_df = df[unproductive_columns]
@@ -186,7 +191,10 @@ class SleepActivityDataframeBuilder(object):
 
     Returns a dataframe of sleep activity
     """
-    def __init__(self, queryset):
+
+    def __init__(self, queryset, rename_columns=True):
+        self.rename_columns = rename_columns
+
         self.sleep_activities = queryset
         try:
             self.user = self.sleep_activities[0].user
