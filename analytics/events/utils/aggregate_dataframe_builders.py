@@ -2,21 +2,23 @@ import pandas as pd
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder, UserActivityEventDataframeBuilder, SleepActivityDataframeBuilder
-from events.models import SupplementEvent, DailyProductivityLog, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivityEvent, SleepActivity
 
 
 class AggregateDataFrameBuilder(object):
     def __init__(
-        self,
-        user_activities_events_queryset,
-        productivity_log_queryset,
-        supplement_event_queryset,
+            self,
+            user_activities_events_queryset,
+            productivity_log_queryset,
+            supplement_event_queryset,
+            sleep_activities_queryset
     ):
         # Have a dataframe builder that can accept a multiple set of kwargs that way we can one generic dataframe
         # builder that can accept multiple different format
         self.user_activities_events_queryset = user_activities_events_queryset
         self.productivity_log_queryset = productivity_log_queryset
         self.supplement_event_queryset = supplement_event_queryset
+        self.sleep_activities_queryset = sleep_activities_queryset
 
     @staticmethod
     def get_supplement_event_dataframe(queryset):
@@ -59,6 +61,10 @@ class AggregateDataFrameBuilder(object):
             df = self.get_supplement_event_dataframe(self.supplement_event_queryset)
             contact_dfs.append(df)
 
+        if self.sleep_activities_queryset:
+            df = self.get_sleep_activity_series(self.sleep_activities_queryset)
+            contact_dfs.append(df)
+
         # axis of zero means to align them based on column we want to align it based on matching index, so axis=1
         # this seems kind of weird though for axis of 1 to mean the index though
         if contact_dfs:
@@ -66,7 +72,62 @@ class AggregateDataFrameBuilder(object):
         else:
             # concat doesn't work with an empty list, in the case of no data, return empty dataframe
             concat_df = pd.DataFrame()
+
         return concat_df
+
+
+class AggregateSleepActivitiesUserActivitiesBuilder(AggregateDataFrameBuilder):
+    def __init__(self, user_activities_events_queryset, sleep_activities_queryset):
+        super().__init__(
+            user_activities_events_queryset=user_activities_events_queryset,
+            productivity_log_queryset=None,
+            supplement_event_queryset=None,
+            sleep_activities_queryset=sleep_activities_queryset,
+        )
+
+    @classmethod
+    def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
+        user_activity_events = UserActivityEvent.objects.filter(user=user)
+        sleep_logs = SleepActivity.objects.filter(user=user)
+
+        if cutoff_date:
+            user_activity_events = user_activity_events.filter(time__gte=cutoff_date)
+            sleep_logs = sleep_logs.filter(start_time__gte=cutoff_date)
+
+        aggregate_dataframe = cls(
+            user_activities_events_queryset=user_activity_events,
+            sleep_activities_queryset=sleep_logs
+        )
+
+        dataframe = aggregate_dataframe.build_daily_dataframe()
+        return dataframe
+
+
+class AggregateSleepActivitiesSupplementsBuilder(AggregateDataFrameBuilder):
+    def __init__(self, sleep_activities_queryset, supplement_event_queryset):
+        super().__init__(
+            user_activities_events_queryset=None,
+            productivity_log_queryset=None,
+            supplement_event_queryset=supplement_event_queryset,
+            sleep_activities_queryset=sleep_activities_queryset,
+        )
+
+    @classmethod
+    def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
+        sleep_logs = SleepActivity.objects.filter(user=user)
+        supplement_events = SupplementEvent.objects.filter(user=user)
+
+        if cutoff_date:
+            sleep_logs = sleep_logs.filter(start_time__gte=cutoff_date)
+            supplement_events = supplement_events.filter(time__gte=cutoff_date)
+
+        aggregate_dataframe = cls(
+            sleep_activities_queryset=sleep_logs,
+            supplement_event_queryset=supplement_events
+        )
+
+        dataframe = aggregate_dataframe.build_daily_dataframe()
+        return dataframe
 
 
 class AggregateUserActivitiesEventsProductivityActivitiesBuilder(AggregateDataFrameBuilder):
@@ -75,6 +136,7 @@ class AggregateUserActivitiesEventsProductivityActivitiesBuilder(AggregateDataFr
             user_activities_events_queryset=user_activities_events_queryset,
             productivity_log_queryset=productivity_log_queryset,
             supplement_event_queryset=None,
+            sleep_activities_queryset=None
         )
 
     @classmethod
@@ -100,7 +162,8 @@ class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameBuilder)
         super().__init__(
             supplement_event_queryset=supplement_event_queryset,
             productivity_log_queryset=productivity_log_queryset,
-            user_activities_events_queryset=None
+            user_activities_events_queryset=None,
+            sleep_activities_queryset=None
         )
 
     @classmethod

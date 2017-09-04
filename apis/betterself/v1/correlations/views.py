@@ -3,15 +3,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
-    AggregateUserActivitiesEventsProductivityActivitiesBuilder
-from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    PRODUCTIVITY_DRIVERS_LABELS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
-from apis.betterself.v1.correlations.serializers import CorrelationsAndRollingLookbackRequestSerializer
+    AggregateUserActivitiesEventsProductivityActivitiesBuilder, AggregateSleepActivitiesUserActivitiesBuilder, \
+    AggregateSleepActivitiesSupplementsBuilder
+from analytics.events.utils.dataframe_builders import PRODUCTIVITY_DRIVERS_LABELS
+from apis.betterself.v1.correlations.serializers import ProductivityRequestParamsSerializer, \
+    SleepRequestParamsSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
-NO_DATA_RESPONSE = Response([], content_type='application/json')
+NO_DATA_RESPONSE = Response([])
 
 
 def get_sorted_response(series):
@@ -31,54 +31,13 @@ def get_sorted_response(series):
     return Response(sorted_response)
 
 
-class SleepActivitiesUserActivitiesCorrelationsView(APIView):
-    def get(self, request):
-        user = request.user
-
-        sleep_activities = SleepActivity.objects.filter(user=user)
-        sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate = sleep_serializer.get_sleep_history_series()
-
-        if sleep_aggregate.empty:
-            return NO_DATA_RESPONSE
-
-        activity_events = UserActivityEvent.objects.filter(user=user)
-        activity_serializer = UserActivityEventDataframeBuilder(activity_events)
-
-        user_activity_dataframe = activity_serializer.get_flat_daily_dataframe()
-        user_activity_dataframe[SLEEP_MINUTES_COLUMN] = sleep_aggregate
-
-        correlation = user_activity_dataframe.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
-        return get_sorted_response(sleep_correlation)
-
-
-class SleepActivitiesSupplementsCorrelationsView(APIView):
-    def get(self, request):
-        user = request.user
-        queryset = SupplementEvent.objects.filter(user=user)
-        supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
-        supplements_flat_daily_df = supplements_df_builder.get_flat_daily_dataframe()
-
-        sleep_activities = SleepActivity.objects.filter(user=user)
-        sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate_series = sleep_serializer.get_sleep_history_series()
-
-        supplements_and_sleep_df = supplements_flat_daily_df.copy()
-        supplements_and_sleep_df[SLEEP_MINUTES_COLUMN] = sleep_aggregate_series
-
-        correlation = supplements_and_sleep_df.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
-
-        return get_sorted_response(sleep_correlation)
-
-
-class ProductivityCorrelationsAPIView(APIView):
+class CorrelationsAPIView(APIView):
     """ Centralizes all the logic for getting dataframe and correlating them to Productivity """
+
     def get(self, request):
         user = request.user
 
-        serializer = CorrelationsAndRollingLookbackRequestSerializer(data=request.query_params)
+        serializer = self.request_serializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
 
         correlation_lookback = serializer.validated_data['correlation_lookback']
@@ -89,8 +48,7 @@ class ProductivityCorrelationsAPIView(APIView):
         days_to_look_back = correlation_lookback * cumulative_lookback
         cutoff_date = days_ago_from_current_day(days_to_look_back)
 
-        aggregate_dataframe = self.DATAFRAME_BUILDER.get_aggregate_dataframe_for_user(user,
-                                                                                      cutoff_date)
+        aggregate_dataframe = self.dataframe_builder.get_aggregate_dataframe_for_user(user, cutoff_date)
         if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
 
@@ -102,24 +60,41 @@ class ProductivityCorrelationsAPIView(APIView):
             aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
 
         df_correlation = aggregate_dataframe.corr()
-        df_correlation_driver_series = df_correlation[correlation_driver]
+        df_correlation_series = df_correlation[correlation_driver]
 
-        # since this is a supplement only view, disregard how the other productivity drivers
+        # disregard all other valid correlation drivers and only care about the variables
         # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
-        valid_index = [item for item in df_correlation_driver_series.index if item not in PRODUCTIVITY_DRIVERS_LABELS]
+        valid_index = [item for item in df_correlation_series.index if item not in self.valid_correlations]
 
         # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
+        # seeing something correlate with itself of 1 is soothing to know its not flawed
         valid_index.append(correlation_driver)
 
-        filtered_correlation_series = df_correlation_driver_series[valid_index]
+        filtered_correlation_series = df_correlation_series[valid_index]
         filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
 
         return get_sorted_response(filtered_correlation_series)
 
 
-class ProductivityLogsSupplementsCorrelationsView(ProductivityCorrelationsAPIView):
-    DATAFRAME_BUILDER = AggregateSupplementProductivityDataframeBuilder
+class ProductivityLogsSupplementsCorrelationsView(CorrelationsAPIView):
+    dataframe_builder = AggregateSupplementProductivityDataframeBuilder
+    valid_correlations = PRODUCTIVITY_DRIVERS_LABELS
+    request_serializer = ProductivityRequestParamsSerializer
 
 
-class ProductivityLogsUserActivitiesCorrelationsView(ProductivityCorrelationsAPIView):
-    DATAFRAME_BUILDER = AggregateUserActivitiesEventsProductivityActivitiesBuilder
+class ProductivityLogsUserActivitiesCorrelationsView(CorrelationsAPIView):
+    dataframe_builder = AggregateUserActivitiesEventsProductivityActivitiesBuilder
+    valid_correlations = PRODUCTIVITY_DRIVERS_LABELS
+    request_serializer = ProductivityRequestParamsSerializer
+
+
+class SleepActivitiesUserActivitiesCorrelationsView(CorrelationsAPIView):
+    dataframe_builder = AggregateSleepActivitiesUserActivitiesBuilder
+    valid_correlations = [SLEEP_MINUTES_COLUMN]
+    request_serializer = SleepRequestParamsSerializer
+
+
+class SleepActivitiesSupplementsCorrelationsView(CorrelationsAPIView):
+    dataframe_builder = AggregateSleepActivitiesSupplementsBuilder
+    valid_correlations = [SLEEP_MINUTES_COLUMN]
+    request_serializer = SleepRequestParamsSerializer

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from constants import SLEEP_CUTOFF_TIME
+from constants import SLEEP_CUTOFF_TIME, SLEEP_MINUTES_COLUMN
 
 SOURCE_COLUMN_NAME = 'Source'
 QUANTITY_COLUMN_NAME = 'Quantity'
@@ -269,7 +269,7 @@ class SleepActivityDataframeBuilder(object):
 
         # change from timedeltas to minutes, otherwise json response of timedelta is garbage
         sleep_aggregate = sleep_aggregate / np.timedelta64(1, 'm')
-        sleep_aggregate.name = 'Sleep Minutes'
+        sleep_aggregate.name = SLEEP_MINUTES_COLUMN
         return sleep_aggregate
 
 

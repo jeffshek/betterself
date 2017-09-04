@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
+from constants import SLEEP_MINUTES_COLUMN
 from events.models import SupplementEvent, SleepActivity, UserActivityEvent, DailyProductivityLog
 
 
@@ -63,7 +64,7 @@ class UserExportAllData(APIView):
 
         # include sleep which is a series and not a dataframe
         cumulative_log_sheet_name = 'Aggregate Log'
-        concat_dataframe['Sleep Minutes'] = sleep_activities_series
+        concat_dataframe[SLEEP_MINUTES_COLUMN] = sleep_activities_series
         self._write_to_workbook(writer, concat_dataframe, cumulative_log_sheet_name)
 
         cumulative_14_day_dataframe_sheet_name = 'Aggregate 14 Log'
