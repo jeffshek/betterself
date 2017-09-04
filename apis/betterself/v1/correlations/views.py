@@ -2,13 +2,14 @@ import pandas as pd
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
+from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
+    AggregateUserActivitiesEventsProductivityActivitiesBuilder
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     PRODUCTIVITY_DRIVERS_LABELS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from apis.betterself.v1.correlations.serializers import CorrelationsAndRollingLookbackRequestSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
+from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
 NO_DATA_RESPONSE = Response([], content_type='application/json')
 
@@ -122,31 +123,39 @@ class ProductivityLogsUserActivitiesCorrelationsView(APIView):
         serializer = CorrelationsAndRollingLookbackRequestSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
 
-        # TODO
-        # 1) Switch to using an AggregateDataframe Builder instead of doing it by hand
-        # 2) Include a hard-coded lookback of 60 days
-        correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
-        if correlation_driver not in PRODUCTIVITY_DRIVERS_LABELS:
-            return Response('Invalid Correlation Driver Entered', status=400)
+        correlation_lookback = serializer.validated_data['correlation_lookback']
+        cumulative_lookback = serializer.validated_data['cumulative_lookback']
+        correlation_driver = serializer.validated_data['correlation_driver']
 
-        productivity_log = DailyProductivityLog.objects.filter(user=user)
-        productivity_log_dataframe = AggregateSupplementProductivityDataframeBuilder.get_productivity_log_dataframe(
-            productivity_log)
-        if productivity_log_dataframe.empty:
+        # if we sum up cumulative days, need to look back even further to sum up the data
+        days_to_look_back = correlation_lookback * cumulative_lookback
+        cutoff_date = days_ago_from_current_day(days_to_look_back)
+
+        # productivity_log = DailyProductivityLog.objects.filter(user=user)
+        aggregate_dataframe = AggregateUserActivitiesEventsProductivityActivitiesBuilder.\
+            get_aggregate_dataframe_for_user(user=user, cutoff_date=cutoff_date)
+
+        if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
 
-        productivity_series = productivity_log_dataframe[correlation_driver]
+        if cumulative_lookback > 1:
+            # min_periods of 1 allows for periods with no data to still be summed
+            aggregate_dataframe = aggregate_dataframe.rolling(cumulative_lookback, min_periods=1).sum()
 
-        activity_events = UserActivityEvent.objects.filter(user=user)
-        activity_serializer = UserActivityEventDataframeBuilder(activity_events)
-        user_activity_dataframe = activity_serializer.get_flat_daily_dataframe()
-        if user_activity_dataframe.empty:
-            return NO_DATA_RESPONSE
+            # only include up to how many days the correlation lookback, otherwise incorrect overlap of correlations
+            aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
 
-        user_activity_dataframe[correlation_driver] = productivity_series
+        df_correlation = aggregate_dataframe.corr()
+        df_correlation_driver_series = df_correlation[correlation_driver]
 
-        correlation_dataframe = user_activity_dataframe.corr()
-        correlation_driver_series = correlation_dataframe[correlation_driver]
-        correlation_driver_series = correlation_driver_series.sort_values(ascending=False)
+        # since this is a supplement only view, disregard how the other productivity drivers
+        # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
+        valid_index = [item for item in df_correlation_driver_series.index if item not in PRODUCTIVITY_DRIVERS_LABELS]
 
-        return get_sorted_response(correlation_driver_series)
+        # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
+        valid_index.append(correlation_driver)
+
+        filtered_correlation_series = df_correlation_driver_series[valid_index]
+        filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
+
+        return get_sorted_response(filtered_correlation_series)

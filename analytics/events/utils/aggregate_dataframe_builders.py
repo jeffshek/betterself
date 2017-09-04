@@ -8,9 +8,9 @@ from events.models import SupplementEvent, DailyProductivityLog, UserActivityEve
 class AggregateDataFrameBuilder(object):
     def __init__(
         self,
-        user_activities_events_queryset=None,
-        productivity_log_queryset=None,
-        supplement_event_queryset=None,
+        user_activities_events_queryset,
+        productivity_log_queryset,
+        supplement_event_queryset,
     ):
         # Have a dataframe builder that can accept a multiple set of kwargs that way we can one generic dataframe
         # builder that can accept multiple different format
@@ -69,22 +69,28 @@ class AggregateDataFrameBuilder(object):
         return concat_df
 
 
-class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameBuilder):
+class AggregateUserActivitiesEventsProductivityActivitiesBuilder(AggregateDataFrameBuilder):
     def __init__(self, user_activities_events_queryset, productivity_log_queryset):
         super().__init__(
             user_activities_events_queryset=user_activities_events_queryset,
-            productivity_log_queryset=productivity_log_queryset
+            productivity_log_queryset=productivity_log_queryset,
+            supplement_event_queryset=None,
         )
 
     @classmethod
-    def get_aggregate_dataframe_for_user(cls, user):
+    def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
         user_activity_events = UserActivityEvent.objects.filter(user=user)
-        productivity_log = DailyProductivityLog.objects.filter(user=user)
+        productivity_logs = DailyProductivityLog.objects.filter(user=user)
+
+        if cutoff_date:
+            user_activity_events = user_activity_events.filter(time__gte=cutoff_date)
+            productivity_logs = productivity_logs.filter(date__gte=cutoff_date)
 
         aggregate_dataframe = cls(
             user_activities_events_queryset=user_activity_events,
-            productivity_log_queryset=productivity_log,
+            productivity_log_queryset=productivity_logs,
         )
+
         dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe
 
@@ -93,21 +99,22 @@ class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameBuilder)
     def __init__(self, supplement_event_queryset, productivity_log_queryset):
         super().__init__(
             supplement_event_queryset=supplement_event_queryset,
-            productivity_log_queryset=productivity_log_queryset
+            productivity_log_queryset=productivity_log_queryset,
+            user_activities_events_queryset=None
         )
 
     @classmethod
     def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
         supplement_events = SupplementEvent.objects.filter(user=user)
-        productivity_log = DailyProductivityLog.objects.filter(user=user)
+        productivity_logs = DailyProductivityLog.objects.filter(user=user)
 
         if cutoff_date:
             supplement_events = supplement_events.filter(time__gte=cutoff_date)
-            productivity_log = productivity_log.filter(date__gte=cutoff_date)
+            productivity_logs = productivity_logs.filter(date__gte=cutoff_date)
 
         aggregate_dataframe = cls(
             supplement_event_queryset=supplement_events,
-            productivity_log_queryset=productivity_log,
+            productivity_log_queryset=productivity_logs,
         )
         dataframe = aggregate_dataframe.build_daily_dataframe()
         return dataframe

@@ -143,7 +143,8 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
     def test_dataframe_composition(self):
         supplement_event_queryset = SupplementEvent.objects.all()
         productivity_log_queryset = DailyProductivityLog.objects.all()
-        builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
+        builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset=supplement_event_queryset,
+                                                                  productivity_log_queryset=productivity_log_queryset)
         dataframe = builder.build_daily_dataframe()
 
         distinct_supplement_event_times = supplement_event_queryset.values_list('time', flat=True).distinct()
