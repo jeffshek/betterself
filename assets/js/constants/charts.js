@@ -25,6 +25,16 @@ export const DefaultChartDataset = {
   data: []
 };
 
+// Used for charts that show history, ie. supplements and sleep
+export const GenerateHistoryChartTemplate = chartLabel => {
+  const chart = {
+    labels: [],
+    datasets: [Object.assign({}, DefaultChartDataset)]
+  };
+  chart.datasets[0].label = chartLabel;
+  return chart;
+};
+
 export const GenerateChartTemplate = chartLabel => {
   return {
     labels: [],

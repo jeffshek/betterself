@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { Bar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { DefaultChartDataset } from "../constants/charts";
+import { GenerateHistoryChartTemplate } from "../constants/charts";
 import {
   DISTRACTING_MINUTES_LABEL,
   DISTRACTING_MINUTES_VARIABLE,
@@ -32,10 +32,9 @@ const ProductivityColumnMappingToKey = {
   "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
 };
 
-const ProductivityHistoryChart = {
-  labels: [],
-  datasets: [Object.assign({}, DefaultChartDataset)]
-};
+const ProductivityHistoryChart = GenerateHistoryChartTemplate(
+  "Very Productive (Hours)"
+);
 
 export class ProductivityAnalyticsView extends BaseAnalyticsView {
   constructor() {
@@ -59,10 +58,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState, analyticsSettings);
-
-    this.state.productivityHistoryChart.datasets[
-      0
-    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.supplementCorrelationsURL =
       "api/v1/productivity_log/supplements/correlations";
@@ -108,18 +103,21 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const selectedProductivityHistoryType = event.target.value;
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
-
     const arrayValues = this.state.selectedProductivityHistoryChartData.map(
       key => key[column_key]
     );
+    const chartLabel = selectedProductivityHistoryType.replace(
+      "Hours",
+      "Minutes"
+    );
 
-    this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
     this.state.productivityHistoryChart.datasets[0].data = arrayValues;
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
+    ].label = `${chartLabel} (Hours)`;
 
     this.setState({
+      selectedProductivityHistoryType: selectedProductivityHistoryType,
       productivityHistoryChart: this.state.productivityHistoryChart
     });
   };
