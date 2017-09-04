@@ -153,7 +153,7 @@ class SleepUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrela
         self.assertEqual(response.data[0][1], 1)
 
 
-class ProductivityUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
+class ProductivityLogsUserActivitiesCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'productivity-user-activities-correlations'
 
     def test_correlations_view(self):

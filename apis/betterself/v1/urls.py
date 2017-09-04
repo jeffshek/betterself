@@ -3,8 +3,9 @@ from django.conf.urls import url, include
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
     UserActivityEventView, ProductivityLogAggregatesView
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
-from apis.betterself.v1.correlations.views import SleepUserActivitiesCorrelationView, SleepSupplementsCorrelationView, \
-    ProductivitySupplementsCorrelationView, ProductivityUserActivitiesCorrelationView
+from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesCorrelationsView, \
+    SleepActivitiesSupplementsCorrelationsView, ProductivityLogsSupplementsCorrelationsView, \
+    ProductivityLogsUserActivitiesCorrelationsView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementView
@@ -27,8 +28,8 @@ urlpatterns = [
     url(r'^{0}/'.format(DailyProductivityLog.RESOURCE_NAME),
         include([
             url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
-            url(r'^user_activities/correlations$', ProductivityUserActivitiesCorrelationView.as_view(), name='productivity-user-activities-correlations'),  # noqa
-            url(r'^supplements/correlations$', ProductivitySupplementsCorrelationView.as_view(), name='productivity-supplements-correlations'),  # noqa
+            url(r'^user_activities/correlations$', ProductivityLogsUserActivitiesCorrelationsView.as_view(), name='productivity-user-activities-correlations'),  # noqa
+            url(r'^supplements/correlations$', ProductivityLogsSupplementsCorrelationsView.as_view(), name='productivity-supplements-correlations'),  # noqa
             url(r'^aggregates/$', ProductivityLogAggregatesView.as_view(), name='productivity-aggregates'),  # noqa
         ])),
     url(r'^{0}/$'.format(UserActivity.RESOURCE_NAME), UserActivityView.as_view(), name=UserActivity.RESOURCE_NAME),
@@ -38,8 +39,8 @@ urlpatterns = [
             url(r'^$', SleepActivityView.as_view(), name=SleepActivity.RESOURCE_NAME),
             url(r'^aggregates$', SleepAggregatesView.as_view(), name='sleep-aggregates'),
             url(r'^averages$', SleepAveragesView.as_view(), name='sleep-averages'),
-            url(r'^user_activities/correlations$', SleepUserActivitiesCorrelationView.as_view(), name='sleep-user-activities-correlations'),  # noqa
-            url(r'^supplements/correlations$', SleepSupplementsCorrelationView.as_view(), name='sleep-supplements-correlations'),  # noqa
+            url(r'^user_activities/correlations$', SleepActivitiesUserActivitiesCorrelationsView.as_view(), name='sleep-user-activities-correlations'),  # noqa
+            url(r'^supplements/correlations$', SleepActivitiesSupplementsCorrelationsView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
 
     # The pages below are used by the front-end to create API requests that do business logic
