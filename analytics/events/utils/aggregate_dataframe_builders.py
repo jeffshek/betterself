@@ -7,11 +7,11 @@ from events.models import SupplementEvent, DailyProductivityLog, UserActivityEve
 
 class AggregateDataFrameBuilder(object):
     def __init__(
-        self,
-        user_activities_events_queryset,
-        productivity_log_queryset,
-        supplement_event_queryset,
-        sleep_activities_queryset
+            self,
+            user_activities_events_queryset,
+            productivity_log_queryset,
+            supplement_event_queryset,
+            sleep_activities_queryset
     ):
         # Have a dataframe builder that can accept a multiple set of kwargs that way we can one generic dataframe
         # builder that can accept multiple different format
@@ -97,6 +97,33 @@ class AggregateSleepActivitiesUserActivitiesBuilder(AggregateDataFrameBuilder):
         aggregate_dataframe = cls(
             user_activities_events_queryset=user_activity_events,
             sleep_activities_queryset=sleep_logs
+        )
+
+        dataframe = aggregate_dataframe.build_daily_dataframe()
+        return dataframe
+
+
+class AggregateSleepActivitiesSupplementsBuilder(AggregateDataFrameBuilder):
+    def __init__(self, sleep_activities_queryset, supplement_event_queryset):
+        super().__init__(
+            user_activities_events_queryset=None,
+            productivity_log_queryset=None,
+            supplement_event_queryset=supplement_event_queryset,
+            sleep_activities_queryset=sleep_activities_queryset,
+        )
+
+    @classmethod
+    def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
+        sleep_logs = SleepActivity.objects.filter(user=user)
+        supplement_events = SupplementEvent.objects.filter(user=user)
+
+        if cutoff_date:
+            sleep_logs = sleep_logs.filter(start_time__gte=cutoff_date)
+            supplement_events = supplement_events.filter(date__gte=cutoff_date)
+
+        aggregate_dataframe = cls(
+            sleep_activities_queryset=sleep_logs,
+            supplement_event_queryset=supplement_events
         )
 
         dataframe = aggregate_dataframe.build_daily_dataframe()

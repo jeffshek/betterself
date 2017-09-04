@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
-    AggregateSleepActivitiesUserActivitiesBuilder
+    AggregateSleepActivitiesUserActivitiesBuilder, AggregateSleepActivitiesSupplementsBuilder
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SUPPLEMENT_EVENT_COLUMN_MAP, \
     TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
@@ -170,7 +170,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         self.assertTrue(dataframe.empty)
 
 
-class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
+class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
     # shares some overlap with the tests in api/*, but those tests are probably doing a bit too much.
     @classmethod
     def setUpTestData(cls):
@@ -208,4 +208,16 @@ class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         self.assertIn(SLEEP_MINUTES_COLUMN, dataframe.columns)
         # because user activities sometimes record a day earlier ... sleep generally comes up as empty
         # since that person hasn't sleep yet. this is because the fixtures generates random data
+        self.assertTrue(sleep_records_count <= dataframe.index.size <= sleep_records_count + 1)
+
+    def test_aggregate_sleep_and_supplements_dataframe(self):
+        dataframe = AggregateSleepActivitiesSupplementsBuilder.get_aggregate_dataframe_for_user(self.user)
+        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+
+        supplements_names = SupplementEvent.objects.filter(
+            user=self.user).values_list('supplement__name', flat=True)
+        supplements_names = set(supplements_names)
+
+        self.assertTrue(supplements_names.issubset(dataframe.columns))
+        self.assertIn(SLEEP_MINUTES_COLUMN, dataframe.columns)
         self.assertTrue(sleep_records_count <= dataframe.index.size <= sleep_records_count + 1)
