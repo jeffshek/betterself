@@ -8,3 +8,8 @@ class CorrelationsAndRollingLookbackRequestSerializer(serializers.Serializer):
     cumulative_lookback = serializers.IntegerField(default=1, min_value=1, max_value=365)
     correlation_driver = serializers.ChoiceField(choices=PRODUCTIVITY_DRIVERS_KEYS,
                                                  default=VERY_PRODUCTIVE_TIME_LABEL)
+
+# TODO
+# desired names are
+# rollingWindow
+# lookbackHistory
