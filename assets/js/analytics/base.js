@@ -62,18 +62,8 @@ export class BaseAnalyticsView extends Component {
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: [],
-      neutralUserActivitiesCorrelations: [],
-      // Parameters on how to query the data
-      correlationLookback: 60,
-      cumulativeWindow: 1
+      neutralUserActivitiesCorrelations: []
     };
-
-    this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
-      this
-    );
-    this.selectUserActivitiesCorrelationsTab = this.selectUserActivitiesCorrelationsTab.bind(
-      this
-    );
   }
 
   getCorrelatedData(responseData) {
@@ -126,7 +116,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
-    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.correlationLookback}&cumulative_lookback=${this.state.cumulativeWindow}`;
+    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.periodsLookback}&cumulative_lookback=${this.state.rollingWindow}`;
     fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -201,7 +191,7 @@ export class BaseAnalyticsView extends Component {
       });
   }
 
-  selectSupplementsCorrelationsTab(event) {
+  selectSupplementsCorrelationsTab = event => {
     event.preventDefault();
 
     const target = event.target;
@@ -224,9 +214,9 @@ export class BaseAnalyticsView extends Component {
       selectedSupplementsCorrelationsTab: name,
       selectedSupplementsCorrelations: selectedSupplementsCorrelations
     });
-  }
+  };
 
-  selectUserActivitiesCorrelationsTab(event) {
+  selectUserActivitiesCorrelationsTab = event => {
     event.preventDefault();
 
     const target = event.target;
@@ -249,7 +239,7 @@ export class BaseAnalyticsView extends Component {
       selectedUserActivitiesCorrelationsTab: name,
       selectedUserActivitiesCorrelations: selectedUserActivitiesCorrelations
     });
-  }
+  };
 
   renderActivitiesCorrelationsSelectionTab(tabName) {
     if (this.state.selectedUserActivitiesCorrelationsTab === tabName) {
@@ -293,7 +283,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderUserActivitiesChart() {
-    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
+    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.periodsLookback} Days)`;
 
     return (
       <div className="card">
@@ -357,7 +347,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
-    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
+    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.periodsLookback} Days)`;
 
     return (
       <div className="card">
