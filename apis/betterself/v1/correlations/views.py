@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     VALID_PRODUCTIVITY_DRIVERS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
-from apis.betterself.v1.correlations.serializers import CorrelationAnalyticsSerializer
+from apis.betterself.v1.correlations.serializers import CorrelationsAndRollingLookbackRequestSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent, DailyProductivityLog
@@ -30,7 +30,7 @@ def get_sorted_response(series):
     return Response(sorted_response)
 
 
-class SleepUserActivitiesCorrelationView(APIView):
+class SleepActivitiesUserActivitiesCorrelationsView(APIView):
     def get(self, request):
         user = request.user
 
@@ -52,7 +52,7 @@ class SleepUserActivitiesCorrelationView(APIView):
         return get_sorted_response(sleep_correlation)
 
 
-class SleepSupplementsCorrelationView(APIView):
+class SleepActivitiesSupplementsCorrelationsView(APIView):
     def get(self, request):
         user = request.user
         queryset = SupplementEvent.objects.filter(user=user)
@@ -72,11 +72,11 @@ class SleepSupplementsCorrelationView(APIView):
         return get_sorted_response(sleep_correlation)
 
 
-class ProductivitySupplementsCorrelationView(APIView):
+class ProductivityLogsSupplementsCorrelationsView(APIView):
     def get(self, request):
         user = request.user
 
-        serializer = CorrelationAnalyticsSerializer(data=request.query_params)
+        serializer = CorrelationsAndRollingLookbackRequestSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
 
         correlation_lookback = serializer.validated_data['correlation_lookback']
@@ -118,7 +118,7 @@ class ProductivitySupplementsCorrelationView(APIView):
         return get_sorted_response(filtered_correlation_series)
 
 
-class ProductivityUserActivitiesCorrelationView(APIView):
+class ProductivityLogsUserActivitiesCorrelationsView(APIView):
     def get(self, request):
         user = request.user
 

@@ -44,3 +44,7 @@ SleepSupplementsCorrelationsTests
 ProductivityLogAggregatesView
 SleepAggregatesView
 SleepAveragesView
+
+# try to have the full django model in the name, easier to decide on that pattern
+# make the resource ... plural
+ProductivityLogsSupplementsCorrelationsView
