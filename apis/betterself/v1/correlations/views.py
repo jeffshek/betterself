@@ -6,12 +6,12 @@ from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplem
     AggregateUserActivitiesEventsProductivityActivitiesBuilder
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     PRODUCTIVITY_DRIVERS_LABELS, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
-from apis.betterself.v1.correlations.serializers import CorrelationsAndRollingLookbackRequestSerializer
+from apis.betterself.v1.correlations.serializers import ProductivityRequestParamsSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
 from events.models import SleepActivity, UserActivityEvent, SupplementEvent
 
-NO_DATA_RESPONSE = Response([], content_type='application/json')
+NO_DATA_RESPONSE = Response([])
 
 
 def get_sorted_response(series):
@@ -31,9 +31,15 @@ def get_sorted_response(series):
     return Response(sorted_response)
 
 
+class SleepCorrelationsAPIView(APIView):
+    pass
+
+
 class SleepActivitiesUserActivitiesCorrelationsView(APIView):
     def get(self, request):
         user = request.user
+
+        # df = AggregateSleepActivitiesUserActivitiesBuilder.get_aggregate_dataframe_for_user(user)
 
         sleep_activities = SleepActivity.objects.filter(user=user)
         sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
@@ -75,10 +81,11 @@ class SleepActivitiesSupplementsCorrelationsView(APIView):
 
 class ProductivityCorrelationsAPIView(APIView):
     """ Centralizes all the logic for getting dataframe and correlating them to Productivity """
+
     def get(self, request):
         user = request.user
 
-        serializer = CorrelationsAndRollingLookbackRequestSerializer(data=request.query_params)
+        serializer = ProductivityRequestParamsSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
 
         correlation_lookback = serializer.validated_data['correlation_lookback']

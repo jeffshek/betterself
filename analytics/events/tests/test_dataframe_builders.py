@@ -1,16 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
+    AggregateSleepActivitiesUserActivitiesBuilder
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SUPPLEMENT_EVENT_COLUMN_MAP, \
     TIME_COLUMN_NAME, ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder
-from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
+from constants import SLEEP_MINUTES_COLUMN
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, SleepActivity, UserActivityEvent
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
-
 
 User = get_user_model()
 
@@ -76,7 +77,7 @@ class ProductivityLogEventsDataframeBuilderTests(TestCase, UsersTestsFixturesMix
 
         df = builder.build_dataframe()
         valid_columns = ['Distracting Minutes', 'Neutral Minutes', 'Productive Minutes',
-            'Source', 'Very Distracting Minutes', 'Very Productive Minutes']
+                         'Source', 'Very Distracting Minutes', 'Very Productive Minutes']
 
         df_columns = df.keys().tolist()
         self.assertCountEqual(valid_columns, df_columns)
@@ -176,7 +177,7 @@ class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         cls.user = User.objects.create_user(username='flying-duck')
 
         builder = DemoHistoricalDataBuilder(cls.user)
-        builder.create_sleep_fixtures()
+        builder.create_historical_fixtures()
 
         super().setUpTestData()
 
@@ -194,3 +195,17 @@ class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         # index to contain monday, but not tuesday's date (at least per the latest record)
         self.assertTrue(latest_sleep_record_start_date in dataframe.index)
         self.assertFalse(latest_sleep_record_end_date in dataframe.index)
+
+    def test_aggregate_sleep_dataframe(self):
+        dataframe = AggregateSleepActivitiesUserActivitiesBuilder.get_aggregate_dataframe_for_user(self.user)
+        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+
+        user_activity_events_names = UserActivityEvent.objects.filter(
+            user=self.user).values_list('user_activity__name', flat=True)
+        user_activity_events_names = set(user_activity_events_names)
+
+        self.assertTrue(user_activity_events_names.issubset(dataframe.columns))
+        self.assertIn(SLEEP_MINUTES_COLUMN, dataframe.columns)
+        # because user activities record a day earlier ... sleep generally comes up as empty
+        # since that person hasn't sleep yet.
+        self.assertEqual(dataframe.index.size, sleep_records_count + 1)
