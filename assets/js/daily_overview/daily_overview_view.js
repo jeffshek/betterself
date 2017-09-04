@@ -8,16 +8,6 @@ import {
   SupplementsAndUserActivitiesMultiTab
 } from "./supplements_and_events_historical_tables";
 import { DailyOverviewWidgetsView } from "./supplements_and_events_widgets";
-import { getDailyOverViewURLFromDate } from "./constants";
-
-const updateWindowLocationOnInvalidDate = () => {
-  // if invalid url, get the current date and go there instead
-  // redirect to /dashboard/analytics/daily_overview/2017-08-01/ (or whatever today's date is)
-
-  // Go to the previous day, since most of the time the current date will have no data
-  const url = getDailyOverViewURLFromDate(moment().subtract(1, "days"));
-  window.location.assign(url);
-};
 
 export class DailyOverviewAnalyticsView extends Component {
   constructor(props) {
@@ -31,11 +21,9 @@ export class DailyOverviewAnalyticsView extends Component {
     if (resourceDate) {
       resourceDate = moment(resourceDate);
       if (!resourceDate.isValid()) {
-        updateWindowLocationOnInvalidDate();
+        resourceDate = moment();
       }
     } else if (!resourceDate) {
-      updateWindowLocationOnInvalidDate();
-      // Set resourceDate to today just so render doesn't complain if it gets there prior to reloading
       resourceDate = moment();
     }
 

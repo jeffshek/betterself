@@ -17,11 +17,16 @@ const SleepHistoryChart = {
 export class SleepAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();
+    const analyticsSettings = {
+      periodsLookback: 60,
+      rollingWindow: 1
+    };
     const updateState = {
       sleepHistory: SleepHistoryChart
     };
+
     // Update state (from base class) with the above
-    this.state = Object.assign(this.state, updateState);
+    this.state = Object.assign(this.state, updateState, analyticsSettings);
     this.state.sleepHistory.datasets[0].label = "Sleep Time (Hours)";
 
     this.supplementCorrelationsURL =

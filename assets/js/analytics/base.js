@@ -62,10 +62,7 @@ export class BaseAnalyticsView extends Component {
       selectedUserActivitiesCorrelationsTab: POSITIVELY_CORRELATED_LABEL,
       positiveUserActivitiesCorrelations: [],
       negativeUserActivitiesCorrelations: [],
-      neutralUserActivitiesCorrelations: [],
-      // Parameters on how to query the data
-      periodsLookback: 60,
-      rollingWindow: 1
+      neutralUserActivitiesCorrelations: []
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
