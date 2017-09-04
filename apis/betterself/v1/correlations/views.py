@@ -58,7 +58,7 @@ class CorrelationsAPIView(APIView):
     def get(self, request):
         user = request.user
 
-        serializer = self.REQUEST_SERIALIZER(data=request.query_params)
+        serializer = self.request_serializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
 
         correlation_lookback = serializer.validated_data['correlation_lookback']
@@ -69,7 +69,7 @@ class CorrelationsAPIView(APIView):
         days_to_look_back = correlation_lookback * cumulative_lookback
         cutoff_date = days_ago_from_current_day(days_to_look_back)
 
-        aggregate_dataframe = self.DATAFRAME_BUILDER.get_aggregate_dataframe_for_user(user, cutoff_date)
+        aggregate_dataframe = self.dataframe_builder.get_aggregate_dataframe_for_user(user, cutoff_date)
         if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
 
@@ -81,76 +81,35 @@ class CorrelationsAPIView(APIView):
             aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
 
         df_correlation = aggregate_dataframe.corr()
-        df_correlation_driver_series = df_correlation[correlation_driver]
+        df_correlation_series = df_correlation[correlation_driver]
 
         # since this is a supplement only view, disregard how the other productivity drivers
         # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
-        valid_index = [item for item in df_correlation_driver_series.index if
-                       item not in self.VALID_CORRELATION_DRIVERS]
+        valid_index = [item for item in df_correlation_series.index if
+                       item not in self.valid_correlations]
 
         # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
         valid_index.append(correlation_driver)
 
-        filtered_correlation_series = df_correlation_driver_series[valid_index]
+        filtered_correlation_series = df_correlation_series[valid_index]
         filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
 
         return get_sorted_response(filtered_correlation_series)
 
 
 class ProductivityLogsSupplementsCorrelationsView(CorrelationsAPIView):
-    DATAFRAME_BUILDER = AggregateSupplementProductivityDataframeBuilder
-    VALID_CORRELATION_DRIVERS = PRODUCTIVITY_DRIVERS_LABELS
-    REQUEST_SERIALIZER = ProductivityRequestParamsSerializer
+    dataframe_builder = AggregateSupplementProductivityDataframeBuilder
+    valid_correlations = PRODUCTIVITY_DRIVERS_LABELS
+    request_serializer = ProductivityRequestParamsSerializer
 
 
 class ProductivityLogsUserActivitiesCorrelationsView(CorrelationsAPIView):
-    DATAFRAME_BUILDER = AggregateUserActivitiesEventsProductivityActivitiesBuilder
-    VALID_CORRELATION_DRIVERS = PRODUCTIVITY_DRIVERS_LABELS
-    REQUEST_SERIALIZER = ProductivityRequestParamsSerializer
+    dataframe_builder = AggregateUserActivitiesEventsProductivityActivitiesBuilder
+    valid_correlations = PRODUCTIVITY_DRIVERS_LABELS
+    request_serializer = ProductivityRequestParamsSerializer
 
 
 class SleepActivitiesUserActivitiesCorrelationsView(CorrelationsAPIView):
-    DATAFRAME_BUILDER = AggregateSleepActivitiesUserActivitiesBuilder
-    VALID_CORRELATION_DRIVERS = [SLEEP_MINUTES_COLUMN]
-    REQUEST_SERIALIZER = SleepRequestParamsSerializer
-
-    # def get(self, request):
-    #     user = request.user
-    #
-    #     serializer = SleepRequestParamsSerializer(data=request.query_params)
-    #     serializer.is_valid(raise_exception=True)
-    #
-    #     correlation_lookback = serializer.validated_data['correlation_lookback']
-    #     cumulative_lookback = serializer.validated_data['cumulative_lookback']
-    #     correlation_driver = serializer.validated_data['correlation_driver']
-    #
-    #     days_to_look_back = correlation_lookback * cumulative_lookback
-    #     cutoff_date = days_ago_from_current_day(days_to_look_back)
-    #
-    #     aggregate_dataframe = self.DATAFRAME_BUILDER.get_aggregate_dataframe_for_user(user,
-    #                                                                                   cutoff_date)
-    #     if aggregate_dataframe.empty:
-    #         return NO_DATA_RESPONSE
-    #
-    #     if cumulative_lookback > 1:
-    #         # min_periods of 1 allows for periods with no data to still be summed
-    #         aggregate_dataframe = aggregate_dataframe.rolling(cumulative_lookback, min_periods=1).sum()
-    #
-    #         # only include up to how many days the correlation lookback, otherwise incorrect overlap of correlations
-    #         aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
-    #
-    #     df_correlation = aggregate_dataframe.corr()
-    #     df_correlation_driver_series = df_correlation[correlation_driver]
-    #
-    #     # since this is a supplement only view, disregard how the other productivity drivers
-    #     # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
-    #     valid_index = [item for item in df_correlation_driver_series.index if
-    #                    item not in self.VALID_CORRELATION_DRIVERS]
-    #
-    #     # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
-    #     valid_index.append(correlation_driver)
-    #
-    #     filtered_correlation_series = df_correlation_driver_series[valid_index]
-    #     filtered_correlation_series = filtered_correlation_series.sort_values(ascending=False)
-    #
-    #     return get_sorted_response(filtered_correlation_series)
+    dataframe_builder = AggregateSleepActivitiesUserActivitiesBuilder
+    valid_correlations = [SLEEP_MINUTES_COLUMN]
+    request_serializer = SleepRequestParamsSerializer
