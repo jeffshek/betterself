@@ -42,7 +42,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     super();
 
     const analyticsSettings = {
-      // All these variables sound terrible after a while, rename them all
       correlationLookback: 60,
       updateCorrelationLookback: 60,
       cumulativeWindow: 1,
