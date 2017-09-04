@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from "react";
+import React from "react";
 
 export const CHARTS_BACKGROUND_COLOR = "#193441";
 export const CHART_HOVER_COLOR = "rgba(255,99,132,0.4)";
@@ -25,14 +25,19 @@ export const DefaultLineChartDataset = {
   data: []
 };
 
-export const CorrelationTableRow = data => {
-  const details = data.object;
-  const valueFormatted = details[1] ? details[1].toFixed(3) : null;
-
-  return (
-    <tr>
-      <td>{details[0]}</td>
-      <td>{valueFormatted}</td>
-    </tr>
-  );
+export const GenerateChartTemplate = chartLabel => {
+  return {
+    labels: [],
+    datasets: [
+      {
+        label: chartLabel,
+        backgroundColor: CHARTS_BACKGROUND_COLOR,
+        borderColor: CHARTS_BACKGROUND_COLOR,
+        borderWidth: 1,
+        hoverBackgroundColor: CHART_HOVER_COLOR,
+        hoverBorderColor: CHART_HOVER_BORDER_COLOR,
+        data: []
+      }
+    ]
+  };
 };

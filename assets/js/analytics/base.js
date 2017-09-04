@@ -2,47 +2,20 @@ import React, { Component } from "react";
 import { Bar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import {
-  CHART_HOVER_BORDER_COLOR,
-  CHART_HOVER_COLOR,
-  CHARTS_BACKGROUND_COLOR,
-  CorrelationTableRow
-} from "../constants/charts";
+import { GenerateChartTemplate } from "../constants/charts";
 import {
   NEGATIVELY_CORRELATED_LABEL,
   NOT_CORRELATED_LABEL,
   POSITIVELY_CORRELATED_LABEL
 } from "../constants/productivity";
+import { CorrelationTableRow } from "./constants";
 
-const SupplementsCorrelationsChart = {
-  labels: [],
-  datasets: [
-    {
-      label: "Supplements Correlation",
-      backgroundColor: CHARTS_BACKGROUND_COLOR,
-      borderColor: CHARTS_BACKGROUND_COLOR,
-      borderWidth: 1,
-      hoverBackgroundColor: CHART_HOVER_COLOR,
-      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
-      data: []
-    }
-  ]
-};
-
-const UserActivitiesCorrelationsChart = {
-  labels: [],
-  datasets: [
-    {
-      label: "Productivity Correlation",
-      backgroundColor: CHARTS_BACKGROUND_COLOR,
-      borderColor: CHARTS_BACKGROUND_COLOR,
-      borderWidth: 1,
-      hoverBackgroundColor: CHART_HOVER_COLOR,
-      hoverBorderColor: CHART_HOVER_BORDER_COLOR,
-      data: []
-    }
-  ]
-};
+const SupplementsCorrelationsChart = GenerateChartTemplate(
+  "Supplements Correlation"
+);
+const UserActivitiesCorrelationsChart = GenerateChartTemplate(
+  "Productivity Correlation"
+);
 
 export class BaseAnalyticsView extends Component {
   constructor() {
