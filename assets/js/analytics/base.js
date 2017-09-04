@@ -126,7 +126,9 @@ export class BaseAnalyticsView extends Component {
   }
 
   getUserActivitiesCorrelations() {
-    fetch(this.userActivitiesCorrelationsURL, {
+    const url = `${this.userActivitiesCorrelationsURL}?correlation_lookback=${this.state.periodsLookback}&cumulative_lookback=${this.state.rollingWindow}`;
+
+    fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
