@@ -63,10 +63,10 @@ class ProductivityLogFixturesGenerator(object):
             DailyProductivityLogFactory(user=user, date=fixture_date)
 
     @staticmethod
-    def create_fixtures_starting_from_today(user, days_back_amt=60):
+    def create_fixtures_starting_from_today(user, periods_back):
         end_date = datetime.date.today()
 
-        for days_back in range(days_back_amt):
+        for days_back in range(periods_back):
             fixture_date = end_date - datetime.timedelta(days=days_back)
             DailyProductivityLogFactory(user=user, date=fixture_date)
 

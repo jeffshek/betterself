@@ -264,7 +264,7 @@ class TestAggregateProductivityViews(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
-        ProductivityLogFixturesGenerator.create_fixtures_starting_from_today(cls.default_user)
+        ProductivityLogFixturesGenerator.create_fixtures_starting_from_today(cls.default_user, periods_back=60)
         super().setUpTestData()
 
     def setUp(self):
