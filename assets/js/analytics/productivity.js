@@ -5,15 +5,11 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { GenerateHistoryChartTemplate } from "../constants/charts";
 import {
   DISTRACTING_MINUTES_LABEL,
-  DISTRACTING_MINUTES_VARIABLE,
   NEUTRAL_MINUTES_LABEL,
-  NEUTRAL_MINUTES_VARIABLE,
   PRODUCTIVE_MINUTES_LABEL,
-  PRODUCTIVE_MINUTES_VARIABLE,
+  ProductivityColumnMappingToKey,
   VERY_DISTRACTING_MINUTES_LABEL,
-  VERY_DISTRACTING_MINUTES_VARIABLE,
-  VERY_PRODUCTIVE_MINUTES_LABEL,
-  VERY_PRODUCTIVE_MINUTES_VARIABLE
+  VERY_PRODUCTIVE_MINUTES_LABEL
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
@@ -23,14 +19,6 @@ import {
   minutesToHours,
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
-
-const ProductivityColumnMappingToKey = {
-  "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
-  "Productive Minutes": PRODUCTIVE_MINUTES_VARIABLE,
-  "Neutral Minutes": NEUTRAL_MINUTES_VARIABLE,
-  "Distracting Minutes": DISTRACTING_MINUTES_VARIABLE,
-  "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
-};
 
 const ProductivityHistoryChart = GenerateHistoryChartTemplate(
   "Very Productive (Hours)"
