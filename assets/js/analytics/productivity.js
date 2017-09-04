@@ -74,7 +74,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   submitUpdate = () => {
-    // Set the new state and then fetch the correlations, use a callback to call after updating
+    // Set the new state and then fetch the correlations, after updating, use a callback
     this.setState(
       {
         periodsLookback: this.state.updatePeriodsLookback,
