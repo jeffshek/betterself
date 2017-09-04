@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { DefaultLineChartDataset } from "../constants/charts";
+import { DefaultChartDataset } from "../constants/charts";
 import {
   DISTRACTING_MINUTES_LABEL,
   DISTRACTING_MINUTES_VARIABLE,
@@ -34,7 +34,7 @@ const ProductivityColumnMappingToKey = {
 
 const ProductivityHistoryChart = {
   labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
+  datasets: [Object.assign({}, DefaultChartDataset)]
 };
 
 export class ProductivityAnalyticsView extends BaseAnalyticsView {

@@ -1,8 +1,8 @@
 import React from "react";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
-import { DefaultLineChartDataset } from "../constants/charts";
+import { DefaultChartDataset } from "../constants/charts";
 import { BaseAnalyticsView } from "./base";
 import {
   ABBREVIATED_CHART_DATE,
@@ -11,7 +11,7 @@ import {
 
 const SleepHistoryChart = {
   labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
+  datasets: [Object.assign({}, DefaultChartDataset)]
 };
 
 export class SleepAnalyticsView extends BaseAnalyticsView {
