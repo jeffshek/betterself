@@ -87,10 +87,6 @@ class ProductivityLogsSupplementsCorrelationsView(APIView):
         days_to_look_back = correlation_lookback * cumulative_lookback
         cutoff_date = days_ago_from_current_day(days_to_look_back)
 
-        # correlation_driver = request.query_params.get('correlation_driver', 'Very Productive Minutes')
-        # if correlation_driver not in PRODUCTIVITY_DRIVERS_LABELS:
-        #     return Response('Invalid Correlation Driver Entered', status=400)
-
         aggregate_dataframe = AggregateSupplementProductivityDataframeBuilder.get_aggregate_dataframe_for_user(user,
             cutoff_date)
         if aggregate_dataframe.empty:

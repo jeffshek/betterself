@@ -90,7 +90,7 @@ class AggregateUserActivitiesEventsProductivityActivities(AggregateDataFrameBuil
 
 
 class AggregateSupplementProductivityDataframeBuilder(AggregateDataFrameBuilder):
-    def __init__(self, supplement_event_queryset, productivity_log_queryset, cutoff_date=None):
+    def __init__(self, supplement_event_queryset, productivity_log_queryset):
         super().__init__(
             supplement_event_queryset=supplement_event_queryset,
             productivity_log_queryset=productivity_log_queryset
