@@ -5,7 +5,9 @@ import dateutil.parser
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.urls import reverse
 from rest_framework import serializers
+from rest_framework.test import APIClient
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
@@ -13,7 +15,7 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.utils import UTC_TZ
+from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
@@ -251,3 +253,55 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
 
         request_parameters = {'end_time': end_time_iso}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+
+class TestAggregateProductivityViews(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.url = reverse('productivity-aggregates')
+        super().setUpClass()
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user, _ = User.objects.get_or_create(username='default')
+        ProductivityLogFixturesGenerator.create_fixtures_starting_from_today(cls.default_user, periods_back=60)
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_view_without_passing_parameters(self):
+        response = self.client.get(self.url)
+        data = response.data
+        self.assertEqual(len(data), DailyProductivityLog.objects.filter(user=self.default_user).count())
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_without_login(self):
+        not_logged_in_client = APIClient()
+        response = not_logged_in_client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_with_user_and_no_data(self):
+        client = APIClient()
+        new_user, _ = User.objects.get_or_create(username='new-user')
+        client.force_login(new_user)
+
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_with_start_date(self):
+        five_days_ago = get_current_date_days_ago(5)
+        six_days_ago = get_current_date_days_ago(6)
+
+        params = {
+            'start_date': five_days_ago.isoformat()
+        }
+        response = self.client.get(self.url, data=params)
+
+        data = response.data
+        dates = list(data.keys())
+        dates_serialized = [dateutil.parser.parse(x).date() for x in dates]
+
+        self.assertIn(five_days_ago, dates_serialized)
+        self.assertNotIn(six_days_ago, dates_serialized)

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { DefaultLineChartDataset } from "../constants/charts";
 import {
@@ -17,6 +17,12 @@ import {
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
+import {
+  ABBREVIATED_CHART_DATE,
+  DATE_REQUEST_FORMAT,
+  minutesToHours,
+  YEAR_MONTH_DAY_FORMAT
+} from "../constants/dates_and_times";
 
 const ProductivityColumnMappingToKey = {
   "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
@@ -36,10 +42,12 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     super();
 
     const analyticsSettings = {
-      correlationLookBackDays: 60,
-      updateCorrelationLookBackDays: 60,
-      cumulativeLookBackDays: 1,
-      updateCumulativeLookBackDays: 1
+      correlationLookback: 60,
+      updateCorrelationLookback: 60,
+      cumulativeWindow: 1,
+      updateCumulativeWindow: 1,
+      startDate: moment(),
+      endDate: moment()
     };
 
     const updateState = {
@@ -67,6 +75,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   }
 
   componentDidMount() {
+    this.updateData();
+  }
+
+  updateData() {
     this.getHistory();
     this.getSupplementsCorrelations();
     this.getUserActivitiesCorrelations();
@@ -82,10 +94,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     // Set the new state and then fetch the correlations, use a callback to call after updating
     this.setState(
       {
-        correlationLookBackDays: this.state.updateCorrelationLookBackDays,
-        cumulativeLookBackDays: this.state.updateCumulativeLookBackDays
+        correlationLookback: this.state.updateCorrelationLookback,
+        cumulativeWindow: this.state.updateCumulativeWindow
       },
-      this.getSupplementsCorrelations
+      this.updateData
     );
 
     this.toggle();
@@ -113,7 +125,13 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   getHistory() {
-    fetch("/api/v1/productivity_log/", {
+    const startDate = moment()
+      .subtract(this.state.correlationLookback, "days")
+      .format(DATE_REQUEST_FORMAT);
+
+    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.cumulativeWindow}`;
+
+    fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
@@ -121,32 +139,60 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
         return response.json();
       })
       .then(responseData => {
-        const reverseResponseData = responseData.results.reverse();
+        const labelDates = Object.keys(responseData);
+        labelDates.sort();
 
-        const labelDates = reverseResponseData.map(key =>
-          moment(key.date).format("l dd")
-        );
-        const arrayValues = reverseResponseData.map(key => {
-          return (key.very_productive_time_minutes / 60).toFixed(2);
+        const labelDatesFormatted = labelDates.map(e => {
+          return moment(e).format(ABBREVIATED_CHART_DATE);
         });
 
-        this.state.productivityHistoryChart.labels = labelDates;
-        this.state.productivityHistoryChart.datasets[0].data = arrayValues;
+        const selectedHistoryVariable =
+          ProductivityColumnMappingToKey[
+            this.state.selectedProductivityHistoryType
+          ];
+
+        const responseValues = labelDates.map(e => {
+          const selectedVariableData = responseData[e][selectedHistoryVariable];
+          return minutesToHours(selectedVariableData);
+        });
+
+        this.state.productivityHistoryChart.labels = labelDatesFormatted;
+        this.state.productivityHistoryChart.datasets[0].data = responseValues;
 
         this.setState({
+          startDate: moment(labelDates[0]),
           productivityHistoryChart: this.state.productivityHistoryChart,
-          selectedProductivityHistoryChartData: reverseResponseData
+          selectedProductivityHistoryChartData: responseValues
         });
       });
+  }
+
+  handleSettingsChange = event => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+
+    const intValue = parseInt(value);
+
+    this.setState({
+      [name]: intValue
+    });
+  };
+
+  renderPageTitleBlock() {
+    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeWindow} Day Aggregate`;
+    return (
+      <span className="font-1xl productivity-analytics-margin-left">
+        {title}
+      </span>
+    );
   }
 
   renderHistoryChart() {
     return (
       <div className="card">
         <div className="card-header analytics-text-box-label">
-          <span className="font-2xl productivity-analytics-margin-left">
-            Productivity Analytics
-          </span>
+          {this.renderPageTitleBlock()}
           <span className="float-right">
             <button
               type="submit"
@@ -173,18 +219,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
       </div>
     );
   }
-
-  handleSettingsChange = event => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-
-    const intValue = parseInt(value);
-
-    this.setState({
-      [name]: intValue
-    });
-  };
 
   renderSettingsModal() {
     if (!this.state.modal) {
@@ -222,10 +256,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCorrelationLookBackDays"
+            name="updateCorrelationLookback"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCorrelationLookBackDays}
+            defaultValue={this.state.updateCorrelationLookback}
             onChange={this.handleSettingsChange}
           />
           <br />
@@ -237,10 +271,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCumulativeLookBackDays"
+            name="updateCumulativeWindow"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCumulativeLookBackDays}
+            defaultValue={this.state.updateCumulativeWindow}
             onChange={this.handleSettingsChange}
           />
         </ModalBody>

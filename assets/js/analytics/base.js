@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import {
@@ -64,8 +64,8 @@ export class BaseAnalyticsView extends Component {
       negativeUserActivitiesCorrelations: [],
       neutralUserActivitiesCorrelations: [],
       // Parameters on how to query the data
-      correlationLookBackDays: 60,
-      cumulativeLookBackDays: 1
+      correlationLookback: 60,
+      cumulativeWindow: 1
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -126,7 +126,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
-    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.correlationLookBackDays}&cumulative_lookback=${this.state.cumulativeLookBackDays}`;
+    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.correlationLookback}&cumulative_lookback=${this.state.cumulativeWindow}`;
     fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -293,7 +293,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderUserActivitiesChart() {
-    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.correlationLookBackDays} Days)`;
+    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
 
     return (
       <div className="card">
@@ -357,7 +357,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
-    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookBackDays} Days)`;
+    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
 
     return (
       <div className="card">

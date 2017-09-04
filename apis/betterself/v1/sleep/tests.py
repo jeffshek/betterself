@@ -59,6 +59,11 @@ class SleepAggregateTests(TestCase):
 
 class SleepAverageTests(TestCase):
     @classmethod
+    def setUpClass(cls):
+        cls.url = reverse('sleep-averages')
+        super().setUpClass()
+
+    @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(username='demo')
 
@@ -72,33 +77,54 @@ class SleepAverageTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_sleep_averages_view(self):
-        url = reverse('sleep-averages')
         kwargs = {'lookback': 7}
-        response = self.client.get(url, data=kwargs)
+        response = self.client.get(self.url, data=kwargs)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data) > 1)
 
     def test_sleep_averages_returns_400_with_invalid_lookback(self):
-        url = reverse('sleep-averages')
         kwargs = {'lookback': 'cat'}
-        response = self.client.get(url, data=kwargs)
+        response = self.client.get(self.url, data=kwargs)
         self.assertEqual(response.status_code, 400)
 
-    def test_sleep_averages_view_returns_400(self):
-        url = reverse('sleep-averages')
-        response = self.client.get(url)
+    def test_sleep_averages_view_returns_200(self):
+        # if no params passed, should default to 1
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.status_code, 400)
+    def test_sleep_averages_view_same_result_as_default_parameter(self):
+        # for responses with the default params, it should equal
+        # the same as something that didn't pass a lookback param
+        default_response = self.client.get(self.url)
+
+        kwargs = {'lookback': 1}
+        second_response = self.client.get(self.url, data=kwargs)
+
+        self.assertEqual(default_response.data, second_response.data)
+
+    def test_sleep_averages_view_not_same_result_as_default_parameter(self):
+        # for responses with different params, it should not equal equal default
+        default_response = self.client.get(self.url)
+
+        # default window is 1, so if this is 2, it should be different
+        kwargs = {'lookback': 2}
+        second_response = self.client.get(self.url, data=kwargs)
+
+        self.assertNotEqual(default_response.data, second_response.data)
+
+    def test_sleep_averages_with_not_logged_in_user(self):
+        client = APIClient()
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 403)
 
     def test_sleep_averages_with_user_and_no_data(self):
-        url = reverse('sleep-averages')
         user = User.objects.create(username='jack-in-box')
         client = APIClient()
         client.force_authenticate(user)
 
         kwargs = {'lookback': 7}
 
-        response = client.get(url, data=kwargs)
+        response = client.get(self.url, data=kwargs)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {})

@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from betterself.base_models import BaseModelWithUserGeneratedContent
-from betterself.utils import create_django_choice_tuple_from_list
+from betterself.utils.django_utils import create_django_choice_tuple_from_list
 from supplements.models import Supplement
 
 WEB_INPUT_SOURCE = 'web'

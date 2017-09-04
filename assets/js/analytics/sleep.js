@@ -4,6 +4,10 @@ import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DefaultLineChartDataset } from "../constants/charts";
 import { BaseAnalyticsView } from "./base";
+import {
+  ABBREVIATED_CHART_DATE,
+  minutesToHours
+} from "../constants/dates_and_times";
 
 const SleepHistoryChart = {
   labels: [],
@@ -50,11 +54,11 @@ export class SleepAnalyticsView extends BaseAnalyticsView {
         sleepDates.sort();
 
         const sleepDatesFormatted = sleepDates.map(key =>
-          moment(key).format("l dd")
+          moment(key).format(ABBREVIATED_CHART_DATE)
         );
 
         const dataParsed = sleepDates.map(key => {
-          return (responseData[key] / 60).toFixed(2);
+          return minutesToHours(responseData[key]);
         });
 
         this.state.sleepHistory.labels = sleepDatesFormatted;
