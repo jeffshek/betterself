@@ -1,33 +1,30 @@
 import React from "react";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
-import { DefaultLineChartDataset } from "../constants/charts";
+import { GenerateHistoryChartTemplate } from "../constants/charts";
 import { BaseAnalyticsView } from "./base";
 import {
   ABBREVIATED_CHART_DATE,
   minutesToHours
 } from "../constants/dates_and_times";
 
-const SleepHistoryChart = {
-  labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
-};
+const SleepHistoryChart = GenerateHistoryChartTemplate("Sleep Time (Hours)");
 
 export class SleepAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();
+
     const analyticsSettings = {
       periodsLookback: 60,
       rollingWindow: 1
     };
+
     const updateState = {
       sleepHistory: SleepHistoryChart
     };
 
-    // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState, analyticsSettings);
-    this.state.sleepHistory.datasets[0].label = "Sleep Time (Hours)";
 
     this.supplementCorrelationsURL =
       "api/v1/sleep_activities/supplements/correlations";

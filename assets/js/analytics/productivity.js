@@ -1,19 +1,15 @@
 import React from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { DefaultLineChartDataset } from "../constants/charts";
+import { GenerateHistoryChartTemplate } from "../constants/charts";
 import {
   DISTRACTING_MINUTES_LABEL,
-  DISTRACTING_MINUTES_VARIABLE,
   NEUTRAL_MINUTES_LABEL,
-  NEUTRAL_MINUTES_VARIABLE,
   PRODUCTIVE_MINUTES_LABEL,
-  PRODUCTIVE_MINUTES_VARIABLE,
+  ProductivityColumnMappingToKey,
   VERY_DISTRACTING_MINUTES_LABEL,
-  VERY_DISTRACTING_MINUTES_VARIABLE,
-  VERY_PRODUCTIVE_MINUTES_LABEL,
-  VERY_PRODUCTIVE_MINUTES_VARIABLE
+  VERY_PRODUCTIVE_MINUTES_LABEL
 } from "../constants/productivity";
 import { BaseAnalyticsView } from "./base";
 import moment from "moment";
@@ -24,18 +20,9 @@ import {
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 
-const ProductivityColumnMappingToKey = {
-  "Very Productive Minutes": VERY_PRODUCTIVE_MINUTES_VARIABLE,
-  "Productive Minutes": PRODUCTIVE_MINUTES_VARIABLE,
-  "Neutral Minutes": NEUTRAL_MINUTES_VARIABLE,
-  "Distracting Minutes": DISTRACTING_MINUTES_VARIABLE,
-  "Very Distracting Minutes": VERY_DISTRACTING_MINUTES_VARIABLE
-};
-
-const ProductivityHistoryChart = {
-  labels: [],
-  datasets: [Object.assign({}, DefaultLineChartDataset)]
-};
+const ProductivityHistoryChart = GenerateHistoryChartTemplate(
+  "Very Productive (Hours)"
+);
 
 export class ProductivityAnalyticsView extends BaseAnalyticsView {
   constructor() {
@@ -59,10 +46,6 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
     // Update state (from base class) with the above
     this.state = Object.assign(this.state, updateState, analyticsSettings);
-
-    this.state.productivityHistoryChart.datasets[
-      0
-    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
 
     this.supplementCorrelationsURL =
       "api/v1/productivity_log/supplements/correlations";
@@ -91,7 +74,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   submitUpdate = () => {
-    // Set the new state and then fetch the correlations, use a callback to call after updating
+    // Set the new state and then fetch the correlations, after updating, use a callback
     this.setState(
       {
         periodsLookback: this.state.updatePeriodsLookback,
@@ -108,18 +91,21 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     const selectedProductivityHistoryType = event.target.value;
     const column_key =
       ProductivityColumnMappingToKey[selectedProductivityHistoryType];
-
     const arrayValues = this.state.selectedProductivityHistoryChartData.map(
       key => key[column_key]
     );
+    const chartLabel = selectedProductivityHistoryType.replace(
+      "Hours",
+      "Minutes"
+    );
 
-    this.state.selectedProductivityHistoryType = selectedProductivityHistoryType;
     this.state.productivityHistoryChart.datasets[0].data = arrayValues;
     this.state.productivityHistoryChart.datasets[
       0
-    ].label = `${this.state.selectedProductivityHistoryType}/Hours`;
+    ].label = `${chartLabel} (Hours)`;
 
     this.setState({
+      selectedProductivityHistoryType: selectedProductivityHistoryType,
       productivityHistoryChart: this.state.productivityHistoryChart
     });
   };
