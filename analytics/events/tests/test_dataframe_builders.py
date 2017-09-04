@@ -206,6 +206,6 @@ class SleepDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
 
         self.assertTrue(user_activity_events_names.issubset(dataframe.columns))
         self.assertIn(SLEEP_MINUTES_COLUMN, dataframe.columns)
-        # because user activities record a day earlier ... sleep generally comes up as empty
-        # since that person hasn't sleep yet.
-        self.assertEqual(dataframe.index.size, sleep_records_count + 1)
+        # because user activities sometimes record a day earlier ... sleep generally comes up as empty
+        # since that person hasn't sleep yet. this is because the fixtures generates random data
+        self.assertTrue(sleep_records_count <= dataframe.index.size <= sleep_records_count + 1)
