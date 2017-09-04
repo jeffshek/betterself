@@ -83,10 +83,9 @@ class CorrelationsAPIView(APIView):
         df_correlation = aggregate_dataframe.corr()
         df_correlation_series = df_correlation[correlation_driver]
 
-        # since this is a supplement only view, disregard how the other productivity drivers
+        # disregard all other valid correlation drivers and only care about the variables
         # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
-        valid_index = [item for item in df_correlation_series.index if
-                       item not in self.valid_correlations]
+        valid_index = [item for item in df_correlation_series.index if item not in self.valid_correlations]
 
         # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
         valid_index.append(correlation_driver)
