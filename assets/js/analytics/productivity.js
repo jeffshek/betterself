@@ -42,10 +42,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     super();
 
     const analyticsSettings = {
-      correlationLookback: 60,
-      updateCorrelationLookback: 60,
-      cumulativeWindow: 1,
-      updateCumulativeWindow: 1,
+      periodsLookback: 60,
+      updatePeriodsLookback: 60,
+      rollingWindow: 1,
+      updateRollingWindow: 1,
       startDate: moment(),
       endDate: moment()
     };
@@ -94,8 +94,8 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
     // Set the new state and then fetch the correlations, use a callback to call after updating
     this.setState(
       {
-        correlationLookback: this.state.updateCorrelationLookback,
-        cumulativeWindow: this.state.updateCumulativeWindow
+        periodsLookback: this.state.updatePeriodsLookback,
+        rollingWindow: this.state.updateRollingWindow
       },
       this.updateData
     );
@@ -126,10 +126,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
   getHistory() {
     const startDate = moment()
-      .subtract(this.state.correlationLookback, "days")
+      .subtract(this.state.periodsLookback, "days")
       .format(DATE_REQUEST_FORMAT);
 
-    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.cumulativeWindow}`;
+    const url = `/api/v1/productivity_log/aggregates/?start_date=${startDate}&cumulative_window=${this.state.rollingWindow}`;
 
     fetch(url, {
       method: "GET",
@@ -180,7 +180,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
   };
 
   renderPageTitleBlock() {
-    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.cumulativeWindow} Day Aggregate`;
+    const title = `Productivity Analytics | ${this.state.startDate.format(YEAR_MONTH_DAY_FORMAT)} - ${this.state.endDate.format(YEAR_MONTH_DAY_FORMAT)} | ${this.state.rollingWindow} Day Aggregate`;
     return (
       <span className="font-1xl productivity-analytics-margin-left">
         {title}
@@ -256,10 +256,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCorrelationLookback"
+            name="updatePeriodsLookback"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCorrelationLookback}
+            defaultValue={this.state.updatePeriodsLookback}
             onChange={this.handleSettingsChange}
           />
           <br />
@@ -271,10 +271,10 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
           </div>
           <br />
           <input
-            name="updateCumulativeWindow"
+            name="updateRollingWindow"
             type="number"
             className="form-control"
-            defaultValue={this.state.updateCumulativeWindow}
+            defaultValue={this.state.updateRollingWindow}
             onChange={this.handleSettingsChange}
           />
         </ModalBody>

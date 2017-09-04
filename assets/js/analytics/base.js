@@ -64,8 +64,8 @@ export class BaseAnalyticsView extends Component {
       negativeUserActivitiesCorrelations: [],
       neutralUserActivitiesCorrelations: [],
       // Parameters on how to query the data
-      correlationLookback: 60,
-      cumulativeWindow: 1
+      periodsLookback: 60,
+      rollingWindow: 1
     };
 
     this.selectSupplementsCorrelationsTab = this.selectSupplementsCorrelationsTab.bind(
@@ -126,7 +126,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementsCorrelations() {
-    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.correlationLookback}&cumulative_lookback=${this.state.cumulativeWindow}`;
+    const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.periodsLookback}&cumulative_lookback=${this.state.rollingWindow}`;
     fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -293,7 +293,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderUserActivitiesChart() {
-    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
+    const userActivitiesCorrelationsChartLabel = `${this.userActivitiesCorrelationsChartLabel} (Last ${this.state.periodsLookback} Days)`;
 
     return (
       <div className="card">
@@ -357,7 +357,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsChart() {
-    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.correlationLookback} Days)`;
+    const supplementsCorrelationsChartLabel = `${this.supplementsCorrelationsChartLabel} (Last ${this.state.periodsLookback} Days)`;
 
     return (
       <div className="card">
