@@ -3,14 +3,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
-    AggregateUserActivitiesEventsProductivityActivitiesBuilder, AggregateSleepActivitiesUserActivitiesBuilder
-from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
-    PRODUCTIVITY_DRIVERS_LABELS, SleepActivityDataframeBuilder
+    AggregateUserActivitiesEventsProductivityActivitiesBuilder, AggregateSleepActivitiesUserActivitiesBuilder, \
+    AggregateSleepActivitiesSupplementsBuilder
+from analytics.events.utils.dataframe_builders import PRODUCTIVITY_DRIVERS_LABELS
 from apis.betterself.v1.correlations.serializers import ProductivityRequestParamsSerializer, \
     SleepRequestParamsSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SleepActivity, SupplementEvent
 
 NO_DATA_RESPONSE = Response([])
 
@@ -30,26 +29,6 @@ def get_sorted_response(series):
         sorted_response.append(data_point)
 
     return Response(sorted_response)
-
-
-class SleepActivitiesSupplementsCorrelationsView(APIView):
-    def get(self, request):
-        user = request.user
-        queryset = SupplementEvent.objects.filter(user=user)
-        supplements_df_builder = SupplementEventsDataframeBuilder(queryset)
-        supplements_flat_daily_df = supplements_df_builder.get_flat_daily_dataframe()
-
-        sleep_activities = SleepActivity.objects.filter(user=user)
-        sleep_serializer = SleepActivityDataframeBuilder(sleep_activities)
-        sleep_aggregate_series = sleep_serializer.get_sleep_history_series()
-
-        supplements_and_sleep_df = supplements_flat_daily_df.copy()
-        supplements_and_sleep_df[SLEEP_MINUTES_COLUMN] = sleep_aggregate_series
-
-        correlation = supplements_and_sleep_df.corr()
-        sleep_correlation = correlation[SLEEP_MINUTES_COLUMN].sort_values(ascending=False)
-
-        return get_sorted_response(sleep_correlation)
 
 
 class CorrelationsAPIView(APIView):
@@ -88,6 +67,7 @@ class CorrelationsAPIView(APIView):
         valid_index = [item for item in df_correlation_series.index if item not in self.valid_correlations]
 
         # but still include the correlation driver to make sure that the correlation of a variable with itself is 1
+        # seeing something correlate with itself of 1 is soothing to know its not flawed
         valid_index.append(correlation_driver)
 
         filtered_correlation_series = df_correlation_series[valid_index]
@@ -110,5 +90,11 @@ class ProductivityLogsUserActivitiesCorrelationsView(CorrelationsAPIView):
 
 class SleepActivitiesUserActivitiesCorrelationsView(CorrelationsAPIView):
     dataframe_builder = AggregateSleepActivitiesUserActivitiesBuilder
+    valid_correlations = [SLEEP_MINUTES_COLUMN]
+    request_serializer = SleepRequestParamsSerializer
+
+
+class SleepActivitiesSupplementsCorrelationsView(CorrelationsAPIView):
+    dataframe_builder = AggregateSleepActivitiesSupplementsBuilder
     valid_correlations = [SLEEP_MINUTES_COLUMN]
     request_serializer = SleepRequestParamsSerializer

@@ -119,7 +119,7 @@ class AggregateSleepActivitiesSupplementsBuilder(AggregateDataFrameBuilder):
 
         if cutoff_date:
             sleep_logs = sleep_logs.filter(start_time__gte=cutoff_date)
-            supplement_events = supplement_events.filter(date__gte=cutoff_date)
+            supplement_events = supplement_events.filter(time__gte=cutoff_date)
 
         aggregate_dataframe = cls(
             sleep_activities_queryset=sleep_logs,
