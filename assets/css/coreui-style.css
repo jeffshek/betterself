@@ -2560,6 +2560,7 @@ tbody.collapse.show {
   padding-top: .25rem;
   padding-bottom: .25rem;
   margin-right: 1rem;
+  margin-bottom: -1px;
   font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap; }
