@@ -94,15 +94,19 @@ class LoggedInHeader extends Component {
               </a>
 
               <DropdownMenu className="dropdown-menu-right">
-                <DropdownItem>
-                  <i className="fa fa-lock" />
-                  <Link to={SETTINGS_URL}>Settings</Link>
-                </DropdownItem>
+                <Link to={SETTINGS_URL}>
+                  <DropdownItem>
+                    <i className="fa fa-lock" />
+                    Settings
+                  </DropdownItem>
+                </Link>
 
-                <DropdownItem>
-                  <i className="fa fa-lock" />
-                  <Link to={LOGOUT_URL}>Logout</Link>
-                </DropdownItem>
+                <Link to={LOGOUT_URL}>
+                  <DropdownItem>
+                    <i className="fa fa-lock" />
+                    Logout
+                  </DropdownItem>
+                </Link>
 
               </DropdownMenu>
             </Dropdown>
