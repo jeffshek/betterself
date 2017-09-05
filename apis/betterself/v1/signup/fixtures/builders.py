@@ -8,7 +8,7 @@ from django.utils import timezone
 from apis.betterself.v1.signup.fixtures.factories import DemoSupplementEventFactory, DemoActivityEventFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
-from events.models import DailyProductivityLog, SleepActivity
+from events.models import DailyProductivityLog, SleepActivity, UserActivityEvent, SupplementEvent
 
 
 class DemoHistoricalDataBuilder(object):
@@ -95,12 +95,25 @@ class DemoHistoricalDataBuilder(object):
         SleepActivity.objects.bulk_create(sleep_logs)
 
     def create_historical_fixtures(self):
+        user_activities_bulk_create = []
+        supplement_logs_bulk_create = []
+
         for timestamp in self.date_series:
             for activity_name, activity_details in USER_ACTIVITY_EVENTS.items():
-                self.build_events(activity_name, activity_details, timestamp, DemoActivityEventFactory)
+                # import ipdb; ipdb.set_trace()
+                events = self.build_events(activity_name, activity_details, timestamp,
+                                           DemoActivityEventFactory)
+                user_activities_bulk_create.extend(events)
 
             for supplement_name, supplement_details in SUPPLEMENTS_FIXTURES.items():
-                self.build_events(supplement_name, supplement_details, timestamp, DemoSupplementEventFactory)
+                supplement_events = self.build_events(supplement_name, supplement_details, timestamp,
+                                                      DemoSupplementEventFactory)
+                supplement_logs_bulk_create.extend(supplement_events)
+
+        UserActivityEvent.objects.bulk_create(user_activities_bulk_create)
+        SupplementEvent.objects.bulk_create(supplement_logs_bulk_create)
+
+        # import ipdb; ipdb.set_trace()
 
         # calculate how much sleep from a random normal distribution
         # and how supplements would impact it
@@ -132,6 +145,8 @@ class DemoHistoricalDataBuilder(object):
         DailyProductivityLog.objects.bulk_create(productivity_logs)
 
     def build_events(self, activity_name, index_details, timestamp, factory_type):
+        events = []
+
         events_to_create = random.randint(*index_details['quantity_range'])
         # no replacement, grab a sample hour from each one, because timestamps have to be unique
         random_hours = random.sample(self.hour_series, events_to_create)
@@ -139,10 +154,13 @@ class DemoHistoricalDataBuilder(object):
             random_hour = random_hours.pop()
             random_time = timestamp.to_pydatetime().replace(hour=random_hour)
             # use a factory boy instance to create the record
-            factory_type(user=self.user, name=activity_name, time=random_time)
+            event = factory_type.build(user=self.user, name=activity_name, time=random_time)
+            events.append(event)
 
         productivity_impact_minutes = self.calculate_productivity_impact(events_to_create, index_details)
         self.productivity_impact_series[timestamp] += productivity_impact_minutes
 
         sleep_impact_minutes = self.calculate_sleep_impact(events_to_create, index_details)
         self.sleep_impact_series[timestamp] += sleep_impact_minutes
+
+        return events
