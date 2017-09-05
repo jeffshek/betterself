@@ -27,8 +27,8 @@ class SupplementEvent(BaseModelWithUserGeneratedContent):
     """
     RESOURCE_NAME = 'supplement_events'
 
-    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     supplement = models.ForeignKey(Supplement)
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     # what time did the user take the five hour energy? use the time model
     # so eventually (maybe never) can do half-life analysis

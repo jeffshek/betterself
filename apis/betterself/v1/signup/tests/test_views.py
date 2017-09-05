@@ -165,10 +165,6 @@ class DemoAccountsTest(TestCase):
 
     def test_demo_user_creation_is_in_demo_user_log(self):
         response = self.client.get(self.create_url)
-        response = self.client.get(self.create_url)
-        response = self.client.get(self.create_url)
-        response = self.client.get(self.create_url)
-        response = self.client.get(self.create_url)
 
         data = response.data
 
