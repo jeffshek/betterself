@@ -71,9 +71,12 @@ class CreateDemoUserView(APIView):
 
         # during testing, we want immediately the fixtures to be created
         # otherwise for actual use cases, have it be done async
-        if settings.DJANGO_ENVIRONMENT == TESTING:
-            create_demo_fixtures_for_user(user)
-        else:
-            create_demo_fixtures_for_user.delay(user)
+        # if settings.DJANGO_ENVIRONMENT == TESTING:
+        #     create_demo_fixtures_for_user(user)
+        # else:
+        #     create_demo_fixtures_for_user.delay(user)
+
+        # React loads the page too fast
+        create_demo_fixtures_for_user(user)
 
         return Response(json_response, status=HTTP_201_CREATED)
