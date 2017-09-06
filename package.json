@@ -55,5 +55,8 @@
     "webpack": "^2.2.1",
     "webpack-bundle-tracker": "^0.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+   "yarn": "0.27.5"
+  }
 }
