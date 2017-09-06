@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from faker import Faker
@@ -6,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
-from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
+from apis.betterself.v1.signup.tasks import create_demo_fixtures_for_user
 from betterself.users.models import DemoUserLog
+from config.settings.constants import TESTING
 from events.utils.default_events_builder import DefaultEventsBuilder
 
 User = get_user_model()
@@ -67,7 +69,11 @@ class CreateDemoUserView(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         json_response['token'] = token.key
 
-        fixtures_builder = DemoHistoricalDataBuilder(user)
-        fixtures_builder.create_historical_fixtures()
+        # during testing, we want immediately the fixtures to be created
+        # otherwise for actual use cases, have it be done async
+        if settings.DJANGO_ENVIRONMENT == TESTING:
+            create_demo_fixtures_for_user(user)
+        else:
+            create_demo_fixtures_for_user.delay(user)
 
         return Response(json_response, status=HTTP_201_CREATED)
