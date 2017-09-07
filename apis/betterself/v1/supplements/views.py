@@ -67,7 +67,3 @@ class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
-
-
-class SupplementLogListView(ListAPIView):
-    pass
