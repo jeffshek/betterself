@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from apis.betterself.v1.signup.tasks import create_demo_fixtures_for_user
 from betterself.users.models import DemoUserLog
-from config.settings.constants import TESTING
+from config.settings.constants import TESTING, LOCAL
 from events.utils.default_events_builder import DefaultEventsBuilder
 
 User = get_user_model()
@@ -69,14 +69,11 @@ class CreateDemoUserView(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         json_response['token'] = token.key
 
-        # during testing, we want immediately the fixtures to be created
+        # during testing and local environments, we want immediately the fixtures to be created
         # otherwise for actual use cases, have it be done async
-        # if settings.DJANGO_ENVIRONMENT == TESTING:
-        #     create_demo_fixtures_for_user(user)
-        # else:
-        #     create_demo_fixtures_for_user.delay(user)
-
-        # React loads the page too fast
-        create_demo_fixtures_for_user(user)
+        if settings.DJANGO_ENVIRONMENT in (TESTING, LOCAL):
+            create_demo_fixtures_for_user(user)
+        else:
+            create_demo_fixtures_for_user.delay(user)
 
         return Response(json_response, status=HTTP_201_CREATED)

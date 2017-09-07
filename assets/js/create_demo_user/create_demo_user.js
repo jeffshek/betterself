@@ -20,16 +20,18 @@ export class CreateDemoUserView extends Component {
   constructor() {
     super();
     this.state = {
-      onClickDisabled: false
+      onClickDisabled: false,
+      demoToken: null,
+      demoUserName: null
     };
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({
-      onClickDisabled: true
-    });
+  componentDidMount() {
+    // Upon getting to this page, create a demo user in the background, so it doesn't take forever to load
+    this.createDemoUser();
+  }
 
+  createDemoUser() {
     return fetch("/api/v1/user-signup-demo/", {
       method: "GET"
     })
@@ -40,13 +42,24 @@ export class CreateDemoUserView extends Component {
         if ("token" in responseData) {
           // If the token is in the response, set localStorage correctly
           // and then redirect to the dashboard
-          localStorage.token = responseData["token"];
-          localStorage.userName = responseData["username"];
-
-          window.location.assign(DASHBOARD_INDEX_URL);
+          this.setState({
+            demoToken: responseData["token"],
+            demoUserName: responseData["username"]
+          });
         }
         return responseData;
       });
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState({
+      onClickDisabled: true
+    });
+
+    localStorage.token = this.state.demoToken;
+    localStorage.userName = this.state.demoUserName;
+    window.location.assign(DASHBOARD_INDEX_URL);
   };
 
   renderSubmitButton() {
