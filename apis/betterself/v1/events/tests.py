@@ -354,3 +354,16 @@ class SupplementLogsTest(TestCase):
     def test_view_works_with_invalid_frequency_parameters(self):
         response = self.client.get(self.url, data={'frequency': 'THIS IS MADE UP'})
         self.assertEqual(response.status_code, 400)
+
+    def test_assert_daily_frequency_is_less_than_no_aggregration(self):
+        # A supplement history that is stacked daily should return in less results that something that hasn't been
+        # aggregated. IE. If you drink Coffee 3x on Monday, that only results on 1 record, versus 3 individual records
+        # for no aggregation
+        response_no_aggregation = self.client.get(self.url, data={'frequency': None})
+        response_daily_aggregation = self.client.get(self.url, data={'frequency': 'daily'})
+
+        self.assertGreater(len(response_no_aggregation.data), len(response_daily_aggregation.data))
+        # err on the side of caution that a dataframe and not a series is being returned (in that case, it would be
+        # where the results returned is just a count of 1
+        self.assertGreater(len(response_daily_aggregation.data), 10)
+        self.assertGreater(len(response_no_aggregation.data), 10)

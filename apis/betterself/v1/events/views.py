@@ -102,22 +102,22 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
 class SupplementLogListView(APIView):
     def get(self, request, supplement_uuid):
-        request_params = request.query_params
-
-        serializer = SupplementLogRequestParametersSerializer(data=request_params)
-        serializer.is_valid(raise_exception=True)
-        params = serializer.validated_data
-
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         supplement_events = SupplementEvent.objects.filter(supplement=supplement)
+
+        serializer = SupplementLogRequestParametersSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        params = serializer.validated_data
 
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':
             df = builder.get_flat_daily_dataframe()
+            series = df[supplement.name]
         else:
             df = builder.build_dataframe()
+            series = df['Supplement']
 
-        json_data = df.to_json(date_format='iso')
+        json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)
 
         return Response(data)
