@@ -119,5 +119,4 @@ class SupplementLogListView(APIView):
 
         json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)
-
         return Response(data)

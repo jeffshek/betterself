@@ -309,13 +309,9 @@ class TestAggregateProductivityViews(TestCase):
 
 
 class SupplementLogsTest(TestCase):
-    """ Test class that gets activity for one specific supplement
     """
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
+    Test class that gets activity for one specific supplement
+    """
     @classmethod
     def setUpTestData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
@@ -324,7 +320,6 @@ class SupplementLogsTest(TestCase):
 
         supplement = Supplement.objects.filter(user=cls.default_user).first()
         supplement_uuid = str(supplement.uuid)
-
         cls.url = reverse('supplement-log', args=[supplement_uuid])
 
         super().setUpTestData()
