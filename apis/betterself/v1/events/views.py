@@ -1,20 +1,22 @@
 import json
 
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder
+from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder, \
+    SupplementEventsDataframeBuilder
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     DailyProductivityLogFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
     SupplementEventReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
-    UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer
+    UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from supplements.models import Supplement
 
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
@@ -96,3 +98,25 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user).select_related('user_activity')
+
+
+class SupplementLogListView(APIView):
+    def get(self, request, supplement_uuid):
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
+        supplement_events = SupplementEvent.objects.filter(supplement=supplement)
+
+        serializer = SupplementLogRequestParametersSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        params = serializer.validated_data
+
+        builder = SupplementEventsDataframeBuilder(supplement_events)
+        if params['frequency'] == 'daily':
+            df = builder.get_flat_daily_dataframe()
+            series = df[supplement.name]
+        else:
+            df = builder.build_dataframe()
+            series = df['Supplement']
+
+        json_data = series.to_json(date_format='iso')
+        data = json.loads(json_data)
+        return Response(data)
