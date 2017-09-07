@@ -10,6 +10,7 @@ from rest_framework import serializers
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
+from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
@@ -305,3 +306,59 @@ class TestAggregateProductivityViews(TestCase):
 
         self.assertIn(five_days_ago, dates_serialized)
         self.assertNotIn(six_days_ago, dates_serialized)
+
+
+class SupplementLogsTest(TestCase):
+    """
+    Test class that gets activity for one specific supplement
+    """
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user, _ = User.objects.get_or_create(username='default')
+        builder = DemoHistoricalDataBuilder(cls.default_user)
+        builder.create_historical_fixtures()
+
+        supplement = Supplement.objects.filter(user=cls.default_user).first()
+        supplement_uuid = str(supplement.uuid)
+        cls.url = reverse('supplement-log', args=[supplement_uuid])
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_basic_view_functionality_with_invalid_url_returns_nothing(self):
+        url = reverse('supplement-log', args=['cat'])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404, response.data)
+
+    def test_view_works(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_works_with_valid_frequency_parameters(self):
+        response = self.client.get(self.url, data={'frequency': 'daily'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_works_with_valid_frequency_parameters_2(self):
+        response = self.client.get(self.url, data={'frequency': None})
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_works_with_invalid_frequency_parameters(self):
+        response = self.client.get(self.url, data={'frequency': 'THIS IS MADE UP'})
+        self.assertEqual(response.status_code, 400)
+
+    def test_assert_daily_frequency_is_less_than_no_aggregration(self):
+        # A supplement history that is stacked daily should return in less results that something that hasn't been
+        # aggregated. IE. If you drink Coffee 3x on Monday, that only results on 1 record, versus 3 individual records
+        # for no aggregation
+        response_no_aggregation = self.client.get(self.url, data={'frequency': None})
+        response_daily_aggregation = self.client.get(self.url, data={'frequency': 'daily'})
+
+        self.assertGreater(len(response_no_aggregation.data), len(response_daily_aggregation.data))
+        # err on the side of caution that a dataframe and not a series is being returned (in that case, it would be
+        # where the results returned is just a count of 1
+        self.assertGreater(len(response_daily_aggregation.data), 10)
+        self.assertGreater(len(response_no_aggregation.data), 10)

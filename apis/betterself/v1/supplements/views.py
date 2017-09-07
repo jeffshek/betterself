@@ -54,7 +54,8 @@ class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser)
         return self.model.objects.filter(user=self.request.user)
 
 
-class SupplementView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
+# TODO - Should this be called a Viewset instead (but then you have to refactor .. ALL of them)?
+class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     read_serializer_class = SupplementReadOnlySerializer
     write_serializer_class = SupplementCreateUpdateSerializer
     update_serializer_class = SupplementCreateUpdateSerializer

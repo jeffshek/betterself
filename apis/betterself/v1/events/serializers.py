@@ -242,3 +242,7 @@ class ProductivityLogRequestParametersSerializer(serializers.Serializer):
     start_date = serializers.DateField(default=get_current_date_months_ago(3))
     # not really sure who would want to cumulatively aggregate a whole year, but maybe?
     cumulative_window = serializers.IntegerField(default=1, min_value=1, max_value=365)
+
+
+class SupplementLogRequestParametersSerializer(serializers.Serializer):
+    frequency = serializers.ChoiceField(['daily', None], default=None)
