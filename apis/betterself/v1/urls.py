@@ -8,7 +8,7 @@ from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesC
     ProductivityLogsUserActivitiesCorrelationsView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
-    IngredientView, MeasurementView, SupplementView
+    IngredientView, MeasurementView, SupplementsListView
 from apis.betterself.v1.users.views import UserInfoView
 from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
@@ -18,7 +18,7 @@ from vendors.models import Vendor
 urlpatterns = [
     # page looks like 127.0.0.1:8001/{Supplement.RESOURCE_NAME}/
     url(r'^{0}/$'.format(Vendor.RESOURCE_NAME), VendorView.as_view(), name=Vendor.RESOURCE_NAME),
-    url(r'^{0}/$'.format(Supplement.RESOURCE_NAME), SupplementView.as_view(), name=Supplement.RESOURCE_NAME),
+    url(r'^{0}/$'.format(Supplement.RESOURCE_NAME), SupplementsListView.as_view(), name=Supplement.RESOURCE_NAME),
     url(r'^{0}/$'.format(Ingredient.RESOURCE_NAME), IngredientView.as_view(), name=Ingredient.RESOURCE_NAME),
     url(r'^{0}/$'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view(), name=Measurement.RESOURCE_NAME),
     url(r'^{0}/$'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view(),
