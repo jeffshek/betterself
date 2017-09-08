@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from "react-chartjs-2";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import moment from "moment";
