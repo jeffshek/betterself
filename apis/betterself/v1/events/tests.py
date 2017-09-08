@@ -341,11 +341,12 @@ class TestAggregateProductivityViews(TestCase):
 
         for k, v in response.data.items():
             parsed_date = dateutil.parser.parse(k)
-            if parsed_date.date() in (five_days_ago, six_days_ago):
-                reported_very_productive_value += v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
+            if parsed_date.date() == five_days_ago:
+                reported_very_productive_value = v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
 
+        # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-           date__gte=six_days_ago).values_list('very_productive_time_minutes', flat=True)
+           date__gte=six_days_ago).values_list(VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
         self.assertEqual(reported_very_productive_value, expected_very_productive_time)
