@@ -9,6 +9,7 @@ from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.test import APIClient
 
+from analytics.events.utils.dataframe_builders import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
@@ -306,6 +307,48 @@ class TestAggregateProductivityViews(TestCase):
 
         self.assertIn(five_days_ago, dates_serialized)
         self.assertNotIn(six_days_ago, dates_serialized)
+
+    def test_that_rolling_window_of_one_works(self):
+        five_days_ago = get_current_date_days_ago(5)
+        reported_very_productive_value = 0
+
+        params = {
+            'start_date': five_days_ago.isoformat(),
+            'cumulative_window': 1,
+        }
+        response = self.client.get(self.url, data=params)
+        for k, v in response.data.items():
+            parsed_date = dateutil.parser.parse(k)
+            if parsed_date.date() == five_days_ago:
+                reported_very_productive_value = v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
+
+        very_productive_time = DailyProductivityLog.objects.get(user=self.default_user, date=five_days_ago).\
+            very_productive_time_minutes
+
+        self.assertEqual(very_productive_time, reported_very_productive_value)
+
+    def test_that_rolling_window_parameter_works(self):
+        six_days_ago = get_current_date_days_ago(6)
+        five_days_ago = get_current_date_days_ago(5)
+        reported_very_productive_value = 0
+
+        # if rolling by 2, you expect the sum to be the 5th and 6th day combined
+        params = {
+            'start_date': six_days_ago.isoformat(),
+            'cumulative_window': 2,
+        }
+        response = self.client.get(self.url, data=params)
+
+        for k, v in response.data.items():
+            parsed_date = dateutil.parser.parse(k)
+            if parsed_date.date() in (five_days_ago, six_days_ago):
+                reported_very_productive_value += v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
+
+        very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
+           date__gte=six_days_ago).values_list('very_productive_time_minutes', flat=True)
+        expected_very_productive_time = sum(very_productive_time_list)
+
+        self.assertEqual(reported_very_productive_value, expected_very_productive_time)
 
 
 class SupplementLogsTest(TestCase):

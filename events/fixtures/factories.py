@@ -1,5 +1,6 @@
 import factory
 from django.utils import timezone
+from factory.fuzzy import FuzzyInteger
 
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 
@@ -16,11 +17,11 @@ class SupplementEventFactory(factory.DjangoModelFactory):
 class DailyProductivityLogFactory(factory.DjangoModelFactory):
     source = 'api'
 
-    very_productive_time_minutes = 10
-    productive_time_minutes = 20
-    neutral_time_minutes = 30
-    distracting_time_minutes = 40
-    very_distracting_time_minutes = 50
+    very_productive_time_minutes = FuzzyInteger(10, 30)
+    productive_time_minutes = FuzzyInteger(10, 30)
+    neutral_time_minutes = FuzzyInteger(10, 30)
+    distracting_time_minutes = FuzzyInteger(10, 30)
+    very_distracting_time_minutes = FuzzyInteger(10, 30)
 
     class Meta:
         model = DailyProductivityLog
