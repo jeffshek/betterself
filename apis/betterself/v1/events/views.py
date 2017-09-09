@@ -117,7 +117,7 @@ class SupplementLogListView(APIView):
             series = df[supplement.name]
         else:
             df = builder.build_dataframe()
-            series = df['Supplement']
+            series = df['Quantity']
 
         json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)

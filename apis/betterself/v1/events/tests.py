@@ -4,6 +4,7 @@ import json
 import dateutil.parser
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import serializers
@@ -364,6 +365,7 @@ class SupplementLogsTest(TestCase):
 
         supplement = Supplement.objects.filter(user=cls.default_user).first()
         supplement_uuid = str(supplement.uuid)
+        cls.supplement = supplement
         cls.url = reverse('supplement-log', args=[supplement_uuid])
 
         super().setUpTestData()
@@ -381,6 +383,13 @@ class SupplementLogsTest(TestCase):
     def test_view_works(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+        supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
+            supplement=self.supplement).aggregate(total_sum=Sum('quantity'))
+        supplement_events_value = supplement_events_value_query['total_sum']
+
+        response_sum = sum(response.data.values())
+        self.assertEqual(response_sum, supplement_events_value)
 
     def test_view_works_with_valid_frequency_parameters(self):
         response = self.client.get(self.url, data={'frequency': 'daily'})
