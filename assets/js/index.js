@@ -55,6 +55,7 @@ import { UserExportAllDataView } from "./export/export";
 import {
   DailyOverviewAnalyticsView
 } from "./daily_overview/daily_overview_view";
+import { SupplementsOverview } from "./supplement_overview/supplement_overview";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -90,6 +91,10 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={"/dashboard/analytics/daily_overview/:date"}
         component={DailyOverviewAnalyticsView}
+      />
+      <PrivateRoute
+        path={"/dashboard/analytics/supplements_overview/:supplementUUID"}
+        component={SupplementsOverview}
       />
       <PrivateRoute
         exact

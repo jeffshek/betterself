@@ -14,10 +14,9 @@ class IngredientCompositionFilter(FilterSet):
 
 
 class SupplementFilter(FilterSet):
-    # this is really ghetto please fix this
-    # also please add a test for the love of god
-    ingredient_compositions_uuids = django_filters.CharFilter(
-        name='ingredient_compositions__uuid', lookup_expr='contains')
+    # TODO - This doesn't support multiple compositions very well, but we'll worry about that later
+    # Right now, only filters one
+    ingredient_compositions_uuids = django_filters.CharFilter(name='ingredient_compositions__uuid')
 
     class Meta:
         model = Supplement
