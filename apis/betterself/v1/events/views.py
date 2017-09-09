@@ -67,6 +67,8 @@ class ProductivityLogAggregatesView(APIView):
         dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)
         results = dataframe_builder.get_flat_daily_dataframe()
 
+        results.sort_index(ascending=True, inplace=True)
+
         # sum up the history by how many days as the window specifies
         results = results.rolling(window=query_cumulative_window, min_periods=1).sum()
 
