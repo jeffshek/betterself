@@ -18,7 +18,7 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago
+from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_current_date_months_ago
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
@@ -152,7 +152,8 @@ class TestProductivityLogViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostReques
         super().test_valid_get_request_for_key_in_response(key)
 
     def test_valid_get_request_with_params_filters_correctly(self):
-        request_parameters = {'very_productive_time_minutes': 10}
+        valid_filter_value = DailyProductivityLog.objects.filter(user=self.user_1).first().very_productive_time_minutes
+        request_parameters = {'very_productive_time_minutes': valid_filter_value}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
@@ -323,7 +324,7 @@ class TestAggregateProductivityViews(TestCase):
             if parsed_date.date() == five_days_ago:
                 reported_very_productive_value = v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
 
-        very_productive_time = DailyProductivityLog.objects.get(user=self.default_user, date=five_days_ago).\
+        very_productive_time = DailyProductivityLog.objects.get(user=self.default_user, date=five_days_ago). \
             very_productive_time_minutes
 
         self.assertEqual(very_productive_time, reported_very_productive_value)
@@ -347,7 +348,8 @@ class TestAggregateProductivityViews(TestCase):
 
         # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-           date__gte=six_days_ago).values_list(VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
+                                                                        date__gte=six_days_ago).values_list(
+            VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
         self.assertEqual(reported_very_productive_value, expected_very_productive_time)
@@ -357,6 +359,7 @@ class SupplementLogsTest(TestCase):
     """
     Test class that gets activity for one specific supplement
     """
+
     @classmethod
     def setUpTestData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
@@ -385,7 +388,8 @@ class SupplementLogsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
-            supplement=self.supplement).aggregate(total_sum=Sum('quantity'))
+                                                                       supplement=self.supplement).aggregate(
+            total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
 
         response_sum = sum(response.data.values())
@@ -408,10 +412,43 @@ class SupplementLogsTest(TestCase):
         # aggregated. IE. If you drink Coffee 3x on Monday, that only results on 1 record, versus 3 individual records
         # for no aggregation
         response_no_aggregation = self.client.get(self.url, data={'frequency': None})
-        response_daily_aggregation = self.client.get(self.url, data={'frequency': 'daily'})
+
+        # now filter with parameters between the start and end times
+        queryset = SupplementEvent.objects.filter(user=self.default_user).order_by('time')
+        start_date = queryset.first().time.date()
+        end_date = queryset.last().time.date()
+
+        daily_response_kwargs = {
+            'frequency': 'daily',
+            'start_date': start_date,
+            'end_date': end_date
+        }
+        response_daily_aggregation = self.client.get(self.url, data=daily_response_kwargs)
 
         self.assertGreater(len(response_no_aggregation.data), len(response_daily_aggregation.data))
         # err on the side of caution that a dataframe and not a series is being returned (in that case, it would be
         # where the results returned is just a count of 1
         self.assertGreater(len(response_daily_aggregation.data), 10)
         self.assertGreater(len(response_no_aggregation.data), 10)
+
+    def test_that_start_date_will_return_complete_daily_index_even_if_no_values_exist(self):
+        """
+        An API Query with a start_date should always return data saying null if there is no data
+        This logic ensures matching indices on the frontend
+        """
+        start_date = get_current_date_months_ago(6)
+        non_existent_date = get_current_date_months_ago(-6)
+        request_params = {
+            'start_date': start_date,
+            'frequency': 'daily',
+            'complete_date_range_in_daily_frequency': True
+        }
+        response = self.client.get(self.url, data=request_params)
+
+        # response.data.keys() is a list of isoformat strings (with timezones), but they always have the date
+        # so a bit of laziness here, just check for the correct combination
+        start_date_in_response = any(start_date.isoformat() in x for x in response.data.keys())
+        fake_date_in_response = any(non_existent_date.isoformat() in x for x in response.data.keys())
+
+        self.assertTrue(start_date_in_response)
+        self.assertFalse(fake_date_in_response)
