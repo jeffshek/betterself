@@ -8,9 +8,11 @@ import moment from "moment";
 import { Bar } from "react-chartjs-2";
 import {
   ABBREVIATED_CHART_DATE,
+  DATE_REQUEST_FORMAT,
   minutesToHours
 } from "../constants/dates_and_times";
 import { VERY_PRODUCTIVE_MINUTES_VARIABLE } from "../constants/productivity";
+import { Calendar } from "react-yearly-calendar";
 
 const SupplementsAndProductivityChart = GenerateHistoryChartTemplate(
   "Supplements & Productivity"
@@ -135,7 +137,8 @@ export class SupplementsOverview extends Component {
     let supplementUUID = match.params.supplementUUID;
 
     this.state = {
-      supplement: null
+      supplement: null,
+      supplementHistoryDates: null
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -147,14 +150,51 @@ export class SupplementsOverview extends Component {
       })
       .then(responseData => {
         const supplement = responseData[0];
+        this.setState(
+          {
+            supplement: supplement
+          },
+          this.getSupplementsActivityCalendar
+        );
+      });
+  }
+
+  getSupplementsActivityCalendar() {
+    const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
+    const url = `/api/v1/supplements/${this.state.supplement.uuid}/log/?frequency=daily&start_date=${start_date}`;
+
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        // Loop through a response of key:value from API to get any
+        // dates taht
+        const responseDataDates = Object.keys(responseData);
+        const validResponseDates = responseDataDates.filter(e => {
+          return responseData[e];
+        });
+        validResponseDates.sort();
+
+        const supplementDatesFormatted = validResponseDates.map(key =>
+          moment(key).format(DATE_REQUEST_FORMAT)
+        );
+
+        // Pattern that Calendar uses to reference what to render
+        this.state.supplementHistoryDates = {};
+        this.state.supplementHistoryDates.supplements = supplementDatesFormatted;
+
         this.setState({
-          supplement: supplement
+          supplementHistoryDates: this.state.supplementHistoryDates
         });
       });
   }
 
   render() {
-    if (!this.state.supplement) {
+    if (!this.state.supplement || !this.state.supplementHistoryDates) {
       return <div />;
     }
 
@@ -162,6 +202,10 @@ export class SupplementsOverview extends Component {
       <div>
         <SupplementsAndProductivityChartView
           supplement={this.state.supplement}
+        />
+        <Calendar
+          year={2017}
+          customClasses={this.state.supplementHistoryDates}
         />
       </div>
     );
