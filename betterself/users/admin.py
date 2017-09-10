@@ -36,6 +36,11 @@ class MyUserCreationForm(UserCreationForm):
 class UserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
+    list_display = ('username', )
 
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        demo_users_id = DemoUserLog.objects.all().values_list('user__id', flat=True)
+        return qs.exclude(id__in=demo_users_id)
 
 admin.site.register(DemoUserLog)
