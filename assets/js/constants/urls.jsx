@@ -1,6 +1,6 @@
 export const HOME_URL = '/'
 
-export const DASHBOARD_INDEX_URL = '/dashboard/index'
+export const DASHBOARD_INDEX_URL = '/dashboard/'
 
 // Logs
 export const DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL = '/dashboard/log/events'

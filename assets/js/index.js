@@ -76,6 +76,7 @@ const BetterSelfRouter = () => (
       <Route exact path={LOGOUT_URL} component={LogoutView} />
       {/*Private Routes*/}
       <PrivateRoute
+        exact
         path={DASHBOARD_INDEX_URL}
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />

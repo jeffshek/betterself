@@ -1,9 +1,8 @@
 import datetime
 import json
-import pandas as pd
 
+import pandas as pd
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -51,8 +50,6 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
 
 
 class ProductivityLogAggregatesView(APIView):
-    permission_classes = (IsAuthenticated,)
-
     def get(self, request):
         user = request.user
 
