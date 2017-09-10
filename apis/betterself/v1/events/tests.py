@@ -446,9 +446,17 @@ class SupplementLogsTest(TestCase):
         response = self.client.get(self.url, data=request_params)
 
         # response.data.keys() is a list of isoformat strings (with timezones), but they always have the date
-        # so a bit of laziness here, just check for the correct combination
+        # so a bit of laziness here, just check for the matching string
         start_date_in_response = any(start_date.isoformat() in x for x in response.data.keys())
         fake_date_in_response = any(non_existent_date.isoformat() in x for x in response.data.keys())
 
         self.assertTrue(start_date_in_response)
         self.assertFalse(fake_date_in_response)
+
+    def test_validation_logic_to_prevent_mismatch_frequency_and_complete_date_ranges(self):
+        request_params = {
+            'frequency': None,
+            'complete_date_range_in_daily_frequency': True
+        }
+        response = self.client.get(self.url, data=request_params)
+        self.assertEqual(response.status_code, 400)

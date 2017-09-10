@@ -126,7 +126,7 @@ class SupplementLogListView(APIView):
         start_date = params['start_date']
         end_date = datetime.datetime.now(user.pytz_timezone).date()
 
-        supplement_events = SupplementEvent.objects.filter(supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
 
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':

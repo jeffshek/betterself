@@ -262,12 +262,10 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
             url=url, supplement_ingredients_uuid=supplement_ingredients_uuids[0])
 
         uuid_request = self.client_1.get(uuid_filter_url)
-
         self.assertEqual(uuid_request.status_code, 200)
 
         length_of_compositions = len(uuid_request.data)
-
-        ingedient_composition = IngredientComposition.objects.filter(uuid=supplement_ingredients_uuid)
-        supplements_with_same_composition = Supplement.objects.filter(ingredient_compositions=ingedient_composition)
+        ingredient_composition = IngredientComposition.objects.filter(uuid=supplement_ingredients_uuid)
+        supplements_with_same_composition = Supplement.objects.filter(ingredient_compositions=ingredient_composition)
 
         self.assertEqual(length_of_compositions, supplements_with_same_composition.count())
