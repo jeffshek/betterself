@@ -91,8 +91,9 @@ class SupplementsAndProductivityChartView extends Component {
         });
 
         this.state.supplementsAndProductivityChart.labels = supplementDatesFormatted;
-        this.state.supplementsAndProductivityChart.datasets[0].label =
-          "Supplement (Quantity)";
+        this.state.supplementsAndProductivityChart.datasets[
+          0
+        ].label = `${this.props.supplement.name} (Quantity)`;
         this.state.supplementsAndProductivityChart.datasets[
           0
         ].data = dataParsed;
@@ -110,7 +111,7 @@ class SupplementsAndProductivityChartView extends Component {
       <div className="card">
         <div className="card-header analytics-text-box-label">
           <span className="font-2xl">
-            {this.props.supplement.name} Overview
+            {this.props.supplement.name} Overview (Last 3 Months)
           </span>
         </div>
         <div className="card-block">
@@ -138,7 +139,7 @@ export class SupplementsOverview extends Component {
 
     this.state = {
       supplement: null,
-      supplementHistoryDates: null
+      activityDates: null
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -172,7 +173,7 @@ export class SupplementsOverview extends Component {
       })
       .then(responseData => {
         // Loop through a response of key:value from API to get any
-        // dates taht
+        // dates that are valid
         const responseDataDates = Object.keys(responseData);
         const validResponseDates = responseDataDates.filter(e => {
           return responseData[e];
@@ -183,18 +184,20 @@ export class SupplementsOverview extends Component {
           moment(key).format(DATE_REQUEST_FORMAT)
         );
 
-        // Pattern that Calendar uses to reference what to render
-        this.state.supplementHistoryDates = {};
-        this.state.supplementHistoryDates.supplements = supplementDatesFormatted;
+        // We do this weird thing where we set the activityDates here
+        // because due to some bug, if it's rendered too early, it will
+        // not rerender correctly.
+        this.state.activityDates = {};
+        this.state.activityDates.supplements = supplementDatesFormatted;
 
         this.setState({
-          supplementHistoryDates: this.state.supplementHistoryDates
+          activityDates: this.state.activityDates
         });
       });
   }
 
   render() {
-    if (!this.state.supplement || !this.state.supplementHistoryDates) {
+    if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
     }
 
@@ -203,10 +206,7 @@ export class SupplementsOverview extends Component {
         <SupplementsAndProductivityChartView
           supplement={this.state.supplement}
         />
-        <Calendar
-          year={2017}
-          customClasses={this.state.supplementHistoryDates}
-        />
+        <Calendar year={2017} customClasses={this.state.activityDates} />
       </div>
     );
   }

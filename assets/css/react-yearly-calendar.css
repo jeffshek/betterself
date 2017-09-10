@@ -14,8 +14,9 @@ table.calendar thead {
     border-bottom: 2px solid white
 }
 
+
 table.calendar thead th {
-    font-weight: lighter;
+    font-weight: normal;
     padding: 10px 3px;
 }
 
@@ -32,6 +33,7 @@ table.calendar td {
     padding: 8px;
     cursor: pointer;
     border: 1px solid rgba(185, 185, 185, 0.13);
+    background-color: white;
     min-width: 15px;
 }
 
@@ -51,6 +53,7 @@ table.calendar td.next-month {
     color: transparent;
     cursor: default;
     pointer-events: none;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAABZJREFUCB1jYEADmzdv/o8iRA0BoIEAKngPeSAlnXcAAAAASUVORK5CYII=');
 }
 
 table.calendar td.week-separator {
@@ -58,55 +61,39 @@ table.calendar td.week-separator {
     padding: 0;
     width: 8px;
     min-width: 0;
-}
-
-table.calendar td.winter {
-    background-color: rgba(159, 220, 249, 0.32);
-}
-table.calendar td.spring {
-    background-color: rgba(145, 212, 110, 0.32);
-}
-table.calendar td.summer {
-    background-color: rgba(255, 232, 91, 0.32);
-}
-table.calendar td.autumn {
-    background-color: rgba(246, 151, 60, 0.32);
-}
-table.calendar td.supplements {
-    background-color: rgba(246, 151, 60, 0.32);
-}
-table.calendar td.holidays {
-    font-weight: bold;
-    color: red;
-    text-decoration: underline;
-}
-table.calendar td.weekend {
-    font-style: italic;
-    font-weight: bold;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAABZJREFUCB1jYEADmzdv/o8iRA0BoIEAKngPeSAlnXcAAAAASUVORK5CYII=');
 }
 
 table.calendar td.bolder {
     font-weight: bold;
 }
 
-table.calendar td.winter.range,
-table.calendar td.winter.selected {
-    background-color: rgba(159, 220, 249, 1);
+/* Single selected day */
+table.calendar td.selected {
+    background-color: orangered;
+    color: white;
     font-weight: bold;
 }
-table.calendar td.spring.range,
-table.calendar td.spring.selected {
-    background-color: rgba(145, 212, 110, 1);
+
+/* Selected range */
+table.calendar td.range {
+    background-color: rgba(255,69,0, 0.7);
     font-weight: bold;
+    color: white;
 }
-table.calendar td.summer.range,
-table.calendar td.summer.selected {
-    background-color: rgba(255, 232, 91, 1);
-    font-weight: bold;
+
+table.calendar td.range-left {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    overflow: hidden;
+    background: orangered;
 }
-table.calendar td.autumn.range,
-table.calendar td.autumn.selected {
-    background-color: rgba(246, 151, 60, 1);
+
+table.calendar td.range-right {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+    background: orangered;
 }
 
 div.calendar-controls {
@@ -191,35 +178,6 @@ div.options select {
     margin-left: 10px;
 }
 
-div.options .half {
-    width: 48%;
-    display: inline-table;;
-}
-
-div.options textarea {
-    height: 320px;
-    width: 100%;
-    resize: vertical;
-    padding: 5px;
-}
-
-div.options textarea.error {
-    border-color: darkred;
-    box-shadow: darkred 0 0 5px inset;
-}
-
-div.options .half a {
-    font-size: 0.7em;
-    margin-left: 10px;
-}
-
-p.interactiveDemo {
-    font-style: italic;
-}
-
-p.interactiveDemo i {
-    background-color: #E2E2E2;
-    font-style: normal;
-    font-family: monospace;
-    padding: 2px 5px;
+table.calendar td.supplements {
+    background-color: rgba(246, 151, 60, 0.32);
 }
