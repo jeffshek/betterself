@@ -54,7 +54,7 @@ export class SupplementsAndProductivityChartView extends Component {
           Object.assign({}, LineDefaultChartDataset)
         );
         this.state.supplementsAndProductivityChart.datasets[1].label =
-          "Productivity (Hours)";
+          "Very Productivity Time(Hours)";
         this.state.supplementsAndProductivityChart.datasets[
           1
         ].data = responseValues;

@@ -28,17 +28,21 @@ export class SupplementsOverview extends Component {
         return response.json();
       })
       .then(responseData => {
+        // Get the first one because this API endpoint returns back a list of supplements
+        // in this case because of the filter, we are being exact and know we should only return
+        // one
         const supplement = responseData[0];
+        // Then get all the history surrounding this supplement
         this.setState(
           {
             supplement: supplement
           },
-          this.getSupplementsActivityCalendar
+          this.getSupplementHistory
         );
       });
   }
 
-  getSupplementsActivityCalendar() {
+  getSupplementHistory() {
     const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     const url = `/api/v1/supplements/${this.state.supplement.uuid}/log/?frequency=daily&start_date=${start_date}`;
 
@@ -62,8 +66,8 @@ export class SupplementsOverview extends Component {
           moment(key).format(DATE_REQUEST_FORMAT)
         );
 
-        // We do this weird thing where we set the activityDates here
-        // because due to some bug, if it's rendered too early, it will
+        // Do this weird thing where we set the activityDates ...
+        // Due to a bug, if it's rendered too early, it will
         // not rerender correctly.
         this.state.activityDates = {};
         this.state.activityDates.supplements = supplementDatesFormatted;
