@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
 export class EventLogView extends Component {

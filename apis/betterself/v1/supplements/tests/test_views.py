@@ -248,3 +248,24 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
 
         response = self.client_1.put(url, data, format='json')
         self.assertEqual(response.status_code, 400)
+
+    def test_get_request_work_uuid_filter_works_for_filtering_on_compositions(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+
+        supplement_ingredients = request.data[0]['ingredient_compositions']
+        supplement_ingredients_uuids = [item['uuid'] for item in supplement_ingredients]
+        supplement_ingredients_uuid = supplement_ingredients_uuids[0]
+
+        # filter on a composition to see if it returns back
+        uuid_filter_url = '{url}?ingredient_compositions_uuids={supplement_ingredients_uuid}'.format(
+            url=url, supplement_ingredients_uuid=supplement_ingredients_uuids[0])
+
+        uuid_request = self.client_1.get(uuid_filter_url)
+        self.assertEqual(uuid_request.status_code, 200)
+
+        length_of_compositions = len(uuid_request.data)
+        ingredient_composition = IngredientComposition.objects.filter(uuid=supplement_ingredients_uuid)
+        supplements_with_same_composition = Supplement.objects.filter(ingredient_compositions=ingredient_composition)
+
+        self.assertEqual(length_of_compositions, supplements_with_same_composition.count())

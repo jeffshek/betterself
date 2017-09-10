@@ -1,7 +1,8 @@
+import datetime
 import json
 
+import pandas as pd
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -49,8 +50,6 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
 
 
 class ProductivityLogAggregatesView(APIView):
-    permission_classes = (IsAuthenticated,)
-
     def get(self, request):
         user = request.user
 
@@ -103,21 +102,43 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
 
 class SupplementLogListView(APIView):
+    def _get_complete_date_range(self, user, start_date, end_date):
+        localized_index = pd.to_datetime([start_date, end_date])
+        # create a series includes the parameter's start and end dates
+        # do this to allow API requests for charts to be certain they are dealing with the same X axis
+        series = pd.Series(index=localized_index).asfreq('D').tz_localize(user.pytz_timezone)
+        return series
+
+    def _force_start_end_date_to_series(self, user, series, start_date, end_date):
+        series_container = self._get_complete_date_range(user, start_date, end_date)
+        # now take the index of valid results and put it in the container if it exists
+        series_container.ix[series.index] = series
+        return series_container
+
     def get(self, request, supplement_uuid):
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
-        supplement_events = SupplementEvent.objects.filter(supplement=supplement)
+        user = request.user
 
         serializer = SupplementLogRequestParametersSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
         params = serializer.validated_data
 
+        start_date = params['start_date']
+        end_date = datetime.datetime.now(user.pytz_timezone).date()
+
+        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
+
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':
-            df = builder.get_flat_daily_dataframe()
-            series = df[supplement.name]
+            # most of the time the dataframe contains a lot of supplements, here we are only picking one
+            series = builder.get_flat_daily_dataframe()[supplement.name]
+
+            if params['complete_date_range_in_daily_frequency']:
+                series = self._force_start_end_date_to_series(user, series, start_date, end_date)
+
         else:
             df = builder.build_dataframe()
-            series = df['Supplement']
+            series = df['Quantity']
 
         json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)

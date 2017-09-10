@@ -23,7 +23,7 @@ Vagrant.configure(2) do |config|
 
   # pandas takes a lot of memory to assemble
   config.vm.provider "virtualbox" do |v|
-    # the fact that you can use this much memory in pandas kinda scares me
+    # the fact that you can/need this much memory in pandas kinda scares me
     v.memory = 4096
     v.cpus = 2
   end
@@ -33,5 +33,10 @@ Vagrant.configure(2) do |config|
 
   # Provision scripts that install necessary requirements
   config.vm.provision "shell", path: "config/development/vagrant/provision_bootstrap.sh"
+
+  # to deal with the unbelievable agony of trying to figure out why UTC was off by 14 minutes when it ended up being vagrant sleeping doesn't count time
+  config.vm.provider 'virtualbox' do |vb|
+   vb.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+  end
 
 end

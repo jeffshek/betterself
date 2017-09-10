@@ -244,4 +244,15 @@ class ProductivityLogRequestParametersSerializer(serializers.Serializer):
 
 
 class SupplementLogRequestParametersSerializer(serializers.Serializer):
+    start_date = serializers.DateField(default=get_current_date_months_ago(3))
     frequency = serializers.ChoiceField(['daily', None], default=None)
+    # this is a bit tricky to explain, but if true it means to always have the results for any daily frequencies
+    # to include the entire date_range from start end date range, which will result in a lot of null/empty data
+    complete_date_range_in_daily_frequency = serializers.BooleanField(default=False)
+
+    def validate(self, validated_data):
+        if not validated_data['frequency'] and validated_data['complete_date_range_in_daily_frequency']:
+            raise ValidationError('If there is no frequency, results should not enclose all date ranges between start '
+                                  'and ending periods')
+
+        return validated_data

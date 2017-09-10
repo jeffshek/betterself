@@ -114,6 +114,10 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
         """
         Simplify the history of whatever supplements were taken - round the timestamps
         to dates and then sum the # taken up per supplement.
+
+        If a start or end date are passed, assume that that index expects on aggregation to include up to those dates
+        so if the data stops on 6-5-2017 but the end date is 6-10-2017, there would be records on 6-6, 6-7, etc saying
+        no data, nan, etc.
         """
         df = self.build_dataframe()
         if df.empty:
@@ -134,12 +138,15 @@ class SupplementEventsDataframeBuilder(DataFrameBuilder):
             aggfunc=np.sum
         )
 
-        # When doing a pivot, the dataframe type seems to convert from float64 back to object ... so here we force it
-        # back to float64
+        # When doing a pivot, the dataframe type seems to convert from float64 back to object ... convert to float64
         flat_df = flat_df.astype('float64')
+
+        # ensure a sort because if out of order, casting frequencies silently fails
+        flat_df = flat_df.sort_index()
 
         # Set as a daily frequency and set it back to a timezone aware date
         flat_df = flat_df.asfreq('D')
+
         flat_df = flat_df.tz_localize(timezone)
 
         return flat_df
