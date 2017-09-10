@@ -6,10 +6,10 @@ import moment from "moment";
 import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
 import {
   dateFilter,
-  getDailyOverViewURLFromDate,
   getUrlForSupplementsHistory,
   minutesToHours
 } from "./constants";
+import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 
 const LEFT_ARROW = require("../../img/navigation/restart.svg");
 

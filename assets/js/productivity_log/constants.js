@@ -8,7 +8,7 @@ import {
   VERY_PRODUCTIVE_MINUTES_VARIABLE
 } from "../constants/productivity";
 import moment from "moment";
-import { getDailyOverViewURLFromDate } from "../daily_overview/constants";
+import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 import { Link } from "react-router-dom";
 
 const confirmDelete = (uuid, eventDate) => {
