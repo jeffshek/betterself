@@ -126,7 +126,7 @@ export class AddSupplementEvent extends Component {
                 Quantity (Serving Size)
               </label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 defaultValue="1"
                 ref={input => this.servingSize = input}
@@ -148,7 +148,7 @@ export class AddSupplementEvent extends Component {
                   Duration (Minutes)
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   defaultValue="0"
                   ref={input => this.durationMinutes = input}

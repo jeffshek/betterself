@@ -17,6 +17,8 @@ const UserActivitiesCorrelationsChart = GenerateChartTemplate(
   "Productivity Correlation"
 );
 
+// TODO - Refactor this file completely to the multitab format
+
 export class BaseAnalyticsView extends Component {
   constructor() {
     super();

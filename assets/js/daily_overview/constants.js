@@ -1,25 +1,23 @@
 import React from "react";
-import {
-  DATE_REQUEST_FORMAT,
-  READABLE_TIME_FORMAT
-} from "../constants/dates_and_times";
+import { READABLE_TIME_FORMAT } from "../constants/dates_and_times";
 import moment from "moment";
-import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
-
-export const getDailyOverViewURLFromDate = date => {
-  const dateString = date.format(DATE_REQUEST_FORMAT);
-  return `${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}/${dateString}`;
-};
+import { Link } from "react-router-dom";
+import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
 
 export const SupplementTableRow = props => {
   const { details } = props;
   const timeMoment = moment(details.time);
   const timeMomentFormatted = timeMoment.format(READABLE_TIME_FORMAT);
+  const supplementOverviewLink = getSupplementOverviewURLFromUUID(
+    details.supplement_uuid
+  );
 
   return (
     <tr>
       <td>{timeMomentFormatted}</td>
-      <td>{details.supplement_name}</td>
+      <td>
+        <Link to={supplementOverviewLink}>{details.supplement_name}</Link>
+      </td>
       <td>{details.quantity}</td>
     </tr>
   );

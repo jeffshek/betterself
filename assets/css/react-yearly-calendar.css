@@ -1,9 +1,9 @@
 /*Taken from https://github.com/BelkaLab/react-yearly-calendar/blob/master/examples/basic/style.css*/
 
-body {
-    background-color: white;
-    font-family: sans-serif;
-}
+/*body {*/
+    /*background-color: white;*/
+    /*font-family: sans-serif;*/
+/*}*/
 
 table.calendar {
     border-collapse: collapse;
@@ -159,15 +159,15 @@ h1 {
     color: #B10909;
 }
 
-a {
-    color: #B10909;
-    font-weight: bolder;
-    text-decoration: none;
-}
+/*a {*/
+    /*color: #B10909;*/
+    /*font-weight: bolder;*/
+    /*text-decoration: none;*/
+/*}*/
 
-a.demoLink {
-    text-decoration: underline;
-}
+/*a.demoLink {*/
+    /*text-decoration: underline;*/
+/*}*/
 
 div.options {
     border: 1px solid #B9B9B9;

@@ -14,6 +14,7 @@ import {
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_SLEEP_ANALYTICS_URL,
   DASHBOARD_SLEEP_LOGS_URL,
+  DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
@@ -90,11 +91,11 @@ const BetterSelfRouter = () => (
         component={e => <Dashboard view={ProductivityAnalyticsView} />}
       />
       <PrivateRoute
-        path={"/dashboard/analytics/daily_overview/:date"}
+        path={`${DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}:date`}
         component={DailyOverviewAnalyticsView}
       />
       <PrivateRoute
-        path={"/dashboard/analytics/supplements_overview/:supplementUUID"}
+        path={`${DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL}:supplementUUID`}
         component={SupplementsOverview}
       />
       <PrivateRoute

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { AddSupplementEvent } from "./add_supplement_event";
 import { SupplementEntryLogTable } from "./supplement_events_table";

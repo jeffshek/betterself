@@ -1,5 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
+import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
 
 const getIngredientsCompositionsLabels = ingredient_compositions => {
   let ingredientLabels = [];
@@ -46,10 +48,11 @@ export const SupplementRow = props => {
     data.ingredient_compositions
   );
   const timeFormatted = moment(dateCreated).format("l - h:mm:ss a");
+  const supplementOverviewLink = getSupplementOverviewURLFromUUID(uuid);
 
   return (
     <tr>
-      <td>{name}</td>
+      <td><Link to={supplementOverviewLink}>{name}</Link></td>
       <td>{ingredientsFormatted}</td>
       <td>
         <div className="center-icon">
