@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
@@ -60,23 +60,29 @@ export class SupplementTable extends BaseEventLogTable {
   }
 
   renderTable() {
+    if (!this.state.ready) {
+      return <div />;
+    }
+
     const supplements = this.state.supplements;
     const supplementsKeys = Object.keys(supplements);
 
     return (
-      <table className="table table-bordered table-striped table-condensed">
-        <SupplementHistoryTableHeader />
-        <tbody>
-          {supplementsKeys.map(key => (
-            <SupplementRow
-              key={key}
-              object={supplements[key]}
-              selectModalEdit={this.selectModalEdit}
-              confirmDelete={this.confirmDelete}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="card-block">
+        <table className="table table-bordered table-striped table-condensed">
+          <SupplementHistoryTableHeader />
+          <tbody>
+            {supplementsKeys.map(key => (
+              <SupplementRow
+                key={key}
+                object={supplements[key]}
+                selectModalEdit={this.selectModalEdit}
+                confirmDelete={this.confirmDelete}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 
@@ -112,7 +118,7 @@ export class SupplementTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Supplements</strong>
         </div>
-        {this.state.ready ? this.renderTable() : ""}
+        {this.renderTable()}
         {this.renderEditModal()}
       </div>
     );

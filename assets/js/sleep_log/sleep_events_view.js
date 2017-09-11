@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { AddSleepEvent } from "./add_sleep_event";
 import { SleepEntryLogTable } from "./sleep_events_table";

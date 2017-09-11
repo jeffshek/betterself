@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
+import { Link } from "react-router-dom";
+import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 
 const MinutesToHourMinutesFormat = minutes => {
   const durationFormattedRounded = Math.floor(minutes);
@@ -23,12 +25,13 @@ export const SleepHistoryRow = props => {
   const endTimeFormatted = endTime.format(READABLE_DATE_TIME_FORMAT);
   const duration = moment.duration(endTime.diff(startTime));
   const durationAsMinutes = duration.asMinutes();
+  const dailyOverviewLink = getDailyOverViewURLFromDate(startTime);
 
   const timeSlept = MinutesToHourMinutesFormat(durationAsMinutes);
 
   return (
     <tr>
-      <td>{startTimeFormatted}</td>
+      <td><Link to={dailyOverviewLink}>{startTimeFormatted}</Link></td>
       <td>{endTimeFormatted}</td>
       <td>{timeSlept}</td>
       <td className="center-source">

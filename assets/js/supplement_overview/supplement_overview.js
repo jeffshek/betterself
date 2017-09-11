@@ -6,6 +6,8 @@ import { Calendar } from "react-yearly-calendar";
 import {
   SupplementsAndProductivityChartView
 } from "./supplements_overview_charts";
+import LoggedInHeader from "../header/internal_header";
+import Sidebar from "../sidebar/sidebar";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
@@ -29,8 +31,7 @@ export class SupplementsOverview extends Component {
       })
       .then(responseData => {
         // Get the first one because this API endpoint returns back a list of supplements
-        // in this case because of the filter, we are being exact and know we should only return
-        // one
+        // in this case because of the filter, we are being exact and know we should only return one
         const supplement = responseData[0];
         // Then get all the history surrounding this supplement
         this.setState(
@@ -84,11 +85,24 @@ export class SupplementsOverview extends Component {
     }
 
     return (
-      <div>
-        <SupplementsAndProductivityChartView
-          supplement={this.state.supplement}
-        />
-        <Calendar year={2017} customClasses={this.state.activityDates} />
+      <div className="app">
+        <LoggedInHeader />
+        <div className="app-body">
+          <Sidebar />
+          <main className="main">
+            <SupplementsAndProductivityChartView
+              supplement={this.state.supplement}
+            />
+            <div className="card-block">
+              <div className="card-header analytics-text-box-label">
+                <span className="font-1xl">
+                  Usage (Current Year)
+                </span>
+              </div>
+              <Calendar year={2017} customClasses={this.state.activityDates} />
+            </div>
+          </main>
+        </div>
       </div>
     );
   }

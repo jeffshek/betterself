@@ -2,7 +2,10 @@ import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 import { Link } from "react-router-dom";
-import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
+import {
+  getSupplementOverviewURLFromUUID,
+  getDailyOverViewURLFromDate
+} from "../routing/routing_utils";
 
 export const SupplementHistoryRow = props => {
   const data = props.object;
@@ -18,12 +21,13 @@ export const SupplementHistoryRow = props => {
   const supplementOverviewLink = getSupplementOverviewURLFromUUID(
     data.supplement_uuid
   );
+  const dailyOverviewLink = getDailyOverViewURLFromDate(moment(supplementTime));
 
   return (
     <tr>
       <td><Link to={supplementOverviewLink}>{supplementName}</Link></td>
       <td>{servingSize}</td>
-      <td>{timeFormatted}</td>
+      <td><Link to={dailyOverviewLink}>{timeFormatted}</Link></td>
       <td>
         <div className="center-icon">
           <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>

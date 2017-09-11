@@ -109,7 +109,7 @@ export class SupplementsAndProductivityChartView extends Component {
       <div className="card">
         <div className="card-header analytics-text-box-label">
           <span className="font-2xl">
-            {this.props.supplement.name} Overview (Last 3 Months)
+            {this.props.supplement.name} Overview
           </span>
         </div>
         <div className="card-block">
