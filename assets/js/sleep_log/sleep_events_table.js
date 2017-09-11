@@ -40,6 +40,22 @@ export class SleepEntryLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -47,16 +63,7 @@ export class SleepEntryLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Sleep History</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
+        {this.renderReady()}
       </div>
     );
   }
