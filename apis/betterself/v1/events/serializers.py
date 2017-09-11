@@ -69,6 +69,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
 
 class SupplementEventReadOnlySerializer(serializers.Serializer):
     supplement_name = CharField(source='supplement.name')
+    supplement_uuid = CharField(source='supplement.uuid')
     quantity = serializers.FloatField()
     time = serializers.DateTimeField()
     source = serializers.CharField()

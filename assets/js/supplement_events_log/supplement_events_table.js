@@ -1,5 +1,4 @@
-import moment from "moment";
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import {
@@ -8,7 +7,6 @@ import {
 } from "./constants";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
-import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
   constructor() {
@@ -90,6 +88,10 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
   }
 
   renderEditModal() {
+    if (!this.state.modal) {
+      return <div />;
+    }
+
     const supplementKeys = Object.keys(this.props.supplements);
     const supplementNames = supplementKeys.map(
       key => this.props.supplements[key].name
@@ -145,6 +147,21 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
     );
   }
 
+  renderReady() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+    return (
+      <div className="card-block">
+        <div className="float-right">
+          {this.getNavPaginationControlRender()}
+        </div>
+        {this.getTableRender()}
+        {this.getNavPaginationControlRender()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -152,17 +169,8 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
           <i className="fa fa-align-justify" />
           <strong>Supplement History</strong>
         </div>
-        {/*Conditional loading if ready to review or not yet*/}
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div className="card-block">
-              <div className="float-right">
-                {this.getNavPaginationControlRender()}
-              </div>
-              {this.getTableRender()}
-              {this.getNavPaginationControlRender()}
-            </div>}
-        {this.state.modal ? <div>{this.renderEditModal()}</div> : <div />}
+        {this.renderReady()}
+        {this.renderEditModal()}
       </div>
     );
   }

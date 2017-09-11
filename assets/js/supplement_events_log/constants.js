@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
+import { Link } from "react-router-dom";
+import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
 
 export const SupplementHistoryRow = props => {
   const data = props.object;
-
   const uuid = data.uuid;
   const supplementName = data.supplement_name;
   const servingSize = data.quantity;
@@ -14,10 +15,13 @@ export const SupplementHistoryRow = props => {
   const timeFormatted = moment(supplementTime).format(
     READABLE_DATE_TIME_FORMAT
   );
+  const supplementOverviewLink = getSupplementOverviewURLFromUUID(
+    data.supplement_uuid
+  );
 
   return (
     <tr>
-      <td>{supplementName}</td>
+      <td><Link to={supplementOverviewLink}>{supplementName}</Link></td>
       <td>{servingSize}</td>
       <td>{timeFormatted}</td>
       <td>
