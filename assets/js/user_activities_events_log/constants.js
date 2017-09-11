@@ -2,6 +2,8 @@ import React from "react";
 import { TrueCheckBox } from "../constants/designs";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
+import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
+import { Link } from "react-router-dom";
 
 export const UserActivityEventHistoryRow = props => {
   const data = props.object;
@@ -13,10 +15,11 @@ export const UserActivityEventHistoryRow = props => {
   const is_significant_activity = user_activity["is_significant_activity"];
   const is_all_day_activity = user_activity["is_all_day_activity"];
   const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
+  const dailyOverviewLink = getDailyOverViewURLFromDate(moment(time));
 
   return (
     <tr>
-      <td>{timeFormatted}</td>
+      <td><Link to={dailyOverviewLink}>{timeFormatted}</Link></td>
       <td>{name}</td>
       <td>{duration_minutes} minutes</td>
       <td>{is_significant_activity ? <TrueCheckBox /> : <div />}</td>
