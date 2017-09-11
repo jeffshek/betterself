@@ -24,6 +24,8 @@ const ProductivityHistoryChart = GenerateHistoryChartTemplate(
   "Very Productive (Hours)"
 );
 
+// TODO - Refactor this file completely to the multitab format
+
 export class ProductivityAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();

@@ -11,6 +11,8 @@ import {
 
 const SleepHistoryChart = GenerateHistoryChartTemplate("Sleep Time (Hours)");
 
+// TODO - Refactor this file completely to the multitab format
+
 export class SleepAnalyticsView extends BaseAnalyticsView {
   constructor() {
     super();
