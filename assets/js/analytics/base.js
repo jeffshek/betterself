@@ -8,7 +8,10 @@ import {
   NOT_CORRELATED_LABEL,
   POSITIVELY_CORRELATED_LABEL
 } from "../constants/productivity";
-import { CorrelationTableRow } from "./constants";
+import {
+  UserActivitiesCorrelationTableRow,
+  SupplementCorrelationTableRow
+} from "./constants";
 
 const SupplementsCorrelationsChart = GenerateChartTemplate(
   "Supplements Correlation"
@@ -24,6 +27,7 @@ export class BaseAnalyticsView extends Component {
     super();
 
     this.state = {
+      supplementNameUUIDMapping: null,
       // Supplements Correlations
       supplementsCorrelationsChart: SupplementsCorrelationsChart,
       selectedSupplementsCorrelations: [],
@@ -65,6 +69,23 @@ export class BaseAnalyticsView extends Component {
       return data[1];
     });
     return dataValues;
+  }
+
+  getSupplementMapping() {
+    fetch("/api/v1/supplements", {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        let supplementNameUUIDMapping = {};
+        responseData.map(e => {
+          supplementNameUUIDMapping[e.name] = e.uuid;
+        });
+        this.setState({ supplementNameUUIDMapping: supplementNameUUIDMapping });
+      });
   }
 
   getPositivelyCorrelatedData(responseData) {
@@ -304,7 +325,7 @@ export class BaseAnalyticsView extends Component {
               </thead>
               <tbody>
                 {this.state.selectedUserActivitiesCorrelations.map(key => (
-                  <CorrelationTableRow key={key} object={key} />
+                  <UserActivitiesCorrelationTableRow key={key} object={key} />
                 ))}
               </tbody>
             </table>
@@ -344,6 +365,10 @@ export class BaseAnalyticsView extends Component {
   }
 
   renderSupplementsCorrelationsData() {
+    if (!this.state.supplementNameUUIDMapping) {
+      return <div />;
+    }
+
     return (
       <div className="float">
         <div className="card">
@@ -368,7 +393,13 @@ export class BaseAnalyticsView extends Component {
               </thead>
               <tbody>
                 {this.state.selectedSupplementsCorrelations.map(key => (
-                  <CorrelationTableRow key={key} object={key} />
+                  <SupplementCorrelationTableRow
+                    key={key}
+                    object={key}
+                    supplementUUID={
+                      this.state.supplementNameUUIDMapping[key[0]]
+                    }
+                  />
                 ))}
               </tbody>
             </table>

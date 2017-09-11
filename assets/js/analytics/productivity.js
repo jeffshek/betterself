@@ -24,7 +24,7 @@ const ProductivityHistoryChart = GenerateHistoryChartTemplate(
   "Very Productive (Hours)"
 );
 
-// TODO - Refactor this file completely to the multitab format
+// TODO - Refactor this file completely to the multitab format, ugh this is garbage
 
 export class ProductivityAnalyticsView extends BaseAnalyticsView {
   constructor() {
@@ -65,6 +65,7 @@ export class ProductivityAnalyticsView extends BaseAnalyticsView {
 
   updateData() {
     this.getHistory();
+    this.getSupplementMapping();
     this.getSupplementsCorrelations();
     this.getUserActivitiesCorrelations();
   }

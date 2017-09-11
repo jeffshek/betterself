@@ -40,6 +40,7 @@ export class SleepAnalyticsView extends BaseAnalyticsView {
 
   componentDidMount() {
     this.getHistory();
+    this.getSupplementMapping();
     this.getSupplementsCorrelations();
     this.getUserActivitiesCorrelations();
   }
