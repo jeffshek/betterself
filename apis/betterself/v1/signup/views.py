@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from faker import Faker
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
@@ -12,6 +12,7 @@ from apis.betterself.v1.signup.tasks import create_demo_fixtures_for_user
 from betterself.users.models import DemoUserLog
 from config.settings.constants import TESTING, LOCAL
 from events.utils.default_events_builder import DefaultEventsBuilder
+from supplements.models import Supplement
 
 User = get_user_model()
 
@@ -25,18 +26,26 @@ class CreateUserView(APIView):
 
     def post(self, request):
         serializer = CreateUserSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+
+        # Per some signups, custom supplements are pre-filled for custom users
+        supplements = serializer.validated_data.pop('supplements')
 
         user = serializer.save()
+
+        # if there's a custom set of supplements that were added along with signup
+        # this signup is coming programmatically and supplements should automatically be created
+        if supplements:
+            for supplement_name in supplements:
+                Supplement.objects.get_or_create(user=user, name=supplement_name)
+        else:
+            # build default events for new-users
+            builder = DefaultEventsBuilder(user)
+            builder.build_defaults()
 
         token, _ = Token.objects.get_or_create(user=user)
         json_response = serializer.data
         json_response['token'] = token.key
-
-        # build default events for new-users
-        builder = DefaultEventsBuilder(user)
-        builder.build_defaults()
 
         return Response(json_response, status=HTTP_201_CREATED)
 

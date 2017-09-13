@@ -154,6 +154,91 @@ class AccountsTest(TestCase):
         user_supplements = Supplement.objects.filter(user=user)
         self.assertTrue(len(user_supplements) > 0)
 
+    def test_creation_of_user_with_create_supplements_parameter(self):
+        username = 'foobar'
+        data = {
+            'username': username,
+            'password': 'fly-like-an-eagle',
+            'supplements': 'potato,bacon'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+        potato_count = Supplement.objects.filter(user=user, name__iexact='potato').count()
+        bacon_count = Supplement.objects.filter(user=user, name__iexact='bacon').count()
+
+        self.assertEqual(potato_count, 1)
+        self.assertEqual(bacon_count, 1)
+
+    def test_creation_of_user_with_just_one_supplement(self):
+        username = 'foobar'
+        data = {
+            'username': username,
+            'password': 'fly-like-an-eagle',
+            'supplements': 'potato'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+        potato_count = Supplement.objects.filter(user=user, name__iexact='potato').count()
+        bacon_count = Supplement.objects.filter(user=user, name__iexact='bacon').count()
+
+        self.assertEqual(potato_count, 1)
+        self.assertEqual(bacon_count, 0)
+
+    def test_creation_of_user_with_create_supplements_with_some_odd_spacing(self):
+        username = 'foobar'
+        data = {
+            'username': username,
+            'password': 'fly-like-an-eagle',
+            'supplements': 'coffee,    sugar'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+        sugar_count = Supplement.objects.filter(user=user, name__iexact='sugar').count()
+
+        self.assertEqual(sugar_count, 1)
+
+    def test_creation_of_user_with_duplicate_supplement_names(self):
+        username = 'foobar'
+        data = {
+            'username': username,
+            'password': 'fly-like-an-eagle',
+            'supplements': 'coffee,    coffee,coffee'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+        supplement_count = Supplement.objects.filter(user=user, name__iexact='coffee').count()
+
+        self.assertEqual(supplement_count, 1)
+
+    def test_creation_of_user_with_number_supplement_names(self):
+        username = 'foobar'
+        data = {
+            'username': username,
+            'password': 'fly-like-an-eagle',
+            'supplements': 'coffee,1,2,3,4,coffee'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(username=username)
+        supplement_count = Supplement.objects.filter(user=user).count()
+
+        # coffee is in twice, so total count is 5
+        self.assertEqual(supplement_count, 5)
+
 
 class DemoAccountsTest(TestCase):
     def setUp(self):
