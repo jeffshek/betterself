@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/requests";
-import { DASHBOARD_INDEX_URL } from "../constants/urls";
+import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 import { Redirect } from "react-router-dom";
 import moment from "moment-timezone";
 
@@ -12,6 +12,14 @@ export class SignupView extends Component {
       username: "",
       password: ""
     };
+
+    // Instead of using router props (which is the right way), this is a quick
+    // and dirty way of picking out a way to create custom supplements for users
+    const current_url = window.location.href;
+    if (current_url.includes("create_supplements=")) {
+      // get all the text after the phrase create_supplements
+      this.state.supplements = current_url.split("create_supplements=")[1];
+    }
   }
 
   handleSubmit = event => {
@@ -20,7 +28,8 @@ export class SignupView extends Component {
     const postParams = {
       username: this.state.username,
       password: this.state.password,
-      timezone: moment.tz.guess()
+      timezone: moment.tz.guess(),
+      supplements: this.state.supplements
     };
 
     fetch("api/v1/user-signup/", {
@@ -48,7 +57,7 @@ export class SignupView extends Component {
           // and then redirect to the dashboard
           localStorage.token = responseData["token"];
           localStorage.userName = responseData["username"];
-          window.location.assign(DASHBOARD_INDEX_URL);
+          window.location.assign(DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL);
         }
       });
   };
@@ -121,7 +130,8 @@ export class SignupView extends Component {
                   onClick={this.handleSubmit}
                 >
                   <i className="fa fa-dot-circle-o" /> Submit
-                </button>&nbsp;
+                </button>
+                &nbsp;
               </div>
             </div>
           </div>
