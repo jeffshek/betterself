@@ -14,7 +14,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(min_length=8, max_length=32, write_only=True)
     timezone = serializers.ChoiceField(choices=TIMEZONE_CHOICES, default='US/Eastern')
-    supplements = serializers.CharField(max_length=64, default=None)
+    supplements = serializers.CharField(max_length=350, default=None)
 
     class Meta:
         model = User
