@@ -1,43 +1,53 @@
 import Datetime from "react-datetime";
-import React, { Component, PropTypes } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/requests";
+import React, { Component } from "react";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 
+// lol, you really sucked at react when you started
+
+const CreateSupplementButton = () => {
+  {
+    return (
+      <div className="card-header">
+        <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
+        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
+          <div className="float-right">
+            <button
+              type="submit"
+              id="add-new-object-button"
+              className="btn btn-sm btn-success"
+            >
+              <div id="white-text">
+                <i className="fa fa-dot-circle-o" /> Create Supplement
+              </div>
+            </button>
+          </div>
+        </Link>
+      </div>
+    );
+  }
+};
+
 export class AddSupplementEvent extends Component {
   constructor(props) {
     super(props);
+
+    const { supplements } = props;
+
     this.state = {
       formSupplementDateTime: moment(),
-      supplements: []
+      supplements: supplements
     };
-
-    this.submitSupplementEvent = this.submitSupplementEvent.bind(this);
-    this.handleDateInputChange = this.handleDateInputChange.bind(this);
   }
 
-  componentDidMount() {
-    this.getPossibleSupplements();
+  componentWillReceiveProps(props) {
+    const { supplements } = props;
+    this.setState({ supplements: supplements });
   }
 
-  getPossibleSupplements() {
-    fetch("/api/v1/supplements/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({ supplements: responseData });
-      });
-  }
-
-  submitSupplementEvent(e) {
+  submitSupplementEvent = e => {
     e.preventDefault();
 
     const supplementLocation = this.supplementNameKey.value;
@@ -69,34 +79,17 @@ export class AddSupplementEvent extends Component {
       .then(responseData => {
         this.props.addEventEntry(responseData);
       });
-  }
+  };
 
-  handleDateInputChange(moment) {
+  handleDateInputChange = moment => {
     this.setState({ formSupplementDateTime: moment });
-  }
-
-  renderCreateSupplementButton() {
-    return (
-      <div className="card-header">
-        <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
-        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="add-new-object-button"
-              className="btn btn-sm btn-success"
-            >
-              <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Supplement
-              </div>
-            </button>
-          </div>
-        </Link>
-      </div>
-    );
-  }
+  };
 
   renderSubmitSupplementForm() {
+    if (!this.state.supplements) {
+      return <div />;
+    }
+
     const supplementsKeys = Object.keys(this.state.supplements);
 
     return (
@@ -174,7 +167,7 @@ export class AddSupplementEvent extends Component {
   render() {
     return (
       <div className="card">
-        {this.renderCreateSupplementButton()}
+        <CreateSupplementButton />
         {this.renderSubmitSupplementForm()}
       </div>
     );

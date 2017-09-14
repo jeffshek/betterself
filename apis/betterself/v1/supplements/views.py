@@ -66,4 +66,4 @@ class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
         return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(user=self.request.user).prefetch_related('ingredient_compositions')
