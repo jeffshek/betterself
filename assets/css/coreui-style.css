@@ -275,7 +275,7 @@ body {
   font-weight: normal;
   line-height: 1.5;
   color: #193441;
-  background-color: #e4e5e6; }
+  background-color: #193441; }
 
 [tabindex="-1"]:focus {
   outline: none !important; }
