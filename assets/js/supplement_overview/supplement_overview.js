@@ -8,6 +8,7 @@ import {
 } from "./supplements_overview_charts";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
+import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
@@ -79,6 +80,11 @@ export class SupplementsOverview extends Component {
       });
   }
 
+  redirectDailyCalendarDate = date => {
+    const daily_overview_url = getDailyOverViewURLFromDate(date);
+    this.props.history.push(daily_overview_url);
+  };
+
   render() {
     if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
@@ -99,7 +105,11 @@ export class SupplementsOverview extends Component {
                   Usage (Current Year)
                 </span>
               </div>
-              <Calendar year={2017} customClasses={this.state.activityDates} />
+              <Calendar
+                year={2017}
+                customClasses={this.state.activityDates}
+                onPickDate={this.redirectDailyCalendarDate}
+              />
             </div>
           </main>
         </div>
