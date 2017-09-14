@@ -35,7 +35,10 @@ export class SupplementEventsLogView extends EventLogView {
   render() {
     return (
       <div>
-        <AddSupplementEvent addEventEntry={this.addEventEntry} />
+        <AddSupplementEvent
+          addEventEntry={this.addEventEntry}
+          supplements={this.state.supplements}
+        />
         <SupplementEntryLogTable
           eventHistory={this.state.eventHistory}
           supplements={this.state.supplements}

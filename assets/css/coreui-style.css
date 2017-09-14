@@ -275,7 +275,7 @@ body {
   font-weight: normal;
   line-height: 1.5;
   color: #193441;
-  background-color: #e4e5e6; }
+  background-color: #193441; }
 
 [tabindex="-1"]:focus {
   outline: none !important; }
@@ -320,7 +320,9 @@ blockquote {
   margin: 0 0 1rem; }
 
 a {
-  color: #20a8d8;
+  color: darkblue;
+  /*As much as you want to, it just doesn't work, it's too hard to tell a link*/
+  /*color: #193441;*/
   text-decoration: none; }
   a:focus, a:hover {
     color: #167495;
