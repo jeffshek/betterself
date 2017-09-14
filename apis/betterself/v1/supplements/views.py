@@ -1,3 +1,4 @@
+from django.db.models.query import Prefetch
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
@@ -66,4 +67,7 @@ class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
         return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user).prefetch_related('ingredient_compositions')
+        # prefetch any compositions that exist to speed this up
+        ingredient_compositions_queryset = IngredientComposition.objects.filter(user=self.request.user)
+        return self.model.objects.filter(user=self.request.user).prefetch_related(Prefetch('ingredient_compositions',
+                                                                                  ingredient_compositions_queryset))
