@@ -320,7 +320,8 @@ blockquote {
   margin: 0 0 1rem; }
 
 a {
-  color: #20a8d8;
+  /*color: #20a8d8;*/
+  color: darkblue;
   text-decoration: none; }
   a:focus, a:hover {
     color: #167495;
