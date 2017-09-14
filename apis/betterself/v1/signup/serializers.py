@@ -39,7 +39,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
         supplements_cleaned = []
         supplements = supplement_string.split(',')
         for supplement in supplements:
-            name = supplement.strip().title()
+            # urls coming from the web with have %20, but it really means a space
+            name = supplement.strip().title().replace('%20', ' ')
             supplements_cleaned.append(name)
 
         return supplements_cleaned
