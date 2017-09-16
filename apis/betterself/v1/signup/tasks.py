@@ -24,5 +24,5 @@ def create_demo_fixtures():
     # create a log of this person as a demo user, otherweise we would never be able to tell if someone is a demo or not!
     DemoUserLog.objects.create(user=user)
 
-    fixtures_builder = DemoHistoricalDataBuilder(user)
+    fixtures_builder = DemoHistoricalDataBuilder(user, periods_back=120)
     fixtures_builder.create_historical_fixtures()
