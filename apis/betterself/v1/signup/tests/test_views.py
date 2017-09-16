@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
+from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
 from events.models import UserActivity
 from events.utils.default_events_builder import DEFAULT_ACTIVITIES, SPECIAL_ACTIVITIES
@@ -241,6 +242,11 @@ class AccountsTest(TestCase):
 
 
 class DemoAccountsTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # create the first demo fixture so that views will rely on it
+        create_demo_fixtures()
+
     def setUp(self):
         self.create_url = reverse('api-create-demo-user')
 
@@ -252,7 +258,6 @@ class DemoAccountsTest(TestCase):
         response = self.client.get(self.create_url)
 
         data = response.data
-
         uuid = data['uuid']
         user = User.objects.get(uuid=uuid)
 
@@ -271,6 +276,22 @@ class DemoAccountsTest(TestCase):
 
         user_matching_deleted_uuid = User.objects.filter(uuid=uuid).count()
         self.assertEqual(user_matching_deleted_uuid, 0)
+
+    def test_creation_of_demo_user_is_next_one_that_gets_fetched(self):
+        # call demo fixtures
+        create_demo_fixtures()
+
+        this_should_be_last_demo_user_created = User.objects.all().order_by('date_joined').last()
+        last_demo_user = DemoUserLog.objects.all().order_by('created').last()
+
+        self.assertEqual(last_demo_user.user, this_should_be_last_demo_user_created)
+
+        response = self.client.get(self.create_url)
+        data = response.data
+        uuid = data['uuid']
+        user = User.objects.get(uuid=uuid)
+
+        self.assertEqual(last_demo_user.user, user)
 
 
 class UserViewTests(TestCase):
