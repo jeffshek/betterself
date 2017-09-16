@@ -1,14 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify
-from faker import Faker
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
-from apis.betterself.v1.signup.tasks import create_demo_fixtures_for_user
+from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
 from config.settings.constants import TESTING, LOCAL
 from events.utils.default_events_builder import DefaultEventsBuilder
@@ -59,30 +57,27 @@ class CreateDemoUserView(APIView):
     permission_classes = ()
 
     def get(self, request):
-        fake = Faker()
-        name = fake.name()
+        # Get the last DemoUserLog Created
+        last_demo_log = DemoUserLog.objects.all().order_by('created').last()
 
-        # have username be demo-username, so demos-users are easy to tell
-        username = 'demo-{name}'.format(name=name)
-        username = slugify(username)
-
-        # since these are demo accounts, just set the username/pass the same
-        user = User.objects.create_user(username=username, password=username)
-
-        # create a log to show this is a demo user
-        DemoUserLog.objects.create(user=user)
+        # use that user to show a historical data sample
+        user = last_demo_log.user
 
         serializer = CreateUserSerializer(user)
-        json_response = serializer.data
+        response = serializer.data
 
         token, _ = Token.objects.get_or_create(user=user)
-        json_response['token'] = token.key
+        response['token'] = token.key
+
+        # After the user has been chosen create more expensive celery tasks so a lot of unique fixtures can be used
+        # for the next demo experience.
+        # Otherwise trying to generate within lot of fixtures within <10 seconds is too much work and crappy experience.
 
         # during testing and local environments, we want immediately the fixtures to be created
         # otherwise for actual use cases, have it be done async
         if settings.DJANGO_ENVIRONMENT in (TESTING, LOCAL):
-            create_demo_fixtures_for_user(user)
+            create_demo_fixtures()
         else:
-            create_demo_fixtures_for_user.delay(user)
+            create_demo_fixtures.delay()
 
-        return Response(json_response, status=HTTP_201_CREATED)
+        return Response(response, status=HTTP_201_CREATED)
