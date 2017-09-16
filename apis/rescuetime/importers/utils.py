@@ -1,25 +1,25 @@
-VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Time'
-DISTRACTING_TIME_LABEL = 'Distracting Time'
-NEUTRAL_TIME_LABEL = 'Neutral Time'
-PRODUCTIVE_TIME_LABEL = 'Productive Time'
-VERY_PRODUCTIVE_TIME_LABEL = 'Very Productive Time'
+RT_VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Time'
+RT_DISTRACTING_TIME_LABEL = 'Distracting Time'
+RT_NEUTRAL_TIME_LABEL = 'Neutral Time'
+RT_PRODUCTIVE_TIME_LABEL = 'Productive Time'
+RT_VERY_PRODUCTIVE_TIME_LABEL = 'Very Productive Time'
 # 1-Off Header for Productivity Pulse (we don't get this data from RescueTime)
 PRODUCTIVITY_PULSE = 'Productivity Pulse'
 
 RESCUETIME_EFFICIENCY_HEADERS = [
-    VERY_DISTRACTING_TIME_LABEL,
-    DISTRACTING_TIME_LABEL,
-    NEUTRAL_TIME_LABEL,
-    PRODUCTIVE_TIME_LABEL,
-    VERY_PRODUCTIVE_TIME_LABEL
+    RT_VERY_DISTRACTING_TIME_LABEL,
+    RT_DISTRACTING_TIME_LABEL,
+    RT_NEUTRAL_TIME_LABEL,
+    RT_PRODUCTIVE_TIME_LABEL,
+    RT_VERY_PRODUCTIVE_TIME_LABEL
 ]
 
 RESCUETIME_MAPPING_TO_INTERNAL_MODEL = {
-    VERY_DISTRACTING_TIME_LABEL: 'very_distracting_time_minutes',
-    DISTRACTING_TIME_LABEL: 'distracting_time_minutes',
-    NEUTRAL_TIME_LABEL: 'neutral_time_minutes',
-    PRODUCTIVE_TIME_LABEL: 'productive_time_minutes',
-    VERY_PRODUCTIVE_TIME_LABEL: 'very_productive_time_minutes',
+    RT_VERY_DISTRACTING_TIME_LABEL: 'very_distracting_time_minutes',
+    RT_DISTRACTING_TIME_LABEL: 'distracting_time_minutes',
+    RT_NEUTRAL_TIME_LABEL: 'neutral_time_minutes',
+    RT_PRODUCTIVE_TIME_LABEL: 'productive_time_minutes',
+    RT_VERY_PRODUCTIVE_TIME_LABEL: 'very_productive_time_minutes',
 }
 
 
@@ -55,11 +55,11 @@ def calculate_rescue_time_pulse(very_distracting, distracting, neutral, producti
 
 def calculate_rescue_time_pulse_from_dataframe(dataframe):
     # for days that rescuetime doesn't have any data ... the label won't be in the data
-    very_distracting_time = dataframe.get(VERY_DISTRACTING_TIME_LABEL, 0)
-    distracting_time = dataframe.get(DISTRACTING_TIME_LABEL, 0)
-    neutral_time = dataframe.get(NEUTRAL_TIME_LABEL, 0)
-    productive_time = dataframe.get(PRODUCTIVE_TIME_LABEL, 0)
-    very_productive_time = dataframe.get(VERY_PRODUCTIVE_TIME_LABEL, 0)
+    very_distracting_time = dataframe.get(RT_VERY_DISTRACTING_TIME_LABEL, 0)
+    distracting_time = dataframe.get(RT_DISTRACTING_TIME_LABEL, 0)
+    neutral_time = dataframe.get(RT_NEUTRAL_TIME_LABEL, 0)
+    productive_time = dataframe.get(RT_PRODUCTIVE_TIME_LABEL, 0)
+    very_productive_time = dataframe.get(RT_VERY_PRODUCTIVE_TIME_LABEL, 0)
 
     pulse = calculate_rescue_time_pulse(
         very_distracting=very_distracting_time,

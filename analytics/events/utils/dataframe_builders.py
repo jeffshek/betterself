@@ -15,6 +15,8 @@ SUPPLEMENT_EVENT_COLUMN_MAP = {
     'time': TIME_COLUMN_NAME,
 }
 
+
+# TODO - Move all this crap to a constants somewhere ...
 VERY_PRODUCTIVE_TIME_LABEL = 'Very Productive Minutes'
 PRODUCTIVE_TIME_LABEL = 'Productive Minutes'
 NEUTRAL_TIME_LABEL = 'Neutral Minutes'
@@ -244,6 +246,8 @@ class SleepActivityDataframeBuilder(object):
 
     def get_sleep_history_series(self):
         """
+        Think of this as Sleep ON. Sleep ON that date.
+
         This returns data as how much sleep did you sleep on Monday night?
 
         So if you sleep from Monday 10PM to Tuesday 3AM, this will report Monday as 5 Hours! However, this can look
