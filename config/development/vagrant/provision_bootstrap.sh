@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 apt-get update -y
+apt-get upgrade -y
 apt-get install python-pip -y
 apt-get install libpq-dev python3-dev -y
 apt-get install git -y
@@ -17,7 +18,7 @@ apt-get install graphviz -y
 apt-get install graphviz-dev -y
 
 # to make redis work
-apt-get install redis-server
+apt-get install redis-tools redis-server -y
 
 # load nvm to avoid a lot of headache ... add this to bashrc when you get time to refactor
 # switched to yarn, so this may / may not be necessary
