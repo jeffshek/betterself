@@ -1,5 +1,6 @@
+repos:
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: "6b1aa19425b35f8c34f43ada8f1045b028dc19a5"
+    sha: v0.9.3
     hooks:
     # keep ids alphabetical! see http://pre-commit.com/hooks.html
     -   id: check-merge-conflict
@@ -22,7 +23,7 @@
         files: \.(py|sh|yaml|txt)$
     -   id: requirements-txt-fixer
 -   repo: https://github.com/awebdeveloper/pre-commit-prettier
-    sha: "acd6976eb1f632daae277c01bf9ea9faf94c015d"
+    sha: v0.0.1
     hooks:
     -   id: prettier
         additional_dependencies: ['prettier@1.1.0']
