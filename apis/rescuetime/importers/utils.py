@@ -1,3 +1,6 @@
+# this doesn't use the constants.py because RescueTime's API may change
+# so we don't want to be forced there even though our naming patterns are currently the same
+
 RT_VERY_DISTRACTING_TIME_LABEL = 'Very Distracting Time'
 RT_DISTRACTING_TIME_LABEL = 'Distracting Time'
 RT_NEUTRAL_TIME_LABEL = 'Neutral Time'
