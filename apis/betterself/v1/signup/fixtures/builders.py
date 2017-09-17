@@ -16,11 +16,11 @@ class DemoHistoricalDataBuilder(object):
     Builds a lot of fixtures together so the demo is comprehensible
     """
 
-    def __init__(self, user):
+    def __init__(self, user, periods_back=30):
         self.user = user
         self.hour_series = range(0, 24)
 
-        historical_data_points_quantity = 30
+        historical_data_points_quantity = periods_back
 
         # use pandas to generate a nifty index of timestamps, use timezone to remove warning signals
         # use today even if utc pushes it forward, otherwise daily overview looks odd
