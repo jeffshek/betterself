@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
     UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView
+from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
 from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesCorrelationsView, \
     SleepActivitiesSupplementsCorrelationsView, ProductivityLogsSupplementsCorrelationsView, \
@@ -21,7 +22,13 @@ urlpatterns = [
     url(r'^{0}/'.format(Supplement.RESOURCE_NAME),
             include([
                 url(r'^$', SupplementsListView.as_view(), name=Supplement.RESOURCE_NAME),
-                url(r'^(?P<supplement_uuid>[^/]+)/log/$', SupplementLogListView.as_view(), name='supplement-log'),
+                url(r'^(?P<supplement_uuid>[^/]+)/', include([
+                    url(r'^log/$', SupplementLogListView.as_view(), name='supplement-log'),
+                    url(r'^analytics/summary/$', SupplementAnalyticsSummary.as_view(), name='supplement-analytics-summary'),  # noqa
+                    # url(r'^analytics/sleep/$', SupplementLogListView.as_view(), name='supplement-analytics-sleep'),  # noqa
+                    # url(r'^analytics/productivity/$', SupplementLogListView.as_view(), name='supplement-analytics-productivity'),  # noqa
+                    # url(r'^analytics/dosages/$', SupplementLogListView.as_view(), name='supplement-analytics-dosages'),  # noqa
+                ])),
             ])),
     url(r'^{0}/$'.format(Ingredient.RESOURCE_NAME), IngredientView.as_view(), name=Ingredient.RESOURCE_NAME),
     url(r'^{0}/$'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view(), name=Measurement.RESOURCE_NAME),

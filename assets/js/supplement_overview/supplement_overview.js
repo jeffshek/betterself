@@ -102,7 +102,7 @@ export class SupplementsOverview extends Component {
             <div className="card-block">
               <div className="card-header analytics-text-box-label">
                 <span className="font-1xl">
-                  Usage (Current Year)
+                  {this.state.supplement.name} Usage (Current Year)
                 </span>
               </div>
               <Calendar

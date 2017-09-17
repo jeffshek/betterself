@@ -21,7 +21,7 @@ def create_demo_fixtures():
     # since these are demo accounts, just set the username/pass the same
     user = User.objects.create_user(username=username, password=username)
 
-    # create a log of this person as a demo user, otherweise we would never be able to tell if someone is a demo or not!
+    # create a log of this person as a demo user, otherwise we would never be able to tell if someone is a demo or not!
     DemoUserLog.objects.create(user=user)
 
     fixtures_builder = DemoHistoricalDataBuilder(user, periods_back=120)

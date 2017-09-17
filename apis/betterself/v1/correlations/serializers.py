@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from analytics.events.utils.dataframe_builders import PRODUCTIVITY_DRIVERS_KEYS, VERY_PRODUCTIVE_TIME_LABEL
-from constants import SLEEP_MINUTES_COLUMN
+from constants import SLEEP_MINUTES_COLUMN, VERY_PRODUCTIVE_TIME_LABEL, PRODUCTIVITY_DRIVERS_KEYS
 
 
 class ProductivityRequestParamsSerializer(serializers.Serializer):

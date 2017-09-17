@@ -19,6 +19,11 @@ def get_current_date_months_ago(months):
     return today - relativedelta.relativedelta(months=months)
 
 
+def get_current_date_years_ago(years):
+    today = datetime.date.today()
+    return today - relativedelta.relativedelta(years=years)
+
+
 def get_current_date_days_ago(days_ago):
     today = datetime.date.today()
     return today - relativedelta.relativedelta(days=days_ago)

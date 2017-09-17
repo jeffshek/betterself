@@ -12,16 +12,14 @@ import {
 import moment from "moment";
 import { Bar } from "react-chartjs-2";
 
-export const SupplementsAndProductivityChart = GenerateHistoryChartTemplate(
-  "Supplements & Productivity"
-);
-
 export class SupplementsAndProductivityChartView extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      supplementsAndProductivityChart: SupplementsAndProductivityChart
+      supplementsAndProductivityChart: GenerateHistoryChartTemplate(
+        "Supplements & Productivity"
+      )
     };
   }
 
