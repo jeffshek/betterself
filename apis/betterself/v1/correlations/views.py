@@ -5,11 +5,10 @@ from rest_framework.views import APIView
 from analytics.events.utils.aggregate_dataframe_builders import AggregateSupplementProductivityDataframeBuilder, \
     AggregateUserActivitiesEventsProductivityActivitiesBuilder, AggregateSleepActivitiesUserActivitiesBuilder, \
     AggregateSleepActivitiesSupplementsBuilder
-from analytics.events.utils.dataframe_builders import PRODUCTIVITY_DRIVERS_LABELS
 from apis.betterself.v1.correlations.serializers import ProductivityRequestParamsSerializer, \
     SleepRequestParamsSerializer
 from betterself.utils.date_utils import days_ago_from_current_day
-from constants import SLEEP_MINUTES_COLUMN
+from constants import SLEEP_MINUTES_COLUMN, PRODUCTIVITY_DRIVERS_LABELS
 
 NO_DATA_RESPONSE = Response([])
 

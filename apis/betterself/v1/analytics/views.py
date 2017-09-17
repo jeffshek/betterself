@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SleepActivityDataframeBuilder, \
-    ProductivityLogEventsDataframeBuilder, VERY_PRODUCTIVE_TIME_LABEL
+    ProductivityLogEventsDataframeBuilder
+from constants import VERY_PRODUCTIVE_TIME_LABEL
 from betterself.utils.date_utils import get_current_date_years_ago
 from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
 from supplements.models import Supplement

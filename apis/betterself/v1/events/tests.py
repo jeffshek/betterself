@@ -10,7 +10,7 @@ from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.test import APIClient
 
-from analytics.events.utils.dataframe_builders import VERY_PRODUCTIVE_MINUTES_VARIABLE
+from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
