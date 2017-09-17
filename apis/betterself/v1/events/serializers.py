@@ -242,6 +242,7 @@ class SleepActivityCreateSerializer(serializers.Serializer):
 class ProductivityLogRequestParametersSerializer(serializers.Serializer):
     start_date = serializers.DateField(default=get_current_date_months_ago(3))
     cumulative_window = serializers.IntegerField(default=1, min_value=1, max_value=365 * 3)
+    complete_date_range_in_daily_frequency = serializers.BooleanField(default=False)
 
 
 class SupplementLogRequestParametersSerializer(serializers.Serializer):
