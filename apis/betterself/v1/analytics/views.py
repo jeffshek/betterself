@@ -30,7 +30,6 @@ class SupplementAnalyticsSummary(APIView):
     @staticmethod
     def _get_sleep_series_last_year(user):
         """
-
         :param user:
         :return: Series data of how much sleep that person has gotten minutes
         """
@@ -74,15 +73,20 @@ class SupplementAnalyticsSummary(APIView):
         productivity_correlation_value = supplement_correlation_series['productivity']
         sleep_correlation_value = supplement_correlation_series['sleep']
         most_taken_value = supplement_series.max()
-        most_taken_date = supplement_series[supplement_series == most_taken_value].index[0].isoformat()
-        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('created').first().time.\
+
+        # there are multi possibilities that the most caffeine was ever drank
+        most_taken_dates = supplement_series[supplement_series == most_taken_value].index
+        most_taken_dates = [item.isoformat() for item in most_taken_dates]
+
+        # order by time because we don't really care about create time, rather the time the event is representing
+        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time.\
             isoformat()
 
         results = {
             'productivity_correlation': productivity_correlation_value,
             'sleep_correlation': sleep_correlation_value,
             'most_taken': most_taken_value,
-            'most_taken_date': most_taken_date,
+            'most_taken_dates': most_taken_dates,
             'creation_date': creation_date
         }
 
