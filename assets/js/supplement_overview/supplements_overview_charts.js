@@ -28,8 +28,9 @@ export class SupplementsAndProductivityChartView extends Component {
     this.updateDailyProductivityData();
   }
 
+  // Add start dates, we only need to go 3 months back!
   updateDailyProductivityData() {
-    const url = `/api/v1/productivity_log/aggregates/`;
+    const url = `/api/v1/productivity_log/aggregates/?complete_date_range_in_daily_frequency=True`;
 
     fetch(url, {
       method: "GET",

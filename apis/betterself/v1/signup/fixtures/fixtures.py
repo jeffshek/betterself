@@ -54,6 +54,63 @@ SUPPLEMENTS_FIXTURES = {
         'post_threshold_impact_on_productivity_per_quantity': None,
         'sleep_impact_per_quantity': 30,
     },
+    'Choline': {
+        'quantity_range': (0, 1),
+        'net_productivity_impact_per_quantity': 10,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 30,
+    },
+    'Piracetam': {
+        'quantity_range': (0, 4),
+        'net_productivity_impact_per_quantity': 30,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 30,
+    },
+    'Oxiracetam': {
+        'quantity_range': (0, 2),
+        'net_productivity_impact_per_quantity': 20,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 30,
+    },
+    'Vitamin B': {
+        'quantity_range': (0, 1),
+        'net_productivity_impact_per_quantity': 15,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 0,
+    },
+    'Alcohol': {
+        'quantity_range': (0, 3),
+        'net_productivity_impact_per_quantity': -15,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': -15,
+    },
+    'Tylenol': {
+        'quantity_range': (0, 2),
+        'net_productivity_impact_per_quantity': -5,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': -5,
+    },
+    'Creatine': {
+        'quantity_range': (0, 5),
+        'net_productivity_impact_per_quantity': 5,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 5,
+    },
+    'Multivitamin': {
+        # let's follow the conventional advice that multivitamins do nothing
+        'quantity_range': (0, 2),
+        'net_productivity_impact_per_quantity': 3,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 3,
+    },
 }
 
 USER_ACTIVITY_EVENTS = {
@@ -73,12 +130,36 @@ USER_ACTIVITY_EVENTS = {
         'post_threshold_impact_on_productivity_per_quantity': None,
         'sleep_impact_per_quantity': -20,
     },
-    'Jogging': {
+    'Running': {
         'quantity_range': (0, 2),
         'duration': 30,
         'net_productivity_impact_per_quantity': 30,
         'peak_threshold_quantity': None,
         'post_threshold_impact_on_productivity_per_quantity': None,
         'sleep_impact_per_quantity': 15,
+    },
+    'Gym': {
+        'quantity_range': (0, 2),
+        'duration': 30,
+        'net_productivity_impact_per_quantity': 30,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 15,
+    },
+    'Cold Shower': {
+        'quantity_range': (0, 1),
+        'duration': 10,
+        'net_productivity_impact_per_quantity': 30,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 0,
+    },
+    'Nap': {
+        'quantity_range': (0, 1),
+        'duration': 20,
+        'net_productivity_impact_per_quantity': 60,
+        'peak_threshold_quantity': None,
+        'post_threshold_impact_on_productivity_per_quantity': None,
+        'sleep_impact_per_quantity': 0,
     },
 }

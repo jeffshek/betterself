@@ -348,11 +348,26 @@ class TestAggregateProductivityViews(TestCase):
 
         # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-                                                                        date__gte=six_days_ago).values_list(
+            date__gte=six_days_ago).values_list(
             VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
         self.assertEqual(reported_very_productive_value, expected_very_productive_time)
+
+    def test_productivity_log_works_with_appending_start_and_end_dates(self):
+        start_date = get_current_date_months_ago(12)
+
+        params = {
+            'start_date': start_date.isoformat(),
+            'complete_date_range_in_daily_frequency': True,
+        }
+
+        response = self.client.get(self.url, data=params)
+        response_amount = len(response.data.keys())
+        productivity_logs = DailyProductivityLog.objects.filter(user=self.default_user).count()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(response_amount, productivity_logs)
 
 
 class SupplementLogsTest(TestCase):
@@ -388,7 +403,7 @@ class SupplementLogsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
-                                                                       supplement=self.supplement).aggregate(
+            supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
 

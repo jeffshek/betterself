@@ -1,7 +1,6 @@
 import datetime
 import json
 
-import pandas as pd
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,6 +14,7 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
+from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
 from supplements.models import Supplement
@@ -59,6 +59,7 @@ class ProductivityLogAggregatesView(APIView):
         query_params = serializer.validated_data
         query_start_date = query_params['start_date']
         query_cumulative_window = query_params['cumulative_window']
+        complete_date_range_in_daily_frequency = query_params['complete_date_range_in_daily_frequency']
 
         productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=query_start_date)
 
@@ -66,10 +67,14 @@ class ProductivityLogAggregatesView(APIView):
         dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)
         results = dataframe_builder.get_flat_daily_dataframe()
 
+        # TODO - feels like we should always just do this from the builder level to be on the safe side ...
         results.sort_index(ascending=True, inplace=True)
 
         # sum up the history by how many days as the window specifies
         results = results.rolling(window=query_cumulative_window, min_periods=1).sum()
+
+        if complete_date_range_in_daily_frequency:
+            results = force_start_end_data_to_dataframe(user, results, query_start_date, datetime.date.today())
 
         data_formatted = json.loads(results.to_json(date_format='iso', orient='index', double_precision=2))
         return Response(data_formatted)
@@ -102,19 +107,6 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
 
 class SupplementLogListView(APIView):
-    def _get_complete_date_range(self, user, start_date, end_date):
-        localized_index = pd.to_datetime([start_date, end_date])
-        # create a series includes the parameter's start and end dates
-        # do this to allow API requests for charts to be certain they are dealing with the same X axis
-        series = pd.Series(index=localized_index).asfreq('D').tz_localize(user.pytz_timezone)
-        return series
-
-    def _force_start_end_date_to_series(self, user, series, start_date, end_date):
-        series_container = self._get_complete_date_range(user, start_date, end_date)
-        # now take the index of valid results and put it in the container if it exists
-        series_container.ix[series.index] = series
-        return series_container
-
     def get(self, request, supplement_uuid):
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         user = request.user
@@ -134,7 +126,7 @@ class SupplementLogListView(APIView):
             series = builder.get_flat_daily_dataframe()[supplement.name]
 
             if params['complete_date_range_in_daily_frequency']:
-                series = self._force_start_end_date_to_series(user, series, start_date, end_date)
+                series = force_start_end_date_to_series(user, series, start_date, end_date)
 
         else:
             df = builder.build_dataframe()
