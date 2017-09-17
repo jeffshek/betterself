@@ -1,5 +1,4 @@
 import pandas as pd
-
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,8 +19,10 @@ class SupplementAnalyticsSummary(APIView):
         :param supplement:
         :return: TimeSeries data of how many of that particular supplement was taken that day
         """
+
         start_date = get_current_date_years_ago(1)
-        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementEvent.objects.filter(
+            user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
         series = builder.get_flat_daily_dataframe()[supplement.name]
         return series
@@ -69,12 +70,20 @@ class SupplementAnalyticsSummary(APIView):
 
         supplement_correlation_series = dataframe_rolling_week.corr()['supplement']
 
+        # TODO - What should happen if any of these results are null / none?
         productivity_correlation_value = supplement_correlation_series['productivity']
         sleep_correlation_value = supplement_correlation_series['sleep']
         most_taken_value = supplement_series.max()
-        most_taken_date =supplement_series[supplement_series == most_taken_value].index[0]
-        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('created').first().time
-        #
-        # print (productivity_series)
+        most_taken_date = supplement_series[supplement_series == most_taken_value].index[0].isoformat()
+        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('created').first().time.\
+            isoformat()
 
-        return Response({})
+        results = {
+            'productivity_correlation': productivity_correlation_value,
+            'sleep_correlation': sleep_correlation_value,
+            'most_taken': most_taken_value,
+            'most_taken_date': most_taken_date,
+            'creation_date': creation_date
+        }
+
+        return Response(results)
