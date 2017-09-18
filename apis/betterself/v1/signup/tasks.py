@@ -19,10 +19,12 @@ def create_demo_fixtures():
     username = slugify(username)
 
     # since these are demo accounts, just set the username/pass the same
-    user = User.objects.create_user(username=username, password=username)
+    user, _ = User.objects.get_or_create(username=username)
 
     # create a log of this person as a demo user, otherwise we would never be able to tell if someone is a demo or not!
-    DemoUserLog.objects.create(user=user)
+    _, created = DemoUserLog.objects.get_or_create(user=user)
+    if not created:
+        return
 
     fixtures_builder = DemoHistoricalDataBuilder(user, periods_back=120)
     fixtures_builder.create_historical_fixtures()
