@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
-from config.settings.constants import TESTING, LOCAL
+from config.settings.constants import TESTING
 from events.utils.default_events_builder import DefaultEventsBuilder
 from supplements.models import Supplement
 
@@ -63,7 +63,7 @@ class CreateDemoUserView(APIView):
         # use that user to show a historical data sample
         user = last_demo_log.user
 
-        serializer = CreateUserSerializer(user)
+        serializer = CreateUserSerializer(instance=user)
         response = serializer.data
 
         token, _ = Token.objects.get_or_create(user=user)
@@ -73,9 +73,8 @@ class CreateDemoUserView(APIView):
         # for the next demo experience.
         # Otherwise trying to generate within lot of fixtures within <10 seconds is too much work and crappy experience.
 
-        # during testing and local environments, we want immediately the fixtures to be created
-        # otherwise for actual use cases, have it be done async
-        if settings.DJANGO_ENVIRONMENT in (TESTING, LOCAL):
+        # in testing, immediately create the fixtures, otherwise send to celery
+        if settings.DJANGO_ENVIRONMENT == TESTING:
             create_demo_fixtures()
         else:
             create_demo_fixtures.delay()
