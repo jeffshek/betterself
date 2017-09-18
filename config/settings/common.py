@@ -250,10 +250,10 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'user': '1000/hour',
         'anon': '1000/hour',
-        'signups': '50/day',
+        'signups': '10/day',
         'rescuetime-api-sync': '5/day',
         'fitbit-api-sync': '10/day',
-        'demo_signups': '10/day',  # let a user create a few more demo accounts
+        'demo_signups': '50/day',  # let a user create a few more demo accounts
         'user_export_all_data': '20/day',
     }
 }

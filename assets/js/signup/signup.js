@@ -38,6 +38,7 @@ export class SignupView extends Component {
       body: JSON.stringify(postParams)
     })
       .then(response => {
+        // 400 responses
         if (response.status === 400) {
           response.json().then(responseData => {
             if ("username" in responseData) {
@@ -47,8 +48,17 @@ export class SignupView extends Component {
             }
           });
           // Don't return anything if its not working
-          return;
+          return {};
         }
+
+        if (response.status === 429) {
+          alert(
+            "Too many users have been created from this IP in the last 24 hours."
+          );
+          // Don't return anything if its not working
+          return {};
+        }
+
         return response.json();
       })
       .then(responseData => {
