@@ -72,7 +72,7 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementMapping() {
-    fetch("/api/v1/supplements", {
+    fetch("/api/v1/supplements/", {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })

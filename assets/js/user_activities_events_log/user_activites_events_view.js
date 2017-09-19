@@ -19,7 +19,7 @@ export class UserActivitiesEventsLogView extends EventLogView {
   }
 
   getPossibleActivities() {
-    fetch("/api/v1/user_activities", {
+    fetch("/api/v1/user_activities/", {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
     })
