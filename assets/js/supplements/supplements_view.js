@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { SupplementTable } from "./supplements_table";
 import { AddSupplementView } from "./add_supplement";
 
