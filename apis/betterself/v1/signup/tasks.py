@@ -19,6 +19,8 @@ def create_demo_fixtures():
     username = slugify(username)
 
     # since these are demo accounts, just set the username/pass the same
+    # so this is a really weird bug since you'd wonder why this would be a get_or_create
+    # but faker doesn't always generate fake names in celery instances ...
     user, _ = User.objects.get_or_create(username=username)
 
     # create a log of this person as a demo user, otherwise we would never be able to tell if someone is a demo or not!

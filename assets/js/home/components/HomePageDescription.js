@@ -1,14 +1,10 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import CSSModules from "react-css-modules";
 import styles from "../css/HomePageDescription.css";
 
-import {
-  DASHBOARD_INDEX_URL,
-  DEMO_SIGNUP_URL,
-  SIGNUP_URL
-} from "../../constants/urls";
+import { DEMO_SIGNUP_URL, SIGNUP_URL } from "../../constants/urls";
 
-class HomePageDescriptionSection extends React.Component {
+class HomePageDescriptionSection extends Component {
   render() {
     return (
       <section id="content-1-4" styleName="content-block-description">

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import CSSModules from "react-css-modules";
 
 import styles from "../css/OpenSourceAndApplicationSupport.css";
+import { DEMO_SIGNUP_URL } from "../../constants/urls";
 
-class OpenSourceAndApplicationSupport extends React.Component {
+class OpenSourceAndApplicationSupport extends Component {
   render() {
     return (
       <section styleName="content-deep-ocean">
@@ -17,7 +18,7 @@ class OpenSourceAndApplicationSupport extends React.Component {
           </h4>
 
           <a
-            href="https://github.com/jeffshek/betterself"
+            href={DEMO_SIGNUP_URL}
             className="btn btn-outline btn-outline-xl outline-light"
           >
             Words Don't Mean Much
