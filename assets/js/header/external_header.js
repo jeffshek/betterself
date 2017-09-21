@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
-import { DASHBOARD_INDEX_URL, HOME_URL } from "../constants/urls";
+import { DASHBOARD_INDEX_URL, HOME_URL, SIGNUP_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import CSSModules from "react-css-modules";
 import styles from "./css/external_header.css";
@@ -24,6 +24,10 @@ class LoggedOutHeader extends Component {
                 <li className="nav-item">
                   {/*Have to do this because of conflicting CSS*/}
                   <a href={DASHBOARD_INDEX_URL}>Dashboard</a>
+                </li>
+                <li className="nav-item">
+                  {/*Have to do this because of conflicting CSS*/}
+                  <a href={SIGNUP_URL}>Sign Up</a>
                 </li>
               </ul>
             </div>
