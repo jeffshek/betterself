@@ -38,7 +38,7 @@ class HomePageDescriptionSection extends React.Component {
                   href={DEMO_SIGNUP_URL}
                   className="btn btn-outline btn-outline-lg outline-dark"
                 >
-                  Try the demo
+                  See A Real Demo <span className="fa fa-heart pomegranate" />
                 </a>
                 &nbsp; or &nbsp;
                 <a
@@ -59,7 +59,11 @@ class HomePageDescriptionSection extends React.Component {
                 <div className="col-sm-6">
                   <h5>Privacy First.</h5>
                   <p>
-                    We don't want your name or address. We're not here to sell your contact info. All we care about is improving your health and productivity anonymously. Open-sourced on GitHub.
+                    We don't want your name or address. We're not here to sell your contact info. All we care about is improving your health and productivity anonymously.
+                    {" "}
+                    <a href="https://github.com/jeffshek/betterself">
+                      Open-sourced on GitHub.
+                    </a>
                   </p>
                 </div>
               </div>

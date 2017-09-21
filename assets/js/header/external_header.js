@@ -25,6 +25,10 @@ class LoggedOutHeader extends Component {
                   {/*Have to do this because of conflicting CSS*/}
                   <a href={DASHBOARD_INDEX_URL}>Dashboard</a>
                 </li>
+                <li className="nav-item">
+                  {/*Have to do this because of conflicting CSS*/}
+                  <a href={DASHBOARD_INDEX_URL}>Sign Up</a>
+                </li>
               </ul>
             </div>
           </div>
