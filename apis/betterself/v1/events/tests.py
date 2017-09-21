@@ -348,7 +348,7 @@ class TestAggregateProductivityViews(TestCase):
 
         # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-            date__gte=six_days_ago).values_list(
+                                                                        date__gte=six_days_ago).values_list(
             VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
@@ -403,7 +403,7 @@ class SupplementLogsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
-            supplement=self.supplement).aggregate(
+                                                                       supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
 
@@ -475,3 +475,10 @@ class SupplementLogsTest(TestCase):
         }
         response = self.client.get(self.url, data=request_params)
         self.assertEqual(response.status_code, 400)
+
+    def test_supplement_log_on_supplement_with_no_events(self):
+        # delete all the supplements
+        SupplementEvent.objects.filter(supplement=self.supplement).delete()
+        response = self.client.get(self.url, data={'frequency': 'daily'})
+
+        self.assertEqual(response.status_code, 200)

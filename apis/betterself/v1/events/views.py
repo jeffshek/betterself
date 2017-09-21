@@ -1,5 +1,6 @@
 import datetime
 import json
+import pandas as pd
 
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
@@ -123,7 +124,11 @@ class SupplementLogListView(APIView):
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':
             # most of the time the dataframe contains a lot of supplements, here we are only picking one
-            series = builder.get_flat_daily_dataframe()[supplement.name]
+            try:
+                series = builder.get_flat_daily_dataframe()[supplement.name]
+            except KeyError:
+                # key error for no data if the supplement was never taken during this time
+                series = pd.Series()
 
             if params['complete_date_range_in_daily_frequency']:
                 series = force_start_end_date_to_series(user, series, start_date, end_date)
