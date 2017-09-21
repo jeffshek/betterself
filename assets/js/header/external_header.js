@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
 import { DASHBOARD_INDEX_URL, HOME_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
