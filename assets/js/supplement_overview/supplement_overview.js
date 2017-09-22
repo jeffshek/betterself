@@ -143,12 +143,12 @@ export class SupplementsOverview extends Component {
                 onPickDate={this.redirectDailyCalendarDate}
               />
             </div>
-            <div className="card-block">
-              <div className="card-columns cols-2">
-                {this.renderSupplementAnalytics()}
-                {this.renderSupplementHistory()}
-              </div>
-            </div>
+            {/*<div className="card-block">*/}
+            {/*<div className="card-columns cols-2">*/}
+            {/*{this.renderSupplementAnalytics()}*/}
+            {/*{this.renderSupplementHistory()}*/}
+            {/*</div>*/}
+            {/*</div>*/}
           </main>
         </div>
       </div>
