@@ -88,15 +88,31 @@ export class SupplementsOverview extends Component {
     this.props.history.push(daily_overview_url);
   };
 
-  renderUserActivitiesHistory() {
+  renderSupplementAnalytics() {
     return (
       <MultiTabTableView
-        tableNavTabs={["Today", "Yesterday"]}
-        tableColumnHeaders={["Time", "Activity", "Duration"]}
+        tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
+        tableColumnHeaders={["Metric", "Result"]}
         tableData={this.state.supplementsHistory}
         tableRowRenderer={UserActivityEventTableRow}
-        tableName={this.state.supplement.name}
-        Analytics
+        tableName="Analytics"
+      />
+    );
+  }
+
+  renderSupplementHistory() {
+    return (
+      <MultiTabTableView
+        tableNavTabs={["Event", "Daily", "Monthly"]}
+        tableColumnHeaders={[
+          "Date",
+          "Quantity",
+          "Productivity (Hours)",
+          "Sleep (Hours)"
+        ]}
+        tableData={this.state.supplementsHistory}
+        tableRowRenderer={UserActivityEventTableRow}
+        tableName="Historical"
       />
     );
   }
@@ -112,25 +128,25 @@ export class SupplementsOverview extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <SupplementsAndProductivityChartView
-              supplement={this.state.supplement}
-            />
             <div className="card-block">
+              <SupplementsAndProductivityChartView
+                supplement={this.state.supplement}
+              />
               <div className="card-header analytics-text-box-label">
                 <span className="font-1xl">
                   {this.state.supplement.name} Usage (Current Year)
                 </span>
               </div>
-              <div>
-                <Calendar
-                  year={2017}
-                  customClasses={this.state.activityDates}
-                  onPickDate={this.redirectDailyCalendarDate}
-                />
-              </div>
-              <div>
-                <br />
-                {this.renderUserActivitiesHistory()}
+              <Calendar
+                year={2017}
+                customClasses={this.state.activityDates}
+                onPickDate={this.redirectDailyCalendarDate}
+              />
+            </div>
+            <div className="card-block">
+              <div className="card-columns cols-2">
+                {this.renderSupplementAnalytics()}
+                {this.renderSupplementHistory()}
               </div>
             </div>
           </main>
