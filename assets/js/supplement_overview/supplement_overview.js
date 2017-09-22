@@ -9,6 +9,8 @@ import {
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
+import { MultiTabTableView } from "../resources_table/multi_tab_table";
+import { UserActivityEventTableRow } from "../daily_overview/constants";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ export class SupplementsOverview extends Component {
 
     this.state = {
       supplement: null,
-      activityDates: null
+      activityDates: null,
+      supplementsHistory: [[], []]
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -85,6 +88,19 @@ export class SupplementsOverview extends Component {
     this.props.history.push(daily_overview_url);
   };
 
+  renderUserActivitiesHistory() {
+    return (
+      <MultiTabTableView
+        tableNavTabs={["Today", "Yesterday"]}
+        tableColumnHeaders={["Time", "Activity", "Duration"]}
+        tableData={this.state.supplementsHistory}
+        tableRowRenderer={UserActivityEventTableRow}
+        tableName={this.state.supplement.name}
+        Analytics
+      />
+    );
+  }
+
   render() {
     if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
@@ -105,11 +121,17 @@ export class SupplementsOverview extends Component {
                   {this.state.supplement.name} Usage (Current Year)
                 </span>
               </div>
-              <Calendar
-                year={2017}
-                customClasses={this.state.activityDates}
-                onPickDate={this.redirectDailyCalendarDate}
-              />
+              <div>
+                <Calendar
+                  year={2017}
+                  customClasses={this.state.activityDates}
+                  onPickDate={this.redirectDailyCalendarDate}
+                />
+              </div>
+              <div>
+                <br />
+                {this.renderUserActivitiesHistory()}
+              </div>
             </div>
           </main>
         </div>
