@@ -1,29 +1,19 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 
 export class BaseEventLogTable extends Component {
   constructor() {
     super();
-
-    // Deal with modal editing
-    this.toggle = this.toggle.bind(this);
-    this.selectModalEdit = this.selectModalEdit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleDatetimeChangeOnEditObject = this.handleDatetimeChangeOnEditObject.bind(
-      this
-    );
-    // Pagination
-    this.getPageResults = this.getPageResults.bind(this);
   }
 
-  handleDatetimeChangeOnEditObject(moment) {
+  handleDatetimeChangeOnEditObject = moment => {
     let editObject = this.state.editObject;
     editObject.time = moment;
 
     this.setState({ editObject: editObject });
-  }
+  };
 
-  handleInputChange(event) {
+  handleInputChange = event => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -31,19 +21,20 @@ export class BaseEventLogTable extends Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
-  toggle() {
+  toggle = () => {
     this.setState({
       modal: !this.state.modal
     });
-  }
+  };
 
-  selectModalEdit(object) {
+  selectModalEdit = object => {
     this.setState({ editObject: object });
+
     // Turn on modal to show for editing
     this.toggle();
-  }
+  };
 
   putParamsUpdate(params) {
     fetch(this.resourceURL, {
@@ -76,13 +67,13 @@ export class BaseEventLogTable extends Component {
     );
   }
 
-  getPageResults(page) {
+  getPageResults = page => {
     if (page === 0 || page > this.props.lastPageNumber) {
       return;
     }
 
     this.props.getEventHistory(page);
-  }
+  };
 
   getPaginationPageLinkRender(page, page_link_verbose_title) {
     // page_link_verbose_title might be "Last", "First" or just a number

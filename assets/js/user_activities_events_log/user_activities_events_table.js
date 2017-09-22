@@ -7,6 +7,7 @@ import {
   UserActivityEventHistoryRow,
   UserActivityEventHistoryTableHeader
 } from "./constants";
+import moment from "moment";
 
 export class UserActivityEventLogTable extends BaseEventLogTable {
   constructor() {
@@ -94,7 +95,7 @@ export class UserActivityEventLogTable extends BaseEventLogTable {
           </label>
           <Datetime
             onChange={this.handleDatetimeChangeOnEditObject}
-            value={this.state.editObject.time}
+            defaultValue={moment(this.state.editObject.time)}
           />
           <br />
 

@@ -7,6 +7,7 @@ import {
 } from "./constants";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
+import moment from "moment";
 
 export class SupplementEntryLogTable extends BaseEventLogTable {
   constructor() {
@@ -136,7 +137,7 @@ export class SupplementEntryLogTable extends BaseEventLogTable {
           </label>
           <Datetime
             onChange={this.handleDatetimeChangeOnEditObject}
-            value={this.state.editObject.time}
+            defaultValue={moment(this.state.editObject.time)}
           />
         </ModalBody>
         <ModalFooter>
