@@ -28,5 +28,5 @@ def create_demo_fixtures():
     if not created:
         return
 
-    fixtures_builder = DemoHistoricalDataBuilder(user, periods_back=120)
+    fixtures_builder = DemoHistoricalDataBuilder(user, periods_back=180)
     fixtures_builder.create_historical_fixtures()
