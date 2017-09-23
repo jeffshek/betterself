@@ -58,19 +58,13 @@ class DefaultEventsBuilder(object):
             ingredient=caffeine_ingredient
         )
 
-        # Now create Supplements like Coffee / Black Tea / Green Tea
+        # Now create Supplements like Coffee / Black Tea
         # that all have differing amounts of Caffeine
         coffee, _ = Supplement.objects.get_or_create(
             user=self.user,
             name='Coffee'
         )
         coffee.ingredient_compositions.add(caffeine_200mg_composition)
-
-        green_tea, _ = Supplement.objects.get_or_create(
-            user=self.user,
-            name='Green Tea'
-        )
-        green_tea.ingredient_compositions.add(caffeine_50mg_composition)
 
         black_tea, _ = Supplement.objects.get_or_create(
             user=self.user,
