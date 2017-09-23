@@ -19,12 +19,12 @@ def get_api_value_formatted(key, value, label, data_type=None):
 
     # taking a step back and thinking about this, the whole dict within key structure is stupid
     response = {
-        key: {
-            'value': value,
-            'data_type': data_type,
-            'label': label
-        }
+        'key': key,
+        'value': value,
+        'data_type': data_type,
+        'label': label
     }
+
     return response
 
 

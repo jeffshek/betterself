@@ -100,7 +100,6 @@ class SupplementAnalyticsSummary(APIView):
             get_api_value_formatted(
                 'creation_date', creation_date, 'Most Taken Dates (24 Hours)'
             ),
-
         ]
 
         return Response(results)

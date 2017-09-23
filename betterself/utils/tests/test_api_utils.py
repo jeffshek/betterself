@@ -18,11 +18,10 @@ class TestAPIResponse(TestCase):
         )
 
         expected_response = {
-            key: {
-                'value': 5,
-                'data_type': 'number',
-                'label': 'Potato Quantity'
-            }
+            'key': key,
+            'value': 5,
+            'data_type': 'number',
+            'label': 'Potato Quantity'
         }
 
         self.assertEqual(
