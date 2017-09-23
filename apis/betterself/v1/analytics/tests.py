@@ -26,7 +26,7 @@ class SupplementAnalyticsSummaryTests(TestCase):
         self.client = APIClient()
         self.client.force_login(self.default_user)
 
-    def test_basic_view(self):
+    def test_view(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -35,8 +35,13 @@ class SupplementAnalyticsSummaryTests(TestCase):
                          'most_taken',
                          'most_taken_dates',
                          'creation_date'}
-        returned_keys = set(response.data.keys())
+
+        returned_keys = [list(items.keys())[0] for items in response.data]
+        returned_keys = set(returned_keys)
         self.assertEqual(expected_keys, returned_keys)
 
         first_event = SupplementEvent.objects.filter(supplement=self.supplement).order_by('time').first()
-        self.assertEqual(first_event.time.isoformat(), response.data['creation_date'])
+        for data in response.data:
+            # taking a step back and thinking about this, the whole dict within key structure is stupid
+            if list(data.keys())[0] == 'creation_date':
+                self.assertEqual(first_event.time.isoformat(), data['creation_date']['value'])
