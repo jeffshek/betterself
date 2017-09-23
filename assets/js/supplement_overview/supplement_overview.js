@@ -8,7 +8,10 @@ import {
 } from "./supplements_overview_charts";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
-import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
+import {
+  getDailyOverViewURLFromDate,
+  getSupplementAnalyticsSummary
+} from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
 
@@ -23,7 +26,8 @@ export class SupplementsOverview extends Component {
     this.state = {
       supplement: null,
       activityDates: null,
-      supplementsHistory: [[], []]
+      supplementsHistory: [[], []],
+      analyticsSummary: [[], []]
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -44,6 +48,23 @@ export class SupplementsOverview extends Component {
           },
           this.getSupplementHistory
         );
+      });
+  }
+
+  getAnalyticsSummary() {
+    // const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
+    // const url = `/api/v1/supplements/${this.state.supplement.uuid}/analytics/summary/`;
+    const url = getSupplementAnalyticsSummary(this.state.supplement);
+    // TODO - Try out abstract the GET-FETCH here.
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
       });
   }
 
@@ -81,6 +102,8 @@ export class SupplementsOverview extends Component {
           activityDates: this.state.activityDates
         });
       });
+
+    this.getAnalyticsSummary();
   }
 
   redirectDailyCalendarDate = date => {
@@ -110,7 +133,7 @@ export class SupplementsOverview extends Component {
           "Productivity (Hours)",
           "Sleep (Hours)"
         ]}
-        tableData={this.state.supplementsHistory}
+        tableData={this.state.analyticsSummary}
         tableRowRenderer={UserActivityEventTableRow}
         tableName="Historical"
       />
@@ -143,12 +166,12 @@ export class SupplementsOverview extends Component {
                 onPickDate={this.redirectDailyCalendarDate}
               />
             </div>
-            {/*<div className="card-block">*/}
-            {/*<div className="card-columns cols-2">*/}
-            {/*{this.renderSupplementAnalytics()}*/}
-            {/*{this.renderSupplementHistory()}*/}
-            {/*</div>*/}
-            {/*</div>*/}
+            <div className="card-block">
+              <div className="card-columns cols-2">
+                {this.renderSupplementAnalytics()}
+                {this.renderSupplementHistory()}
+              </div>
+            </div>
           </main>
         </div>
       </div>
