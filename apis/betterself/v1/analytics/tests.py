@@ -36,12 +36,10 @@ class SupplementAnalyticsSummaryTests(TestCase):
                          'most_taken_dates',
                          'creation_date'}
 
-        returned_keys = [list(items.keys())[0] for items in response.data]
-        returned_keys = set(returned_keys)
-        self.assertEqual(expected_keys, returned_keys)
+        response_keys = set([item['key'] for item in response.data])
+        self.assertEqual(expected_keys, response_keys)
 
         first_event = SupplementEvent.objects.filter(supplement=self.supplement).order_by('time').first()
         for data in response.data:
-            # taking a step back and thinking about this, the whole dict within key structure is stupid
-            if list(data.keys())[0] == 'creation_date':
-                self.assertEqual(first_event.time.isoformat(), data['creation_date']['value'])
+            if data['key'] == 'creation_date':
+                self.assertEqual(first_event.time.isoformat(), data['value'])
