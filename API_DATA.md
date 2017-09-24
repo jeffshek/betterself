@@ -2,7 +2,7 @@
 
 2017-09-22 - I've messed up quite a bit and a lot of my API responses are all over the place. A lot of them are a bit too specific to views, so this is a doc to write some more consistent API structures.
 
-1. Instead of returning dictionaries, return list of dictionaries. 
+1. Instead of returning dictionaries, return list of dictionaries / objects
 
     * The order is apparent.
     * It gives meta information frequently necessary

@@ -54,8 +54,6 @@ export class SupplementsOverview extends Component {
   }
 
   getAnalyticsSummary() {
-    // const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
-    // const url = `/api/v1/supplements/${this.state.supplement.uuid}/analytics/summary/`;
     const url = getSupplementAnalyticsSummary(this.state.supplement);
     fetch(url, {
       method: "GET",

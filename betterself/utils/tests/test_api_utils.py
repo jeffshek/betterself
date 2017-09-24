@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
 from betterself.utils.api_utils import get_api_value_formatted
 
 
@@ -18,7 +19,7 @@ class TestAPIResponse(TestCase):
         )
 
         expected_response = {
-            'key': key,
+            UNIQUE_KEY_CONSTANT: key,
             'value': 5,
             'data_type': 'number',
             'label': 'Potato Quantity'

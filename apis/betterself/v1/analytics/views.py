@@ -81,7 +81,7 @@ class SupplementAnalyticsSummary(APIView):
         most_taken_dates = [item.isoformat() for item in most_taken_dates]
 
         # order by time because we don't really care about create time, rather the time the event is representing
-        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time.\
+        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
             isoformat()
 
         results = [
@@ -103,7 +103,3 @@ class SupplementAnalyticsSummary(APIView):
         ]
 
         return Response(results)
-
-
-# build_api_value_response
-# key/value/data_type/label

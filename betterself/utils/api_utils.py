@@ -2,6 +2,8 @@ import datetime
 import logging
 import numpy as np
 
+from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
+
 logger = logging.getLogger(__name__)
 
 
@@ -19,7 +21,7 @@ def get_api_value_formatted(key, value, label, data_type=None):
 
     # taking a step back and thinking about this, the whole dict within key structure is stupid
     response = {
-        'uniqueKey': key,
+        UNIQUE_KEY_CONSTANT: key,
         'value': value,
         'data_type': data_type,
         'label': label
@@ -29,6 +31,10 @@ def get_api_value_formatted(key, value, label, data_type=None):
 
 
 def guess_data_type(value):
+    """
+    Passes logic to the frontend, a string that becomes useful in rendering how a specific value should be displayed
+    ie. if certain datetime constants are passed, that can be used to generate links
+    """
     if isinstance(value, str):
         return 'str'
     elif isinstance(value, int):
@@ -43,4 +49,3 @@ def guess_data_type(value):
         return 'datetime'
     else:
         logger.exception('Unable to determine data type of {}'.format(value))
-        raise Exception

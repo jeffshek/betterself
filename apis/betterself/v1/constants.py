@@ -10,3 +10,5 @@ VALID_REST_RESOURCES = [
     Measurement,
     Vendor
 ]
+
+UNIQUE_KEY_CONSTANT = 'uniqueKey'
