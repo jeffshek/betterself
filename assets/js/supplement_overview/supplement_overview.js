@@ -57,7 +57,6 @@ export class SupplementsOverview extends Component {
     // const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     // const url = `/api/v1/supplements/${this.state.supplement.uuid}/analytics/summary/`;
     const url = getSupplementAnalyticsSummary(this.state.supplement);
-    // TODO - Try out abstract the GET-FETCH here.
     fetch(url, {
       method: "GET",
       headers: JSON_AUTHORIZATION_HEADERS
@@ -117,7 +116,8 @@ export class SupplementsOverview extends Component {
   renderSupplementAnalytics() {
     return (
       <MultiTabTableView
-        tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
+        //tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
+        tableNavTabs={["Summary"]}
         tableColumnHeaders={["Metric", "Result"]}
         tableData={this.state.supplementAnalytics}
         tableRowRenderer={AnalyticsSummaryRowDisplay}
@@ -154,21 +154,21 @@ export class SupplementsOverview extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            {/*<div className="card-block">*/}
-            {/*<SupplementsAndProductivityChartView*/}
-            {/*supplement={this.state.supplement}*/}
-            {/*/>*/}
-            {/*<div className="card-header analytics-text-box-label">*/}
-            {/*<span className="font-1xl">*/}
-            {/*{this.state.supplement.name} Usage (Current Year)*/}
-            {/*</span>*/}
-            {/*</div>*/}
-            {/*<Calendar*/}
-            {/*year={2017}*/}
-            {/*customClasses={this.state.activityDates}*/}
-            {/*onPickDate={this.redirectDailyCalendarDate}*/}
-            {/*/>*/}
-            {/*</div>*/}
+            <div className="card-block">
+              <SupplementsAndProductivityChartView
+                supplement={this.state.supplement}
+              />
+              <div className="card-header analytics-text-box-label">
+                <span className="font-1xl">
+                  {this.state.supplement.name} Usage (Current Year)
+                </span>
+              </div>
+              <Calendar
+                year={2017}
+                customClasses={this.state.activityDates}
+                onPickDate={this.redirectDailyCalendarDate}
+              />
+            </div>
             <div className="card-block">
               <div className="card-columns cols-2">
                 {this.renderSupplementAnalytics()}
