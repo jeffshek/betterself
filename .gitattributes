@@ -1,3 +1,5 @@
 * text=auto
 static/* linguist-vendored
 css/* linguist-vendored
+betterself/static/css/* linguist-vendored
+betterself/static/bootstrap/* linguist-vendored
