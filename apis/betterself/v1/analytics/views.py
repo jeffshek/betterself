@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, SleepActivityDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder
+from betterself.utils.api_utils import get_api_value_formatted
 from constants import VERY_PRODUCTIVE_TIME_LABEL
 from betterself.utils.date_utils import get_current_date_years_ago
 from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
@@ -80,15 +81,25 @@ class SupplementAnalyticsSummary(APIView):
         most_taken_dates = [item.isoformat() for item in most_taken_dates]
 
         # order by time because we don't really care about create time, rather the time the event is representing
-        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time.\
+        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
             isoformat()
 
-        results = {
-            'productivity_correlation': productivity_correlation_value,
-            'sleep_correlation': sleep_correlation_value,
-            'most_taken': most_taken_value,
-            'most_taken_dates': most_taken_dates,
-            'creation_date': creation_date
-        }
+        results = [
+            get_api_value_formatted(
+                'productivity_correlation', productivity_correlation_value, 'Productivity Correlation'
+            ),
+            get_api_value_formatted(
+                'sleep_correlation', sleep_correlation_value, 'Sleep Correlation'
+            ),
+            get_api_value_formatted(
+                'most_taken', most_taken_value, 'Most Taken (24 Hours)'
+            ),
+            get_api_value_formatted(
+                'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)', data_type='list-datetime'
+            ),
+            get_api_value_formatted(
+                'creation_date', creation_date, 'Initial Record Date', data_type='string-datetime'
+            ),
+        ]
 
         return Response(results)

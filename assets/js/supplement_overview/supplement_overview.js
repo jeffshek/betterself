@@ -8,9 +8,13 @@ import {
 } from "./supplements_overview_charts";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
-import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
+import {
+  getDailyOverViewURLFromDate,
+  getSupplementAnalyticsSummary
+} from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
+import { AnalyticsSummaryRowDisplay } from "./constants";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
@@ -23,7 +27,9 @@ export class SupplementsOverview extends Component {
     this.state = {
       supplement: null,
       activityDates: null,
-      supplementsHistory: [[], []]
+      // empty array sets for now to be populated by API calls
+      supplementHistory: [[], []],
+      supplementAnalytics: [[], []]
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -44,6 +50,21 @@ export class SupplementsOverview extends Component {
           },
           this.getSupplementHistory
         );
+      });
+  }
+
+  getAnalyticsSummary() {
+    const url = getSupplementAnalyticsSummary(this.state.supplement);
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.state.supplementAnalytics[0] = responseData;
+        this.setState({ supplementAnalytics: this.state.supplementAnalytics });
       });
   }
 
@@ -81,6 +102,8 @@ export class SupplementsOverview extends Component {
           activityDates: this.state.activityDates
         });
       });
+
+    this.getAnalyticsSummary();
   }
 
   redirectDailyCalendarDate = date => {
@@ -91,10 +114,11 @@ export class SupplementsOverview extends Component {
   renderSupplementAnalytics() {
     return (
       <MultiTabTableView
-        tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
+        //tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
+        tableNavTabs={["Summary"]}
         tableColumnHeaders={["Metric", "Result"]}
-        tableData={this.state.supplementsHistory}
-        tableRowRenderer={UserActivityEventTableRow}
+        tableData={this.state.supplementAnalytics}
+        tableRowRenderer={AnalyticsSummaryRowDisplay}
         tableName="Analytics"
       />
     );
@@ -110,7 +134,7 @@ export class SupplementsOverview extends Component {
           "Productivity (Hours)",
           "Sleep (Hours)"
         ]}
-        tableData={this.state.supplementsHistory}
+        tableData={this.state.supplementAnalytics}
         tableRowRenderer={UserActivityEventTableRow}
         tableName="Historical"
       />
@@ -143,12 +167,12 @@ export class SupplementsOverview extends Component {
                 onPickDate={this.redirectDailyCalendarDate}
               />
             </div>
-            {/*<div className="card-block">*/}
-            {/*<div className="card-columns cols-2">*/}
-            {/*{this.renderSupplementAnalytics()}*/}
-            {/*{this.renderSupplementHistory()}*/}
-            {/*</div>*/}
-            {/*</div>*/}
+            <div className="card-block">
+              <div className="card-columns cols-2">
+                {this.renderSupplementAnalytics()}
+                {/*{this.renderSupplementHistory()}*/}
+              </div>
+            </div>
           </main>
         </div>
       </div>

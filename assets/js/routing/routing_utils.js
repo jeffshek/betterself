@@ -13,3 +13,7 @@ export const getDailyOverViewURLFromDate = date => {
 export const getSupplementOverviewURLFromUUID = uuid => {
   return `${DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL}${uuid}`;
 };
+
+export const getSupplementAnalyticsSummary = supplement => {
+  return `/api/v1/supplements/${supplement.uuid}/analytics/summary/`;
+};

@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
 from apis.betterself.v1.events.tests import User
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from events.models import SupplementEvent
@@ -26,7 +27,7 @@ class SupplementAnalyticsSummaryTests(TestCase):
         self.client = APIClient()
         self.client.force_login(self.default_user)
 
-    def test_basic_view(self):
+    def test_view(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -35,8 +36,11 @@ class SupplementAnalyticsSummaryTests(TestCase):
                          'most_taken',
                          'most_taken_dates',
                          'creation_date'}
-        returned_keys = set(response.data.keys())
-        self.assertEqual(expected_keys, returned_keys)
+
+        response_keys = set([item[UNIQUE_KEY_CONSTANT] for item in response.data])
+        self.assertEqual(expected_keys, response_keys)
 
         first_event = SupplementEvent.objects.filter(supplement=self.supplement).order_by('time').first()
-        self.assertEqual(first_event.time.isoformat(), response.data['creation_date'])
+        for data in response.data:
+            if data[UNIQUE_KEY_CONSTANT] == 'creation_date':
+                self.assertEqual(first_event.time.isoformat(), data['value'])
