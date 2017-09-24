@@ -14,6 +14,7 @@ import {
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
+import { AnalyticsSummaryRowDisplay } from "./constants";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
@@ -26,8 +27,9 @@ export class SupplementsOverview extends Component {
     this.state = {
       supplement: null,
       activityDates: null,
-      supplementsHistory: [[], []],
-      analyticsSummary: [[], []]
+      // empty array sets for now to be populated by API calls
+      supplementHistory: [[], []],
+      supplementAnalytics: [[], []]
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
@@ -64,7 +66,8 @@ export class SupplementsOverview extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
+        this.state.supplementAnalytics[0] = responseData;
+        this.setState({ supplementAnalytics: this.state.supplementAnalytics });
       });
   }
 
@@ -116,8 +119,8 @@ export class SupplementsOverview extends Component {
       <MultiTabTableView
         tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
         tableColumnHeaders={["Metric", "Result"]}
-        tableData={this.state.supplementsHistory}
-        tableRowRenderer={UserActivityEventTableRow}
+        tableData={this.state.supplementAnalytics}
+        tableRowRenderer={AnalyticsSummaryRowDisplay}
         tableName="Analytics"
       />
     );
@@ -133,7 +136,7 @@ export class SupplementsOverview extends Component {
           "Productivity (Hours)",
           "Sleep (Hours)"
         ]}
-        tableData={this.state.analyticsSummary}
+        tableData={this.state.supplementAnalytics}
         tableRowRenderer={UserActivityEventTableRow}
         tableName="Historical"
       />
@@ -151,25 +154,25 @@ export class SupplementsOverview extends Component {
         <div className="app-body">
           <Sidebar />
           <main className="main">
-            <div className="card-block">
-              <SupplementsAndProductivityChartView
-                supplement={this.state.supplement}
-              />
-              <div className="card-header analytics-text-box-label">
-                <span className="font-1xl">
-                  {this.state.supplement.name} Usage (Current Year)
-                </span>
-              </div>
-              <Calendar
-                year={2017}
-                customClasses={this.state.activityDates}
-                onPickDate={this.redirectDailyCalendarDate}
-              />
-            </div>
+            {/*<div className="card-block">*/}
+            {/*<SupplementsAndProductivityChartView*/}
+            {/*supplement={this.state.supplement}*/}
+            {/*/>*/}
+            {/*<div className="card-header analytics-text-box-label">*/}
+            {/*<span className="font-1xl">*/}
+            {/*{this.state.supplement.name} Usage (Current Year)*/}
+            {/*</span>*/}
+            {/*</div>*/}
+            {/*<Calendar*/}
+            {/*year={2017}*/}
+            {/*customClasses={this.state.activityDates}*/}
+            {/*onPickDate={this.redirectDailyCalendarDate}*/}
+            {/*/>*/}
+            {/*</div>*/}
             <div className="card-block">
               <div className="card-columns cols-2">
                 {this.renderSupplementAnalytics()}
-                {this.renderSupplementHistory()}
+                {/*{this.renderSupplementHistory()}*/}
               </div>
             </div>
           </main>

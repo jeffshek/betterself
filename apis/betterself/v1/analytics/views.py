@@ -95,10 +95,10 @@ class SupplementAnalyticsSummary(APIView):
                 'most_taken', most_taken_value, 'Most Taken (24 Hours)'
             ),
             get_api_value_formatted(
-                'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)'
+                'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)', data_type='list-datetime'
             ),
             get_api_value_formatted(
-                'creation_date', creation_date, 'Most Taken Dates (24 Hours)'
+                'creation_date', creation_date, 'Initial Record Date', data_type='string-datetime'
             ),
         ]
 
