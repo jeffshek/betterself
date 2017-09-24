@@ -23,8 +23,7 @@ class SupplementAnalyticsSummary(APIView):
         """
 
         start_date = get_current_date_years_ago(1)
-        supplement_events = SupplementEvent.objects.filter(
-            user=user, supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
         series = builder.get_flat_daily_dataframe()[supplement.name]
         return series

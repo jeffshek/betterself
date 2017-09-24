@@ -114,8 +114,7 @@ export class SupplementsOverview extends Component {
   renderSupplementAnalytics() {
     return (
       <MultiTabTableView
-        //tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
-        tableNavTabs={["Summary"]}
+        tableNavTabs={["Summary", "Sleep", "Productivity", "Dosages"]}
         tableColumnHeaders={["Metric", "Result"]}
         tableData={this.state.supplementAnalytics}
         tableRowRenderer={AnalyticsSummaryRowDisplay}
