@@ -37,7 +37,7 @@ def guess_data_type(value):
     """
     if isinstance(value, str):
         return 'str'
-    elif isinstance(value, int):
+    elif isinstance(value, (int, np.int64, np.int32)):
         return 'int'
     elif isinstance(value, (float, np.float64)):
         return 'float'

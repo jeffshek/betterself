@@ -15,6 +15,22 @@ from supplements.models import Supplement
 
 
 class SupplementAnalyticsMixin(object):
+    @classmethod
+    def _get_analytics_dataframe(cls, user, supplement_uuid):
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
+        supplement_series = cls._get_daily_supplement_events_series_last_year(user, supplement)
+        sleep_series = cls._get_sleep_series_last_year(user)
+        productivity_series = cls._get_productivity_series_last_year(user)
+
+        dataframe_details = {
+            'supplement': supplement_series,
+            'sleep': sleep_series,
+            'productivity': productivity_series
+        }
+
+        dataframe = pd.DataFrame(dataframe_details)
+        return dataframe
+
     @staticmethod
     def _get_daily_supplement_events_series_last_year(user, supplement):
         # TODO - This may serve better as a supplement fetcher mixin
@@ -23,7 +39,6 @@ class SupplementAnalyticsMixin(object):
         :param supplement:
         :return: TimeSeries data of how many of that particular supplement was taken that day
         """
-
         start_date = get_current_date_years_ago(1)
         supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
@@ -57,19 +72,8 @@ class SupplementAnalyticsMixin(object):
 
 class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
-        user = request.user
-        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
-        supplement_series = self._get_daily_supplement_events_series_last_year(user, supplement)
-        sleep_series = self._get_sleep_series_last_year(user)
-        productivity_series = self._get_productivity_series_last_year(user)
-
-        dataframe_details = {
-            'supplement': supplement_series,
-            'sleep': sleep_series,
-            'productivity': productivity_series
-        }
-
-        dataframe = pd.DataFrame(dataframe_details)
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        supplement_series = dataframe['supplement']
 
         # i find a week is generally the best analysis to use for correlation, otherwise
         # you have odd days like sunday when everyone is lazy and mondays when everyone is trying
@@ -88,6 +92,7 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
         most_taken_dates = [item.isoformat() for item in most_taken_dates]
 
         # order by time because we don't really care about create time, rather the time the event is representing
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
             isoformat()
 
@@ -105,7 +110,7 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
                 'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)', data_type='list-datetime'
             ),
             get_api_value_formatted(
-                'creation_date', creation_date, 'Initial Record Date', data_type='string-datetime'
+                'creation_date', creation_date, 'Date of First Use', data_type='string-datetime'
             ),
         ]
 
@@ -114,28 +119,16 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
 
 class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
-        user = request.user
-        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
-        supplement_series = self._get_daily_supplement_events_series_last_year(user, supplement)
-        sleep_series = self._get_sleep_series_last_year(user)
-
-        dataframe_details = {
-            'supplement': supplement_series,
-            'sleep': sleep_series,
-        }
-
-        results = []
-
-        dataframe = pd.DataFrame(dataframe_details)
-
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
         index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
-
         dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
         supplement_series = dataframe_of_supplement_taken_at_least_once['supplement']
-        most_taken_value = supplement_series.max()
 
+        most_taken_value = supplement_series.max()
         most_taken_dates = supplement_series[supplement_series == most_taken_value].index
         most_taken_dataframe = dataframe_of_supplement_taken_at_least_once.ix[most_taken_dates]
+
+        results = []
 
         most_taken_sleep_mean = most_taken_dataframe['sleep'].max()
         most_taken_sleep_mean = get_api_value_formatted(
@@ -152,6 +145,18 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
         dates_where_no_supplement_taken = dataframe['supplement'].isnull()
         dataframe_of_no_supplement_taken = dataframe.ix[dates_where_no_supplement_taken]
 
+        median_sleep_taken_once = dataframe_of_supplement_taken_at_least_once['sleep'].median()
+        median_sleep_taken_once = get_api_value_formatted(
+            'median_sleep_taken_once', median_sleep_taken_once,
+            'Median Time Slept (Min 1 Serving)')
+        results.append(median_sleep_taken_once)
+
+        mean_sleep_taken_once = dataframe_of_supplement_taken_at_least_once['sleep'].mean()
+        mean_sleep_taken_once = get_api_value_formatted(
+            'mean_sleep_taken_once', mean_sleep_taken_once,
+            'Mean Time Slept (Min 1 Serving)')
+        results.append(mean_sleep_taken_once)
+
         mean_sleep_no_supplement = dataframe_of_no_supplement_taken['sleep'].mean()
         mean_sleep_no_supplement = get_api_value_formatted(
             'mean_sleep_no_supplement', mean_sleep_no_supplement,
@@ -164,16 +169,97 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
             'Median Time Slept (0 Servings)')
         results.append(median_sleep_of_no_supplement)
 
-        median_sleep_taken_once = dataframe_of_supplement_taken_at_least_once['sleep'].median()
-        median_sleep_taken_once = get_api_value_formatted(
-            'median_sleep_taken_once', median_sleep_taken_once,
-            'Median Time Slept (Min 1 Serving)')
-        results.append(median_sleep_taken_once)
+        return Response(results)
 
-        mean_sleep_taken_once = dataframe_of_supplement_taken_at_least_once['sleep'].mean()
-        mean_sleep_taken_once = get_api_value_formatted(
-            'mean_sleep_taken_once', mean_sleep_taken_once,
-            'Mean Time Slept (Min 1 Serving)')
-        results.append(mean_sleep_taken_once)
+
+class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
+    def get(self, request, supplement_uuid):
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
+        dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
+        dates_where_no_supplement_taken = dataframe['supplement'].isnull()
+        dataframe_of_no_supplement_taken = dataframe.ix[dates_where_no_supplement_taken]
+
+        results = []
+
+        productivity_series_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity']
+        productivity_series_without_supplement = dataframe_of_no_supplement_taken['productivity']
+
+        most_productive_time_with_supplement_raw = productivity_series_with_supplement.max()
+        most_productive_time_with_supplement = get_api_value_formatted(
+            'most_productive_time_with_supplement', most_productive_time_with_supplement_raw,
+            'Most Productive Time (Min 1 Serving)')
+        results.append(most_productive_time_with_supplement)
+
+        most_productive_date_with_supplement = productivity_series_with_supplement.idxmax()
+        most_productive_date_with_supplement = get_api_value_formatted(
+            'most_productive_date_with_supplement', most_productive_date_with_supplement,
+            'Most Productive Date', 'string-datetime')
+        results.append(most_productive_date_with_supplement)
+
+        least_productive_time_with_supplement = productivity_series_with_supplement.min()
+        least_productive_time_with_supplement = get_api_value_formatted(
+            'least_productive_time_with_supplement', least_productive_time_with_supplement,
+            'Least Productive Time (Min 1 Serving)')
+        results.append(least_productive_time_with_supplement)
+
+        least_productive_date_with_supplement = productivity_series_with_supplement.idxmin()
+        least_productive_date_with_supplement = get_api_value_formatted(
+            'least_productive_date_with_supplement', least_productive_date_with_supplement,
+            'Least Productive Date', 'string-datetime')
+        results.append(least_productive_date_with_supplement)
+
+        median_productive_time_with_supplement = productivity_series_with_supplement.median()
+        median_productive_time_with_supplement = get_api_value_formatted(
+            'median_productive_time_with_supplement', median_productive_time_with_supplement,
+            'Median Productive Time (Min 1 Serving)')
+        results.append(median_productive_time_with_supplement)
+
+        mean_productive_time_with_supplement = productivity_series_with_supplement.mean()
+        mean_productive_time_with_supplement = get_api_value_formatted(
+            'mean_productive_time_with_supplement', mean_productive_time_with_supplement,
+            'Mean Productive Time (Min 1 Serving)')
+        results.append(mean_productive_time_with_supplement)
+
+        median_productive_time_without_supplement = productivity_series_without_supplement.median()
+        median_productive_time_without_supplement = get_api_value_formatted(
+            'median_productive_time_without_supplement', median_productive_time_without_supplement,
+            'Median Productive Time (0 Servings)')
+        results.append(median_productive_time_without_supplement)
+
+        mean_productive_time_without_supplement = productivity_series_without_supplement.mean()
+        mean_productive_time_without_supplement = get_api_value_formatted(
+            'mean_productive_time_without_supplement', mean_productive_time_without_supplement,
+            'Mean Productive Time (0 Servings)')
+        results.append(mean_productive_time_without_supplement)
+
+        return Response(results)
+
+
+class SupplementDosageAnalytics(APIView, SupplementAnalyticsMixin):
+    def get(self, request, supplement_uuid):
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
+        dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
+
+        results = []
+
+        mean_serving_size_last_365_days = dataframe['supplement'].fillna(0).mean()
+        mean_serving_size_last_365_days = get_api_value_formatted(
+            'mean_serving_size_last_365_days', mean_serving_size_last_365_days,
+            'Mean Serving Size (All Days)')
+        results.append(mean_serving_size_last_365_days)
+
+        median_serving_size = dataframe_of_supplement_taken_at_least_once['supplement'].median()
+        median_serving_size = get_api_value_formatted(
+            'median_serving_size', median_serving_size,
+            'Median Serving Size (Min 1 Serving)')
+        results.append(median_serving_size)
+
+        mean_serving_size = dataframe_of_supplement_taken_at_least_once['supplement'].mean()
+        mean_serving_size = get_api_value_formatted(
+            'mean_serving_size', mean_serving_size,
+            'Mean Serving Size (Min 1 Serving)')
+        results.append(mean_serving_size)
 
         return Response(results)

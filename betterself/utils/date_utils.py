@@ -30,7 +30,6 @@ def get_current_date_days_ago(days_ago):
 
 
 def get_midnight_datetime_from_date_parameter(user, date):
-    # TODO - Check this, before this wasn't working very well, but it might have been Vagrant playing a nasty trick
     # for a date, transform it into a datetime object at midnight
     time_serialized = datetime.datetime.combine(date, datetime.datetime.min.time())
     return user.pytz_timezone.localize(time_serialized)
