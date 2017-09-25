@@ -244,7 +244,7 @@ class SupplementDosageAnalytics(APIView, SupplementAnalyticsMixin):
 
         results = []
 
-        mean_serving_size_last_365_days = dataframe['supplement'].mean()
+        mean_serving_size_last_365_days = dataframe['supplement'].fillna(0).mean()
         mean_serving_size_last_365_days = get_api_value_formatted(
             'mean_serving_size_last_365_days', mean_serving_size_last_365_days,
             'Mean Serving Size (All Days)')
