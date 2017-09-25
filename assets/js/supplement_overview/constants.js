@@ -23,7 +23,7 @@ export const FormatValueToDataType = (value, data_type) => {
   } else if (data_type === "string-datetime") {
     return RenderDateOverviewLink(value);
   } else {
-    return <span>{valueFormatted}</span>;
+    return <span>{value}</span>;
   }
 };
 
