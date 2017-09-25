@@ -17,6 +17,15 @@ import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
 import { AnalyticsSummaryRowDisplay } from "./constants";
 
+const getFetchJSONAPI = url => {
+  return fetch(url, {
+    method: "GET",
+    headers: JSON_AUTHORIZATION_HEADERS
+  }).then(response => {
+    return response.json();
+  });
+};
+
 export class SupplementsOverview extends Component {
   constructor(props) {
     super(props);
@@ -58,72 +67,60 @@ export class SupplementsOverview extends Component {
     this.getSupplementHistory();
     this.getAnalyticsSummary();
     this.getSleepHistory();
+    this.getProductivityHistory();
+  }
+
+  getProductivityHistory() {
+    const url = getSupplementSleepAnalytics(this.state.supplement);
+    getFetchJSONAPI(url).then(responseData => {
+      this.state.supplementAnalytics[2] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getSleepHistory() {
     const url = getSupplementSleepAnalytics(this.state.supplement);
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.state.supplementAnalytics[1] = responseData;
-        this.setState({ supplementAnalytics: this.state.supplementAnalytics });
-      });
+    getFetchJSONAPI(url).then(responseData => {
+      this.state.supplementAnalytics[1] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getAnalyticsSummary() {
     const url = getSupplementAnalyticsSummary(this.state.supplement);
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.state.supplementAnalytics[0] = responseData;
-        this.setState({ supplementAnalytics: this.state.supplementAnalytics });
-      });
+    getFetchJSONAPI(url).then(responseData => {
+      this.state.supplementAnalytics[0] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getSupplementHistory() {
     const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     const url = `/api/v1/supplements/${this.state.supplement.uuid}/log/?frequency=daily&start_date=${start_date}`;
 
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        // Loop through a response of key:value from API to get any
-        // dates that are valid
-        const responseDataDates = Object.keys(responseData);
-        const validResponseDates = responseDataDates.filter(e => {
-          return responseData[e];
-        });
-        validResponseDates.sort();
-
-        const supplementDatesFormatted = validResponseDates.map(key =>
-          moment(key).format(DATE_REQUEST_FORMAT)
-        );
-
-        // Do this weird thing where we set the activityDates ...
-        // Due to a bug, if it's rendered too early, it will
-        // not rerender correctly.
-        this.state.activityDates = {};
-        this.state.activityDates.supplements = supplementDatesFormatted;
-
-        this.setState({
-          activityDates: this.state.activityDates
-        });
+    getFetchJSONAPI(url).then(responseData => {
+      // Loop through a response of key:value from API to get any
+      // dates that are valid
+      const responseDataDates = Object.keys(responseData);
+      const validResponseDates = responseDataDates.filter(e => {
+        return responseData[e];
       });
+      validResponseDates.sort();
+
+      const supplementDatesFormatted = validResponseDates.map(key =>
+        moment(key).format(DATE_REQUEST_FORMAT)
+      );
+
+      // Do this weird thing where we set the activityDates ...
+      // Due to a bug, if it's rendered too early, it will
+      // not rerender correctly.
+      this.state.activityDates = {};
+      this.state.activityDates.supplements = supplementDatesFormatted;
+
+      this.setState({
+        activityDates: this.state.activityDates
+      });
+    });
   }
 
   redirectDailyCalendarDate = date => {
