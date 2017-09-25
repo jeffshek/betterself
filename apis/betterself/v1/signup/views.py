@@ -60,8 +60,16 @@ class CreateDemoUserView(APIView):
         # Get the last DemoUserLog Created
         last_demo_log = DemoUserLog.objects.all().order_by('created').last()
 
-        # use that user to show a historical data sample
-        user = last_demo_log.user
+        try:
+            # use that user to show a historical data sample
+            user = last_demo_log.user
+        except AttributeError:
+            # if attribute error, then that means demo-user-logs were cleared, so
+            # in that case, recreate a new demo user on the fly
+            create_demo_fixtures()
+
+            last_demo_log = DemoUserLog.objects.all().order_by('created').last()
+            user = last_demo_log.user
 
         serializer = CreateUserSerializer(instance=user)
         response = serializer.data
