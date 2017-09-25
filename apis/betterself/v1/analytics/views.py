@@ -15,6 +15,22 @@ from supplements.models import Supplement
 
 
 class SupplementAnalyticsMixin(object):
+    @classmethod
+    def _get_analytics_dataframe(cls, user, supplement_uuid):
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
+        supplement_series = cls._get_daily_supplement_events_series_last_year(user, supplement)
+        sleep_series = cls._get_sleep_series_last_year(user)
+        productivity_series = cls._get_productivity_series_last_year(user)
+
+        dataframe_details = {
+            'supplement': supplement_series,
+            'sleep': sleep_series,
+            'productivity': productivity_series
+        }
+
+        dataframe = pd.DataFrame(dataframe_details)
+        return dataframe
+
     @staticmethod
     def _get_daily_supplement_events_series_last_year(user, supplement):
         # TODO - This may serve better as a supplement fetcher mixin
@@ -57,19 +73,8 @@ class SupplementAnalyticsMixin(object):
 
 class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
-        user = request.user
-        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
-        supplement_series = self._get_daily_supplement_events_series_last_year(user, supplement)
-        sleep_series = self._get_sleep_series_last_year(user)
-        productivity_series = self._get_productivity_series_last_year(user)
-
-        dataframe_details = {
-            'supplement': supplement_series,
-            'sleep': sleep_series,
-            'productivity': productivity_series
-        }
-
-        dataframe = pd.DataFrame(dataframe_details)
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        supplement_series = dataframe['supplement']
 
         # i find a week is generally the best analysis to use for correlation, otherwise
         # you have odd days like sunday when everyone is lazy and mondays when everyone is trying
@@ -88,6 +93,7 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
         most_taken_dates = [item.isoformat() for item in most_taken_dates]
 
         # order by time because we don't really care about create time, rather the time the event is representing
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
             isoformat()
 
@@ -114,28 +120,17 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
 
 class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
-        user = request.user
-        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=user)
-        supplement_series = self._get_daily_supplement_events_series_last_year(user, supplement)
-        sleep_series = self._get_sleep_series_last_year(user)
-
-        dataframe_details = {
-            'supplement': supplement_series,
-            'sleep': sleep_series,
-        }
-
-        results = []
-
-        dataframe = pd.DataFrame(dataframe_details)
-
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
         index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
-
         dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
+
         supplement_series = dataframe_of_supplement_taken_at_least_once['supplement']
         most_taken_value = supplement_series.max()
 
         most_taken_dates = supplement_series[supplement_series == most_taken_value].index
         most_taken_dataframe = dataframe_of_supplement_taken_at_least_once.ix[most_taken_dates]
+
+        results = []
 
         most_taken_sleep_mean = most_taken_dataframe['sleep'].max()
         most_taken_sleep_mean = get_api_value_formatted(
@@ -181,5 +176,7 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
 
 class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
+        self._get_analytics_dataframe(request.user, supplement_uuid)
+
         results = []
         return Response(results)
