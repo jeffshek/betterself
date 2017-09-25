@@ -29,8 +29,8 @@ export class SupplementsOverview extends Component {
       supplement: null,
       activityDates: null,
       // empty array sets for now to be populated by API calls
-      supplementHistory: [[], []],
-      supplementAnalytics: [[], []]
+      supplementHistory: [[], [], [], []],
+      supplementAnalytics: [[], [], [], []]
     };
 
     fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
