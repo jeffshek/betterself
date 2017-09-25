@@ -10,7 +10,8 @@ import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import {
   getDailyOverViewURLFromDate,
-  getSupplementAnalyticsSummary
+  getSupplementAnalyticsSummary,
+  getSupplementSleepAnalytics
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
@@ -48,8 +49,29 @@ export class SupplementsOverview extends Component {
           {
             supplement: supplement
           },
-          this.getSupplementHistory
+          this.getSupplementData
         );
+      });
+  }
+
+  getSupplementData() {
+    this.getSupplementHistory();
+    this.getAnalyticsSummary();
+    this.getSleepHistory();
+  }
+
+  getSleepHistory() {
+    const url = getSupplementSleepAnalytics(this.state.supplement);
+    fetch(url, {
+      method: "GET",
+      headers: JSON_AUTHORIZATION_HEADERS
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        this.state.supplementAnalytics[1] = responseData;
+        this.setState({ supplementAnalytics: this.state.supplementAnalytics });
       });
   }
 
@@ -102,8 +124,6 @@ export class SupplementsOverview extends Component {
           activityDates: this.state.activityDates
         });
       });
-
-    this.getAnalyticsSummary();
   }
 
   redirectDailyCalendarDate = date => {

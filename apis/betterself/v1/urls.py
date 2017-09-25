@@ -25,7 +25,7 @@ urlpatterns = [
                 url(r'^(?P<supplement_uuid>[^/]+)/', include([
                     url(r'^log/$', SupplementLogListView.as_view(), name='supplement-log'),
                     url(r'^analytics/summary/$', SupplementAnalyticsSummary.as_view(), name='supplement-analytics-summary'),  # noqa
-                    # url(r'^analytics/sleep/$', SupplementLogListView.as_view(), name='supplement-analytics-sleep'),  # noqa
+                    url(r'^analytics/sleep/$', SupplementAnalyticsSummary.as_view(), name='supplement-analytics-sleep'),  # noqa
                     # url(r'^analytics/productivity/$', SupplementLogListView.as_view(), name='supplement-analytics-productivity'),  # noqa
                     # url(r'^analytics/dosages/$', SupplementLogListView.as_view(), name='supplement-analytics-dosages'),  # noqa
                 ])),
