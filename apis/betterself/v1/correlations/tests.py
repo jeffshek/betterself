@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SupplementEvent
+from events.models import SupplementEvent, DailyProductivityLog
 from supplements.models import Supplement
 
 User = get_user_model()
@@ -49,6 +49,12 @@ class BaseCorrelationsTestCase(TestCase):
 
 class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCorrelationsMixin):
     url_namespace = 'productivity-supplements-correlations'
+
+    def test_productivity_supplements_correlation_view_no_correlations(self):
+        DailyProductivityLog.objects.filter(user=self.user).delete()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
 
     def test_productivity_supplements_correlation_view(self):
         response = self.client.get(self.url)

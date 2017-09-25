@@ -59,7 +59,10 @@ class CorrelationsAPIView(APIView):
             aggregate_dataframe = aggregate_dataframe[-correlation_lookback:]
 
         df_correlation = aggregate_dataframe.corr()
-        df_correlation_series = df_correlation[correlation_driver]
+        try:
+            df_correlation_series = df_correlation[correlation_driver]
+        except KeyError:
+            return NO_DATA_RESPONSE
 
         # disregard all other valid correlation drivers and only care about the variables
         # ie. distracting minutes, neutral minutes might correlate with whatever is the productivity driver
