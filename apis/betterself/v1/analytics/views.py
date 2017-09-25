@@ -177,3 +177,9 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
         results.append(mean_sleep_taken_once)
 
         return Response(results)
+
+
+class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
+    def get(self, request, supplement_uuid):
+        results = []
+        return Response(results)
