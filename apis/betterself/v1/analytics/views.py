@@ -99,7 +99,7 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
                 'sleep_correlation', sleep_correlation_value, 'Sleep Correlation'
             ),
             get_api_value_formatted(
-                'most_taken', most_taken_value, 'Most Taken (24 Hours)'
+                'most_taken', most_taken_value, 'Most Servings Taken (24 Hours)'
             ),
             get_api_value_formatted(
                 'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)', data_type='list-datetime'
