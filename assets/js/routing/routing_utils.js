@@ -25,3 +25,7 @@ export const getSupplementSleepAnalyticsURL = supplement => {
 export const getSupplementProductivityAnalyticsURL = supplement => {
   return `/api/v1/supplements/${supplement.uuid}/analytics/productivity/`;
 };
+
+export const getSupplementDosagesAnalyticsURL = supplement => {
+  return `/api/v1/supplements/${supplement.uuid}/analytics/dosages/`;
+};

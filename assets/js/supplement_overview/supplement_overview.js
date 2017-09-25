@@ -11,6 +11,7 @@ import Sidebar from "../sidebar/sidebar";
 import {
   getDailyOverViewURLFromDate,
   getSupplementAnalyticsSummaryURL,
+  getSupplementDosagesAnalyticsURL,
   getSupplementProductivityAnalyticsURL,
   getSupplementSleepAnalyticsURL
 } from "../routing/routing_utils";
@@ -63,6 +64,15 @@ export class SupplementsOverview extends Component {
     this.getAnalyticsSummary();
     this.getSleepHistory();
     this.getProductivityHistory();
+    this.getDosages();
+  }
+
+  getDosages() {
+    const url = getSupplementDosagesAnalyticsURL(this.state.supplement);
+    getFetchJSONAPI(url).then(responseData => {
+      this.state.supplementAnalytics[3] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getProductivityHistory() {

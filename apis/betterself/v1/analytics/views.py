@@ -125,7 +125,6 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
         supplement_series = dataframe_of_supplement_taken_at_least_once['supplement']
 
         most_taken_value = supplement_series.max()
-
         most_taken_dates = supplement_series[supplement_series == most_taken_value].index
         most_taken_dataframe = dataframe_of_supplement_taken_at_least_once.ix[most_taken_dates]
 
@@ -233,5 +232,34 @@ class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
             'mean_productive_time_without_supplement', mean_productive_time_without_supplement,
             'Mean Productive Time (0 Servings)')
         results.append(mean_productive_time_without_supplement)
+
+        return Response(results)
+
+
+class SupplementDosageAnalytics(APIView, SupplementAnalyticsMixin):
+    def get(self, request, supplement_uuid):
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
+        dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
+
+        results = []
+
+        mean_serving_size_last_365_days = dataframe['supplement'].mean()
+        mean_serving_size_last_365_days = get_api_value_formatted(
+            'mean_serving_size_last_365_days', mean_serving_size_last_365_days,
+            'Mean Serving Size (All Days)')
+        results.append(mean_serving_size_last_365_days)
+
+        median_serving_size = dataframe_of_supplement_taken_at_least_once['supplement'].median()
+        median_serving_size = get_api_value_formatted(
+            'median_serving_size', median_serving_size,
+            'Median Serving Size (Min 1 Serving)')
+        results.append(median_serving_size)
+
+        mean_serving_size = dataframe_of_supplement_taken_at_least_once['supplement'].mean()
+        mean_serving_size = get_api_value_formatted(
+            'mean_serving_size', mean_serving_size,
+            'Mean Serving Size (Min 1 Serving)')
+        results.append(mean_serving_size)
 
         return Response(results)

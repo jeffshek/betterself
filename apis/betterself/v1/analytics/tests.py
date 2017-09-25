@@ -73,3 +73,15 @@ class SupplementAnalyticsProductivityTest(BaseSupplementAnalyticsTests):
     def test_view(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+
+class SupplementDosagesAnalyticsTest(BaseSupplementAnalyticsTests):
+    @classmethod
+    def setUpTestData(cls):
+        cls.setUpAnalyticsData()
+        cls.url = reverse('supplement-analytics-dosages', args=[str(cls.supplement.uuid)])
+        super().setUpTestData()
+
+    def test_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
