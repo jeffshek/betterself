@@ -293,6 +293,12 @@ class DemoAccountsTest(TestCase):
 
         self.assertEqual(last_demo_user.user, user)
 
+    def test_no_demo_user_on_signup_page_will_work(self):
+        DemoUserLog.objects.all().delete()
+
+        response = self.client.get(self.create_url)
+        self.assertEqual(response.status_code, 201)
+
 
 class UserViewTests(TestCase):
     @classmethod
