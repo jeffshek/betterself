@@ -10,8 +10,9 @@ import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import {
   getDailyOverViewURLFromDate,
-  getSupplementAnalyticsSummary,
-  getSupplementSleepAnalytics
+  getSupplementAnalyticsSummaryURL,
+  getSupplementProductivityAnalyticsURL,
+  getSupplementSleepAnalyticsURL
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
@@ -42,25 +43,19 @@ export class SupplementsOverview extends Component {
       supplementAnalytics: [[], [], [], []]
     };
 
-    fetch(`/api/v1/supplements/?uuid=${supplementUUID}`, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        // Get the first one because this API endpoint returns back a list of supplements
-        // in this case because of the filter, we are being exact and know we should only return one
-        const supplement = responseData[0];
-        // Then get all the history surrounding this supplement
-        this.setState(
-          {
-            supplement: supplement
-          },
-          this.getSupplementData
-        );
-      });
+    const url = `/api/v1/supplements/?uuid=${supplementUUID}`;
+    getFetchJSONAPI(url).then(responseData => {
+      // Get the first one because this API endpoint returns back a list of supplements
+      // in this case because of the filter, we are being exact and know we should only return one
+      const supplement = responseData[0];
+      // Then get all the history surrounding this supplement
+      this.setState(
+        {
+          supplement: supplement
+        },
+        this.getSupplementData
+      );
+    });
   }
 
   getSupplementData() {
@@ -71,7 +66,7 @@ export class SupplementsOverview extends Component {
   }
 
   getProductivityHistory() {
-    const url = getSupplementSleepAnalytics(this.state.supplement);
+    const url = getSupplementProductivityAnalyticsURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
       this.state.supplementAnalytics[2] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
@@ -79,7 +74,7 @@ export class SupplementsOverview extends Component {
   }
 
   getSleepHistory() {
-    const url = getSupplementSleepAnalytics(this.state.supplement);
+    const url = getSupplementSleepAnalyticsURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
       this.state.supplementAnalytics[1] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
@@ -87,7 +82,7 @@ export class SupplementsOverview extends Component {
   }
 
   getAnalyticsSummary() {
-    const url = getSupplementAnalyticsSummary(this.state.supplement);
+    const url = getSupplementAnalyticsSummaryURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
       this.state.supplementAnalytics[0] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
@@ -135,7 +130,7 @@ export class SupplementsOverview extends Component {
         tableColumnHeaders={["Metric", "Result"]}
         tableData={this.state.supplementAnalytics}
         tableRowRenderer={AnalyticsSummaryRowDisplay}
-        tableName="Analytics"
+        tableName="Analytics (365 Days)"
       />
     );
   }

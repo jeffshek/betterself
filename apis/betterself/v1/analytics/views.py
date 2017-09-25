@@ -146,18 +146,6 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
         dates_where_no_supplement_taken = dataframe['supplement'].isnull()
         dataframe_of_no_supplement_taken = dataframe.ix[dates_where_no_supplement_taken]
 
-        mean_sleep_no_supplement = dataframe_of_no_supplement_taken['sleep'].mean()
-        mean_sleep_no_supplement = get_api_value_formatted(
-            'mean_sleep_no_supplement', mean_sleep_no_supplement,
-            'Mean Time Slept (0 Servings)')
-        results.append(mean_sleep_no_supplement)
-
-        median_sleep_of_no_supplement = dataframe_of_no_supplement_taken['sleep'].median()
-        median_sleep_of_no_supplement = get_api_value_formatted(
-            'median_sleep_of_no_supplement', median_sleep_of_no_supplement,
-            'Median Time Slept (0 Servings)')
-        results.append(median_sleep_of_no_supplement)
-
         median_sleep_taken_once = dataframe_of_supplement_taken_at_least_once['sleep'].median()
         median_sleep_taken_once = get_api_value_formatted(
             'median_sleep_taken_once', median_sleep_taken_once,
@@ -170,6 +158,18 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
             'Mean Time Slept (Min 1 Serving)')
         results.append(mean_sleep_taken_once)
 
+        mean_sleep_no_supplement = dataframe_of_no_supplement_taken['sleep'].mean()
+        mean_sleep_no_supplement = get_api_value_formatted(
+            'mean_sleep_no_supplement', mean_sleep_no_supplement,
+            'Mean Time Slept (0 Servings)')
+        results.append(mean_sleep_no_supplement)
+
+        median_sleep_of_no_supplement = dataframe_of_no_supplement_taken['sleep'].median()
+        median_sleep_of_no_supplement = get_api_value_formatted(
+            'median_sleep_of_no_supplement', median_sleep_of_no_supplement,
+            'Median Time Slept (0 Servings)')
+        results.append(median_sleep_of_no_supplement)
+
         return Response(results)
 
 
@@ -178,25 +178,60 @@ class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
         dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
         index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
         dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
+        dates_where_no_supplement_taken = dataframe['supplement'].isnull()
+        dataframe_of_no_supplement_taken = dataframe.ix[dates_where_no_supplement_taken]
 
         results = []
 
-        most_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].max()
+        productivity_series_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity']
+        productivity_series_without_supplement = dataframe_of_no_supplement_taken['productivity']
+
+        most_productive_time_with_supplement_raw = productivity_series_with_supplement.max()
         most_productive_time_with_supplement = get_api_value_formatted(
-            'most_productive_time_with_supplement', most_productive_time_with_supplement,
+            'most_productive_time_with_supplement', most_productive_time_with_supplement_raw,
             'Most Productive Time (Min 1 Serving)')
         results.append(most_productive_time_with_supplement)
 
-        least_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].min()
+        most_productive_date_with_supplement = productivity_series_with_supplement.idxmax()
+        most_productive_date_with_supplement = get_api_value_formatted(
+            'most_productive_date_with_supplement', most_productive_date_with_supplement,
+            'Most Productive Date', 'string-datetime')
+        results.append(most_productive_date_with_supplement)
+
+        least_productive_time_with_supplement = productivity_series_with_supplement.min()
         least_productive_time_with_supplement = get_api_value_formatted(
             'least_productive_time_with_supplement', least_productive_time_with_supplement,
             'Least Productive Time (Min 1 Serving)')
         results.append(least_productive_time_with_supplement)
 
-        median_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].median()
+        least_productive_date_with_supplement = productivity_series_with_supplement.idxmin()
+        least_productive_date_with_supplement = get_api_value_formatted(
+            'least_productive_date_with_supplement', least_productive_date_with_supplement,
+            'Least Productive Date', 'string-datetime')
+        results.append(least_productive_date_with_supplement)
+
+        median_productive_time_with_supplement = productivity_series_with_supplement.median()
         median_productive_time_with_supplement = get_api_value_formatted(
             'median_productive_time_with_supplement', median_productive_time_with_supplement,
             'Median Productive Time (Min 1 Serving)')
         results.append(median_productive_time_with_supplement)
+
+        mean_productive_time_with_supplement = productivity_series_with_supplement.mean()
+        mean_productive_time_with_supplement = get_api_value_formatted(
+            'mean_productive_time_with_supplement', mean_productive_time_with_supplement,
+            'Mean Productive Time (Min 1 Serving)')
+        results.append(mean_productive_time_with_supplement)
+
+        median_productive_time_without_supplement = productivity_series_without_supplement.median()
+        median_productive_time_without_supplement = get_api_value_formatted(
+            'median_productive_time_without_supplement', median_productive_time_without_supplement,
+            'Median Productive Time (0 Servings)')
+        results.append(median_productive_time_without_supplement)
+
+        mean_productive_time_without_supplement = productivity_series_without_supplement.mean()
+        mean_productive_time_without_supplement = get_api_value_formatted(
+            'mean_productive_time_without_supplement', mean_productive_time_without_supplement,
+            'Mean Productive Time (0 Servings)')
+        results.append(mean_productive_time_without_supplement)
 
         return Response(results)
