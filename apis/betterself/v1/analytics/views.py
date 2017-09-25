@@ -39,7 +39,6 @@ class SupplementAnalyticsMixin(object):
         :param supplement:
         :return: TimeSeries data of how many of that particular supplement was taken that day
         """
-
         start_date = get_current_date_years_ago(1)
         supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
@@ -123,8 +122,8 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
         dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
         index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
         dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
-
         supplement_series = dataframe_of_supplement_taken_at_least_once['supplement']
+
         most_taken_value = supplement_series.max()
 
         most_taken_dates = supplement_series[supplement_series == most_taken_value].index
@@ -176,7 +175,28 @@ class SupplementSleepAnalytics(APIView, SupplementAnalyticsMixin):
 
 class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
     def get(self, request, supplement_uuid):
-        self._get_analytics_dataframe(request.user, supplement_uuid)
+        dataframe = self._get_analytics_dataframe(request.user, supplement_uuid)
+        index_of_supplement_taken_at_least_once = dataframe['supplement'].dropna().index
+        dataframe_of_supplement_taken_at_least_once = dataframe.ix[index_of_supplement_taken_at_least_once]
 
         results = []
+
+        most_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].max()
+        most_productive_time_with_supplement = get_api_value_formatted(
+            'most_productive_time_with_supplement', most_productive_time_with_supplement,
+            'Most Productive Time (Min 1 Serving)')
+        results.append(most_productive_time_with_supplement)
+
+        least_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].min()
+        least_productive_time_with_supplement = get_api_value_formatted(
+            'least_productive_time_with_supplement', least_productive_time_with_supplement,
+            'Least Productive Time (Min 1 Serving)')
+        results.append(least_productive_time_with_supplement)
+
+        median_productive_time_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity'].median()
+        median_productive_time_with_supplement = get_api_value_formatted(
+            'median_productive_time_with_supplement', median_productive_time_with_supplement,
+            'Median Productive Time (Min 1 Serving)')
+        results.append(median_productive_time_with_supplement)
+
         return Response(results)
