@@ -44,3 +44,26 @@ class SupplementAnalyticsSummaryTests(TestCase):
         for data in response.data:
             if data[UNIQUE_KEY_CONSTANT] == 'creation_date':
                 self.assertEqual(first_event.time.isoformat(), data['value'])
+
+
+class SupplementAnalyticsSleepTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user, _ = User.objects.get_or_create(username='default')
+        builder = DemoHistoricalDataBuilder(cls.default_user, periods_back=90)
+        builder.create_historical_fixtures()
+
+        supplement = Supplement.objects.filter(user=cls.default_user).first()
+        supplement_uuid = str(supplement.uuid)
+        cls.supplement = supplement
+        cls.url = reverse('supplement-analytics-sleep', args=[supplement_uuid])
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)

@@ -17,3 +17,7 @@ export const getSupplementOverviewURLFromUUID = uuid => {
 export const getSupplementAnalyticsSummary = supplement => {
   return `/api/v1/supplements/${supplement.uuid}/analytics/summary/`;
 };
+
+export const getSupplementSleepAnalytics = supplement => {
+  return `/api/v1/supplements/${supplement.uuid}/analytics/sleep/`;
+};
