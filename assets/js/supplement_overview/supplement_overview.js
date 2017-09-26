@@ -86,7 +86,6 @@ export class SupplementsOverview extends Component {
   getSleepHistory() {
     const url = getSupplementSleepAnalyticsURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
-      console.log(responseData);
       this.state.supplementAnalytics[1] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
     });
