@@ -38,3 +38,5 @@ export const AnalyticsSummaryRowDisplay = props => {
     </tr>
   );
 };
+
+export const HistoryRowDisplay = props => {};

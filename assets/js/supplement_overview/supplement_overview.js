@@ -41,7 +41,8 @@ export class SupplementsOverview extends Component {
       activityDates: null,
       // empty array sets for now to be populated by API calls
       supplementHistory: [[], [], [], []],
-      supplementAnalytics: [[], [], [], []]
+      // individual, daily, monthly
+      supplementAnalytics: [[], [], []]
     };
 
     const url = `/api/v1/supplements/?uuid=${supplementUUID}`;
@@ -156,7 +157,7 @@ export class SupplementsOverview extends Component {
           "Sleep (Hours)"
         ]}
         tableData={this.state.supplementAnalytics}
-        tableRowRenderer={UserActivityEventTableRow}
+        tableRowRenderer={AnalyticsSummaryRowDisplay}
         tableName="Historical"
       />
     );
@@ -191,7 +192,7 @@ export class SupplementsOverview extends Component {
             <div className="card-block">
               <div className="card-columns cols-2">
                 {this.renderSupplementAnalytics()}
-                {/*{this.renderSupplementHistory()}*/}
+                {this.renderSupplementHistory()}
               </div>
             </div>
           </main>

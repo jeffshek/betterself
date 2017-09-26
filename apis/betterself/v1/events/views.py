@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder, \
-    SupplementEventsDataframeBuilder
+    SupplementEventsDataframeBuilder, SleepActivityDataframeBuilder
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     DailyProductivityLogFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
@@ -15,9 +15,10 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
+from betterself.utils.date_utils import get_current_date_months_ago
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.models import Supplement
 
 
@@ -140,3 +141,57 @@ class SupplementLogListView(APIView):
         json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)
         return Response(data)
+
+
+class AggregatedSupplementLogView(APIView):
+    """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
+    def get(self, request, supplement_uuid):
+        supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
+        user = request.user
+
+        serializer = SupplementLogRequestParametersSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        params = serializer.validated_data
+
+        # yes there is a start_date in the params, but we are hardcoding to 12
+        start_date = get_current_date_months_ago(12)
+        end_date = datetime.datetime.now(user.pytz_timezone).date()
+
+        supplement_events = SupplementEvent.objects.filter(
+            user=user, supplement=supplement, time__date__gte=start_date, time__date__lte=end_date)
+
+        # no point if nothing exists
+        if not supplement_events.exists():
+            return Response([])
+
+        # lots of crappy templating here, sorry.
+        supplement_builder = SupplementEventsDataframeBuilder(supplement_events)
+        supplement_series = supplement_builder.build_dataframe()['Quantity'].sort_index()
+
+        productivity_logs = DailyProductivityLog.objects.filter(
+            user=user, date__gte=start_date, date__lte=end_date)
+        productivity_builder = ProductivityLogEventsDataframeBuilder(productivity_logs)
+        productivity_series = productivity_builder.get_productive_timeseries()
+
+        sleep_logs = SleepActivity.objects.filter(user=user, start_time__date__gte=start_date)
+        sleep_builder = SleepActivityDataframeBuilder(sleep_logs)
+        sleep_series = sleep_builder.get_sleep_history_series()
+
+        dataframe_details = {
+            'sleep': sleep_series,
+            'productivity': productivity_series,
+            'supplement': supplement_series,
+        }
+
+        dataframe = pd.DataFrame(dataframe_details)
+        dataframe_localized = dataframe.tz_convert(user.pytz_timezone)
+
+        # if daily, do this
+        dataframe_localized = dataframe_localized.fillna(method='ffill')
+
+        # otherwise, resample and aggregate
+
+        # ProductivityLogEventsDataframeBuilder
+        # SleepActivityDataframeBuilder
+        print ('potato')
+        return Response([])
