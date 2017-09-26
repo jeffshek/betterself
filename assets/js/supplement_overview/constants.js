@@ -16,7 +16,7 @@ const RenderDateOverviewLink = value => {
 };
 
 export const FormatValueToDataType = (value, data_type) => {
-  if (data_type === "float") {
+  if ((data_type === "float") & value) {
     return value.toFixed(3);
   } else if (data_type === "list-datetime") {
     return value.map(RenderDateOverviewLink);

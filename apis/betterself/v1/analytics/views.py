@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 import numpy as np
 
@@ -22,6 +24,14 @@ class SupplementAnalyticsMixin(object):
         sleep_series = cls._get_sleep_series_last_year(user)
         productivity_series = cls._get_productivity_series_last_year(user)
 
+        # if either sleep or productivity are empty, create an empty series that is timezone
+        # aware (hence, matching the supplement index)
+        if sleep_series.empty:
+            sleep_series = pd.Series(index=supplement_series.index)
+
+        if productivity_series.empty:
+            productivity_series = pd.Series(index=supplement_series.index)
+
         dataframe_details = {
             'supplement': supplement_series,
             'sleep': sleep_series,
@@ -42,7 +52,13 @@ class SupplementAnalyticsMixin(object):
         start_date = get_current_date_years_ago(1)
         supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
-        series = builder.get_flat_daily_dataframe()[supplement.name]
+        try:
+            series = builder.get_flat_daily_dataframe()[supplement.name]
+        except KeyError:
+            # KeyError means it doesn't exist, so create an index that can be used for everything else
+            date_range_index = pd.date_range(start=start_date, end=datetime.date.today(), tz=user.pytz_timezone)
+            series = pd.Series(index=date_range_index)
+
         return series
 
     @staticmethod
@@ -66,7 +82,11 @@ class SupplementAnalyticsMixin(object):
         start_date = get_current_date_years_ago(1)
         logs = DailyProductivityLog.objects.filter(user=user, date__gte=start_date)
         builder = ProductivityLogEventsDataframeBuilder(logs)
-        series = builder.get_flat_daily_dataframe()[VERY_PRODUCTIVE_TIME_LABEL]
+        try:
+            series = builder.get_flat_daily_dataframe()[VERY_PRODUCTIVE_TIME_LABEL]
+        except KeyError:
+            return pd.Series()
+
         return series
 
 
@@ -93,8 +113,13 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
 
         # order by time because we don't really care about create time, rather the time the event is representing
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
-        creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
-            isoformat()
+
+        try:
+            creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
+                isoformat()
+        except AttributeError:
+            # no creation_date found
+            creation_date = None
 
         results = [
             get_api_value_formatted(
@@ -104,10 +129,10 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
                 'sleep_correlation', sleep_correlation_value, 'Sleep Correlation'
             ),
             get_api_value_formatted(
-                'most_taken', most_taken_value, 'Most Servings Taken (24 Hours)'
+                'most_taken', most_taken_value, 'Most Servings Taken (1 Day)'
             ),
             get_api_value_formatted(
-                'most_taken_dates', most_taken_dates, 'Most Taken Dates (24 Hours)', data_type='list-datetime'
+                'most_taken_dates', most_taken_dates, 'Most Taken Dates', data_type='list-datetime'
             ),
             get_api_value_formatted(
                 'creation_date', creation_date, 'Date of First Use', data_type='string-datetime'
@@ -184,6 +209,10 @@ class SupplementProductivityAnalytics(APIView, SupplementAnalyticsMixin):
 
         productivity_series_with_supplement = dataframe_of_supplement_taken_at_least_once['productivity']
         productivity_series_without_supplement = dataframe_of_no_supplement_taken['productivity']
+
+        # no point
+        if productivity_series_with_supplement.dropna().empty:
+            return Response(results)
 
         most_productive_time_with_supplement_raw = productivity_series_with_supplement.max()
         most_productive_time_with_supplement = get_api_value_formatted(
