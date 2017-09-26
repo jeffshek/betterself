@@ -1,6 +1,7 @@
 import datetime
 import logging
 import numpy as np
+import math
 
 from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
 
@@ -18,6 +19,10 @@ def get_api_value_formatted(key, value, label, data_type=None):
     """
     if not data_type:
         data_type = guess_data_type(value)
+
+    # json doesn't render nan well
+    if data_type == 'float' and math.isnan(value):
+        value = None
 
     # taking a step back and thinking about this, the whole dict within key structure is stupid
     response = {

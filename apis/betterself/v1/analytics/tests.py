@@ -1,3 +1,4 @@
+import math
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
@@ -5,11 +6,12 @@ from rest_framework.test import APIClient
 from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
 from apis.betterself.v1.events.tests import User
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
-from events.models import SupplementEvent
+from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
 from supplements.models import Supplement
 
 
 class BaseSupplementAnalyticsTests(TestCase):
+
     @classmethod
     def setUpAnalyticsData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
@@ -24,7 +26,34 @@ class BaseSupplementAnalyticsTests(TestCase):
         self.client.force_login(self.default_user)
 
 
-class SupplementAnalyticsSummaryTests(BaseSupplementAnalyticsTests):
+class BaseSupplementsAnalyticsTestCasesMixin(object):
+    def test_view_with_no_sleep_data(self):
+        SleepActivity.objects.filter(user=self.default_user).delete()
+
+        response = self.client.get(self.url)
+
+        # make sure that no nans come across the data, should always be none
+        values_returned = [item['value'] for item in response.data]
+        for value in values_returned:
+            if isinstance(value, float):
+                self.assertFalse(math.isnan(value))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_with_no_productivity_data(self):
+        DailyProductivityLog.objects.filter(user=self.default_user).delete()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_with_no_supplement_data(self):
+        SupplementEvent.objects.filter(user=self.default_user).delete()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+
+class SupplementAnalyticsSummaryTests(BaseSupplementAnalyticsTests, BaseSupplementsAnalyticsTestCasesMixin):
     @classmethod
     def setUpTestData(cls):
         cls.setUpAnalyticsData()
@@ -51,7 +80,7 @@ class SupplementAnalyticsSummaryTests(BaseSupplementAnalyticsTests):
                 self.assertEqual(first_event.time.isoformat(), data['value'])
 
 
-class SupplementAnalyticsSleepTest(BaseSupplementAnalyticsTests):
+class SupplementAnalyticsSleepTest(BaseSupplementAnalyticsTests, BaseSupplementsAnalyticsTestCasesMixin):
     @classmethod
     def setUpTestData(cls):
         cls.setUpAnalyticsData()
@@ -63,7 +92,7 @@ class SupplementAnalyticsSleepTest(BaseSupplementAnalyticsTests):
         self.assertEqual(response.status_code, 200)
 
 
-class SupplementAnalyticsProductivityTest(BaseSupplementAnalyticsTests):
+class SupplementAnalyticsProductivityTest(BaseSupplementAnalyticsTests, BaseSupplementsAnalyticsTestCasesMixin):
     @classmethod
     def setUpTestData(cls):
         cls.setUpAnalyticsData()
@@ -75,7 +104,7 @@ class SupplementAnalyticsProductivityTest(BaseSupplementAnalyticsTests):
         self.assertEqual(response.status_code, 200)
 
 
-class SupplementDosagesAnalyticsTest(BaseSupplementAnalyticsTests):
+class SupplementDosagesAnalyticsTest(BaseSupplementAnalyticsTests, BaseSupplementsAnalyticsTestCasesMixin):
     @classmethod
     def setUpTestData(cls):
         cls.setUpAnalyticsData()
