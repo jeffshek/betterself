@@ -39,4 +39,15 @@ export const AnalyticsSummaryRowDisplay = props => {
   );
 };
 
-export const HistoryRowDisplay = props => {};
+export const HistoryRowDisplay = props => {
+  const { time, quantity, productivity_time, sleep_time } = props;
+
+  return (
+    <tr>
+      <td>{time}</td>
+      <td>{quantity}</td>
+      <td>{productivity_time}</td>
+      <td>{sleep_time}</td>
+    </tr>
+  );
+};

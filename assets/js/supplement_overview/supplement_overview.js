@@ -10,6 +10,7 @@ import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import {
   getDailyOverViewURLFromDate,
+  getSupplementAggregatesAnalyticsURL,
   getSupplementAnalyticsSummaryURL,
   getSupplementDosagesAnalyticsURL,
   getSupplementProductivityAnalyticsURL,
@@ -17,7 +18,7 @@ import {
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { UserActivityEventTableRow } from "../daily_overview/constants";
-import { AnalyticsSummaryRowDisplay } from "./constants";
+import { AnalyticsSummaryRowDisplay, HistoryRowDisplay } from "./constants";
 
 const getFetchJSONAPI = url => {
   return fetch(url, {
@@ -61,11 +62,23 @@ export class SupplementsOverview extends Component {
   }
 
   getSupplementData() {
-    this.getSupplementHistory();
+    this.getHistory();
     this.getAnalyticsSummary();
     this.getSleepHistory();
     this.getProductivityHistory();
     this.getDosages();
+    this.getAggregateHistory();
+    this.getAggregateDailyHistory();
+    this.getAggregateMonthlyHistory();
+  }
+
+  getAggregateHistory() {
+    // /api/v1/supplements/<supplement_uuid>/log/aggregate/
+    const url = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    getFetchJSONAPI(url).then(responseData => {
+      this.state.getAggregateHistory[0] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getDosages() {
@@ -100,7 +113,7 @@ export class SupplementsOverview extends Component {
     });
   }
 
-  getSupplementHistory() {
+  getHistory() {
     const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     const url = `/api/v1/supplements/${this.state.supplement.uuid}/log/?frequency=daily&start_date=${start_date}`;
 
@@ -156,8 +169,8 @@ export class SupplementsOverview extends Component {
           "Productivity (Hours)",
           "Sleep (Hours)"
         ]}
-        tableData={this.state.supplementAnalytics}
-        tableRowRenderer={AnalyticsSummaryRowDisplay}
+        tableData={this.state.supplementHistory}
+        tableRowRenderer={HistoryRowDisplay}
         tableName="Historical"
       />
     );
