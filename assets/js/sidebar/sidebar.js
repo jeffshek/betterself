@@ -41,15 +41,20 @@ const NavigationLink = props => (
   </li>
 );
 
-const ExternalDataMenu = props => (
+const DataSourcesMenu = props => (
   <div>
     <NavigationTitle title="Data Sources" />
-    <ExternalVendorsLinks />
+    <DataSourcesMenuLinks />
   </div>
 );
 
-const ExternalVendorsLinks = () => (
+const DataSourcesMenuLinks = () => (
   <div>
+    <NavigationLink
+      iconName="icon-list"
+      label="Text Reminders"
+      link={DASHBOARD_SUPPLEMENTS_URL}
+    />
     <NavigationLink
       iconName="icon-list"
       label="Activity Types"
@@ -144,7 +149,7 @@ class Sidebar extends Component {
             link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
           />
           <li className="divider" />
-          <ExternalDataMenu onClick={this.handleClick.bind(this)} />
+          <DataSourcesMenu onClick={this.handleClick.bind(this)} />
           <li className="divider" />
           <ExportSidebar />
 
