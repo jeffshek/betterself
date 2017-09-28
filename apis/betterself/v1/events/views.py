@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder, \
     SupplementEventsDataframeBuilder, SleepActivityDataframeBuilder
+from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
     DailyProductivityLogFilter
 from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
@@ -146,6 +147,8 @@ class SupplementLogListView(APIView):
 class AggregatedSupplementLogView(APIView):
     """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
     def get(self, request, supplement_uuid):
+        # TODO - Refactor this garbage
+
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         user = request.user
 
@@ -166,7 +169,12 @@ class AggregatedSupplementLogView(APIView):
 
         # lots of crappy templating here, sorry.
         supplement_builder = SupplementEventsDataframeBuilder(supplement_events)
+        # TODO - Really feels like you should build a helper on the builder to do this since you do it so often
         supplement_series = supplement_builder.build_dataframe()['Quantity'].sort_index()
+
+        # because the dataframe will also get things like "source" etc, and we only care about
+        # quantity, take that series and then recast it as a numeric
+        supplement_series = pd.to_numeric(supplement_series)
 
         productivity_logs = DailyProductivityLog.objects.filter(
             user=user, date__gte=start_date, date__lte=end_date)
@@ -178,20 +186,58 @@ class AggregatedSupplementLogView(APIView):
         sleep_series = sleep_builder.get_sleep_history_series()
 
         dataframe_details = {
-            'sleep': sleep_series,
-            'productivity': productivity_series,
-            'supplement': supplement_series,
+            'sleep_time': sleep_series,
+            'productivity_time': productivity_series,
+            'quantity': supplement_series,
         }
 
         dataframe = pd.DataFrame(dataframe_details)
+        # don't really need to convert it to local, just makes debugging make easier
         dataframe_localized = dataframe.tz_convert(user.pytz_timezone)
 
-        # if daily, do this
-        dataframe_localized = dataframe_localized.fillna(method='ffill')
+        """
+        because events are datetime based, but productivity and sleep are date-based
+        this parts get a little hairy, but we want the nans for 8/30 and 9/01 to be filled
+        however, we cant just pad fill because if a log for productivity and sleep was missing
+        the wrong result would be filled. so ... the code below is slightly magical
 
-        # otherwise, resample and aggregate
 
-        # ProductivityLogEventsDataframeBuilder
-        # SleepActivityDataframeBuilder
-        print ('potato')
-        return Response([])
+                                    productivity_time       sleep_time  quantity
+        2017-08-30 00:00:00-04:00               1336.0  647.013778         0.0
+        2017-08-30 19:51:36.483443-04:00           NaN         NaN         1.0
+        2017-08-31 00:00:00-04:00               1476.0  726.132314         0.0
+        2017-09-01 00:00:00-04:00                730.0  513.894938         0.0
+        2017-09-01 14:51:36.483443-04:00           NaN         NaN         1.0
+        """
+        if not params['frequency']:
+            dataframe_localized_date_index = dataframe_localized.index.date
+            dataframe_localized_date_index = pd.DatetimeIndex(dataframe_localized_date_index,
+                tz=request.user.pytz_timezone)
+
+            productivity_series = dataframe_localized['productivity_time'].dropna()
+            productivity_series_filled = productivity_series[dataframe_localized_date_index]
+
+            sleep_series = dataframe_localized['sleep_time'].dropna()
+            sleep_series_filled = sleep_series[dataframe_localized_date_index]
+
+            dataframe_localized['productivity_time'] = productivity_series_filled.values
+            dataframe_localized['sleep_time'] = sleep_series_filled.values
+
+            valid_supplement_index = dataframe_localized['quantity'].dropna().index
+            dataframe_localized = dataframe_localized.ix[valid_supplement_index]
+
+        elif params['frequency'] == DAILY_FREQUENCY:
+            dataframe_localized = dataframe_localized.resample('D').sum()
+
+        elif params['frequency'] == MONTHLY_FREQUENCY:
+            dataframe_localized = dataframe_localized.resample('M').sum()
+
+        results = []
+        for index, values in dataframe_localized.iterrows():
+            time = index.isoformat()
+            result = values.to_dict()
+            result['time'] = time
+
+            results.append(result)
+
+        return Response(results)

@@ -10,6 +10,7 @@ from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.test import APIClient
 
+from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
@@ -485,6 +486,7 @@ class SupplementLogsTest(TestCase):
 
 
 class TestAggregatedSupplementLogViews(TestCase):
+    """ Bunch of subpar tests """
     @classmethod
     def setUpTestData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
@@ -502,6 +504,21 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.client = APIClient()
         self.client.force_login(self.default_user)
 
-    def test_view(self):
+    def test_daily_view(self):
+        request_params = {
+            'frequency': DAILY_FREQUENCY,
+        }
+
+        response = self.client.get(self.url, data=request_params)
+        self.assertEqual(response.status_code, 200)
+
+    def test_event_view(self):
         response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view(self):
+        request_params = {
+            'frequency': MONTHLY_FREQUENCY,
+        }
+        response = self.client.get(self.url, data=request_params)
         self.assertEqual(response.status_code, 200)

@@ -53,11 +53,8 @@ class DataFrameBuilder(object):
             # that only dates (and not time) was passed
             df.index = pd.DatetimeIndex(df.index, tz=self.user.pytz_timezone)
 
-        # cast them all as float64 if possible ... ideally want to stay with only numbers
-        try:
-            df = df.astype('float64')
-        except ValueError:
-            pass
+        # cast it as numerics if possible, otherwise if we're dealing with strings, ignore
+        df = df.apply(pd.to_numeric, errors='ignore')
 
         return df
 

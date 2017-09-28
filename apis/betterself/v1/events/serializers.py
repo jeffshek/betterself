@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.fields import CharField
 from rest_framework.generics import get_object_or_404
 
+from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from betterself.utils.date_utils import get_current_date_months_ago
 from events.models import INPUT_SOURCES_TUPLES, UserActivity
 from supplements.models import Supplement
@@ -247,7 +248,7 @@ class ProductivityLogRequestParametersSerializer(serializers.Serializer):
 
 class SupplementLogRequestParametersSerializer(serializers.Serializer):
     start_date = serializers.DateField(default=get_current_date_months_ago(3))
-    frequency = serializers.ChoiceField(['daily', None], default=None)
+    frequency = serializers.ChoiceField([DAILY_FREQUENCY, MONTHLY_FREQUENCY, None], default=None)
     # this is a bit tricky to explain, but if true it means to always have the results for any daily frequencies
     # to include the entire date_range from start end date range, which will result in a lot of null/empty data
     complete_date_range_in_daily_frequency = serializers.BooleanField(default=False)

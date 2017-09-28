@@ -15,3 +15,6 @@ VALID_REST_RESOURCES = [
 # all the rows a little bit easier. in most circumstances, for any resources that are directly related to a model
 # uuid is fine, but not all resources are django models, so uniqueKey comes in handy
 UNIQUE_KEY_CONSTANT = 'uniqueKey'
+
+DAILY_FREQUENCY = 'daily'
+MONTHLY_FREQUENCY = 'monthly'

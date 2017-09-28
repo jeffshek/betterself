@@ -34,6 +34,8 @@ class CorrelationsAPIView(APIView):
     """ Centralizes all the logic for getting dataframe and correlating them to Productivity """
 
     def get(self, request):
+        # TODO - This function could be way better.
+
         user = request.user
 
         serializer = self.request_serializer(data=request.query_params)
@@ -50,6 +52,10 @@ class CorrelationsAPIView(APIView):
         aggregate_dataframe = self.dataframe_builder.get_aggregate_dataframe_for_user(user, cutoff_date)
         if aggregate_dataframe.empty:
             return NO_DATA_RESPONSE
+
+        # not really going to correlate source
+        if 'Source' in aggregate_dataframe:
+            aggregate_dataframe = aggregate_dataframe.drop('Source', axis=1)
 
         if cumulative_lookback > 1:
             # min_periods of 1 allows for periods with no data to still be summed
