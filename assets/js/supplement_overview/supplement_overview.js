@@ -68,7 +68,7 @@ export class SupplementsOverview extends Component {
     this.getDosages();
     this.getAggregateHistory();
     this.getAggregateDailyHistory();
-    //this.getAggregateMonthlyHistory();
+    this.getAggregateMonthlyHistory();
   }
 
   getAggregateHistory() {
@@ -86,6 +86,16 @@ export class SupplementsOverview extends Component {
     getFetchJSONAPI(url).then(responseData => {
       responseData.reverse();
       this.state.supplementHistory[1] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
+  }
+
+  getAggregateMonthlyHistory() {
+    const baseUrl = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    const url = `${baseUrl}?frequency=monthly`;
+    getFetchJSONAPI(url).then(responseData => {
+      responseData.reverse();
+      this.state.supplementHistory[2] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
     });
   }
@@ -141,7 +151,7 @@ export class SupplementsOverview extends Component {
 
       // Do this weird thing where we set the activityDates ...
       // Due to a bug, if it's rendered too early, it will
-      // not rerender correctly.
+      // not rerender correctly. I mean it's probably because I suck.
       this.state.activityDates = {};
       this.state.activityDates.supplements = supplementDatesFormatted;
 
