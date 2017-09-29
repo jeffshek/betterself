@@ -17,7 +17,6 @@ import {
   getSupplementSleepAnalyticsURL
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
-import { UserActivityEventTableRow } from "../daily_overview/constants";
 import { AnalyticsSummaryRowDisplay, HistoryRowDisplay } from "./constants";
 
 const getFetchJSONAPI = url => {
@@ -68,14 +67,15 @@ export class SupplementsOverview extends Component {
     this.getProductivityHistory();
     this.getDosages();
     this.getAggregateHistory();
-    this.getAggregateDailyHistory();
-    this.getAggregateMonthlyHistory();
+    //this.getAggregateDailyHistory();
+    //this.getAggregateMonthlyHistory();
   }
 
   getAggregateHistory() {
     // /api/v1/supplements/<supplement_uuid>/log/aggregate/
     const url = getSupplementAggregatesAnalyticsURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
+      console.log(responseData);
       this.state.getAggregateHistory[0] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
     });

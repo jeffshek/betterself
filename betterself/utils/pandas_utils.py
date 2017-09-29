@@ -1,5 +1,7 @@
 import pandas as pd
 
+from betterself.utils.date_utils import get_current_userdate
+
 
 def get_complete_date_range_series_container(user, start_date, end_date):
     localized_index = pd.to_datetime([start_date, end_date])
@@ -43,3 +45,11 @@ def force_start_end_data_to_dataframe(user, dataframe, start_date, end_date):
     assert dataframe_container.index.size == normalized_dataframe.index.size
 
     return normalized_dataframe
+
+
+def get_empty_timezone_aware_series_containing_index_of_today(user):
+    # dataframes dont concat well with different timezones ... so we always need to have a series of a empty timezone
+    # otherwise, a series without a timezone always will fail
+    user_now = get_current_userdate(user)
+    index = pd.DatetimeIndex(tz=user.pytz_timezone, freq='D', end=user_now, periods=1)
+    return index

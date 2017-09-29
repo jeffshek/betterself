@@ -182,7 +182,7 @@ class AggregatedSupplementLogView(APIView):
         productivity_series = productivity_builder.get_productive_timeseries()
 
         sleep_logs = SleepActivity.objects.filter(user=user, start_time__date__gte=start_date)
-        sleep_builder = SleepActivityDataframeBuilder(sleep_logs)
+        sleep_builder = SleepActivityDataframeBuilder(sleep_logs, user)
         sleep_series = sleep_builder.get_sleep_history_series()
 
         dataframe_details = {

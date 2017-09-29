@@ -349,7 +349,7 @@ class TestAggregateProductivityViews(TestCase):
 
         # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-                                                                        date__gte=six_days_ago).values_list(
+            date__gte=six_days_ago).values_list(
             VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
@@ -404,7 +404,7 @@ class SupplementLogsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
-                                                                       supplement=self.supplement).aggregate(
+            supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
 
@@ -487,6 +487,7 @@ class SupplementLogsTest(TestCase):
 
 class TestAggregatedSupplementLogViews(TestCase):
     """ Bunch of subpar tests """
+
     @classmethod
     def setUpTestData(cls):
         cls.default_user, _ = User.objects.get_or_create(username='default')
@@ -513,6 +514,11 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_event_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view_no_sleep_logs(self):
+        SleepActivity.objects.filter(user=self.default_user).delete()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
