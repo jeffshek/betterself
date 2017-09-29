@@ -16,6 +16,7 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
+from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
     update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
@@ -121,7 +122,7 @@ class SupplementLogListView(APIView):
         params = serializer.validated_data
 
         start_date = params['start_date']
-        end_date = datetime.datetime.now(user.pytz_timezone).date()
+        end_date = get_current_userdate(user)
 
         supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
 
@@ -161,7 +162,7 @@ class AggregatedSupplementLogView(APIView):
         params = serializer.validated_data
 
         start_date = params['start_date']
-        end_date = datetime.datetime.now(user.pytz_timezone).date()
+        end_date = get_current_userdate(user)
 
         supplement_events = SupplementEvent.objects.filter(
             user=user, supplement=supplement, time__date__gte=start_date, time__date__lte=end_date)
