@@ -4,7 +4,8 @@ import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 import { Link } from "react-router-dom";
 import {
   DATE_REQUEST_FORMAT,
-  DATETIME_CREATED_FORMAT
+  DATETIME_CREATED_FORMAT,
+  minutesToHours
 } from "../constants/dates_and_times";
 
 const RenderDateOverviewLink = value => {
@@ -43,17 +44,28 @@ export const AnalyticsSummaryRowDisplay = props => {
 };
 
 export const HistoryRowDisplay = props => {
-  //console.log(props)
   const { time, quantity, productivity_time, sleep_time } = props.details;
-  const timeFormatted = moment(time).format(DATETIME_CREATED_FORMAT);
-  console.log(quantity);
+
+  const timeMoment = moment(time);
+  const overviewURL = getDailyOverViewURLFromDate(timeMoment);
+
+  let timeFormatted;
+  // If it's 12:00AM, assume we just want to see the date.
+  if (timeMoment.hour() === 0 && timeMoment.minute() === 0) {
+    timeFormatted = timeMoment.format(DATE_REQUEST_FORMAT);
+  } else {
+    timeFormatted = timeMoment.format(DATETIME_CREATED_FORMAT);
+  }
+
+  const productiveHours = minutesToHours(productivity_time);
+  const sleepHours = minutesToHours(sleep_time);
 
   return (
-    <tr key={time}>
-      <td>{timeFormatted}</td>
+    <tr>
+      <td><Link to={overviewURL}>{timeFormatted}</Link></td>
       <td>{quantity}</td>
-      <td>{productivity_time}</td>
-      <td>{sleep_time}</td>
+      <td>{productiveHours}</td>
+      <td>{sleepHours}</td>
     </tr>
   );
 };

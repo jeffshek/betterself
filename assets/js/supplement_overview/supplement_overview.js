@@ -67,7 +67,7 @@ export class SupplementsOverview extends Component {
     this.getProductivityHistory();
     this.getDosages();
     this.getAggregateHistory();
-    //this.getAggregateDailyHistory();
+    this.getAggregateDailyHistory();
     //this.getAggregateMonthlyHistory();
   }
 
@@ -76,6 +76,16 @@ export class SupplementsOverview extends Component {
     getFetchJSONAPI(url).then(responseData => {
       responseData.reverse();
       this.state.supplementHistory[0] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
+  }
+
+  getAggregateDailyHistory() {
+    const baseUrl = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    const url = `${baseUrl}?frequency=daily`;
+    getFetchJSONAPI(url).then(responseData => {
+      responseData.reverse();
+      this.state.supplementHistory[1] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
     });
   }

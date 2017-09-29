@@ -238,6 +238,7 @@ class AggregatedSupplementLogView(APIView):
             time = index.isoformat()
             result = values.to_dict()
             result['time'] = time
+            result['uniqueKey'] = '{}-{}'.format(time, result['quantity'])
 
             results.append(result)
 
