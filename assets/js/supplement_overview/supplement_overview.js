@@ -91,8 +91,9 @@ export class SupplementsOverview extends Component {
   }
 
   getAggregateMonthlyHistory() {
+    const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     const baseUrl = getSupplementAggregatesAnalyticsURL(this.state.supplement);
-    const url = `${baseUrl}?frequency=monthly`;
+    const url = `${baseUrl}?frequency=monthly&start_date=${start_date}`;
     getFetchJSONAPI(url).then(responseData => {
       responseData.reverse();
       this.state.supplementHistory[2] = responseData;
