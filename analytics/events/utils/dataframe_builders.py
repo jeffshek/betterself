@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+from betterself.utils.pandas_utils import get_empty_timezone_aware_series_containing_index_of_today
 from constants import SLEEP_CUTOFF_TIME, SLEEP_MINUTES_COLUMN, VERY_PRODUCTIVE_TIME_LABEL, PRODUCTIVE_TIME_LABEL, \
     NEUTRAL_TIME_LABEL, DISTRACTING_TIME_LABEL, VERY_DISTRACTING_TIME_LABEL
 
@@ -53,11 +54,8 @@ class DataFrameBuilder(object):
             # that only dates (and not time) was passed
             df.index = pd.DatetimeIndex(df.index, tz=self.user.pytz_timezone)
 
-        # cast them all as float64 if possible ... ideally want to stay with only numbers
-        try:
-            df = df.astype('float64')
-        except ValueError:
-            pass
+        # cast it as numerics if possible, otherwise if we're dealing with strings, ignore
+        df = df.apply(pd.to_numeric, errors='ignore')
 
         return df
 
@@ -185,14 +183,18 @@ class SleepActivityDataframeBuilder(object):
     Returns a dataframe of sleep activity
     """
 
-    def __init__(self, queryset, rename_columns=True):
+    def __init__(self, queryset, user=None, rename_columns=True):
         self.rename_columns = rename_columns
 
         self.sleep_activities = queryset
-        try:
-            self.user = self.sleep_activities[0].user
-        except IndexError:
-            self.user = None
+
+        if user:
+            self.user = user
+        else:
+            try:
+                self.user = self.sleep_activities[0].user
+            except IndexError:
+                self.user = None
 
     @staticmethod
     def round_timestamp_to_sleep_date(timeseries):
@@ -223,8 +225,13 @@ class SleepActivityDataframeBuilder(object):
         So if you sleep from Monday 10PM to Tuesday 3AM, this will report Monday as 5 Hours! However, this can look
         weird in a graph as being a day off.
         """
+        # TODO - Fix this lame hack
         if not self.user:
             return pd.Series()
+
+        if not self.sleep_activities.exists():
+            index = get_empty_timezone_aware_series_containing_index_of_today(self.user)
+            return pd.Series(index=index)
 
         user_timezone = self.user.pytz_timezone
 

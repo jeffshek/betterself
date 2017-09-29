@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView
+    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView, AggregatedSupplementLogView
 from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary, SupplementSleepAnalytics, \
     SupplementProductivityAnalytics, SupplementDosageAnalytics
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
@@ -25,6 +25,7 @@ urlpatterns = [
                 url(r'^$', SupplementsListView.as_view(), name=Supplement.RESOURCE_NAME),
                 url(r'^(?P<supplement_uuid>[^/]+)/', include([
                     url(r'^log/$', SupplementLogListView.as_view(), name='supplement-log'),
+                    url(r'^log/aggregate/$', AggregatedSupplementLogView.as_view(), name='aggregate-supplement-log'),
                     url(r'^analytics/summary/$', SupplementAnalyticsSummary.as_view(), name='supplement-analytics-summary'),  # noqa
                     url(r'^analytics/sleep/$', SupplementSleepAnalytics.as_view(), name='supplement-analytics-sleep'),  # noqa
                     url(r'^analytics/productivity/$', SupplementProductivityAnalytics.as_view(), name='supplement-analytics-productivity'),  # noqa
