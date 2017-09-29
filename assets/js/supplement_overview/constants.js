@@ -2,7 +2,10 @@ import React from "react";
 import moment from "moment";
 import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
 import { Link } from "react-router-dom";
-import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
+import {
+  DATE_REQUEST_FORMAT,
+  DATETIME_CREATED_FORMAT
+} from "../constants/dates_and_times";
 
 const RenderDateOverviewLink = value => {
   const valueDate = moment(value);
@@ -40,11 +43,14 @@ export const AnalyticsSummaryRowDisplay = props => {
 };
 
 export const HistoryRowDisplay = props => {
-  const { time, quantity, productivity_time, sleep_time } = props;
+  //console.log(props)
+  const { time, quantity, productivity_time, sleep_time } = props.details;
+  const timeFormatted = moment(time).format(DATETIME_CREATED_FORMAT);
+  console.log(quantity);
 
   return (
-    <tr>
-      <td>{time}</td>
+    <tr key={time}>
+      <td>{timeFormatted}</td>
       <td>{quantity}</td>
       <td>{productivity_time}</td>
       <td>{sleep_time}</td>

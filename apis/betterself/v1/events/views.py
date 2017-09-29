@@ -1,7 +1,7 @@
 import datetime
 import json
-import pandas as pd
 
+import pandas as pd
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,7 +16,6 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
-from betterself.utils.date_utils import get_current_date_months_ago
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
     update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
@@ -148,7 +147,7 @@ class SupplementLogListView(APIView):
 class AggregatedSupplementLogView(APIView):
     """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
     def get(self, request, supplement_uuid):
-        # TODO - Refactor this garbage
+        # TODO - Refactor this garbage, you can add some smart redis caching level to this
 
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         user = request.user
@@ -157,8 +156,7 @@ class AggregatedSupplementLogView(APIView):
         serializer.is_valid(raise_exception=True)
         params = serializer.validated_data
 
-        # yes there is a start_date in the params, but we are hardcoding to 12
-        start_date = get_current_date_months_ago(12)
+        start_date = params['start_date']
         end_date = datetime.datetime.now(user.pytz_timezone).date()
 
         supplement_events = SupplementEvent.objects.filter(

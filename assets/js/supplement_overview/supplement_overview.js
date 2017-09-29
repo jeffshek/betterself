@@ -72,11 +72,10 @@ export class SupplementsOverview extends Component {
   }
 
   getAggregateHistory() {
-    // /api/v1/supplements/<supplement_uuid>/log/aggregate/
     const url = getSupplementAggregatesAnalyticsURL(this.state.supplement);
     getFetchJSONAPI(url).then(responseData => {
-      console.log(responseData);
-      this.state.getAggregateHistory[0] = responseData;
+      responseData.reverse();
+      this.state.supplementHistory[0] = responseData;
       this.setState({ supplementAnalytics: this.state.supplementAnalytics });
     });
   }
@@ -171,7 +170,7 @@ export class SupplementsOverview extends Component {
         ]}
         tableData={this.state.supplementHistory}
         tableRowRenderer={HistoryRowDisplay}
-        tableName="Historical"
+        tableName="Historical (90 Days)"
       />
     );
   }
