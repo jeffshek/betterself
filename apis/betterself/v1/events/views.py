@@ -23,8 +23,6 @@ from events.models import SupplementEvent, DailyProductivityLog, UserActivity, U
 from supplements.models import Supplement
 
 
-# TODO - Refactor all of this after Twilio integration!
-
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
@@ -55,6 +53,7 @@ class ProductivityLogView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
 
 
 class ProductivityLogAggregatesView(APIView):
+    # TODO - Refactor all of this after Twilio integration!
     def get(self, request):
         user = request.user
 
@@ -112,6 +111,7 @@ class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUI
 
 
 class SupplementLogListView(APIView):
+    # TODO - Refactor all of this after Twilio integration!
     def get(self, request, supplement_uuid):
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
         user = request.user
@@ -147,7 +147,9 @@ class SupplementLogListView(APIView):
 
 
 class AggregatedSupplementLogView(APIView):
+    # TODO - Refactor all of this after Twilio integration!
     """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
+
     def get(self, request, supplement_uuid):
         # TODO - Refactor this garbage, you can add some smart redis caching level to this
 

@@ -195,6 +195,7 @@ export class SupplementsOverview extends Component {
     );
   }
 
+  //# TODO - Refactor all of this after Twilio integration!
   render() {
     if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
