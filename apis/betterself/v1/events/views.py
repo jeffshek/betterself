@@ -17,7 +17,8 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, SupplementLogRequestParametersSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from betterself.utils.date_utils import get_current_date_months_ago
-from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe
+from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
+    update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.models import Supplement
@@ -231,6 +232,8 @@ class AggregatedSupplementLogView(APIView):
 
         elif params['frequency'] == MONTHLY_FREQUENCY:
             dataframe_localized = dataframe_localized.resample('M').sum()
+
+        dataframe_localized = update_dataframe_to_be_none_instead_of_nan_for_api_responses(dataframe_localized)
 
         results = []
         for index, values in dataframe_localized.iterrows():

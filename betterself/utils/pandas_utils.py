@@ -53,3 +53,8 @@ def get_empty_timezone_aware_series_containing_index_of_today(user):
     user_now = get_current_userdate(user)
     index = pd.DatetimeIndex(tz=user.pytz_timezone, freq='D', end=user_now, periods=1)
     return index
+
+
+def update_dataframe_to_be_none_instead_of_nan_for_api_responses(df):
+    df = df.where((pd.notnull(df)), None)
+    return df
