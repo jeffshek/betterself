@@ -195,40 +195,46 @@ export class SupplementsOverview extends Component {
     );
   }
 
-  //# TODO - Refactor all of this after Twilio integration!
-  render() {
+  renderMainContent() {
     if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
     }
 
     return (
+      <main className="main">
+        <div className="card-block">
+          <SupplementsAndProductivityChartView
+            supplement={this.state.supplement}
+          />
+          <div className="card-header analytics-text-box-label">
+            <span className="font-1xl">
+              {this.state.supplement.name} Usage (Current Year)
+            </span>
+          </div>
+          <Calendar
+            year={2017}
+            customClasses={this.state.activityDates}
+            onPickDate={this.redirectDailyCalendarDate}
+          />
+        </div>
+        <div className="card-block">
+          <div className="card-columns cols-2">
+            {this.renderSupplementAnalytics()}
+            {this.renderSupplementHistory()}
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  //# TODO - Refactor all of this after Twilio integration!
+  render() {
+    return (
       <div className="app">
         <LoggedInHeader />
         <div className="app-body">
           <Sidebar />
-          <main className="main">
-            <div className="card-block">
-              <SupplementsAndProductivityChartView
-                supplement={this.state.supplement}
-              />
-              <div className="card-header analytics-text-box-label">
-                <span className="font-1xl">
-                  {this.state.supplement.name} Usage (Current Year)
-                </span>
-              </div>
-              <Calendar
-                year={2017}
-                customClasses={this.state.activityDates}
-                onPickDate={this.redirectDailyCalendarDate}
-              />
-            </div>
-            <div className="card-block">
-              <div className="card-columns cols-2">
-                {this.renderSupplementAnalytics()}
-                {this.renderSupplementHistory()}
-              </div>
-            </div>
-          </main>
+          {this.renderMainContent()}
         </div>
       </div>
     );
