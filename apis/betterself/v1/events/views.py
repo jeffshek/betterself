@@ -23,6 +23,8 @@ from events.models import SupplementEvent, DailyProductivityLog, UserActivity, U
 from supplements.models import Supplement
 
 
+# TODO - Refactor all of this after Twilio integration!
+
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = SupplementEvent
     read_serializer_class = SupplementEventReadOnlySerializer
