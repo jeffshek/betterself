@@ -522,6 +522,16 @@ class TestAggregatedSupplementLogViews(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
+    def test_monthly_view_no_productivity_logs(self):
+        DailyProductivityLog.objects.filter(user=self.default_user).delete()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view_no_supplement_logs(self):
+        SupplementEvent.objects.filter(user=self.default_user).delete()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
     def test_monthly_view(self):
         request_params = {
             'frequency': MONTHLY_FREQUENCY,
