@@ -177,3 +177,17 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
 
     def __str__(self):
         return '{} {}'.format(self.user_activity, self.time)
+
+
+class SupplementReminder(BaseModelWithUserGeneratedContent):
+    RESOURCE_NAME = 'supplement_reminder'
+
+    supplement = models.ForeignKey(Supplement)
+    time = models.DateTimeField()
+    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        unique_together = (('user', 'supplement', 'time'),)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.user, self.supplement, self.time)
