@@ -9,16 +9,11 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
+from phonenumber_field.modelfields import PhoneNumberField
 
 from betterself.base_models import BaseModel
 
 TIMEZONE_CHOICES = [(x, x) for x in pytz.common_timezones]
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
 
 
 class User(AbstractUser):
@@ -54,8 +49,23 @@ class DemoUserLog(BaseModel):
         return self.user.username
 
 
+class UserPhoneNumber(BaseModel):
+    user = models.OneToOneField(User, unique=True)
+    phone_number = PhoneNumberField()
+    is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{}-{}'.format(self.user, self.phone_number)
+
+
 # Create a signal to be able to delete all demo-users easily so this
 # can be cleaned up via admin
 @receiver(post_delete, sender=DemoUserLog)
 def post_delete_user(sender, instance, *args, **kwargs):
     instance.user.delete()
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

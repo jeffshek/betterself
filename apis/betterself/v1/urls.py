@@ -11,7 +11,7 @@ from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesC
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementsListView
-from apis.betterself.v1.users.views import UserInfoView
+from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
@@ -61,6 +61,7 @@ urlpatterns = [
     url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details'),
     # debate if you prefer this url structure instead of the current pattern
     url(r'user/export-data/$', UserExportAllData.as_view(), name='api-user-export-all-data'),
+    url(r'user/phone_number/$', UserPhoneNumberView.as_view(), name='api-user-phone-number'),
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'
