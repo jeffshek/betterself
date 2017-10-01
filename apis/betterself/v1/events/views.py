@@ -17,7 +17,7 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SupplementReminder
 from supplements.models import Supplement
 
 
@@ -140,3 +140,11 @@ class SupplementLogListView(APIView):
         json_data = series.to_json(date_format='iso')
         data = json.loads(json_data)
         return Response(data)
+
+
+class SupplementReminderView(ListCreateAPIView):
+    model = SupplementReminder
+    serializer_class = None
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user).select_related('supplement', 'user')

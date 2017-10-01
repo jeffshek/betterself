@@ -183,11 +183,12 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplement_reminder'
 
     supplement = models.ForeignKey(Supplement)
-    time = models.DateTimeField()
+    reminder_time = models.TimeField()
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    last_sent_reminder_time = models.DateTimeField(null=True)
 
     class Meta:
-        unique_together = (('user', 'supplement', 'time'),)
+        unique_together = (('user', 'reminder_time', 'supplement'),)
 
     def __str__(self):
         return '{} {} {}'.format(self.user, self.supplement, self.time)
