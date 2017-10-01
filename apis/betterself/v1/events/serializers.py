@@ -3,8 +3,9 @@ from rest_framework import serializers
 from rest_framework.fields import CharField
 from rest_framework.generics import get_object_or_404
 
+from apis.betterself.v1.supplements.serializers import SupplementCreateUpdateSerializer
 from betterself.utils.date_utils import get_current_date_months_ago
-from events.models import INPUT_SOURCES_TUPLES, UserActivity
+from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
 from supplements.models import Supplement
 
 
@@ -258,3 +259,11 @@ class SupplementLogRequestParametersSerializer(serializers.Serializer):
                                   'and ending periods')
 
         return validated_data
+
+
+class SupplementReminderSerializer(serializers.ModelSerializer):
+    supplement = SupplementCreateUpdateSerializer()
+
+    class Meta:
+        fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time']
+        model = SupplementReminder

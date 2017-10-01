@@ -22,7 +22,8 @@ from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_c
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+    SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -370,7 +371,7 @@ class TestAggregateProductivityViews(TestCase):
         self.assertGreater(response_amount, productivity_logs)
 
 
-class SupplementLogsTest(TestCase):
+class TestSupplementLogsViews(TestCase):
     """
     Test class that gets activity for one specific supplement
     """
@@ -482,3 +483,42 @@ class SupplementLogsTest(TestCase):
         response = self.client.get(self.url, data={'frequency': 'daily'})
 
         self.assertEqual(response.status_code, 200)
+
+
+class SupplementReminderViewsTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user, _ = User.objects.get_or_create(username='default')
+        builder = DemoHistoricalDataBuilder(cls.default_user)
+        builder.create_historical_fixtures()
+        builder.create_supplement_reminders()
+
+        cls.url = reverse(SupplementReminder.RESOURCE_NAME)
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_view_no_auth(self):
+        client = APIClient()
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_view_no_data(self):
+        new_user, _ = User.objects.get_or_create(username='no-data')
+
+        client = APIClient()
+        client.force_login(new_user)
+
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 0)
+
+    def test_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        supplement_reminder_count = SupplementReminder.objects.filter(user=self.default_user).count()
+        self.assertEqual(supplement_reminder_count, len(response.data))

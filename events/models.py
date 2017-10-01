@@ -180,7 +180,7 @@ class UserActivityEvent(BaseModelWithUserGeneratedContent):
 
 
 class SupplementReminder(BaseModelWithUserGeneratedContent):
-    RESOURCE_NAME = 'supplement_reminder'
+    RESOURCE_NAME = 'supplement_reminders'
 
     supplement = models.ForeignKey(Supplement)
     reminder_time = models.TimeField()
@@ -191,4 +191,4 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
         unique_together = (('user', 'reminder_time', 'supplement'),)
 
     def __str__(self):
-        return '{} {} {}'.format(self.user, self.supplement, self.time)
+        return '{} {} {}'.format(self.user, self.supplement, self.reminder_time)

@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView
+    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView, SupplementReminderView
 from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary, SupplementSleepAnalytics, \
     SupplementProductivityAnalytics, SupplementDosageAnalytics
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
@@ -13,7 +13,8 @@ from apis.betterself.v1.supplements.views import VendorView, IngredientCompositi
     IngredientView, MeasurementView, SupplementsListView
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+    SupplementReminder
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
@@ -54,7 +55,7 @@ urlpatterns = [
             url(r'^user_activities/correlations$', SleepActivitiesUserActivitiesCorrelationsView.as_view(), name='sleep-user-activities-correlations'),  # noqa
             url(r'^supplements/correlations$', SleepActivitiesSupplementsCorrelationsView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
-
+    url(r'^{0}/$'.format(SupplementReminder.RESOURCE_NAME), SupplementReminderView.as_view(), name=SupplementReminder.RESOURCE_NAME),  # noqa
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),

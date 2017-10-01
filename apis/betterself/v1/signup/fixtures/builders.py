@@ -5,6 +5,7 @@ import pandas as pd
 import random
 from django.utils import timezone
 
+from apis.betterself.v1.signup.fixtures.factories import SupplementReminderFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
 from events.models import DailyProductivityLog, SleepActivity, UserActivityEvent, SupplementEvent, UserActivity
@@ -189,3 +190,8 @@ class DemoHistoricalDataBuilder(object):
         self.sleep_impact_series[timestamp] += sleep_impact_minutes
 
         return events
+
+    def create_supplement_reminders(self):
+        supplements = self.supplements.values()
+        for supplement in supplements:
+            SupplementReminderFactory(supplement=supplement, user=self.user)

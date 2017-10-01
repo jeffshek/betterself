@@ -1,8 +1,13 @@
 import datetime
 import factory
+import pytz
 
-from events.models import SupplementEvent, UserActivity, UserActivityEvent
+from faker import Faker
+
+from events.models import SupplementEvent, UserActivity, UserActivityEvent, SupplementReminder
 from supplements.models import Supplement
+
+fake = Faker()
 
 
 class DemoSupplementFactory(factory.django.DjangoModelFactory):
@@ -42,3 +47,12 @@ class DemoActivityEventFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserActivityEvent
         exclude = ('name',)
+
+
+class SupplementReminderFactory(factory.django.DjangoModelFactory):
+    reminder_time = fake.date_time_ad(tzinfo=pytz.UTC)
+    quantity = 1
+    last_sent_reminder_time = fake.date_time_this_century(tzinfo=pytz.UTC)
+
+    class Meta:
+        model = SupplementReminder
