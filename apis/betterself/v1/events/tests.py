@@ -485,11 +485,15 @@ class TestSupplementLogsViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class SupplementReminderViewsTests(TestCase):
+class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
+    TEST_MODEL = SupplementReminder
+    PAGINATION = False
+
     @classmethod
     def setUpTestData(cls):
-        cls.default_user, _ = User.objects.get_or_create(username='default')
-        builder = DemoHistoricalDataBuilder(cls.default_user)
+        cls.user_1, _ = User.objects.get_or_create(username='default')
+
+        builder = DemoHistoricalDataBuilder(cls.user_1)
         builder.create_historical_fixtures()
         builder.create_supplement_reminders()
 
@@ -498,8 +502,17 @@ class SupplementReminderViewsTests(TestCase):
         super().setUpTestData()
 
     def setUp(self):
-        self.client = APIClient()
-        self.client.force_login(self.default_user)
+        supplement = Supplement.objects.filter(user=self.user_1).first()
+        supplement_uuid = str(supplement.uuid)
+
+        self.DEFAULT_POST_PARAMS = {
+            'reminder_time': '15:20',
+            'quantity': 5,
+            'supplement_uuid': supplement_uuid
+        }
+
+        self.client_1 = self.create_authenticated_user_on_client(APIClient(), self.user_1)
+        self.client_2 = self.create_authenticated_user_on_client(APIClient(), self.user_2)
 
     def test_view_no_auth(self):
         client = APIClient()
@@ -517,8 +530,8 @@ class SupplementReminderViewsTests(TestCase):
         self.assertEqual(len(response.data), 0)
 
     def test_view(self):
-        response = self.client.get(self.url)
+        response = self.client_1.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-        supplement_reminder_count = SupplementReminder.objects.filter(user=self.default_user).count()
+        supplement_reminder_count = SupplementReminder.objects.filter(user=self.user_1).count()
         self.assertEqual(supplement_reminder_count, len(response.data))

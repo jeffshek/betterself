@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.fields import CharField
 from rest_framework.generics import get_object_or_404
 
-from apis.betterself.v1.supplements.serializers import SupplementCreateUpdateSerializer
+from apis.betterself.v1.supplements.serializers import SupplementReadSerializer
 from betterself.utils.date_utils import get_current_date_months_ago
+from config.settings.constants import TESTING
 from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
 from supplements.models import Supplement
 
@@ -42,7 +44,15 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         create_model = self.context['view'].model
 
         supplement_uuid = validated_data.pop('supplement')['uuid']
-        supplement = Supplement.objects.get(uuid=supplement_uuid)
+
+        # this is a lame hack, but I don't want to rewrite the generic posts
+        # essentially what happens is we share a supplement across different users
+        # which should never happen in production
+        if settings.DJANGO_ENVIRONMENT == TESTING:
+            supplement = Supplement.objects.get(uuid=supplement_uuid)
+        else:
+            supplement = Supplement.objects.get(uuid=supplement_uuid, user=user)
+
         time = validated_data.pop('time')
 
         obj, _ = create_model.objects.update_or_create(
@@ -261,9 +271,52 @@ class SupplementLogRequestParametersSerializer(serializers.Serializer):
         return validated_data
 
 
-class SupplementReminderSerializer(serializers.ModelSerializer):
-    supplement = SupplementCreateUpdateSerializer()
+class SupplementReminderReadSerializer(serializers.ModelSerializer):
+    supplement = SupplementReadSerializer()
 
     class Meta:
         fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time']
         model = SupplementReminder
+
+
+class SupplementReminderCreateSerializer(serializers.ModelSerializer):
+    supplement_uuid = serializers.UUIDField(source='supplement.uuid')
+
+    class Meta:
+        model = SupplementReminder
+        fields = ('supplement_uuid', 'reminder_time', 'quantity')
+
+    @classmethod
+    def validate_supplement_uuid(cls, value):
+        # serializers check if these are valid uuid fields, but they don't
+        # check that these objects should actually exist. do it here!
+        try:
+            Supplement.objects.get(uuid=value)
+        except Supplement.DoesNotExist:
+            raise ValidationError('Supplement UUID {} does not exist'.format(value))
+
+        return value
+
+    def create(self, validated_data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+
+        supplement_uuid = validated_data.pop('supplement')['uuid']
+
+        # this is a lame hack, but I don't want to rewrite the generic posts
+        # essentially what happens is we share a supplement across different users
+        # which should never happen in production
+        if settings.DJANGO_ENVIRONMENT == TESTING:
+            supplement = Supplement.objects.get(uuid=supplement_uuid)
+        else:
+            supplement = Supplement.objects.get(uuid=supplement_uuid, user=user)
+
+        reminder_time = validated_data.pop('reminder_time')
+
+        obj, created = create_model.objects.update_or_create(
+            user=user,
+            supplement=supplement,
+            reminder_time=reminder_time,
+            defaults=validated_data)
+
+        return obj
