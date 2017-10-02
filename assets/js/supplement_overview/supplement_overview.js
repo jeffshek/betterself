@@ -10,14 +10,14 @@ import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 import {
   getDailyOverViewURLFromDate,
+  getSupplementAggregatesAnalyticsURL,
   getSupplementAnalyticsSummaryURL,
   getSupplementDosagesAnalyticsURL,
   getSupplementProductivityAnalyticsURL,
   getSupplementSleepAnalyticsURL
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
-import { UserActivityEventTableRow } from "../daily_overview/constants";
-import { AnalyticsSummaryRowDisplay } from "./constants";
+import { AnalyticsSummaryRowDisplay, HistoryRowDisplay } from "./constants";
 
 const getFetchJSONAPI = url => {
   return fetch(url, {
@@ -41,7 +41,8 @@ export class SupplementsOverview extends Component {
       activityDates: null,
       // empty array sets for now to be populated by API calls
       supplementHistory: [[], [], [], []],
-      supplementAnalytics: [[], [], [], []]
+      // individual, daily, monthly
+      supplementAnalytics: [[], [], []]
     };
 
     const url = `/api/v1/supplements/?uuid=${supplementUUID}`;
@@ -60,11 +61,44 @@ export class SupplementsOverview extends Component {
   }
 
   getSupplementData() {
-    this.getSupplementHistory();
+    this.getHistory();
     this.getAnalyticsSummary();
     this.getSleepHistory();
     this.getProductivityHistory();
     this.getDosages();
+    this.getAggregateHistory();
+    this.getAggregateDailyHistory();
+    this.getAggregateMonthlyHistory();
+  }
+
+  getAggregateHistory() {
+    const url = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    getFetchJSONAPI(url).then(responseData => {
+      responseData.reverse();
+      this.state.supplementHistory[0] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
+  }
+
+  getAggregateDailyHistory() {
+    const baseUrl = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    const url = `${baseUrl}?frequency=daily`;
+    getFetchJSONAPI(url).then(responseData => {
+      responseData.reverse();
+      this.state.supplementHistory[1] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
+  }
+
+  getAggregateMonthlyHistory() {
+    const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
+    const baseUrl = getSupplementAggregatesAnalyticsURL(this.state.supplement);
+    const url = `${baseUrl}?frequency=monthly&start_date=${start_date}`;
+    getFetchJSONAPI(url).then(responseData => {
+      responseData.reverse();
+      this.state.supplementHistory[2] = responseData;
+      this.setState({ supplementAnalytics: this.state.supplementAnalytics });
+    });
   }
 
   getDosages() {
@@ -99,7 +133,7 @@ export class SupplementsOverview extends Component {
     });
   }
 
-  getSupplementHistory() {
+  getHistory() {
     const start_date = moment().startOf("year").format(DATE_REQUEST_FORMAT);
     const url = `/api/v1/supplements/${this.state.supplement.uuid}/log/?frequency=daily&start_date=${start_date}`;
 
@@ -118,7 +152,7 @@ export class SupplementsOverview extends Component {
 
       // Do this weird thing where we set the activityDates ...
       // Due to a bug, if it's rendered too early, it will
-      // not rerender correctly.
+      // not rerender correctly. I mean it's probably because I suck.
       this.state.activityDates = {};
       this.state.activityDates.supplements = supplementDatesFormatted;
 
@@ -155,46 +189,53 @@ export class SupplementsOverview extends Component {
           "Productivity (Hours)",
           "Sleep (Hours)"
         ]}
-        tableData={this.state.supplementAnalytics}
-        tableRowRenderer={UserActivityEventTableRow}
-        tableName="Historical"
+        tableData={this.state.supplementHistory}
+        tableRowRenderer={HistoryRowDisplay}
+        tableName="Historical (90 Days)"
       />
     );
   }
 
-  render() {
+  renderMainContent() {
     if (!this.state.supplement || !this.state.activityDates) {
       return <div />;
     }
 
     return (
+      <main className="main">
+        <div className="card-block">
+          <SupplementsAndProductivityChartView
+            supplement={this.state.supplement}
+          />
+          <div className="card-header analytics-text-box-label">
+            <span className="font-1xl">
+              {this.state.supplement.name} Usage (Current Year)
+            </span>
+          </div>
+          <Calendar
+            year={2017}
+            customClasses={this.state.activityDates}
+            onPickDate={this.redirectDailyCalendarDate}
+          />
+        </div>
+        <div className="card-block">
+          <div className="card-columns cols-2">
+            {this.renderSupplementAnalytics()}
+            {this.renderSupplementHistory()}
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  //# TODO - Refactor all of this after Twilio integration!
+  render() {
+    return (
       <div className="app">
         <LoggedInHeader />
         <div className="app-body">
           <Sidebar />
-          <main className="main">
-            <div className="card-block">
-              <SupplementsAndProductivityChartView
-                supplement={this.state.supplement}
-              />
-              <div className="card-header analytics-text-box-label">
-                <span className="font-1xl">
-                  {this.state.supplement.name} Usage (Current Year)
-                </span>
-              </div>
-              <Calendar
-                year={2017}
-                customClasses={this.state.activityDates}
-                onPickDate={this.redirectDailyCalendarDate}
-              />
-            </div>
-            <div className="card-block">
-              <div className="card-columns cols-2">
-                {this.renderSupplementAnalytics()}
-                {/*{this.renderSupplementHistory()}*/}
-              </div>
-            </div>
-          </main>
+          {this.renderMainContent()}
         </div>
       </div>
     );

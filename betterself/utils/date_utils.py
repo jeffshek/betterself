@@ -6,6 +6,14 @@ from dateutil import relativedelta
 UTC_TZ = pytz.timezone('UTC')
 
 
+def get_current_usertime(user):
+    return datetime.datetime.now(user.pytz_timezone)
+
+
+def get_current_userdate(user):
+    return get_current_usertime(user).date()
+
+
 def days_ago_from_current_day(days):
     now = datetime.datetime.utcnow()
     # make sure the timezone is added to the datetime, otherwise many warnings

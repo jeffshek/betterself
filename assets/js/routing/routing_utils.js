@@ -29,3 +29,7 @@ export const getSupplementProductivityAnalyticsURL = supplement => {
 export const getSupplementDosagesAnalyticsURL = supplement => {
   return `/api/v1/supplements/${supplement.uuid}/analytics/dosages/`;
 };
+
+export const getSupplementAggregatesAnalyticsURL = supplement => {
+  return `/api/v1/supplements/${supplement.uuid}/log/aggregate/`;
+};

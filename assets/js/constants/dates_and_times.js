@@ -8,5 +8,7 @@ export const DATETIME_CREATED_FORMAT = "l - h:mm:ss a";
 export const ABBREVIATED_CHART_DATE = "l dd";
 
 export const minutesToHours = (minutes, decimal_places = 2) => {
-  return (minutes / 60).toFixed(decimal_places);
+  if (minutes) {
+    return (minutes / 60).toFixed(decimal_places);
+  }
 };

@@ -8,10 +8,10 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken import views
 
 react_home_template = 'react/home.html'
+react_signup_template = 'react/signup.html'
 react_dashboard_template = 'react/dashboard.html'
 
 urlpatterns = [
-    # General
     url(r'^$', TemplateView.as_view(template_name=react_home_template), name='home'),
 
     # Django Admin, use {% url 'admin:index' %}
@@ -23,17 +23,14 @@ urlpatterns = [
     #
     url(r'^api/', include('apis.urls')),
 
-    # All React should redirect to the same pages
     # TODO - switch the regex to just pattern match instead of copy/pasting
+    url(r'^dashboard-signup/$', TemplateView.as_view(template_name=react_signup_template), name='react-signup'),
     url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
     url(r'^dashboard-login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
     url(r'^dashboard-logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
-    url(r'^dashboard-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
-    url(r'^demo-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-signup'),
+    url(r'^demo-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-demo-signup'),
     url(r'^settings/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-settings'),
 
-    # To get API Token Back
-    # curl -X POST -d "username=SOMETHING&password=SOMEPASSWORD" localhost:9000/api-token-auth/
     url(r'^api-token-auth/$', views.obtain_auth_token, name='api-token-auth'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login/$', LoginView.as_view()),

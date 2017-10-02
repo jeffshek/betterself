@@ -3,7 +3,14 @@ import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
 
 const BetterSelfAddress = () => (
   <p className="address small">
-    BetterHealth, Inc.<br />99 St Marks, 3D<br />New York, NY, 10009
+
+    BetterHealth, Inc.
+    <br />
+    99 St Marks, 3D
+    <br />
+    New York, NY, 10009
+    <br />
+    jeffshek@gmail.com
   </p>
 );
 

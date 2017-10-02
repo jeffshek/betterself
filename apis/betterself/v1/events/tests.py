@@ -10,6 +10,7 @@ from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.test import APIClient
 
+from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
@@ -349,7 +350,7 @@ class TestAggregateProductivityViews(TestCase):
 
         # sum up the two individual results to make sure the analytics is correct
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
-                                                                        date__gte=six_days_ago).values_list(
+            date__gte=six_days_ago).values_list(
             VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
         expected_very_productive_time = sum(very_productive_time_list)
 
@@ -404,7 +405,7 @@ class TestSupplementLogsViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
         supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
-                                                                       supplement=self.supplement).aggregate(
+            supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
 
@@ -485,6 +486,61 @@ class TestSupplementLogsViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class TestAggregatedSupplementLogViews(TestCase):
+    """ Bunch of subpar tests """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user, _ = User.objects.get_or_create(username='default')
+        builder = DemoHistoricalDataBuilder(cls.default_user)
+        builder.create_historical_fixtures()
+
+        supplement = Supplement.objects.filter(user=cls.default_user).first()
+        supplement_uuid = str(supplement.uuid)
+        cls.supplement = supplement
+        cls.url = reverse('aggregate-supplement-log', args=[supplement_uuid])
+
+        super().setUpTestData()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_daily_view(self):
+        request_params = {
+            'frequency': DAILY_FREQUENCY,
+        }
+
+        response = self.client.get(self.url, data=request_params)
+        self.assertEqual(response.status_code, 200)
+
+    def test_event_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view_no_sleep_logs(self):
+        SleepActivity.objects.filter(user=self.default_user).delete()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view_no_productivity_logs(self):
+        DailyProductivityLog.objects.filter(user=self.default_user).delete()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view_no_supplement_logs(self):
+        SupplementEvent.objects.filter(user=self.default_user).delete()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_monthly_view(self):
+        request_params = {
+            'frequency': MONTHLY_FREQUENCY,
+        }
+        response = self.client.get(self.url, data=request_params)
+        self.assertEqual(response.status_code, 200)
+
+
 class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
     TEST_MODEL = SupplementReminder
     PAGINATION = False
@@ -498,7 +554,6 @@ class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
         builder.create_supplement_reminders()
 
         cls.url = reverse(SupplementReminder.RESOURCE_NAME)
-
         super().setUpTestData()
 
     def setUp(self):
