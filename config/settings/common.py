@@ -39,7 +39,8 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'webpack_loader',
     'django_filters',
-    'phonenumber_field'
+    'phonenumber_field',
+    'django_celery_beat'
 )
 
 # Apps specific for this project go here.
@@ -293,4 +294,4 @@ LOGGING = {
 }
 
 # celery's autodiscover is slightly failing you
-CELERY_IMPORTS = ['apis.rescuetime.tasks', ]
+CELERY_IMPORTS = ['apis.rescuetime.tasks', 'apis.twilio.tasks']

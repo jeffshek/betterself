@@ -15,3 +15,8 @@ def send_verification_text(phone_number):
         to=phone_number,
         from_=settings.TWILIO_PHONE_NUMBER,
         body="https://betterself.io - Please verify your number by replying with 'VERIFY'. Thank you!")
+
+
+@celery_app.task
+def send_text_reminders():
+    pass

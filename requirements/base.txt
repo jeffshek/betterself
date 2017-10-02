@@ -9,6 +9,7 @@ django==1.11.3
 django-allauth==0.32.0
 django-autoslug==1.9.3
 django-braces==1.11.0
+django-celery-beat==1.0.1
 django-crispy-forms==1.6.1
 django-environ==0.4.3
 django-extensions==1.8.1
@@ -23,6 +24,7 @@ djangorestframework==3.6.3
 factory-boy==2.9.2
 Faker==0.7.18
 fitbit==0.3.0
+honcho==1.0.1
 ipython==4.2
 kombu==4.1.0
 Markdown==2.6.8

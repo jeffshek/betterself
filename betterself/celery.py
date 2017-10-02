@@ -8,6 +8,7 @@ if settings.DJANGO_ENVIRONMENT == PRODUCTION:
     import raven
     from raven.contrib.celery import register_signal, register_logger_signal
     import environ
+
     env = environ.Env()
     broker_url = env('REDISCLOUD_URL')
 
@@ -22,6 +23,7 @@ if settings.DJANGO_ENVIRONMENT == PRODUCTION:
             register_signal(client)
 else:
     from celery import Celery
+
     broker_url = 'redis://localhost:6379/0'
 
 app = Celery('betterself')
@@ -32,11 +34,20 @@ app = Celery('betterself')
 # should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
+app.conf.beat_schedule = {
+    'send_text_reminders': {
+        'task': 'betterself.celery.debug_task',
+        'schedule': 10.0,
+    },
+}
+app.conf.timezone = 'UTC'
+
 # later versions of celery switched to json, but since we're only dealing with python, keep as pickle
 app.conf.task_serializer = 'pickle'
 app.conf.accept_content = ['pickle']
 
 app.conf.broker_url = broker_url
+app.conf.beat_scheduler = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
@@ -44,4 +55,4 @@ app.autodiscover_tasks()
 
 @app.task(bind=True)
 def debug_task(self):
-    print ('Debugging Task')
+    print('Debugging Task')
