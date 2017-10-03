@@ -6,13 +6,15 @@ from betterself.utils.django_utils import create_django_choice_tuple_from_list
 from supplements.models import Supplement
 
 WEB_INPUT_SOURCE = 'web'
+TEXT_MSG_SOURCE = 'text_message'
 
 INPUT_SOURCES = [
     'api',
     'ios',
     'android',
     WEB_INPUT_SOURCE,
-    'user_excel'
+    'user_excel',
+    TEXT_MSG_SOURCE
 ]
 
 INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
@@ -185,7 +187,7 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
     supplement = models.ForeignKey(Supplement)
     # always store this in UTC (even though natively timefield doesn't support it)!
     reminder_time = models.TimeField()
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
     last_sent_reminder_time = models.DateTimeField(null=True)
 
     class Meta:

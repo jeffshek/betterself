@@ -1,5 +1,3 @@
-import pytz
-
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
@@ -9,7 +7,7 @@ from rest_framework.generics import get_object_or_404
 from apis.betterself.v1.supplements.serializers import SupplementReadSerializer
 from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from betterself.utils.date_utils import get_current_date_months_ago
-from config.settings.constants import TESTING
+from config.settings.constants import TESTING, LOCAL
 from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
 from supplements.models import Supplement
 
@@ -51,7 +49,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         # this is a lame hack, but I don't want to rewrite the generic posts
         # essentially what happens is we share a supplement across different users
         # which should never happen in production
-        if settings.DJANGO_ENVIRONMENT == TESTING:
+        if settings.DJANGO_ENVIRONMENT in (TESTING, LOCAL):
             supplement = Supplement.objects.get(uuid=supplement_uuid)
         else:
             supplement = Supplement.objects.get(uuid=supplement_uuid, user=user)
@@ -289,11 +287,6 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
         model = SupplementReminder
         fields = ('supplement_uuid', 'reminder_time', 'quantity')
 
-    def validate_reminder_time(self, time):
-        if not settings.DJANGO_ENVIRONMENT == TESTING:
-            time = pytz.UTC.localize(time)
-        return time
-
     @classmethod
     def validate_supplement_uuid(cls, value):
         # serializers check if these are valid uuid fields, but they don't
@@ -314,7 +307,7 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
         # this is a lame hack, but I don't want to rewrite the generic posts
         # essentially what happens is we share a supplement across different users
         # which should never happen in production
-        if settings.DJANGO_ENVIRONMENT == TESTING:
+        if settings.DJANGO_ENVIRONMENT in (TESTING, LOCAL):
             supplement = Supplement.objects.get(uuid=supplement_uuid)
         else:
             supplement = Supplement.objects.get(uuid=supplement_uuid, user=user)

@@ -7,6 +7,10 @@ UTC_TZ = pytz.timezone('UTC')
 
 
 def get_current_utc_time_and_tz():
+    """
+    For the love of god, I can never remember if this includes the timezone or not
+    This includes it.
+    """
     return datetime.datetime.now(pytz.UTC)
 
 
