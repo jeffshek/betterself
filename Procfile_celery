@@ -1,2 +1,2 @@
-celery_worker: celery worker --app=betterself -l=INFO
-celery_beat: celery beat --app=betterself -l=INFO
+celery_worker: celery worker --app=betterself
+celery_beat: celery beat --app=betterself

@@ -75,7 +75,6 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=0)
         response = get_start_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 13)
         self.assertEqual(response.minute, 0)
 
@@ -83,7 +82,6 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=59)
         response = get_start_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 13)
         self.assertEqual(response.minute, 55)
 
@@ -91,7 +89,6 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=1)
         response = get_start_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 13)
         self.assertEqual(response.minute, 0)
 
@@ -99,7 +96,6 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=1)
         response = get_end_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 13)
         self.assertEqual(response.minute, 5)
 
@@ -107,7 +103,6 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=5)
         response = get_end_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 13)
         self.assertEqual(response.minute, 10)
 
@@ -115,6 +110,5 @@ class TestTimeRounding(TestCase):
         random_datetime = datetime.datetime(2017, 1, 1, hour=13, minute=59)
         response = get_end_time_interval_from_beat_time(random_datetime)
 
-        # this should round down to the 5 minute mark
         self.assertEqual(response.hour, 14)
         self.assertEqual(response.minute, 0)
