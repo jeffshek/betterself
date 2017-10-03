@@ -6,6 +6,7 @@ from django.http.response import HttpResponseForbidden
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apis.twilio.tasks import send_log_confirmation
 from betterself.users.models import UserPhoneNumber
 from betterself.utils.date_utils import get_current_utc_time_and_tz
 from events.models import SupplementReminder, SupplementEvent, TEXT_MSG_SOURCE
@@ -34,13 +35,15 @@ def log_supplement_event(number):
 
     supplement_reminder = SupplementReminder.objects.filter(user=user).order_by('last_sent_reminder_time').last()
 
-    SupplementEvent.objects.create(
+    supplement_log = SupplementEvent.objects.create(
         supplement=supplement_reminder.supplement,
         source=TEXT_MSG_SOURCE,
         quantity=supplement_reminder.quantity,
         time=get_current_utc_time_and_tz(),
         user=user
     )
+
+    send_log_confirmation.delay(supplement_log, number)
 
     return Response(status=202)
 

@@ -50,7 +50,7 @@ class DemoActivityEventFactory(factory.django.DjangoModelFactory):
 
 
 class SupplementReminderFactory(factory.django.DjangoModelFactory):
-    reminder_time = fake.date_time_ad(tzinfo=pytz.UTC)
+    reminder_time = fake.date_time_ad()
     quantity = 1
     last_sent_reminder_time = fake.date_time_this_century(tzinfo=pytz.UTC)
 
