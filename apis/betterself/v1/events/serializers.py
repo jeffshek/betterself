@@ -1,3 +1,5 @@
+import pytz
+
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from rest_framework import serializers
@@ -286,6 +288,11 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupplementReminder
         fields = ('supplement_uuid', 'reminder_time', 'quantity')
+
+    def validate_reminder_time(self, time):
+        if not settings.DJANGO_ENVIRONMENT == TESTING:
+            time = pytz.UTC.localize(time)
+        return time
 
     @classmethod
     def validate_supplement_uuid(cls, value):

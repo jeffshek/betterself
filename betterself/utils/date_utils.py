@@ -6,6 +6,10 @@ from dateutil import relativedelta
 UTC_TZ = pytz.timezone('UTC')
 
 
+def get_current_utc_time_and_tz():
+    return datetime.datetime.now(pytz.UTC)
+
+
 def get_current_usertime(user):
     return datetime.datetime.now(user.pytz_timezone)
 

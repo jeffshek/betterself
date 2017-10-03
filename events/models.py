@@ -183,12 +183,15 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplement_reminders'
 
     supplement = models.ForeignKey(Supplement)
+    # always store this in UTC (even though natively timefield doesn't support it)!
     reminder_time = models.TimeField()
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     last_sent_reminder_time = models.DateTimeField(null=True)
 
     class Meta:
         unique_together = (('user', 'reminder_time', 'supplement'),)
+        verbose_name = 'Supplement Reminder'
+        verbose_name_plural = 'Supplement Reminders'
 
     def __str__(self):
         return '{} {} {}'.format(self.user, self.supplement, self.reminder_time)

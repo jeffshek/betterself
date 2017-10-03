@@ -1,5 +1,6 @@
 # set the default folder where virtualenv is being stored
 export WORKON_HOME=/betterself/config/development/virtualenv
+export DJANGO_SETTINGS_MODULE=config.settings.local
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Display Git Branch
@@ -29,3 +30,4 @@ alias gp='git pull'
 alias ga='git add --all'
 alias gd='git diff'
 alias ls='ls -la'
+

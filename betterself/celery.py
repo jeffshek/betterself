@@ -36,8 +36,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.conf.beat_schedule = {
     'send_text_reminders': {
-        'task': 'betterself.celery.debug_task',
-        'schedule': 10.0,
+        'task': 'apis.twilio.tasks.send_text_reminders',
+        'schedule': 60.0 * 5,  # run every five minutes
     },
 }
 app.conf.timezone = 'UTC'

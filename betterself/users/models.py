@@ -54,6 +54,10 @@ class UserPhoneNumber(BaseModel):
     phone_number = PhoneNumberField()
     is_verified = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = 'User Phone Number'
+        verbose_name_plural = 'User Phone Numbers'
+
     def __str__(self):
         return '{}-{}'.format(self.user, self.phone_number)
 
