@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateUpdateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
-    SupplementReadOnlySerializer, IngredientCompositionCreateSerializer
+    SupplementReadSerializer, IngredientCompositionCreateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.models import Vendor
@@ -57,7 +57,7 @@ class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser)
 
 # TODO - Should this be called a Viewset instead (but then you have to refactor .. ALL of them)?
 class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
-    read_serializer_class = SupplementReadOnlySerializer
+    read_serializer_class = SupplementReadSerializer
     write_serializer_class = SupplementCreateUpdateSerializer
     update_serializer_class = SupplementCreateUpdateSerializer
     model = Supplement

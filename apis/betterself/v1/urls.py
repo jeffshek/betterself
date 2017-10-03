@@ -1,7 +1,8 @@
 from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
-    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView, AggregatedSupplementLogView
+    UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView, SupplementReminderView, \
+    AggregatedSupplementLogView
 from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary, SupplementSleepAnalytics, \
     SupplementProductivityAnalytics, SupplementDosageAnalytics
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
@@ -11,9 +12,10 @@ from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesC
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementsListView
-from apis.betterself.v1.users.views import UserInfoView
+from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+    SupplementReminder
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
@@ -55,13 +57,14 @@ urlpatterns = [
             url(r'^user_activities/correlations$', SleepActivitiesUserActivitiesCorrelationsView.as_view(), name='sleep-user-activities-correlations'),  # noqa
             url(r'^supplements/correlations$', SleepActivitiesSupplementsCorrelationsView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
-
+    url(r'^{0}/$'.format(SupplementReminder.RESOURCE_NAME), SupplementReminderView.as_view(), name=SupplementReminder.RESOURCE_NAME),  # noqa
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
     url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details'),
     # debate if you prefer this url structure instead of the current pattern
     url(r'user/export-data/$', UserExportAllData.as_view(), name='api-user-export-all-data'),
+    url(r'user/phone_number/$', UserPhoneNumberView.as_view(), name='api-user-phone-number'),
 ]
 
 API_V1_LIST_CREATE_URL = '/api/v1/{0}/'

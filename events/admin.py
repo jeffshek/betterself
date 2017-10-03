@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from events.models import SupplementEvent, DailyProductivityLog
+from betterself.users.models import UserPhoneNumber
+from events.models import SupplementEvent, DailyProductivityLog, SupplementReminder
 
 
 @admin.register(SupplementEvent)
@@ -26,3 +27,7 @@ class DailyProductivityLogAdmin(admin.ModelAdmin):
 
     class Meta:
         model = DailyProductivityLog
+
+
+admin.site.register(UserPhoneNumber)
+admin.site.register(SupplementReminder)

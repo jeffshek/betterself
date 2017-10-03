@@ -39,6 +39,8 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'webpack_loader',
     'django_filters',
+    'phonenumber_field',
+    'django_celery_beat'
 )
 
 # Apps specific for this project go here.
@@ -262,6 +264,10 @@ FITBIT_CONSUMER_KEY = env('FITBIT_CONSUMER_KEY', default='FITBIT_CONSUMER_KEY')
 FITBIT_CONSUMER_SECRET = env('FITBIT_CONSUMER_SECRET', default='FITBIT_CONSUMER_SECRET')
 FITBIT_LOGIN_REDIRECT = '/dashboard/logs/sleep'
 
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID', default='TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN', default='TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER', default='16175555555')
+
 
 # TODO - Reorganize all of these to be different based on staging/production
 LOGGING = {
@@ -288,4 +294,4 @@ LOGGING = {
 }
 
 # celery's autodiscover is slightly failing you
-CELERY_IMPORTS = ['apis.rescuetime.tasks', ]
+CELERY_IMPORTS = ['apis.rescuetime.tasks', 'apis.twilio.tasks']

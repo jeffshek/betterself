@@ -86,7 +86,7 @@ class IngredientCompositionCreateSerializer(serializers.Serializer):
         return obj
 
 
-class SupplementReadOnlySerializer(serializers.Serializer):
+class SupplementReadSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
     ingredient_compositions = IngredientCompositionReadOnlySerializer(many=True)
     uuid = serializers.UUIDField(required=False, read_only=True)

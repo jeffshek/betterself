@@ -8,14 +8,14 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
 
         # multiple users should be able to create the same object
         request = self._make_post_request(self.client_1, post_parameters)
-        self.assertEqual(request.status_code, 201)
+        self.assertEqual(request.status_code, 201, request.data)
 
         second_request = self._make_post_request(self.client_2, post_parameters)
-        self.assertEqual(second_request.status_code, 201)
+        self.assertEqual(second_request.status_code, 201, second_request.data)
 
         # multiple attempts should still be fine ... although i feel like 201 really be 200
         third_request = self._make_post_request(self.client_2, post_parameters)
-        self.assertEqual(third_request.status_code, 201)
+        self.assertEqual(third_request.status_code, 201, third_request.data)
 
         # now let's make sure that different users should be accessing different objects
         client_1_objects_count = self.TEST_MODEL.objects.filter(user=self.user_1).count()
@@ -52,7 +52,7 @@ class PostRequestsTestsMixin(GenericRESTMethodMixin):
             updated_data_items_count = len(second_request_data)
 
         # since you did only one post, should go up by one
-        self.assertEqual(data_items_count + 1, updated_data_items_count)
+        self.assertEqual(data_items_count + 1, updated_data_items_count, second_request.data)
 
     def test_post_request_changes_objects_for_right_user(self, parameters=None):
         post_parameters = parameters if parameters else self.DEFAULT_POST_PARAMS

@@ -23,7 +23,8 @@ from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_c
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+    SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
@@ -371,7 +372,7 @@ class TestAggregateProductivityViews(TestCase):
         self.assertGreater(response_amount, productivity_logs)
 
 
-class SupplementLogsTest(TestCase):
+class TestSupplementLogsViews(TestCase):
     """
     Test class that gets activity for one specific supplement
     """
@@ -538,3 +539,54 @@ class TestAggregatedSupplementLogViews(TestCase):
         }
         response = self.client.get(self.url, data=request_params)
         self.assertEqual(response.status_code, 200)
+
+
+class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
+    TEST_MODEL = SupplementReminder
+    PAGINATION = False
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user_1, _ = User.objects.get_or_create(username='default')
+
+        builder = DemoHistoricalDataBuilder(cls.user_1)
+        builder.create_historical_fixtures()
+        builder.create_supplement_reminders()
+
+        cls.url = reverse(SupplementReminder.RESOURCE_NAME)
+        super().setUpTestData()
+
+    def setUp(self):
+        supplement = Supplement.objects.filter(user=self.user_1).first()
+        supplement_uuid = str(supplement.uuid)
+
+        self.DEFAULT_POST_PARAMS = {
+            'reminder_time': '15:20',
+            'quantity': 5,
+            'supplement_uuid': supplement_uuid
+        }
+
+        self.client_1 = self.create_authenticated_user_on_client(APIClient(), self.user_1)
+        self.client_2 = self.create_authenticated_user_on_client(APIClient(), self.user_2)
+
+    def test_view_no_auth(self):
+        client = APIClient()
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_view_no_data(self):
+        new_user, _ = User.objects.get_or_create(username='no-data')
+
+        client = APIClient()
+        client.force_login(new_user)
+
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 0)
+
+    def test_view(self):
+        response = self.client_1.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        supplement_reminder_count = SupplementReminder.objects.filter(user=self.user_1).count()
+        self.assertEqual(supplement_reminder_count, len(response.data))
