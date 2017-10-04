@@ -8,10 +8,11 @@ import { TEXT_TIME_FORMAT } from "../constants/dates_and_times";
 export class AddSupplementReminderView extends Component {
   constructor() {
     super();
-    // this.state.supplements = false;
     this.state = {
       supplements: null,
-      inputDateTime: moment()
+      inputDateTime: moment(),
+      phoneNumber: "+16171234567",
+      supplementQuantity: 1
     };
   }
 
@@ -27,17 +28,23 @@ export class AddSupplementReminderView extends Component {
 
   submitEventDetails(e) {
     e.preventDefault();
-    // const indexSelected = this.activityTypeIndexSelected.value;
-    // const userActivityUUIDSelected = this.props.userActivityTypes[indexSelected]
-    //   .uuid;
-    //
-    // const postParams = {
-    //   user_activity_uuid: userActivityUUIDSelected,
-    //   duration_minutes: this.state.durationMinutes,
-    //   time: this.state.inputDateTime.toISOString(),
-    //   source: "web"
-    // };
-    //
+
+    const indexSelected = this.state.supplementIndexSelected.value;
+    const supplementUUIDSelected = this.state.supplements[indexSelected].uuid;
+
+    const utcTime = this.state.inputDateTime.utc();
+    const utcTimeString = utcTime.format("HH:mm");
+
+    const postParams = {
+      supplement_uuid: supplementUUIDSelected,
+      quantity: this.state.supplementQuantity,
+      remind_time: utcTimeString,
+      source: "web",
+      phoneNumber: this.state.phoneNumber
+    };
+
+    console.log(postParams);
+
     // fetch("api/v1/user_activity_events/", {
     //   method: "POST",
     //   headers: JSON_POST_AUTHORIZATION_HEADERS,
@@ -80,7 +87,7 @@ export class AddSupplementReminderView extends Component {
     );
   }
 
-  renderInputRow(label, inputName) {
+  renderInputRow(label, inputName, defaultValue = 1) {
     return (
       <div className="col-sm-6">
         <div className="form-group">
@@ -91,7 +98,7 @@ export class AddSupplementReminderView extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue={0}
+            defaultValue={defaultValue}
             onChange={this.handleInputChange}
           />
         </div>
@@ -110,20 +117,20 @@ export class AddSupplementReminderView extends Component {
           <form onSubmit={e => this.submitEventDetails(e)}>
             <div className="form-group col-sm-4">
               <label className="add-event-label">
-                Text Time
+                Daily Text Time
               </label>
               <Datetime
                 dateFormat={false}
                 onChange={this.handleDatetimeChange}
-                // value={this.state.inputDateTime}
                 defaultValue={this.state.inputDateTime.format(TEXT_TIME_FORMAT)}
               />
             </div>
             {this.renderSupplementsSelect()}
             {this.renderInputRow("Quantity", "supplementQuantity")}
             {this.renderInputRow(
-              "Phone Number To Text +countryCodePhoneNumber aka +16173334444",
-              "phoneNumber"
+              "Phone Number To Text +countryCodePhoneNumber aka +16171234567",
+              "phoneNumber",
+              "+16171234567"
             )}
             <div className="float-right">
               <button
@@ -149,7 +156,6 @@ export class AddSupplementReminderView extends Component {
     const url = "/api/v1/supplements";
     getFetchJSONAPI(url).then(responseData => {
       this.setState({ supplements: responseData });
-      // this.setState({ loadedSupplements: true });
     });
   }
 
@@ -157,8 +163,6 @@ export class AddSupplementReminderView extends Component {
     if (!this.state.supplements) {
       return <CubeLoadingStyle />;
     }
-
-    const supplementsKeys = Object.keys(this.state.supplements);
 
     return (
       <div className="card">
