@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
 import { RenderTrueFalseCheckBox } from "../constants/designs";
+import moment from "moment";
+import { TEXT_TIME_FORMAT } from "../constants/dates_and_times";
 
 export const SupplementReminderTableHeader = () => (
   <thead>
@@ -10,7 +12,7 @@ export const SupplementReminderTableHeader = () => (
       <th>Reminder Time</th>
       <th>Quantity</th>
       <th>Text Number</th>
-      <th className="center-source">Text Verified</th>
+      <th className="center-source">Number Verified</th>
       <th className="center-source">Actions</th>
     </tr>
   </thead>
@@ -21,21 +23,28 @@ export const SupplementReminderRow = props => {
   const phoneNumber = data.phone_number;
   const { phone_number, is_verified } = phoneNumber;
   const { supplement, reminder_time, quantity, uuid } = data;
+
   const name = supplement.name;
   const supplementUUID = supplement.uuid;
 
-  // const dateCreated = data.created;
-  // const timeFormatted = moment(dateCreated).format(DATETIME_CREATED_FORMAT);
   const supplementOverviewLink = getSupplementOverviewURLFromUUID(
     supplementUUID
   );
+
+  // Parse the time in as UTC, so you can format it
+  const currentTimeParsed = moment.utc(reminder_time, ["h:m a", "H:m"]);
+
+  // Don't want to show things in UTC, that's confusing
+  currentTimeParsed.local();
+
+  const localTimeFormat = currentTimeParsed.format(TEXT_TIME_FORMAT);
 
   const renderCheckBox = RenderTrueFalseCheckBox(is_verified);
 
   return (
     <tr>
       <td><Link to={supplementOverviewLink}>{name}</Link></td>
-      <td>{reminder_time}</td>
+      <td>{localTimeFormat}</td>
       <td>{quantity}</td>
       <td>{phone_number}</td>
       <td>{renderCheckBox}</td>
@@ -49,7 +58,6 @@ export const SupplementReminderRow = props => {
           </div>
         </div>
       </td>
-      {/*<td>{timeFormatted}</td>*/}
     </tr>
   );
 };

@@ -56,7 +56,6 @@ export const SupplementHistoryTableHeader = () => (
       <th>Supplement</th>
       <th>Serving Size</th>
       <th>Supplement Time</th>
-      {/*<th>Duration (Minutes)</th>*/}
       <th className="center-source">Actions</th>
       <th className="center-source">Source</th>
     </tr>
