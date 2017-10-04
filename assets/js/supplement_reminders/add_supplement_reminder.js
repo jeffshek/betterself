@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { getFetchJSONAPI, postFetchJSONAPI } from "../utils/fetch_utils";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import moment from "moment";
 import Datetime from "react-datetime";
@@ -35,31 +35,25 @@ export class AddSupplementReminderView extends Component {
     const utcTime = this.state.inputDateTime.utc();
     const utcTimeString = utcTime.format("HH:mm");
 
+    const phoneParams = {
+      phone_number: this.state.phoneNumber
+    };
+    const phoneUrl = "api/v1/user/phone_number/";
+    postFetchJSONAPI(phoneUrl, phoneParams).then(responseData => {
+      return responseData;
+    });
+
     const postParams = {
       supplement_uuid: supplementUUIDSelected,
       quantity: this.state.supplementQuantity,
-      remind_time: utcTimeString,
-      source: "web",
-      phoneNumber: this.state.phoneNumber
+      reminder_time: utcTimeString,
+      source: "web"
     };
 
-    console.log(postParams);
-
-    // fetch("api/v1/user_activity_events/", {
-    //   method: "POST",
-    //   headers: JSON_POST_AUTHORIZATION_HEADERS,
-    //   body: JSON.stringify(postParams)
-    // })
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(responseData => {
-    //     this.props.addEventEntry(responseData);
-    //     return responseData;
-    //   })
-    //   .catch(error => {
-    //     alert("Invalid Error Occurred When Submitting Data " + error);
-    //   });
+    const reminderUrl = "api/v1/supplement_reminders/";
+    postFetchJSONAPI(reminderUrl, postParams).then(responseData => {
+      return responseData;
+    });
   }
 
   renderSupplementsSelect() {
