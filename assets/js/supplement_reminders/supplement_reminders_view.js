@@ -1,5 +1,5 @@
 import React from "react";
-import { EventLogView } from "../resources_table/resource_view";
+import { BasePaginatedLogView } from "../resources_table/resource_view";
 import {
   SupplementEntryLogTable
 } from "../supplement_events_log/supplement_events_table";
@@ -8,7 +8,7 @@ import {
 } from "../supplement_events_log/add_supplement_event";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 
-export class SupplementRemindersView extends EventLogView {
+export class SupplementRemindersView extends BasePaginatedLogView {
   constructor() {
     super();
     // this.resourceName = "supplement_reminders";

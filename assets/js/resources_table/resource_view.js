@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 
-export class EventLogView extends Component {
+export class BasePaginatedLogView extends Component {
   constructor() {
     super();
     this.state = {

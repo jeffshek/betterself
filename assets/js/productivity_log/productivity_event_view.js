@@ -1,9 +1,9 @@
 import React from "react";
 import { AddProductivityEvent } from "./add_productivity_event";
 import { ProductivityLogTable } from "./productivity_table";
-import { EventLogView } from "../resources_table/resource_view";
+import { BasePaginatedLogView } from "../resources_table/resource_view";
 
-export class ProductivityLogView extends EventLogView {
+export class ProductivityLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.state = {

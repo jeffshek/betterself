@@ -2,10 +2,10 @@ import React from "react";
 
 import { AddSupplementEvent } from "./add_supplement_event";
 import { SupplementEntryLogTable } from "./supplement_events_table";
-import { EventLogView } from "../resources_table/resource_view";
+import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
-export class SupplementEventsLogView extends EventLogView {
+export class SupplementEventsLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.resourceName = "supplement_events";

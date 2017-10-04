@@ -2,9 +2,9 @@ import React from "react";
 
 import { AddSleepEvent } from "./add_sleep_event";
 import { SleepEntryLogTable } from "./sleep_events_table";
-import { EventLogView } from "../resources_table/resource_view";
+import { BasePaginatedLogView } from "../resources_table/resource_view";
 
-export class SleepEventsLogView extends EventLogView {
+export class SleepEventsLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.resourceName = "sleep_activities";
