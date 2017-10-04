@@ -1,14 +1,6 @@
 import React, { Component } from "react";
-import { BasePaginatedLogView } from "../resources_table/resource_view";
-import {
-  SupplementEntryLogTable
-} from "../supplement_events_log/supplement_events_table";
-import {
-  AddSupplementEvent
-} from "../supplement_events_log/add_supplement_event";
-import { getFetchJSONAPI } from "../utils/fetch_utils";
-import { BaseEventLogTable } from "../resources_table/resource_table";
 import { AddSupplementReminderView } from "./add_supplement_reminder";
+import { SupplementReminderTable } from "./supplement_reminder_table";
 
 export class SupplementRemindersView extends Component {
   constructor() {
@@ -19,6 +11,7 @@ export class SupplementRemindersView extends Component {
     return (
       <div>
         <AddSupplementReminderView />
+        <SupplementReminderTable />
       </div>
     );
   }

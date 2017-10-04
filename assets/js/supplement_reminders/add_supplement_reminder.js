@@ -122,7 +122,7 @@ export class AddSupplementReminderView extends Component {
             {this.renderSupplementsSelect()}
             {this.renderInputRow("Quantity", "supplementQuantity")}
             {this.renderInputRow(
-              "Phone Number To Text +countryCodePhoneNumber aka +16171234567",
+              "Phone Number To Text +countryPhoneNumber aka +16171234567",
               "phoneNumber",
               "+16171234567"
             )}
