@@ -21,9 +21,9 @@ export class SupplementReminderTable extends BaseEventLogTable {
     this.getReminders();
   }
 
-  confirmDelete = (uuid, name) => {
+  confirmDelete = (uuid, name, reminder_time) => {
     const answer = confirm(
-      `WARNING: This will delete the following supplement reminder \n\n${name} \n\nConfirm? `
+      `WARNING: This will delete the following supplement reminder \n\n${name} at ${reminder_time} \n\nConfirm? `
     );
 
     if (answer) {

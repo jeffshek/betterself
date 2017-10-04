@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { AddUserActivityEvent } from "./add_user_activities_event";
 import { UserActivityEventLogTable } from "./user_activities_events_table";

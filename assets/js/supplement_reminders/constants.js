@@ -1,8 +1,7 @@
 import React from "react";
-import moment from "moment";
 import { Link } from "react-router-dom";
 import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
-import { DATETIME_CREATED_FORMAT } from "../constants/dates_and_times";
+import { RenderTrueFalseCheckBox } from "../constants/designs";
 
 export const SupplementReminderTableHeader = () => (
   <thead>
@@ -10,16 +9,18 @@ export const SupplementReminderTableHeader = () => (
       <th>Supplement</th>
       <th>Reminder Time</th>
       <th>Quantity</th>
+      <th>Text Number</th>
+      <th className="center-source">Text Verified</th>
       <th className="center-source">Actions</th>
     </tr>
   </thead>
 );
 
 export const SupplementReminderRow = props => {
-  // console.log(props)
   const data = props.object;
-
-  const { supplement, reminder_time, quantity } = data;
+  const phoneNumber = data.phone_number;
+  const { phone_number, is_verified } = phoneNumber;
+  const { supplement, reminder_time, quantity, uuid } = data;
   const name = supplement.name;
   const supplementUUID = supplement.uuid;
 
@@ -29,16 +30,20 @@ export const SupplementReminderRow = props => {
     supplementUUID
   );
 
+  const renderCheckBox = RenderTrueFalseCheckBox(is_verified);
+
   return (
     <tr>
       <td><Link to={supplementOverviewLink}>{name}</Link></td>
       <td>{reminder_time}</td>
       <td>{quantity}</td>
+      <td>{phone_number}</td>
+      <td>{renderCheckBox}</td>
       <td>
         <div className="center-icon">
           <div
             className="remove-icon"
-            onClick={e => props.confirmDelete(uuid, name)}
+            onClick={e => props.confirmDelete(uuid, name, reminder_time)}
           >
             <i className="fa fa-remove fa-1x" />
           </div>
