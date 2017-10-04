@@ -15,11 +15,10 @@ export class AddUserActivityEvent extends Component {
 
     this.submitEventDetails = this.submitEventDetails.bind(this);
     this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.renderInputRow = this.renderInputRow.bind(this);
   }
 
-  handleInputChange(event) {
+  handleInputChange = event => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -27,7 +26,7 @@ export class AddUserActivityEvent extends Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
   handleDatetimeChange(moment) {
     this.setState({ inputDateTime: moment });
@@ -161,14 +160,14 @@ export class AddUserActivityEvent extends Component {
   }
 
   render() {
+    if (!this.props.renderReady) {
+      return <CubeLoadingStyle />;
+    }
+
     return (
       <div>
-        {!this.props.renderReady
-          ? <CubeLoadingStyle />
-          : <div>
-              {this.renderCreateActivityButton()}
-              {this.renderSubmitEventForm()}
-            </div>}
+        {this.renderCreateActivityButton()}
+        {this.renderSubmitEventForm()}
       </div>
     );
   }

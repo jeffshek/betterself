@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import {
   SupplementEntryLogTable
@@ -7,45 +7,18 @@ import {
   AddSupplementEvent
 } from "../supplement_events_log/add_supplement_event";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { BaseEventLogTable } from "../resources_table/resource_table";
+import { AddSupplementReminderView } from "./add_supplement_reminder";
 
-export class SupplementRemindersView extends BasePaginatedLogView {
+export class SupplementRemindersView extends Component {
   constructor() {
     super();
-    // this.resourceName = "supplement_reminders";
-    this.resourceName = "supplement_events";
-    this.state.loadedSupplements = false;
-  }
-
-  componentDidMount() {
-    // Override base class of componentDidMount
-    this.getEventHistory();
-    this.getPossibleSupplements();
-  }
-
-  getPossibleSupplements() {
-    const url = "/api/v1/supplements";
-    getFetchJSONAPI(url).then(responseData => {
-      this.setState({ supplements: responseData });
-      this.setState({ loadedSupplements: true });
-    });
   }
 
   render() {
     return (
       <div>
-        <AddSupplementEvent
-          addEventEntry={this.addEventEntry}
-          supplements={this.state.supplements}
-        />
-        <SupplementEntryLogTable
-          eventHistory={this.state.eventHistory}
-          supplements={this.state.supplements}
-          loadedSupplements={this.state.loadedSupplements}
-          currentPageNumber={this.state.currentPageNumber}
-          lastPageNumber={this.state.lastPageNumber}
-          renderReady={this.state.loadedHistory && this.state.loadedSupplements}
-          getEventHistory={this.getEventHistory}
-        />
+        <AddSupplementReminderView />
       </div>
     );
   }
