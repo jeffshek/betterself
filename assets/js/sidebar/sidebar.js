@@ -12,7 +12,8 @@ import {
   DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
   EXPORT_ALL_DATA_URL,
-  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL
+  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
+  DASHBOARD_SUPPLEMENT_REMINDERS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -50,11 +51,11 @@ const DataSourcesMenu = props => (
 
 const DataSourcesMenuLinks = () => (
   <div>
-    {/*<NavigationLink*/}
-    {/*iconName="icon-calendar"*/}
-    {/*label="Text Reminders"*/}
-    {/*link={DASHBOARD_SUPPLEMENTS_URL}*/}
-    {/*/>*/}
+    <NavigationLink
+      iconName="icon-calendar"
+      label="Text Reminders"
+      link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
+    />
     <NavigationLink
       iconName="icon-list"
       label="Activity Types"

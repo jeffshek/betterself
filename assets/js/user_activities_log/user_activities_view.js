@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { EventLogView } from "../resources_table/resource_view";
 import { UserActivityLogTable } from "./user_activities_table";
 import { AddUserActivity } from "./add_user_activity";

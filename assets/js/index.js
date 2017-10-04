@@ -15,6 +15,7 @@ import {
   DASHBOARD_SLEEP_ANALYTICS_URL,
   DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL,
+  DASHBOARD_SUPPLEMENT_REMINDERS_URL,
   DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL,
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
@@ -57,6 +58,9 @@ import {
   DailyOverviewAnalyticsView
 } from "./daily_overview/daily_overview_view";
 import { SupplementsOverview } from "./supplement_overview/supplement_overview";
+import {
+  SupplementRemindersView
+} from "./supplement_reminders/supplement_reminders_view";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -122,6 +126,10 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={DASHBOARD_USER_ACTIVITIES_URL}
         component={e => <Dashboard view={UserActivitiesLogView} />}
+      />
+      <PrivateRoute
+        path={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
+        component={e => <Dashboard view={SupplementRemindersView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SLEEP_LOGS_URL}
