@@ -1,2 +1,0 @@
-celery_worker: celery worker --app=betterself
-celery_beat: celery beat --app=betterself
