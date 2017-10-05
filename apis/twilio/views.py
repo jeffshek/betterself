@@ -6,7 +6,7 @@ from django.http.response import HttpResponseForbidden
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apis.twilio.tasks import send_log_confirmation
+from apis.twilio.tasks import send_log_confirmation, send_thanks_for_verification_text
 from betterself.users.models import UserPhoneNumber
 from betterself.utils.date_utils import get_current_utc_time_and_tz
 from events.models import SupplementReminder, SupplementEvent, TEXT_MSG_SOURCE
@@ -21,6 +21,8 @@ def verify_phone_number(number):
     phone_number = UserPhoneNumber.objects.get(phone_number=number)
     phone_number.is_verified = True
     phone_number.save()
+
+    send_thanks_for_verification_text.delay(phone_number.as_164)
 
     return Response(status=202)
 
