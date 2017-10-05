@@ -1,0 +1,4 @@
+celery_worker: celery purge -A betterself -f && celery worker --app=betterself
+celery_beat: celery beat --app=betterself
+web: python manage.py runserver [::]:9000
+webpack: node_modules/.bin/webpack --watch
