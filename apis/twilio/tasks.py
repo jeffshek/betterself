@@ -70,7 +70,7 @@ def send_text_reminders(beat_time=None):
     if end_time.hour == 0:
         queryset = queryset.filter(reminder_time__gte=start_time)
     else:
-        queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lte=end_time)
+        queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
 
     for result in queryset:
         send_supplement_reminder.delay(result.id)
@@ -91,5 +91,5 @@ def send_supplement_reminder(supplement_reminder_id):
         from_=settings.TWILIO_PHONE_NUMBER,
         body=reminder_text)
 
-    reminder.last_sent_reminder_time = get_current_utc_time_and_tz
+    reminder.last_sent_reminder_time = get_current_utc_time_and_tz()
     reminder.save()
