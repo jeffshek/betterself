@@ -10,6 +10,11 @@ export class SupplementRemindersView extends Component {
   render() {
     return (
       <div>
+        <div className="card-header">
+          <strong id="add-supplement-entry-text">
+            Add Texting Reminders (Limit 5 A Day)
+          </strong>
+        </div>
         <AddSupplementReminderView />
         <SupplementReminderTable />
       </div>
