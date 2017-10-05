@@ -12,7 +12,8 @@ import {
   DASHBOARD_SLEEP_LOGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
   EXPORT_ALL_DATA_URL,
-  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL
+  DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
+  DASHBOARD_SUPPLEMENT_REMINDERS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -37,6 +38,7 @@ const NavigationLink = props => (
   <li className="nav-item">
     <Link className="nav-link" to={props.link}>
       <i className={props.iconName} /> {props.label}
+      {props.isNew ? <span className="badge badge-info"> NEW</span> : <span />}
     </Link>
   </li>
 );
@@ -53,7 +55,8 @@ const DataSourcesMenuLinks = () => (
     {/*<NavigationLink*/}
     {/*iconName="icon-calendar"*/}
     {/*label="Text Reminders"*/}
-    {/*link={DASHBOARD_SUPPLEMENTS_URL}*/}
+    {/*link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}*/}
+    {/*isNew={true}*/}
     {/*/>*/}
     <NavigationLink
       iconName="icon-list"
@@ -65,21 +68,6 @@ const DataSourcesMenuLinks = () => (
       label="Supplements"
       link={DASHBOARD_SUPPLEMENTS_URL}
     />
-    {/*<NavigationLink*/}
-    {/*iconName="icon-rocket"*/}
-    {/*label="FitBit"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
-    {/*<NavigationLink*/}
-    {/*iconName="icon-social-github"*/}
-    {/*label="GitHub"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
-    {/*<NavigationLink*/}
-    {/*iconName="icon-target"*/}
-    {/*label="RescueTime"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
   </div>
 );
 

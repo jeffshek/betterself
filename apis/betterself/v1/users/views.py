@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from apis.betterself.v1.signup.serializers import CreateUserSerializer
 from apis.betterself.v1.users.serializers import PhoneNumberSerializer
+from apis.twilio.tasks import send_verification_text
 from betterself.users.models import UserPhoneNumber
 
 
@@ -36,6 +37,18 @@ class UserPhoneNumberView(APIView):
         serializer = PhoneNumberSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        phone_number, _ = UserPhoneNumber.objects.update_or_create(user=user, defaults=serializer.data)
+        request_number = serializer.data['phone_number']
+        existing_number = UserPhoneNumber.objects.filter(phone_number=request_number).exclude(user=user)
+        if existing_number.exists():
+            if existing_number.filter(is_verified=True).exists():
+                return Response('{} Phone number exists to someone else!'.format(request_number), status=400)
+            else:
+                # if another person hasn't verified it, then it was probably entered by accident
+                existing_number.delete()
 
-        return Response(PhoneNumberSerializer(phone_number).data)
+        user_phone_number, _ = UserPhoneNumber.objects.update_or_create(user=user, defaults=serializer.data)
+        # if the number hasn't been verified, but the user is adding another supplement-reminder
+        if not user_phone_number.is_verified:
+            send_verification_text.delay(user_phone_number.phone_number)
+
+        return Response(PhoneNumberSerializer(user_phone_number).data)

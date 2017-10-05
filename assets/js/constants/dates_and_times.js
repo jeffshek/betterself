@@ -3,6 +3,7 @@ export const READABLE_DATE_TIME_FORMAT = "dddd, MMMM Do YYYY, h:mm:ss a";
 export const READABLE_TIME_FORMAT = "h:mm:ss a";
 export const DATE_REQUEST_FORMAT = "YYYY-MM-DD";
 export const DATETIME_CREATED_FORMAT = "l - h:mm:ss a";
+export const TEXT_TIME_FORMAT = "LT"; // 9:32 PM
 
 // 12/5/2016 Tu (this is what it looks like)
 export const ABBREVIATED_CHART_DATE = "l dd";

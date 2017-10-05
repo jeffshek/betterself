@@ -51,7 +51,7 @@ class DemoUserLog(BaseModel):
 
 class UserPhoneNumber(BaseModel):
     user = models.OneToOneField(User, unique=True)
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(unique=True)
     is_verified = models.BooleanField(default=False)
 
     class Meta:

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { EventLogView } from "../resources_table/resource_view";
+import React from "react";
+import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { UserActivityLogTable } from "./user_activities_table";
 import { AddUserActivity } from "./add_user_activity";
 
-export class UserActivitiesLogView extends EventLogView {
+export class UserActivitiesLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.resourceName = "user_activities";

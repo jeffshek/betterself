@@ -14,7 +14,6 @@ export const SupplementHistoryRow = props => {
   const servingSize = data.quantity;
   const source = data.source;
   const supplementTime = data.time;
-  // const duration = data.duration_minutes;
   const timeFormatted = moment(supplementTime).format(
     READABLE_DATE_TIME_FORMAT
   );
@@ -56,7 +55,6 @@ export const SupplementHistoryTableHeader = () => (
       <th>Supplement</th>
       <th>Serving Size</th>
       <th>Supplement Time</th>
-      {/*<th>Duration (Minutes)</th>*/}
       <th className="center-source">Actions</th>
       <th className="center-source">Source</th>
     </tr>

@@ -6,6 +6,7 @@ from rest_framework.generics import get_object_or_404
 
 from apis.betterself.v1.supplements.serializers import SupplementReadSerializer
 from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
+from apis.betterself.v1.users.serializers import PhoneNumberSerializer
 from betterself.utils.date_utils import get_current_date_months_ago
 from config.settings.constants import TESTING, LOCAL
 from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
@@ -274,9 +275,10 @@ class SupplementLogRequestParametersSerializer(serializers.Serializer):
 
 class SupplementReminderReadSerializer(serializers.ModelSerializer):
     supplement = SupplementReadSerializer()
+    phone_number = PhoneNumberSerializer(source='user.userphonenumber')
 
     class Meta:
-        fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time']
+        fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time', 'phone_number', 'uuid']
         model = SupplementReminder
 
 
@@ -297,6 +299,15 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
             raise ValidationError('Supplement UUID {} does not exist'.format(value))
 
         return value
+
+    def validate(self, data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+
+        if create_model.objects.filter(user=user).count() >= 5:
+            raise ValidationError('Error: Limit of 5 Supplement Reminders A Day')
+
+        return data
 
     def create(self, validated_data):
         create_model = self.context['view'].model

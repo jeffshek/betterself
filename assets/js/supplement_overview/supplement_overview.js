@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DATE_REQUEST_FORMAT } from "../constants/dates_and_times";
 import { Calendar } from "react-yearly-calendar";
@@ -18,15 +17,7 @@ import {
 } from "../routing/routing_utils";
 import { MultiTabTableView } from "../resources_table/multi_tab_table";
 import { AnalyticsSummaryRowDisplay, HistoryRowDisplay } from "./constants";
-
-const getFetchJSONAPI = url => {
-  return fetch(url, {
-    method: "GET",
-    headers: JSON_AUTHORIZATION_HEADERS
-  }).then(response => {
-    return response.json();
-  });
-};
+import { getFetchJSONAPI } from "../utils/fetch_utils";
 
 export class SupplementsOverview extends Component {
   constructor(props) {
