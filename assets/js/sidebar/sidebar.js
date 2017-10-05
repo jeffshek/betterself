@@ -52,12 +52,12 @@ const DataSourcesMenu = props => (
 
 const DataSourcesMenuLinks = () => (
   <div>
-    {/*<NavigationLink*/}
-    {/*iconName="icon-calendar"*/}
-    {/*label="Text Reminders"*/}
-    {/*link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}*/}
-    {/*isNew={true}*/}
-    {/*/>*/}
+    <NavigationLink
+      iconName="icon-calendar"
+      label="Text Reminders"
+      link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
+      isNew={true}
+    />
     <NavigationLink
       iconName="icon-list"
       label="Activity Types"
