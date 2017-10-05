@@ -33,7 +33,7 @@ def send_verification_text(phone_number):
     client.messages.create(
         to=phone_number,
         from_=settings.TWILIO_PHONE_NUMBER,
-        body="https://betterself.io - Please verify your number by replying with 'VERIFY'. Thank you!")
+        body="https://betterself.io - Please verify your number by replying with 'VERIFY'. Thanks!")
 
 
 @celery_app.task
@@ -42,14 +42,14 @@ def send_thanks_for_verification_text(phone_number):
     client.messages.create(
         to=phone_number,
         from_=settings.TWILIO_PHONE_NUMBER,
-        body='https://betterself.io - Your phone number has been verified. Thank you!')
+        body='https://betterself.io - Your phone number has been verified. Thanks!')
 
 
 @celery_app.task
 def send_log_confirmation(supplement_event, number):
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     # if only you could send http links prettier in text messages
-    message = "https://betterself.io/dashboard/log/supplements_events/ - Thanks! We've logged your record of {}"\
+    message = "https://betterself.io/dashboard/log/supplements_events/ - We've logged your record of {}. Thanks!"\
         .format(supplement_event.supplement.name)
     client.messages.create(
         to=number,
@@ -80,7 +80,7 @@ def send_text_reminders(beat_time=None):
 def send_supplement_reminder(supplement_reminder_id):
     reminder = SupplementReminder.objects.get(id=supplement_reminder_id)
 
-    reminder_text = 'BetterSelf.io - Daily Reminder to take {} of {}! Thanks! Reply DONE when done!'.format(
+    reminder_text = 'BetterSelf.io - Daily Reminder to take {} of {}! Reply DONE when done!'.format(
         reminder.quantity, reminder.supplement.name)
 
     phone_to_text = reminder.user.userphonenumber.phone_number.as_e164
