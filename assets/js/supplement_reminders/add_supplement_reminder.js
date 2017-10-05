@@ -52,6 +52,7 @@ export class AddSupplementReminderView extends Component {
 
     const reminderUrl = "api/v1/supplement_reminders/";
     postFetchJSONAPI(reminderUrl, postParams).then(responseData => {
+      window.location.reload();
       return responseData;
     });
   }

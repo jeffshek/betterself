@@ -49,6 +49,6 @@ class UserPhoneNumberView(APIView):
         user_phone_number, _ = UserPhoneNumber.objects.update_or_create(user=user, defaults=serializer.data)
         # if the number hasn't been verified, but the user is adding another supplement-reminder
         if not user_phone_number.is_verified:
-            send_verification_text.delay(user_phone_number.phone_number)
+            send_verification_text.delay(user_phone_number.phone_number.as_e164)
 
         return Response(PhoneNumberSerializer(user_phone_number).data)
