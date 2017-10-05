@@ -18,11 +18,11 @@ def verify_phone_number(number):
     # technically, this could sometimes error out if a user deletes his/her account
     # and then decides to reply verify ... but that seems unlikely, instead if there is an error
     # let's see what it is
-    phone_number = UserPhoneNumber.objects.get(phone_number=number)
-    phone_number.is_verified = True
-    phone_number.save()
+    user_phone_number = UserPhoneNumber.objects.get(phone_number=number)
+    user_phone_number.is_verified = True
+    user_phone_number.save()
 
-    send_thanks_for_verification_text.delay(phone_number.as_164)
+    send_thanks_for_verification_text.delay(user_phone_number.phone_number.as_e164)
 
     return Response(status=202)
 
