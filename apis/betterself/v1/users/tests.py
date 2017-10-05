@@ -15,13 +15,15 @@ class TestUserPhoneNumber(TestCase):
         self.url = reverse('api-user-phone-number')
 
     def test_getting_of_phone_number(self):
+        phone_number = '+16175555555'
         client = APIClient()
         client.force_login(self.test_user)
 
-        UserPhoneNumber.objects.create(user=self.test_user, phone_number='+16175555555')
+        UserPhoneNumber.objects.create(user=self.test_user, phone_number=phone_number)
 
         response = client.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['phone_number'], phone_number)
 
     def test_access_of_phone_number_not_auth(self):
         client = APIClient()
@@ -35,16 +37,51 @@ class TestUserPhoneNumber(TestCase):
         response = client.get(self.url)
         self.assertEqual(response.status_code, 204)
 
+    def test_take_someone_else_number(self):
+        original_number = '+6171234567'
+        UserPhoneNumber.objects.create(
+            user=self.test_user, phone_number=original_number, is_verified=True)
+
+        new_user = User.objects.create_user('new-user', 'testpassword')
+        client = APIClient()
+        client.force_login(new_user)
+        details = {
+            'phone_number': original_number
+        }
+        response = client.post(self.url, data=details)
+        self.assertEqual(response.status_code, 400)
+
+    def test_take_someone_else_number_not_verified(self):
+        original_number = '+6171234567'
+        UserPhoneNumber.objects.create(user=self.test_user, phone_number=original_number)
+
+        new_user = User.objects.create_user('new-user', 'testpassword')
+        client = APIClient()
+        client.force_login(new_user)
+        details = {
+            'phone_number': original_number
+        }
+        response = client.post(self.url, data=details)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['phone_number'], original_number)
+
     def test_phone_number_update(self):
         client = APIClient()
         client.force_login(self.test_user)
 
+        original_number = '+6171234567'
+        UserPhoneNumber.objects.create(user=self.test_user, phone_number=original_number)
+        response = client.get(self.url)
+        self.assertEqual(response.data['phone_number'], original_number)
+
+        updated_phone_number = '+16175555555'
         details = {
-            'phone_number': '+16175555555'
+            'phone_number': updated_phone_number
         }
 
         response = client.post(self.url, data=details)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['phone_number'], updated_phone_number)
 
     def test_phone_number_nonsense_update(self):
         client = APIClient()

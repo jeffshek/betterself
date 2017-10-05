@@ -38,6 +38,7 @@ const NavigationLink = props => (
   <li className="nav-item">
     <Link className="nav-link" to={props.link}>
       <i className={props.iconName} /> {props.label}
+      {props.isNew ? <span className="badge badge-info"> NEW</span> : <span />}
     </Link>
   </li>
 );
@@ -51,11 +52,12 @@ const DataSourcesMenu = props => (
 
 const DataSourcesMenuLinks = () => (
   <div>
-    <NavigationLink
-      iconName="icon-calendar"
-      label="Text Reminders"
-      link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
-    />
+    {/*<NavigationLink*/}
+    {/*iconName="icon-calendar"*/}
+    {/*label="Text Reminders"*/}
+    {/*link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}*/}
+    {/*isNew={true}*/}
+    {/*/>*/}
     <NavigationLink
       iconName="icon-list"
       label="Activity Types"
@@ -66,21 +68,6 @@ const DataSourcesMenuLinks = () => (
       label="Supplements"
       link={DASHBOARD_SUPPLEMENTS_URL}
     />
-    {/*<NavigationLink*/}
-    {/*iconName="icon-rocket"*/}
-    {/*label="FitBit"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
-    {/*<NavigationLink*/}
-    {/*iconName="icon-social-github"*/}
-    {/*label="GitHub"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
-    {/*<NavigationLink*/}
-    {/*iconName="icon-target"*/}
-    {/*label="RescueTime"*/}
-    {/*link={DASHBOARD_CHARTS_URL}*/}
-    {/*/>*/}
   </div>
 );
 

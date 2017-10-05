@@ -191,7 +191,10 @@ class DemoHistoricalDataBuilder(object):
 
         return events
 
-    def create_supplement_reminders(self):
+    def create_supplement_reminders(self, limit=None):
         supplements = self.supplements.values()
-        for supplement in supplements:
+        for count, supplement in enumerate(supplements):
+            if limit and count == limit:
+                return
+
             SupplementReminderFactory(supplement=supplement, user=self.user)

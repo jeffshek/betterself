@@ -300,6 +300,15 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
 
         return value
 
+    def validate(self, data):
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+
+        if create_model.objects.filter(user=user).count() >= 5:
+            raise ValidationError('Error: Limit of 5 Supplement Reminders A Day')
+
+        return data
+
     def create(self, validated_data):
         create_model = self.context['view'].model
         user = self.context['request'].user
