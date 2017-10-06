@@ -30,4 +30,9 @@ alias gp='git pull'
 alias ga='git add --all'
 alias gd='git diff'
 alias ls='ls -la'
+alias pack='node_modules/.bin/webpack --watch'
+alias start-honcho='honcho start -f Procfile_local'
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+nvm use 8.6.0

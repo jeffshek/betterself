@@ -95,4 +95,6 @@ local_secret_settings.py
 # output of rescutimetime script
 historical_rescuetime.csv
 
+celerybeat.pid
+
 
