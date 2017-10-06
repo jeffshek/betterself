@@ -11,9 +11,14 @@ export class AddSupplementReminderView extends Component {
     this.state = {
       supplements: null,
       inputDateTime: moment(),
-      phoneNumber: "+16171234567",
+      phoneNumber: null,
       supplementQuantity: 1
     };
+
+    // Really not my proudest work
+    if (localStorage.phoneNumber !== "undefined") {
+      this.state.phoneNumber = localStorage.phoneNumber;
+    }
   }
 
   handleInputChange = event => {
@@ -125,7 +130,7 @@ export class AddSupplementReminderView extends Component {
             {this.renderInputRow(
               "Phone Number To Text +countryPhoneNumber aka +16171234567",
               "phoneNumber",
-              "+16171234567"
+              this.state.phoneNumber
             )}
             <div className="float-right">
               <button

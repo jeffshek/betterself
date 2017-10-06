@@ -21,7 +21,12 @@ export const SupplementReminderTableHeader = () => (
 export const SupplementReminderRow = props => {
   const data = props.object;
   const phoneNumber = data.phone_number;
+
   const { phone_number, is_verified } = phoneNumber;
+
+  // Hack to save people time from multiple entering of his/her number
+  localStorage.phoneNumber = phone_number;
+
   const { supplement, reminder_time, quantity, uuid } = data;
 
   const name = supplement.name;

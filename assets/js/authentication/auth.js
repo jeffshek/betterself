@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter, Redirect } from "react-router-dom";
 import { JSON_HEADERS } from "../constants/requests";
 
 export const Authenticator = {

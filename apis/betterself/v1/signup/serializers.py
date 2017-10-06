@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -7,18 +8,19 @@ from betterself.users.models import TIMEZONE_CHOICES
 User = get_user_model()
 
 
-class CreateUserSerializer(serializers.ModelSerializer):
+class UserDetailsSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=4, max_length=32,
-                                     validators=[UniqueValidator(queryset=User.objects.all())]
-                                     )
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
 
     password = serializers.CharField(min_length=8, max_length=32, write_only=True)
     timezone = serializers.ChoiceField(choices=TIMEZONE_CHOICES, default='US/Eastern')
     supplements = serializers.CharField(max_length=350, default=None)
+    phone_number = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ('uuid', 'username', 'password', 'timezone', 'supplements')
+        fields = ('uuid', 'username', 'password', 'timezone', 'supplements', 'phone_number')
 
     def create(self, validated_data):
         # Override create in this serializer so we can use the function create_user
@@ -30,6 +32,16 @@ class CreateUserSerializer(serializers.ModelSerializer):
         cleaned_supplements = self._clean_supplements(validated_data['supplements'])
         validated_data['supplements'] = cleaned_supplements
         return validated_data
+
+    def get_phone_number(self, user):
+        try:
+            user_phone_number = user.userphonenumber
+        except ObjectDoesNotExist:
+            return
+        else:
+            phone_number = user_phone_number.phone_number
+            phone_number_serialized = phone_number.as_e164
+            return phone_number_serialized
 
     @staticmethod
     def _clean_supplements(supplement_string):

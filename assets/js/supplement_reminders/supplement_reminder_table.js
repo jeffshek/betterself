@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { BaseEventLogTable } from "../resources_table/resource_table";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 import {

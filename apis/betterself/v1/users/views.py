@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 
-from apis.betterself.v1.signup.serializers import CreateUserSerializer
+from apis.betterself.v1.signup.serializers import UserDetailsSerializer
 from apis.betterself.v1.users.serializers import PhoneNumberSerializer
 from apis.twilio.tasks import send_verification_text
 from betterself.users.models import UserPhoneNumber
@@ -12,7 +12,7 @@ from betterself.users.models import UserPhoneNumber
 class UserInfoView(APIView):
     def get(self, request):
         user = request.user
-        return Response(CreateUserSerializer(user).data)
+        return Response(UserDetailsSerializer(user).data)
 
     def delete(self, request):
         user = request.user
