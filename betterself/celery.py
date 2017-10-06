@@ -1,7 +1,8 @@
 from __future__ import absolute_import, unicode_literals
 
-from config.settings.constants import PRODUCTION
 from django.conf import settings
+
+from config.settings.constants import PRODUCTION
 
 if settings.DJANGO_ENVIRONMENT == PRODUCTION:
     import celery
