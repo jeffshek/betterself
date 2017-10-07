@@ -6,18 +6,19 @@ import Datetime from "react-datetime";
 import { TEXT_TIME_FORMAT } from "../constants/dates_and_times";
 
 export class AddSupplementReminderView extends Component {
-  constructor() {
+  constructor(props) {
     super();
+
     this.state = {
       supplements: null,
       inputDateTime: moment(),
-      phoneNumber: null,
+      phoneNumber: "",
       supplementQuantity: 1
     };
 
-    // Really not my proudest work
-    if (localStorage.phoneNumber !== "undefined") {
-      this.state.phoneNumber = localStorage.phoneNumber;
+    const { reminders } = props;
+    if (reminders.length > 0) {
+      this.state["phoneNumber"] = reminders[0].phone_number.phone_number;
     }
   }
 

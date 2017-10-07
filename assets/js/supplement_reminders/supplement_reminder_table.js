@@ -1,23 +1,19 @@
 import React from "react";
 import { BaseEventLogTable } from "../resources_table/resource_table";
-import { getFetchJSONAPI } from "../utils/fetch_utils";
 import {
   SupplementReminderRow,
   SupplementReminderTableHeader
 } from "./constants";
 
 export class SupplementReminderTable extends BaseEventLogTable {
-  constructor() {
+  constructor(props) {
+    const { reminders } = props;
     super();
     this.state = {
-      reminders: null
+      reminders: reminders
     };
 
     this.resourceURL = "/api/v1/supplement_reminders/";
-  }
-
-  componentDidMount() {
-    this.getReminders();
   }
 
   confirmDelete = (uuid, name, reminder_time) => {
@@ -29,13 +25,6 @@ export class SupplementReminderTable extends BaseEventLogTable {
       this.deleteUUID(uuid);
     }
   };
-
-  getReminders() {
-    const url = "api/v1/supplement_reminders/";
-    getFetchJSONAPI(url).then(responseData => {
-      this.setState({ reminders: responseData });
-    });
-  }
 
   renderTable() {
     if (!this.state.reminders) {
