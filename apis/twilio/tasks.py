@@ -93,7 +93,7 @@ def send_supplement_reminder(supplement_reminder_id):
     phone_to_text = reminder.user.userphonenumber.phone_number.as_e164
 
     # autosave prior to sending to client, just in case twilio is down
-    # this would queue up to many things
+    # this would queue up too many things
     reminder.last_sent_reminder_time = get_current_utc_time_and_tz()
     reminder.save()
 

@@ -275,10 +275,10 @@ class SupplementLogRequestParametersSerializer(serializers.Serializer):
 
 class SupplementReminderReadSerializer(serializers.ModelSerializer):
     supplement = SupplementReadSerializer()
-    phone_number = PhoneNumberSerializer(source='user.userphonenumber')
+    phone_number_details = PhoneNumberSerializer(source='user.userphonenumber')
 
     class Meta:
-        fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time', 'phone_number', 'uuid']
+        fields = ['supplement', 'reminder_time', 'quantity', 'last_sent_reminder_time', 'phone_number_details', 'uuid']
         model = SupplementReminder
 
 

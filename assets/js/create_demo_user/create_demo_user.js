@@ -29,4 +29,8 @@ export class CreateDemoUserView extends Component {
         return responseData;
       });
   }
+
+  render() {
+    return <div />;
+  }
 }

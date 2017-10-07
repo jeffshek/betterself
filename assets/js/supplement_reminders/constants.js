@@ -20,12 +20,16 @@ export const SupplementReminderTableHeader = () => (
 
 export const SupplementReminderRow = props => {
   const data = props.object;
-  const phoneNumber = data.phone_number;
+  const phoneNumberDetails = data.phone_number_details;
 
-  const { phone_number, is_verified } = phoneNumber;
-
-  // Hack to save people time from multiple entering of his/her number
-  localStorage.phoneNumber = phone_number;
+  let phoneNumber, isVerified;
+  if (phoneNumberDetails) {
+    phoneNumber = phoneNumberDetails.phone_number;
+    isVerified = phoneNumberDetails.is_verified;
+  } else {
+    phoneNumber = "";
+    isVerified = false;
+  }
 
   const { supplement, reminder_time, quantity, uuid } = data;
 
@@ -44,14 +48,14 @@ export const SupplementReminderRow = props => {
 
   const localTimeFormat = currentTimeParsed.format(TEXT_TIME_FORMAT);
 
-  const renderCheckBox = RenderTrueFalseCheckBox(is_verified);
+  const renderCheckBox = RenderTrueFalseCheckBox(isVerified);
 
   return (
     <tr>
       <td><Link to={supplementOverviewLink}>{name}</Link></td>
       <td>{localTimeFormat}</td>
       <td>{quantity}</td>
-      <td>{phone_number}</td>
+      <td>{phoneNumber}</td>
       <td>{renderCheckBox}</td>
       <td>
         <div className="center-icon">

@@ -18,7 +18,11 @@ export class AddSupplementReminderView extends Component {
 
     const { reminders } = props;
     if (reminders.length > 0) {
-      this.state["phoneNumber"] = reminders[0].phone_number.phone_number;
+      // because you can add a reminder without a phoneNumber
+      if (reminders[0].phone_number_details) {
+        this.state["phoneNumber"] =
+          reminders[0].phone_number_details.phone_number;
+      }
     }
   }
 
