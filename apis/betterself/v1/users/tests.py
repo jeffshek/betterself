@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from betterself.users.models import UserPhoneNumber
+from betterself.users.models import UserPhoneNumberDetails
 
 User = get_user_model()
 
@@ -19,7 +19,7 @@ class TestUserPhoneNumber(TestCase):
         client = APIClient()
         client.force_login(self.test_user)
 
-        UserPhoneNumber.objects.create(user=self.test_user, phone_number=phone_number)
+        UserPhoneNumberDetails.objects.create(user=self.test_user, phone_number=phone_number)
 
         response = client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -39,7 +39,7 @@ class TestUserPhoneNumber(TestCase):
 
     def test_take_someone_else_number(self):
         original_number = '+6171234567'
-        UserPhoneNumber.objects.create(
+        UserPhoneNumberDetails.objects.create(
             user=self.test_user, phone_number=original_number, is_verified=True)
 
         new_user = User.objects.create_user('new-user', 'testpassword')
@@ -53,7 +53,7 @@ class TestUserPhoneNumber(TestCase):
 
     def test_take_someone_else_number_not_verified(self):
         original_number = '+6171234567'
-        UserPhoneNumber.objects.create(user=self.test_user, phone_number=original_number)
+        UserPhoneNumberDetails.objects.create(user=self.test_user, phone_number=original_number)
 
         new_user = User.objects.create_user('new-user', 'testpassword')
         client = APIClient()
@@ -70,7 +70,7 @@ class TestUserPhoneNumber(TestCase):
         client.force_login(self.test_user)
 
         original_number = '+6171234567'
-        UserPhoneNumber.objects.create(user=self.test_user, phone_number=original_number)
+        UserPhoneNumberDetails.objects.create(user=self.test_user, phone_number=original_number)
         response = client.get(self.url)
         self.assertEqual(response.data['phone_number'], original_number)
 

@@ -6,14 +6,24 @@ import Datetime from "react-datetime";
 import { TEXT_TIME_FORMAT } from "../constants/dates_and_times";
 
 export class AddSupplementReminderView extends Component {
-  constructor() {
+  constructor(props) {
     super();
+
     this.state = {
       supplements: null,
       inputDateTime: moment(),
-      phoneNumber: "+16171234567",
+      phoneNumber: "",
       supplementQuantity: 1
     };
+
+    const { reminders } = props;
+    if (reminders.length > 0) {
+      // because you can add a reminder without a phoneNumber
+      if (reminders[0].phone_number_details) {
+        this.state["phoneNumber"] =
+          reminders[0].phone_number_details.phone_number;
+      }
+    }
   }
 
   handleInputChange = event => {
@@ -125,7 +135,7 @@ export class AddSupplementReminderView extends Component {
             {this.renderInputRow(
               "Phone Number To Text +countryPhoneNumber aka +16171234567",
               "phoneNumber",
-              "+16171234567"
+              this.state.phoneNumber
             )}
             <div className="float-right">
               <button

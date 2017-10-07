@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
-from apis.betterself.v1.signup.serializers import CreateUserSerializer
+from apis.betterself.v1.signup.serializers import UserDetailsSerializer
 from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
 from config.settings.constants import TESTING
@@ -23,7 +23,7 @@ class CreateUserView(APIView):
     permission_classes = ()
 
     def post(self, request):
-        serializer = CreateUserSerializer(data=request.data)
+        serializer = UserDetailsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         # Per some signups, custom supplements are pre-filled for custom users
@@ -71,7 +71,7 @@ class CreateDemoUserView(APIView):
             last_demo_log = DemoUserLog.objects.all().order_by('created').last()
             user = last_demo_log.user
 
-        serializer = CreateUserSerializer(instance=user)
+        serializer = UserDetailsSerializer(instance=user)
         response = serializer.data
 
         token, _ = Token.objects.get_or_create(user=user)

@@ -77,3 +77,7 @@ LOGGING = {
         },
     },
 }
+
+# now celery tasks autorun -- so ... write unit tests for your celery tasks.
+# TODO - Do this and do it well
+# CELERY_TASK_ALWAYS_EAGER = True

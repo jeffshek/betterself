@@ -25,13 +25,16 @@ factory-boy==2.9.2
 Faker==0.7.18
 fitbit==0.3.0
 honcho==1.0.1
+httplib2==0.10.3
 ipython==4.2
 kombu==4.1.0
+MagicMock==0.3
 Markdown==2.6.8
 numpy==1.13.1
 oauthlib==2.0.2
 openpyxl==2.4.8
 pandas==0.20.3
+patch==1.16
 patsy==0.4.1
 phonenumberslite==8.8.2
 Pillow==3.2.0

@@ -70,6 +70,8 @@ def send_text_reminders(beat_time=None):
     if end_time.hour == 0:
         queryset = queryset.filter(reminder_time__gte=start_time)
     else:
+        # if you don't do this, if someone puts a time that's before the current
+        # hour/minute, it'll automatically send a first text, which seems silly
         queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
 
     # if a text was already sent today, shouldn't do it again
@@ -88,12 +90,14 @@ def send_supplement_reminder(supplement_reminder_id):
         reminder.quantity, reminder.supplement.name)
 
     phone_to_text = reminder.user.userphonenumber.phone_number.as_e164
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
+    # autosave prior to sending to client, just in case twilio is down
+    # this would queue up too many things
+    reminder.last_sent_reminder_time = get_current_utc_time_and_tz()
+    reminder.save()
+
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     client.messages.create(
         to=phone_to_text,
         from_=settings.TWILIO_PHONE_NUMBER,
         body=reminder_text)
-
-    reminder.last_sent_reminder_time = get_current_utc_time_and_tz()
-    reminder.save()
