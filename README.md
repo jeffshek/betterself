@@ -2,6 +2,7 @@
 ![MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Travis](https://travis-ci.org/jeffshek/betterself.svg?branch=master)
 ![CookieCutter](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg)
+![PyUp](https://img.shields.io/pypi/v/pyupio.svg)
 
 BetterSelf - Your Body's Dashboard
 ==============================
