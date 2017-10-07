@@ -72,6 +72,10 @@ def send_text_reminders(beat_time=None):
     else:
         queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
 
+    # if a text was already sent today, shouldn't do it again
+    date_today = get_current_utc_time_and_tz()
+    queryset = queryset.exclude(last_sent_reminder_time__date=date_today)
+
     for result in queryset:
         send_supplement_reminder.delay(result.id)
 
