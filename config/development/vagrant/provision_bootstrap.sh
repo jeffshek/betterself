@@ -25,6 +25,7 @@ apt-get install redis-tools redis-server -y
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+nvm install 8.6.0
 
 if ! command -v psql; then
     apt-get install -y postgresql
