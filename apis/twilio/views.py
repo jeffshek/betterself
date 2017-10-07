@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apis.twilio.tasks import send_log_confirmation, send_thanks_for_verification_text
-from betterself.users.models import UserPhoneNumber
+from betterself.users.models import UserPhoneNumberDetails
 from betterself.utils.date_utils import get_current_utc_time_and_tz
 from events.models import SupplementReminder, SupplementEvent, TEXT_MSG_SOURCE
 
@@ -18,7 +18,7 @@ def verify_phone_number(number):
     # technically, this could sometimes error out if a user deletes his/her account
     # and then decides to reply verify ... but that seems unlikely, instead if there is an error
     # let's see what it is
-    user_phone_number = UserPhoneNumber.objects.get(phone_number=number)
+    user_phone_number = UserPhoneNumberDetails.objects.get(phone_number=number)
     user_phone_number.is_verified = True
     user_phone_number.save()
 
@@ -30,7 +30,7 @@ def verify_phone_number(number):
 def log_supplement_event(number):
     try:
         # no spoofing
-        user = UserPhoneNumber.objects.get(phone_number=number, is_verified=True).user
+        user = UserPhoneNumberDetails.objects.get(phone_number=number, is_verified=True).user
     except ObjectDoesNotExist:
         logger.exception('Could Not Find {}'.format(number))
         return Response(status=404)

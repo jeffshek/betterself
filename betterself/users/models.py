@@ -49,7 +49,7 @@ class DemoUserLog(BaseModel):
         return self.user.username
 
 
-class UserPhoneNumber(BaseModel):
+class UserPhoneNumberDetails(BaseModel):
     user = models.OneToOneField(User, unique=True)
     phone_number = PhoneNumberField(unique=True)
     is_verified = models.BooleanField(default=False)

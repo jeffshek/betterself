@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from apis.betterself.v1.signup.serializers import UserDetailsSerializer
-from betterself.users.models import UserPhoneNumber
+from betterself.users.models import UserPhoneNumberDetails
 
 User = get_user_model()
 
@@ -30,7 +30,7 @@ class TestUserSerializer(TestCase):
 
     def test_user_details_serializer_with_phone_number(self):
         good_number = '+16171234567'
-        UserPhoneNumber.objects.create(user=self.default_user, phone_number=good_number)
+        UserPhoneNumberDetails.objects.create(user=self.default_user, phone_number=good_number)
         serializer = UserDetailsSerializer(self.default_user)
 
         data = serializer.data

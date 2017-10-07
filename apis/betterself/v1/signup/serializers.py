@@ -35,7 +35,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     def get_phone_number(self, user):
         try:
-            user_phone_number = user.userphonenumber
+            user_phone_number = user.userphonenumberdetails
         except ObjectDoesNotExist:
             return
         else:

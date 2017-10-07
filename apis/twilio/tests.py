@@ -8,7 +8,7 @@ from django.test import TestCase
 from apis.twilio.tasks import get_start_time_interval_from_beat_time, \
     get_end_time_interval_from_beat_time
 from apis.twilio.views import verify_phone_number, log_supplement_event
-from betterself.users.models import UserPhoneNumber
+from betterself.users.models import UserPhoneNumberDetails
 from events.models import SupplementReminder, SupplementEvent
 from supplements.models import Supplement
 
@@ -22,7 +22,7 @@ class TestTwilioVerifies(TestCase):
 
     def test_twilio_verifies(self):
         valid_phone_number = '+16175231234'
-        instance = UserPhoneNumber.objects.create(user=self.test_user, phone_number=valid_phone_number)
+        instance = UserPhoneNumberDetails.objects.create(user=self.test_user, phone_number=valid_phone_number)
         verify_phone_number(valid_phone_number)
 
         instance.refresh_from_db()
@@ -30,7 +30,7 @@ class TestTwilioVerifies(TestCase):
 
     def test_twilio_wont_verify(self):
         valid_phone_number = '+16175231234'
-        UserPhoneNumber.objects.create(user=self.test_user, phone_number=valid_phone_number)
+        UserPhoneNumberDetails.objects.create(user=self.test_user, phone_number=valid_phone_number)
 
         with self.assertRaises(ObjectDoesNotExist):
             verify_phone_number('1234')
@@ -44,7 +44,7 @@ class TestTwilioLogsEvents(TestCase):
 
         # create a supplement
         supplement = Supplement.objects.create(user=cls.test_user, name='Twilio')
-        UserPhoneNumber.objects.create(user=cls.test_user, phone_number=cls.valid_phone_number, is_verified=True)
+        UserPhoneNumberDetails.objects.create(user=cls.test_user, phone_number=cls.valid_phone_number, is_verified=True)
         last_sent = datetime.datetime(2017, 1, 1, tzinfo=pytz.UTC)
         reminder_time = datetime.time(10, 11)
         SupplementReminder.objects.create(
