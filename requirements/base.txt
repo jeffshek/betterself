@@ -5,7 +5,7 @@ celery==4.1.0
 contextlib2==0.5.5
 coverage==4.4.1
 cython==0.27.1
-django==1.11.3
+django==1.11.6
 django-allauth==0.32.0
 django-autoslug==1.9.3
 django-braces==1.11.0
