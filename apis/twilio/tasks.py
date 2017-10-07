@@ -65,7 +65,7 @@ def send_text_reminders(beat_time=None):
     start_time = get_start_time_interval_from_beat_time(beat_time)
     end_time = get_end_time_interval_from_beat_time(beat_time)
 
-    queryset = SupplementReminder.objects.filter(user__userphonenumber__is_verified=True)
+    queryset = SupplementReminder.objects.filter(user__userphonenumberdetails__is_verified=True)
     # if the end_time is tomorrow, then we just want everything past 11:55
     if end_time.hour == 0:
         queryset = queryset.filter(reminder_time__gte=start_time)
@@ -89,7 +89,7 @@ def send_supplement_reminder(supplement_reminder_id):
     reminder_text = 'BetterSelf.io - Daily Reminder to take {} of {}! Reply DONE when done!'.format(
         reminder.quantity, reminder.supplement.name)
 
-    phone_to_text = reminder.user.userphonenumber.phone_number.as_e164
+    phone_to_text = reminder.user.userphonenumberdetails.phone_number.as_e164
 
     # autosave prior to sending to client, just in case twilio is down
     # this would queue up too many things
