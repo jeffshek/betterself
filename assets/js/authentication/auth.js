@@ -23,14 +23,16 @@ export const Authenticator = {
     });
   },
 
+  redirectHome() {
+    window.location.assign("/");
+  },
+
   logout(cb) {
     delete localStorage.token;
     delete localStorage.userName;
     this.isAuthenticated = false;
     setTimeout(cb, 100);
-
-    // This is pretty subpar, but there's a few CSS issues I need to work out
-    window.location.assign("/");
+    setTimeout(this.redirectHome, 500);
   },
 
   getToken(username, pass, cb) {
