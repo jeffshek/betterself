@@ -3,14 +3,6 @@ import { Nav, NavItem, NavLink } from "reactstrap";
 import PropTypes from "prop-types";
 
 export class MultiTabTableView extends Component {
-  static propTypes = {
-    tableData: PropTypes.array.isRequired,
-    tableNavTabs: PropTypes.array.isRequired,
-    tableRowRenderer: PropTypes.func.isRequired,
-    tableColumnHeaders: PropTypes.array.isRequired,
-    tableName: PropTypes.string.isRequired
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -90,3 +82,11 @@ export class MultiTabTableView extends Component {
     );
   }
 }
+
+MultiTabTableView.propTypes = {
+  tableData: PropTypes.array.isRequired,
+  tableNavTabs: PropTypes.array.isRequired,
+  tableRowRenderer: PropTypes.func.isRequired,
+  tableColumnHeaders: PropTypes.array.isRequired,
+  tableName: PropTypes.string.isRequired
+};
