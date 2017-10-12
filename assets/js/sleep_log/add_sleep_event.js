@@ -76,7 +76,7 @@ export class AddSleepEvent extends Component {
       .then(response => {
         if (!response.ok) {
           alert(
-            "Input Error!\n\nCheck that end date is after the start date and for overlapping periods."
+            "Input Error!\n\nCheck that end date is after the start date OR for overlapping periods."
           );
         }
         return response.json();

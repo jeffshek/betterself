@@ -234,8 +234,16 @@ class SleepActivityCreateSerializer(serializers.Serializer):
         """
         Check that start_end/end_times are valid
         """
-        if data['start_time'] > data['end_time']:
+        if data['start_time'] >= data['end_time']:
             raise serializers.ValidationError('End time must occur after start')
+
+        create_model = self.context['view'].model
+        user = self.context['request'].user
+        start_time = data['start_time']
+        end_time = data['end_time']
+
+        if create_model.objects.filter(user=user).filter(end_time__gte=start_time, start_time__lte=end_time).exists():
+            raise ValidationError('Overlapping Periods Found')
 
         return data
 

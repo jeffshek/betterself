@@ -7,12 +7,9 @@ from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework import serializers
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
-from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
-from apis.betterself.v1.events.serializers import valid_daily_max_minutes
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
@@ -20,6 +17,7 @@ from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMi
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_current_date_months_ago
+from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
@@ -30,22 +28,6 @@ from supplements.models import Supplement
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 User = get_user_model()
-
-
-# python manage.py test apis.betterself.v1.events.tests
-
-class TestSerializerUtils(TestCase):
-    @staticmethod
-    def test_regular_max_minutes():
-        valid_daily_max_minutes(600)
-
-    def test_more_than_daily_max_minutes(self):
-        with self.assertRaises(serializers.ValidationError):
-            valid_daily_max_minutes(3601)
-
-    def test_less_than_zero_max_minutes(self):
-        with self.assertRaises(serializers.ValidationError):
-            valid_daily_max_minutes(-50)
 
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
@@ -226,16 +208,6 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
     TEST_MODEL = SleepActivity
     PAGINATION = True
 
-    def setUp(self):
-        start_time = datetime.datetime.utcnow() - relativedelta(hours=8)
-        self.DEFAULT_POST_PARAMS = {
-            'start_time': start_time.isoformat(),
-            'end_time': datetime.datetime.utcnow().isoformat(),
-            'source': 'api',
-        }
-
-        super().setUp()
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -249,6 +221,33 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
         end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
         SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
 
+    def setUp(self):
+        start_time = datetime.datetime.utcnow() - relativedelta(hours=8)
+        self.DEFAULT_POST_PARAMS = {
+            'start_time': start_time.isoformat(),
+            'end_time': datetime.datetime.utcnow().isoformat(),
+            'source': 'api',
+        }
+
+        super().setUp()
+
+    def test_post_request(self):
+        post_parameters = self.DEFAULT_POST_PARAMS
+
+        # multiple users should be able to create the same object
+        request = self._make_post_request(self.client_1, post_parameters)
+        self.assertEqual(request.status_code, 201, request.data)
+
+        second_request = self._make_post_request(self.client_2, post_parameters)
+        self.assertEqual(second_request.status_code, 201, second_request.data)
+
+        # # now let's make sure that different users should be accessing different objects
+        client_1_objects_count = self.TEST_MODEL.objects.filter(user=self.user_1).count()
+        client_2_objects_count = self.TEST_MODEL.objects.filter(user=self.user_2).count()
+
+        self.assertTrue(client_1_objects_count > 0)
+        self.assertTrue(client_2_objects_count > 0)
+
     def test_valid_get_request_for_key_in_response(self):
         key = 'start_time'
         super().test_valid_get_request_for_key_in_response(key)
@@ -259,6 +258,65 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
 
         request_parameters = {'end_time': end_time_iso}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+    def test_post_with_invalid_time_returns_400(self):
+        """ in here the start_time is equivalent to end_time which is a no no """
+        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time_iso = end_time.isoformat()
+        start_time_iso = end_time.isoformat()
+
+        request_parameters = {
+            'start_time': start_time_iso,
+            'end_time': end_time_iso
+        }
+
+        response = self._make_post_request(self.client_1, request_parameters)
+        self.assertEqual(response.status_code, 400)
+
+    def test_post_with_invalid_start_time_returns_400(self):
+        """ in here the start_time is after the end_time which is a no no """
+        start_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time_iso = end_time.isoformat()
+        start_time_iso = start_time.isoformat()
+
+        request_parameters = {
+            'start_time': start_time_iso,
+            'end_time': end_time_iso
+        }
+
+        response = self._make_post_request(self.client_1, request_parameters)
+        self.assertEqual(response.status_code, 400, response.data)
+
+    def test_post_with_valid_time_returns_200(self):
+        start_time = datetime.datetime(2017, 12, 1, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time = datetime.datetime(2017, 12, 2, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time_iso = end_time.isoformat()
+        start_time_iso = start_time.isoformat()
+
+        request_parameters = {
+            'start_time': start_time_iso,
+            'end_time': end_time_iso,
+            'source': 'api'
+        }
+
+        response = self._make_post_request(self.client_1, request_parameters)
+        self.assertEqual(response.status_code, 201, response.data)
+
+    def test_post_with_overlapping_valid_time_returns_400(self):
+        start_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=datetime.timezone.utc).astimezone()
+        end_time_iso = end_time.isoformat()
+        start_time_iso = start_time.isoformat()
+
+        request_parameters = {
+            'start_time': start_time_iso,
+            'end_time': end_time_iso,
+            'source': 'api'
+        }
+
+        response = self._make_post_request(self.client_1, request_parameters)
+        self.assertEqual(response.status_code, 400, response.data)
 
 
 class TestAggregateProductivityViews(TestCase):
