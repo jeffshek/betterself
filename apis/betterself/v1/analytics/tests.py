@@ -1,13 +1,16 @@
 import math
+
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
-from apis.betterself.v1.events.tests import User
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
 from supplements.models import Supplement
+
+User = get_user_model()
 
 
 class BaseSupplementAnalyticsTests(TestCase):
