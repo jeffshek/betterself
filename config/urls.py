@@ -16,6 +16,7 @@ urlpatterns = [
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, include(admin.site.urls)),
+    url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
 
     # User Management
     url(r'^users/', include('betterself.users.urls', namespace='users')),
