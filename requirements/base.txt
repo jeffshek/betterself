@@ -48,7 +48,7 @@ redis==2.10.6
 requests==2.18.4
 requests-oauthlib==0.8.0
 scipy==0.19.1
-setuptools==36.5.0
+setuptools==36.6.0
 simplejson==3.11.1
 sqlparse==0.2.4
 twilio==6.7.1
