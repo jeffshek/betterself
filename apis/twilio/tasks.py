@@ -33,7 +33,7 @@ def send_verification_text(phone_number):
     client.messages.create(
         to=phone_number,
         from_=settings.TWILIO_PHONE_NUMBER,
-        body="https://betterself.io - Please verify your number by replying with 'VERIFY'. Thanks!")
+        body="BetterSelf.io - Please verify your number by replying with 'VERIFY'. Thanks!")
 
 
 @celery_app.task
@@ -42,14 +42,14 @@ def send_thanks_for_verification_text(phone_number):
     client.messages.create(
         to=phone_number,
         from_=settings.TWILIO_PHONE_NUMBER,
-        body='https://betterself.io - Your phone number has been verified. Thanks!')
+        body='BetterSelf.io - Your phone number has been verified. Thanks!')
 
 
 @celery_app.task
 def send_log_confirmation(supplement_event, number):
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     # if only you could send http links prettier in text messages
-    message = "https://betterself.io/dashboard/log/supplements_events/ - We've logged your record of {}. Thanks!"\
+    message = "BetterSelf.io/dashboard/log/supplements_events/ - We've logged your record of {}. Thanks!"\
         .format(supplement_event.supplement.name)
     client.messages.create(
         to=number,
