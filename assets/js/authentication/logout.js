@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Link, Redirect, withRouter } from "react-router-dom";
 
 import { Authenticator } from "./auth";
