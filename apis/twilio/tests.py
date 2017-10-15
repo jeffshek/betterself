@@ -9,7 +9,7 @@ from apis.twilio.tasks import get_start_time_interval_from_beat_time, \
     get_end_time_interval_from_beat_time
 from apis.twilio.views import verify_phone_number, log_supplement_event
 from betterself.users.models import UserPhoneNumberDetails
-from events.models import SupplementReminder, SupplementEvent
+from events.models import SupplementReminder, SupplementLog
 from supplements.models import Supplement
 
 User = get_user_model()
@@ -55,11 +55,11 @@ class TestTwilioLogsEvents(TestCase):
         super().setUpTestData()
 
     def test_supplement(self):
-        self.assertEqual(SupplementEvent.objects.count(), 0)
+        self.assertEqual(SupplementLog.objects.count(), 0)
 
         log_supplement_event(self.valid_phone_number)
 
-        self.assertEqual(SupplementEvent.objects.count(), 1)
+        self.assertEqual(SupplementLog.objects.count(), 1)
 
 
 class TestTimeRounding(TestCase):

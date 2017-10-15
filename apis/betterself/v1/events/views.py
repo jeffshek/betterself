@@ -21,13 +21,13 @@ from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
     update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SupplementReminder, \
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SupplementReminder, \
     SleepLog
 from supplements.models import Supplement
 
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
-    model = SupplementEvent
+    model = SupplementLog
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateUpdateSerializer
     update_serializer_class = SupplementEventCreateUpdateSerializer
@@ -126,7 +126,7 @@ class SupplementLogListView(APIView):
         start_date = params['start_date']
         end_date = get_current_userdate(user)
 
-        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementLog.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
 
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':
@@ -178,7 +178,7 @@ class AggregatedSupplementLogView(APIView):
         start_date = params['start_date']
         end_date = get_current_userdate(user)
 
-        supplement_events = SupplementEvent.objects.filter(
+        supplement_events = SupplementLog.objects.filter(
             user=user, supplement=supplement, time__date__gte=start_date, time__date__lte=end_date)
 
         # no point if nothing exists

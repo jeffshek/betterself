@@ -21,7 +21,7 @@ from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
@@ -32,7 +32,7 @@ User = get_user_model()
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
-    TEST_MODEL = SupplementEvent
+    TEST_MODEL = SupplementLog
     PAGINATION = True
 
     def setUp(self):
@@ -66,7 +66,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
         response = self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
         uuid = response.data['uuid']
-        event = SupplementEvent.objects.get(uuid=uuid)
+        event = SupplementLog.objects.get(uuid=uuid)
 
         event_time = event.time
         self.assertEqual(params_time.microsecond, event_time.microsecond)
@@ -462,7 +462,7 @@ class TestSupplementLogsViews(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-        supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
+        supplement_events_value_query = SupplementLog.objects.filter(user=self.default_user,
             supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
@@ -489,7 +489,7 @@ class TestSupplementLogsViews(TestCase):
         response_no_aggregation = self.client.get(self.url, data={'frequency': None})
 
         # now filter with parameters between the start and end times
-        queryset = SupplementEvent.objects.filter(user=self.default_user).order_by('time')
+        queryset = SupplementLog.objects.filter(user=self.default_user).order_by('time')
         start_date = queryset.first().time.date()
         end_date = queryset.last().time.date()
 
@@ -538,7 +538,7 @@ class TestSupplementLogsViews(TestCase):
 
     def test_supplement_log_on_supplement_with_no_events(self):
         # delete all the supplements
-        SupplementEvent.objects.filter(supplement=self.supplement).delete()
+        SupplementLog.objects.filter(supplement=self.supplement).delete()
         response = self.client.get(self.url, data={'frequency': 'daily'})
 
         self.assertEqual(response.status_code, 200)
@@ -587,7 +587,7 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_monthly_view_no_supplement_logs(self):
-        SupplementEvent.objects.filter(user=self.default_user).delete()
+        SupplementLog.objects.filter(user=self.default_user).delete()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 

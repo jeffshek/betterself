@@ -8,7 +8,7 @@ from django.utils import timezone
 from apis.betterself.v1.signup.fixtures.factories import SupplementReminderFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
-from events.models import DailyProductivityLog, SleepLog, UserActivityLog, SupplementEvent, UserActivity
+from events.models import DailyProductivityLog, SleepLog, UserActivityLog, SupplementLog, UserActivity
 from supplements.models import Supplement
 
 
@@ -128,11 +128,11 @@ class DemoHistoricalDataBuilder(object):
             for supplement_name, supplement_details in SUPPLEMENTS_FIXTURES.items():
                 supplement = self.supplements[supplement_name]
 
-                supplement_events = self.build_events(supplement, supplement_details, timestamp, SupplementEvent)
+                supplement_events = self.build_events(supplement, supplement_details, timestamp, SupplementLog)
                 supplement_logs_bulk_create.extend(supplement_events)
 
         UserActivityLog.objects.bulk_create(user_activities_bulk_create)
-        SupplementEvent.objects.bulk_create(supplement_logs_bulk_create)
+        SupplementLog.objects.bulk_create(supplement_logs_bulk_create)
 
         # calculate how much sleep from a random normal distribution
         # and how supplements would impact it
@@ -176,7 +176,7 @@ class DemoHistoricalDataBuilder(object):
 
             if event_type == UserActivityLog:
                 event = event_type(user=self.user, user_activity=parent_event_key, time=random_time)
-            elif event_type == SupplementEvent:
+            elif event_type == SupplementLog:
                 event = event_type(user=self.user, supplement=parent_event_key, time=random_time, quantity=1)
             else:
                 raise Exception

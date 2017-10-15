@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from apis.twilio.tasks import send_log_confirmation, send_thanks_for_verification_text
 from betterself.users.models import UserPhoneNumberDetails
 from betterself.utils.date_utils import get_current_utc_time_and_tz
-from events.models import SupplementReminder, SupplementEvent, TEXT_MSG_SOURCE
+from events.models import SupplementReminder, SupplementLog, TEXT_MSG_SOURCE
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def log_supplement_event(number):
 
     supplement_reminder = SupplementReminder.objects.filter(user=user).order_by('last_sent_reminder_time').last()
 
-    supplement_log = SupplementEvent.objects.create(
+    supplement_log = SupplementLog.objects.create(
         supplement=supplement_reminder.supplement,
         source=TEXT_MSG_SOURCE,
         quantity=supplement_reminder.quantity,

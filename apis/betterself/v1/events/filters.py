@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from events.models import SupplementEvent, UserActivity, UserActivityLog, SleepLog, DailyProductivityLog
+from events.models import SupplementLog, UserActivity, UserActivityLog, SleepLog, DailyProductivityLog
 
 
 class SupplementEventFilter(FilterSet):
@@ -10,7 +10,7 @@ class SupplementEventFilter(FilterSet):
     end_time = django_filters.IsoDateTimeFilter(name='time', lookup_expr='lte')
 
     class Meta:
-        model = SupplementEvent
+        model = SupplementLog
         fields = [
             'supplement_uuid',
             'quantity',

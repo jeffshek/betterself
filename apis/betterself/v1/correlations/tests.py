@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SupplementEvent, DailyProductivityLog
+from events.models import SupplementLog, DailyProductivityLog
 from supplements.models import Supplement
 
 User = get_user_model()
@@ -69,7 +69,7 @@ class ProductivitySupplementsCorrelationsTests(BaseCorrelationsTestCase, BaseCor
         # don't include the productivity driver since that's not a supplement
         supplements_in_response = supplements_in_response[1:]
 
-        user_supplements_ids = SupplementEvent.objects.filter(user=self.user).values_list('supplement_id', flat=True)
+        user_supplements_ids = SupplementLog.objects.filter(user=self.user).values_list('supplement_id', flat=True)
         user_supplements_ids = set(user_supplements_ids)
         # the user filter is just for safe keeping, shouldn't really be necessary
         user_supplements = Supplement.objects.filter(

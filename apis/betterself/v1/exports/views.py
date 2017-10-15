@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SupplementEvent, SleepLog, UserActivityLog, DailyProductivityLog
+from events.models import SupplementLog, SleepLog, UserActivityLog, DailyProductivityLog
 
 
 class UserExportAllData(APIView):
@@ -32,7 +32,7 @@ class UserExportAllData(APIView):
 
         # supplement events
         supplement_events_worksheet_name = 'SupplementEvents'
-        supplement_events = SupplementEvent.objects.filter(user=user)
+        supplement_events = SupplementLog.objects.filter(user=user)
         df_builder = SupplementEventsDataframeBuilder(supplement_events)
         supplement_events_df = df_builder.get_flat_daily_dataframe()
         self._write_to_workbook(writer, supplement_events_df, supplement_events_worksheet_name)

@@ -4,7 +4,7 @@ import pytz
 
 from faker import Faker
 
-from events.models import SupplementEvent, UserActivity, UserActivityLog, SupplementReminder
+from events.models import SupplementLog, UserActivity, UserActivityLog, SupplementReminder
 from supplements.models import Supplement
 
 fake = Faker()
@@ -27,7 +27,7 @@ class DemoSupplementEventFactory(factory.django.DjangoModelFactory):
     time = datetime.datetime.now()
 
     class Meta:
-        model = SupplementEvent
+        model = SupplementLog
         exclude = ('name',)
 
 

@@ -6,7 +6,7 @@ from django.db.models import Q
 from numpy import dtype
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
-from events.models import SupplementEvent, DailyProductivityLog, UserActivityLog, UserActivity
+from events.models import SupplementLog, DailyProductivityLog, UserActivityLog, UserActivity
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
@@ -89,7 +89,7 @@ class ExcelFileSerializer(object):
 class ExcelSupplementFileSerializer(ExcelFileSerializer):
     """Take a raw historical excel of supplements, clean and save it"""
 
-    TEMPLATE_SAVE_MODEL = SupplementEvent
+    TEMPLATE_SAVE_MODEL = SupplementLog
     SUPPLEMENT_UUID_CACHE = {}  # use it to match any supplement_name to a product
     source = 'user_excel'
 
@@ -195,7 +195,7 @@ class ExcelSupplementFileSerializer(ExcelFileSerializer):
                     'quantity': quantity
                 }
 
-                self.adapter.get_or_create_resource(SupplementEvent, supplement_event_parameters)
+                self.adapter.get_or_create_resource(SupplementLog, supplement_event_parameters)
 
 
 class ExcelProductiveFileSerializer(ExcelFileSerializer):

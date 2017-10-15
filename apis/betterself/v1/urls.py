@@ -14,7 +14,7 @@ from apis.betterself.v1.supplements.views import VendorView, IngredientCompositi
     IngredientView, MeasurementView, SupplementsListView
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
@@ -38,8 +38,8 @@ urlpatterns = [
     url(r'^{0}/$'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view(), name=Measurement.RESOURCE_NAME),
     url(r'^{0}/$'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view(),
         name=IngredientComposition.RESOURCE_NAME),
-    url(r'^{0}/$'.format(SupplementEvent.RESOURCE_NAME), SupplementEventView.as_view(),
-        name=SupplementEvent.RESOURCE_NAME),
+    url(r'^{0}/$'.format(SupplementLog.RESOURCE_NAME), SupplementEventView.as_view(),
+        name=SupplementLog.RESOURCE_NAME),
     url(r'^{0}/'.format(DailyProductivityLog.RESOURCE_NAME),
         include([
             url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
