@@ -373,10 +373,11 @@ class TestAggregateProductivityViews(TestCase):
     def test_that_rolling_window_of_one_works(self):
         five_days_ago = get_current_date_days_ago(5)
         reported_very_productive_value = 0
+        cumulative_window = 1
 
         params = {
             'start_date': five_days_ago.isoformat(),
-            'cumulative_window': 1,
+            'cumulative_window': cumulative_window,
         }
         response = self.client.get(self.url, data=params)
         for k, v in response.data.items():
@@ -393,11 +394,12 @@ class TestAggregateProductivityViews(TestCase):
         six_days_ago = get_current_date_days_ago(6)
         five_days_ago = get_current_date_days_ago(5)
         reported_very_productive_value = 0
+        cumulative_window = 2
 
         # if rolling by 2, you expect the sum to be the 5th and 6th day combined
         params = {
             'start_date': six_days_ago.isoformat(),
-            'cumulative_window': 2,
+            'cumulative_window': cumulative_window,
         }
         response = self.client.get(self.url, data=params)
 
