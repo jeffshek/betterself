@@ -1,7 +1,8 @@
 import datetime
 import json
-
 import pandas as pd
+from dateutil import relativedelta
+
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -68,7 +69,10 @@ class ProductivityLogAggregatesView(APIView):
         query_cumulative_window = query_params['cumulative_window']
         complete_date_range_in_daily_frequency = query_params['complete_date_range_in_daily_frequency']
 
-        productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=query_start_date)
+        # if this is a cumulative window, we want to look back even further when filtering
+        log_filter_date = query_start_date - relativedelta.relativedelta(days=query_cumulative_window)
+
+        productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=log_filter_date)
 
         # data is consumed by front-end, so don't rename columns
         dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)
@@ -79,6 +83,9 @@ class ProductivityLogAggregatesView(APIView):
 
         # sum up the history by how many days as the window specifies
         results = results.rolling(window=query_cumulative_window, min_periods=1).sum()
+
+        # because rolling windows need to look back further to sum, this timeseries has extra dates
+        results = results[query_start_date:]
 
         if complete_date_range_in_daily_frequency:
             results = force_start_end_data_to_dataframe(user, results, query_start_date, datetime.date.today())
@@ -162,7 +169,7 @@ class SupplementReminderView(ListCreateAPIView, ReadOrWriteSerializerChooser, UU
 
 
 class AggregatedSupplementLogView(APIView):
-    # TODO - Refactor all of this after Twilio integration!
+    # TODO - Refactor all of this after Twilio integration! Wow, this view sucks
     """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
 
     def get(self, request, supplement_uuid):
