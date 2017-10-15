@@ -51,7 +51,7 @@ mkvirtualenv betterself --python=/usr/bin/python3
 
 workon betterself
 
-nvm install 8.6.0
+nvm install 6.11.4
 
 pip install --upgrade setuptools
 
