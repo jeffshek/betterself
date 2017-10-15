@@ -40,7 +40,8 @@ THIRD_PARTY_APPS = (
     'webpack_loader',
     'django_filters',
     'phonenumber_field',
-    'django_celery_beat'
+    'django_celery_beat',
+    'admin_honeypot',
 )
 
 # Apps specific for this project go here.
@@ -229,7 +230,9 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
-ADMIN_URL = r'^admin/'
+# this url is changed to prevent bots looking for /admins urls
+# obviously since this is open-sourced, everyone knows what the actual admin url is
+ADMIN_URL = r'^potato/'
 
 REST_FRAMEWORK = {
     # by default, someone will need to be logged in before they are
