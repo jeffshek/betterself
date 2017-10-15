@@ -9,7 +9,7 @@ from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilde
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from constants import SLEEP_MINUTES_COLUMN
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, SleepActivity, UserActivityEvent
+from events.models import SupplementLog, DailyProductivityLog, SleepLog, UserActivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
@@ -26,7 +26,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         SupplementEventsFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_build_dataframe(self):
-        queryset = SupplementEvent.objects.all()
+        queryset = SupplementLog.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
 
         # to prevent another brain fart moment, this is NOT the aggregated dataframe
@@ -37,7 +37,7 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         self.assertEqual(len(df.index), queryset.count())
 
     def test_build_dataframe_col_named_correctly(self):
-        queryset = SupplementEvent.objects.all()
+        queryset = SupplementLog.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
         df = builder.build_dataframe()
 
@@ -49,13 +49,13 @@ class TestSupplementEventDataframeBuilder(TestCase, UsersTestsFixturesMixin):
         self.assertCountEqual(column_labels, df.columns.tolist())
 
     def test_build_flat_dataframe(self):
-        queryset = SupplementEvent.objects.all()
+        queryset = SupplementLog.objects.all()
         builder = SupplementEventsDataframeBuilder(queryset)
 
         df = builder.get_flat_daily_dataframe()
         # get a list of all the "days" we have stored - ie. transform
         # a datetime to just a date. then compare that the builder's grouped daily
-        times_values = SupplementEvent.objects.all().values_list('time', flat=True)
+        times_values = SupplementLog.objects.all().values_list('time', flat=True)
 
         unique_dates = {item.date() for item in times_values}
         df_dates = {item.date() for item in df.index}
@@ -142,7 +142,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
         ProductivityLogFixturesGenerator.create_fixtures(cls.user_1)
 
     def test_dataframe_composition(self):
-        supplement_event_queryset = SupplementEvent.objects.all()
+        supplement_event_queryset = SupplementLog.objects.all()
         productivity_log_queryset = DailyProductivityLog.objects.all()
         builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset=supplement_event_queryset,
                                                                   productivity_log_queryset=productivity_log_queryset)
@@ -161,7 +161,7 @@ class TestDataframeConcatenation(TestCase, UsersTestsFixturesMixin):
 
     def test_dataframe_composition_with_no_data(self):
         # we always create fixtures per each test, so nothing really exists with 9000 fixtures
-        supplement_event_queryset = SupplementEvent.objects.filter(id='9000')
+        supplement_event_queryset = SupplementLog.objects.filter(id='9000')
         productivity_log_queryset = DailyProductivityLog.objects.filter(id='9000')
 
         builder = AggregateSupplementProductivityDataframeBuilder(supplement_event_queryset, productivity_log_queryset)
@@ -182,7 +182,7 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         super().setUpTestData()
 
     def test_sleep_dataframe_map_correct_date_to_sleep_time(self):
-        sleep_queryset = SleepActivity.objects.filter(user=self.user)
+        sleep_queryset = SleepLog.objects.filter(user=self.user)
         builder = SleepActivityDataframeBuilder(sleep_queryset)
         dataframe = builder.get_sleep_history_series()
 
@@ -198,9 +198,9 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
 
     def test_aggregate_sleep_dataframe(self):
         dataframe = AggregateSleepActivitiesUserActivitiesBuilder.get_aggregate_dataframe_for_user(self.user)
-        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+        sleep_records_count = SleepLog.objects.filter(user=self.user).count()
 
-        user_activity_events_names = UserActivityEvent.objects.filter(
+        user_activity_events_names = UserActivityLog.objects.filter(
             user=self.user).values_list('user_activity__name', flat=True)
         user_activity_events_names = set(user_activity_events_names)
 
@@ -212,9 +212,9 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
 
     def test_aggregate_sleep_and_supplements_dataframe(self):
         dataframe = AggregateSleepActivitiesSupplementsBuilder.get_aggregate_dataframe_for_user(self.user)
-        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+        sleep_records_count = SleepLog.objects.filter(user=self.user).count()
 
-        supplements_names = SupplementEvent.objects.filter(
+        supplements_names = SupplementLog.objects.filter(
             user=self.user).values_list('supplement__name', flat=True)
         supplements_names = set(supplements_names)
 

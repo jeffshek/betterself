@@ -62,7 +62,7 @@ class DataFrameBuilder(object):
 
 class SupplementEventsDataframeBuilder(DataFrameBuilder):
     """
-    Builds a pandas dataframe from a SupplementEvent queryset ... once we get to a dataframe
+    Builds a pandas dataframe from a SupplementLog queryset ... once we get to a dataframe
     analytics are just super easy to work with and we can do a lot of complex analysis on top of it
     """
     index_column = 'time'

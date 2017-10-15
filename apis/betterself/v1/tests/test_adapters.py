@@ -6,7 +6,7 @@ from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
 from events.fixtures.factories import SupplementEventFactory, UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -274,7 +274,7 @@ class SupplementAdapterTests(AdapterTests, TestResourceMixin):
 
 
 class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
-    model = SupplementEvent
+    model = SupplementLog
 
     # python manage.py test apis.betterself.v1.tests.test_adapters.SupplementEventsAdaptersTests
     @classmethod
@@ -294,7 +294,7 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
             'time': timezone.now()
         }
 
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
         self.assertEqual(supplement_uuid, data['supplement_uuid'])
 
     def test_post_events_quantity_change(self):
@@ -308,14 +308,14 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
             'time': timezone.now()
         }
 
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
         self.assertEqual(data['quantity'], quantity_to_create)
 
         # now change the quantity to something different
         parameters['quantity'] = quantity_to_create + 1
 
         # if the data is sent twice, ensure that the response is idempotent and has been updated
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
         self.assertEqual(data['quantity'], quantity_to_create + 1)
 
     def test_post_events_with_invalid_uuid(self):
@@ -327,7 +327,7 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
             'time': timezone.now()
         }
 
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
 
         # if error, only the field is returned and an error corresponding
         self.assertTrue('supplement_uuid' in data)
@@ -343,7 +343,7 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
             'time': timezone.now()
         }
 
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
 
         # if error, only the field is returned and an error corresponding
         self.assertTrue('source' in data)
@@ -360,7 +360,7 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
             'time': timezone.now()
         }
 
-        data = self.adapter.post_resource_data(SupplementEvent, parameters=parameters)
+        data = self.adapter.post_resource_data(SupplementLog, parameters=parameters)
 
         # if error, only the field is returned and an error corresponding
         self.assertTrue('supplement_uuid' in data)
@@ -368,10 +368,10 @@ class SupplementEventsAdaptersTests(AdapterTests, TestResourceMixin):
 
     def test_get_or_create_response(self):
         parameters = {'name': 'Chocolate'}
-        event = self.adapter.get_or_create_resource(SupplementEvent, parameters)
+        event = self.adapter.get_or_create_resource(SupplementLog, parameters)
         uuid_first_pass = event['uuid']
 
-        event = self.adapter.get_or_create_resource(SupplementEvent, parameters)
+        event = self.adapter.get_or_create_resource(SupplementLog, parameters)
         uuid_second_pass = event['uuid']
 
         self.assertEqual(uuid_first_pass, uuid_second_pass)
@@ -402,7 +402,7 @@ class UserActivityLogAdaptersTests(AdapterTests, TestResourceMixin):
 
 
 class UserActivityEventLogAdaptersTests(AdapterTests, TestResourceMixin):
-    model = UserActivityEvent
+    model = UserActivityLog
 
     @classmethod
     def setUpTestData(cls):

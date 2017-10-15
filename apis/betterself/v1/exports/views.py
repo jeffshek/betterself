@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder, SleepActivityDataframeBuilder, UserActivityEventDataframeBuilder
 from constants import SLEEP_MINUTES_COLUMN
-from events.models import SupplementEvent, SleepActivity, UserActivityEvent, DailyProductivityLog
+from events.models import SupplementLog, SleepLog, UserActivityLog, DailyProductivityLog
 
 
 class UserExportAllData(APIView):
@@ -32,21 +32,21 @@ class UserExportAllData(APIView):
 
         # supplement events
         supplement_events_worksheet_name = 'SupplementEvents'
-        supplement_events = SupplementEvent.objects.filter(user=user)
+        supplement_events = SupplementLog.objects.filter(user=user)
         df_builder = SupplementEventsDataframeBuilder(supplement_events)
         supplement_events_df = df_builder.get_flat_daily_dataframe()
         self._write_to_workbook(writer, supplement_events_df, supplement_events_worksheet_name)
 
         # sleep events
         sleep_activities_worksheet_name = 'SleepActivities'
-        sleep_activities = SleepActivity.objects.filter(user=user)
+        sleep_activities = SleepLog.objects.filter(user=user)
         df_builder = SleepActivityDataframeBuilder(sleep_activities)
         sleep_activities_series = df_builder.get_sleep_history_series()
         self._write_to_workbook(writer, sleep_activities_series, sleep_activities_worksheet_name)
 
         # user activity events
         user_activity_events_sheet_name = 'UserActivityEvents'
-        user_activity_events = UserActivityEvent.objects.filter(user=user)
+        user_activity_events = UserActivityLog.objects.filter(user=user)
         df_builder = UserActivityEventDataframeBuilder(user_activity_events)
         user_activity_events_df = df_builder.get_flat_daily_dataframe()
         self._write_to_workbook(writer, user_activity_events_df, user_activity_events_sheet_name)

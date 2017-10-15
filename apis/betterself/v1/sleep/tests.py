@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
-from events.models import SleepActivity
+from events.models import SleepLog
 
 User = get_user_model()
 
@@ -36,8 +36,8 @@ class SleepAggregateTests(TestCase):
 
         # check that the data from the view somewhat equals what the sleep duration should be
         # this test isn't fully exact, but didn't want to rebuild a time hashing algorithm for a test
-        first_sleep_activity_record = SleepActivity.objects.filter(user=self.user).order_by('start_time').first()
-        second_sleep_activity_record = SleepActivity.objects.filter(user=self.user).order_by('start_time')[1]
+        first_sleep_activity_record = SleepLog.objects.filter(user=self.user).order_by('start_time').first()
+        second_sleep_activity_record = SleepLog.objects.filter(user=self.user).order_by('start_time')[1]
 
         # duration range
         min_duration_minutes = first_sleep_activity_record.duration.seconds / 60

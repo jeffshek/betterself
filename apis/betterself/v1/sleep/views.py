@@ -11,11 +11,11 @@ from analytics.events.utils.dataframe_builders import SleepActivityDataframeBuil
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from config.pagination import ModifiedPageNumberPagination
 from constants import LOOKBACK_PARAM_NAME
-from events.models import SleepActivity
+from events.models import SleepLog
 
 
 class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
-    model = SleepActivity
+    model = SleepLog
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = SleepActivityReadSerializer
     write_serializer_class = SleepActivityCreateSerializer
@@ -31,7 +31,7 @@ class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDel
 class SleepAggregatesView(APIView):
     def get(self, request):
         user = request.user
-        sleep_activities = SleepActivity.objects.filter(user=user)
+        sleep_activities = SleepLog.objects.filter(user=user)
 
         serializer = SleepActivityDataframeBuilder(sleep_activities)
         sleep_aggregate = serializer.get_sleep_history_series()
@@ -56,7 +56,7 @@ class SleepAveragesView(APIView):
 
         user = request.user
 
-        sleep_activities = SleepActivity.objects.filter(user=user)
+        sleep_activities = SleepLog.objects.filter(user=user)
         builder = SleepActivityDataframeBuilder(sleep_activities)
 
         sleep_aggregate = builder.get_sleep_history_series()

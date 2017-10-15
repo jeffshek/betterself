@@ -1,9 +1,9 @@
-from events.models import SupplementEvent
+from events.models import SupplementLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
 
 VALID_REST_RESOURCES = [
-    SupplementEvent,
+    SupplementLog,
     Supplement,
     IngredientComposition,
     Ingredient,

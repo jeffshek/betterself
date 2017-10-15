@@ -21,7 +21,7 @@ from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
@@ -32,7 +32,7 @@ User = get_user_model()
 
 class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSupplementEvents
-    TEST_MODEL = SupplementEvent
+    TEST_MODEL = SupplementLog
     PAGINATION = True
 
     def setUp(self):
@@ -66,7 +66,7 @@ class TestSupplementEvents(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTe
 
         response = self._make_post_request(self.client_1, self.DEFAULT_POST_PARAMS)
         uuid = response.data['uuid']
-        event = SupplementEvent.objects.get(uuid=uuid)
+        event = SupplementLog.objects.get(uuid=uuid)
 
         event_time = event.time
         self.assertEqual(params_time.microsecond, event_time.microsecond)
@@ -170,7 +170,7 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
 
 
 class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
-    TEST_MODEL = UserActivityEvent
+    TEST_MODEL = UserActivityLog
     PAGINATION = True
 
     def setUp(self):
@@ -205,7 +205,7 @@ class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequ
 
 class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSleepActivityViews
-    TEST_MODEL = SleepActivity
+    TEST_MODEL = SleepLog
     PAGINATION = True
 
     @classmethod
@@ -215,11 +215,11 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
         # create a sleep record for two days
         start_time = datetime.datetime(2017, 1, 1, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=UTC_TZ)
-        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
         # day two
         start_time = datetime.datetime(2017, 1, 2, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
-        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
 
     def setUp(self):
         start_time = datetime.datetime.utcnow() - relativedelta(hours=8)
@@ -373,10 +373,11 @@ class TestAggregateProductivityViews(TestCase):
     def test_that_rolling_window_of_one_works(self):
         five_days_ago = get_current_date_days_ago(5)
         reported_very_productive_value = 0
+        cumulative_window = 1
 
         params = {
             'start_date': five_days_ago.isoformat(),
-            'cumulative_window': 1,
+            'cumulative_window': cumulative_window,
         }
         response = self.client.get(self.url, data=params)
         for k, v in response.data.items():
@@ -393,11 +394,12 @@ class TestAggregateProductivityViews(TestCase):
         six_days_ago = get_current_date_days_ago(6)
         five_days_ago = get_current_date_days_ago(5)
         reported_very_productive_value = 0
+        cumulative_window = 2
 
         # if rolling by 2, you expect the sum to be the 5th and 6th day combined
         params = {
             'start_date': six_days_ago.isoformat(),
-            'cumulative_window': 2,
+            'cumulative_window': cumulative_window,
         }
         response = self.client.get(self.url, data=params)
 
@@ -410,6 +412,34 @@ class TestAggregateProductivityViews(TestCase):
         very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=five_days_ago,
             date__gte=six_days_ago).values_list(
             VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
+        expected_very_productive_time = sum(very_productive_time_list)
+
+        self.assertEqual(reported_very_productive_value, expected_very_productive_time)
+
+    def test_that_rolling_window_parameter_aggregates_beginning_of_series(self):
+        six_days_ago = get_current_date_days_ago(6)
+        reported_very_productive_value = 0
+        cumulative_window = 2
+
+        # if rolling by 2, you expect the sum to be the 5th and 6th day combined
+        params = {
+            'start_date': six_days_ago.isoformat(),
+            'cumulative_window': cumulative_window,
+        }
+        response = self.client.get(self.url, data=params)
+
+        for k, v in response.data.items():
+            parsed_date = dateutil.parser.parse(k)
+            if parsed_date.date() == six_days_ago:
+                reported_very_productive_value = v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
+
+        window_start_date = six_days_ago - relativedelta(days=cumulative_window)
+
+        # sum up the two individual results to make sure the analytics is correct
+        very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=six_days_ago,
+            date__gt=window_start_date).values_list(
+            VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
+
         expected_very_productive_time = sum(very_productive_time_list)
 
         self.assertEqual(reported_very_productive_value, expected_very_productive_time)
@@ -462,7 +492,7 @@ class TestSupplementLogsViews(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-        supplement_events_value_query = SupplementEvent.objects.filter(user=self.default_user,
+        supplement_events_value_query = SupplementLog.objects.filter(user=self.default_user,
             supplement=self.supplement).aggregate(
             total_sum=Sum('quantity'))
         supplement_events_value = supplement_events_value_query['total_sum']
@@ -489,7 +519,7 @@ class TestSupplementLogsViews(TestCase):
         response_no_aggregation = self.client.get(self.url, data={'frequency': None})
 
         # now filter with parameters between the start and end times
-        queryset = SupplementEvent.objects.filter(user=self.default_user).order_by('time')
+        queryset = SupplementLog.objects.filter(user=self.default_user).order_by('time')
         start_date = queryset.first().time.date()
         end_date = queryset.last().time.date()
 
@@ -538,7 +568,7 @@ class TestSupplementLogsViews(TestCase):
 
     def test_supplement_log_on_supplement_with_no_events(self):
         # delete all the supplements
-        SupplementEvent.objects.filter(supplement=self.supplement).delete()
+        SupplementLog.objects.filter(supplement=self.supplement).delete()
         response = self.client.get(self.url, data={'frequency': 'daily'})
 
         self.assertEqual(response.status_code, 200)
@@ -577,7 +607,7 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_monthly_view_no_sleep_logs(self):
-        SleepActivity.objects.filter(user=self.default_user).delete()
+        SleepLog.objects.filter(user=self.default_user).delete()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -587,7 +617,7 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_monthly_view_no_supplement_logs(self):
-        SupplementEvent.objects.filter(user=self.default_user).delete()
+        SupplementLog.objects.filter(user=self.default_user).delete()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 

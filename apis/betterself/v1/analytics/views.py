@@ -12,7 +12,7 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
 from betterself.utils.api_utils import get_api_value_formatted
 from constants import VERY_PRODUCTIVE_TIME_LABEL
 from betterself.utils.date_utils import get_current_date_years_ago
-from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
+from events.models import SupplementLog, SleepLog, DailyProductivityLog
 from supplements.models import Supplement
 
 
@@ -50,7 +50,7 @@ class SupplementAnalyticsMixin(object):
         :return: TimeSeries data of how many of that particular supplement was taken that day
         """
         start_date = get_current_date_years_ago(1)
-        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementLog.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
         builder = SupplementEventsDataframeBuilder(supplement_events)
         try:
             series = builder.get_flat_daily_dataframe()[supplement.name]
@@ -68,7 +68,7 @@ class SupplementAnalyticsMixin(object):
         :return: Series data of how much sleep that person has gotten minutes
         """
         start_date = get_current_date_years_ago(1)
-        sleep_events = SleepActivity.objects.filter(user=user, start_time__date__gte=start_date)
+        sleep_events = SleepLog.objects.filter(user=user, start_time__date__gte=start_date)
         builder = SleepActivityDataframeBuilder(sleep_events)
         series = builder.get_sleep_history_series()
 
@@ -115,7 +115,7 @@ class SupplementAnalyticsSummary(APIView, SupplementAnalyticsMixin):
         supplement = get_object_or_404(Supplement, uuid=supplement_uuid, user=request.user)
 
         try:
-            creation_date = SupplementEvent.objects.filter(supplement=supplement).order_by('time').first().time. \
+            creation_date = SupplementLog.objects.filter(supplement=supplement).order_by('time').first().time. \
                 isoformat()
         except AttributeError:
             # no creation_date found

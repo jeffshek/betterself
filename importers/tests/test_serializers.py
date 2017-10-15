@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import LiveServerTestCase
 from django.test import TestCase
 
-from events.models import SupplementEvent
+from events.models import SupplementLog
 from importers.serializers.excel.serializers import ExcelSupplementFileSerializer
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
@@ -58,7 +58,7 @@ class ExcelImporterTests(LiveServerTestCase, TestCase):
         self.assertTrue(supplement_exists)
 
     def test_fixtures_import(self):
-        supplement_events_dont_exist_yet = SupplementEvent.objects.all().exists()
+        supplement_events_dont_exist_yet = SupplementLog.objects.all().exists()
         self.assertFalse(supplement_events_dont_exist_yet)
 
         # this is kind of a crappy test, but i'm just using implicit knowledge of fixtures
@@ -66,7 +66,7 @@ class ExcelImporterTests(LiveServerTestCase, TestCase):
         results = self.sanitizer.get_sanitized_dataframe()
         self.sanitizer.save_results(results)
 
-        supplement_events_exist = SupplementEvent.objects.all().exists()
+        supplement_events_exist = SupplementLog.objects.all().exists()
         self.assertTrue(supplement_events_exist)
 
     def test_get_measurement_unit_and_quantity_from_name(self):

@@ -1,7 +1,8 @@
 import datetime
 import json
-
 import pandas as pd
+from dateutil import relativedelta
+
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,13 +22,13 @@ from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
     update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SupplementReminder, \
-    SleepActivity
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SupplementReminder, \
+    SleepLog
 from supplements.models import Supplement
 
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
-    model = SupplementEvent
+    model = SupplementLog
     read_serializer_class = SupplementEventReadOnlySerializer
     write_serializer_class = SupplementEventCreateUpdateSerializer
     update_serializer_class = SupplementEventCreateUpdateSerializer
@@ -68,7 +69,10 @@ class ProductivityLogAggregatesView(APIView):
         query_cumulative_window = query_params['cumulative_window']
         complete_date_range_in_daily_frequency = query_params['complete_date_range_in_daily_frequency']
 
-        productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=query_start_date)
+        # if this is a cumulative window, we want to look back even further when filtering
+        log_filter_date = query_start_date - relativedelta.relativedelta(days=query_cumulative_window)
+
+        productivity_logs = DailyProductivityLog.objects.filter(user=user, date__gte=log_filter_date)
 
         # data is consumed by front-end, so don't rename columns
         dataframe_builder = ProductivityLogEventsDataframeBuilder(productivity_logs, rename_columns=False)
@@ -79,6 +83,9 @@ class ProductivityLogAggregatesView(APIView):
 
         # sum up the history by how many days as the window specifies
         results = results.rolling(window=query_cumulative_window, min_periods=1).sum()
+
+        # because rolling windows need to look back further to sum, this timeseries has extra dates
+        results = results[query_start_date:]
 
         if complete_date_range_in_daily_frequency:
             results = force_start_end_data_to_dataframe(user, results, query_start_date, datetime.date.today())
@@ -99,7 +106,7 @@ class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
 
 
 class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
-    model = UserActivityEvent
+    model = UserActivityLog
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = UserActivityEventReadSerializer
     write_serializer_class = UserActivityEventCreateSerializer
@@ -126,7 +133,7 @@ class SupplementLogListView(APIView):
         start_date = params['start_date']
         end_date = get_current_userdate(user)
 
-        supplement_events = SupplementEvent.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
+        supplement_events = SupplementLog.objects.filter(user=user, supplement=supplement, time__date__gte=start_date)
 
         builder = SupplementEventsDataframeBuilder(supplement_events)
         if params['frequency'] == 'daily':
@@ -162,7 +169,7 @@ class SupplementReminderView(ListCreateAPIView, ReadOrWriteSerializerChooser, UU
 
 
 class AggregatedSupplementLogView(APIView):
-    # TODO - Refactor all of this after Twilio integration!
+    # TODO - Refactor all of this after Twilio integration! Wow, this view sucks
     """ Returns a list of dates that Supplement was taken along with the productivity and sleep of that date"""
 
     def get(self, request, supplement_uuid):
@@ -178,7 +185,7 @@ class AggregatedSupplementLogView(APIView):
         start_date = params['start_date']
         end_date = get_current_userdate(user)
 
-        supplement_events = SupplementEvent.objects.filter(
+        supplement_events = SupplementLog.objects.filter(
             user=user, supplement=supplement, time__date__gte=start_date, time__date__lte=end_date)
 
         # no point if nothing exists
@@ -199,7 +206,7 @@ class AggregatedSupplementLogView(APIView):
         productivity_builder = ProductivityLogEventsDataframeBuilder(productivity_logs)
         productivity_series = productivity_builder.get_productive_timeseries()
 
-        sleep_logs = SleepActivity.objects.filter(user=user, start_time__date__gte=start_date)
+        sleep_logs = SleepLog.objects.filter(user=user, start_time__date__gte=start_date)
         sleep_builder = SleepActivityDataframeBuilder(sleep_logs, user)
         sleep_series = sleep_builder.get_sleep_history_series()
 

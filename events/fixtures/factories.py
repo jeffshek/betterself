@@ -2,7 +2,7 @@ import factory
 from django.utils import timezone
 from factory.fuzzy import FuzzyInteger
 
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog
 
 
 class SupplementEventFactory(factory.DjangoModelFactory):
@@ -11,7 +11,7 @@ class SupplementEventFactory(factory.DjangoModelFactory):
     time = timezone.now()
 
     class Meta:
-        model = SupplementEvent
+        model = SupplementLog
 
 
 class DailyProductivityLogFactory(factory.DjangoModelFactory):
@@ -41,4 +41,4 @@ class UserActivityEventFactory(factory.DjangoModelFactory):
     duration_minutes = 0
 
     class Meta:
-        model = UserActivityEvent
+        model = UserActivityLog

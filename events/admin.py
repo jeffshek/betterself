@@ -1,16 +1,16 @@
 from django.contrib import admin
 
 from betterself.users.models import UserPhoneNumberDetails
-from events.models import SupplementEvent, DailyProductivityLog, SupplementReminder
+from events.models import SupplementLog, DailyProductivityLog, SupplementReminder
 
 
-@admin.register(SupplementEvent)
+@admin.register(SupplementLog)
 class SupplementEventAdmin(admin.ModelAdmin):
     list_display = ('user', 'supplement', 'quantity', 'time', 'source')
     search_fields = ('supplement__name',)
 
     class Meta:
-        model = SupplementEvent
+        model = SupplementLog
 
 
 @admin.register(DailyProductivityLog)
