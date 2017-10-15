@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import { LOGO_BACKGROUND_PATH } from "../constants/image_paths";
 
 const BetterSelfAddress = () => (
