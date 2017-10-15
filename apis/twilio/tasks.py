@@ -66,13 +66,10 @@ def send_text_reminders(beat_time=None):
     end_time = get_end_time_interval_from_beat_time(beat_time)
 
     queryset = SupplementReminder.objects.filter(user__userphonenumberdetails__is_verified=True)
-    # if the end_time is tomorrow, then we just want everything past 11:55
-    if end_time.hour == 0:
-        queryset = queryset.filter(reminder_time__gte=start_time)
-    else:
-        # if you don't do this, if someone puts a time that's before the current
-        # hour/minute, it'll automatically send a first text, which seems silly
-        queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
+
+    # if you don't do this, if someone puts a time that's before the current
+    # hour/minute, it'll automatically send a first text, which seems silly
+    queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
 
     # if a text was already sent today, shouldn't do it again
     date_today = get_current_utc_time_and_tz()
