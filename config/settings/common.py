@@ -230,7 +230,7 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
-# this url is changed just to make prevent bots against hitting admins
+# this url is changed to prevent bots looking for /admins urls
 # obviously since this is open-sourced, everyone knows what the actual admin url is
 ADMIN_URL = r'^potato/'
 
