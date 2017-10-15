@@ -9,7 +9,7 @@ from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilde
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from constants import SLEEP_MINUTES_COLUMN
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, SleepActivity, UserActivityLog
+from events.models import SupplementEvent, DailyProductivityLog, SleepLog, UserActivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
@@ -182,7 +182,7 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         super().setUpTestData()
 
     def test_sleep_dataframe_map_correct_date_to_sleep_time(self):
-        sleep_queryset = SleepActivity.objects.filter(user=self.user)
+        sleep_queryset = SleepLog.objects.filter(user=self.user)
         builder = SleepActivityDataframeBuilder(sleep_queryset)
         dataframe = builder.get_sleep_history_series()
 
@@ -198,7 +198,7 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
 
     def test_aggregate_sleep_dataframe(self):
         dataframe = AggregateSleepActivitiesUserActivitiesBuilder.get_aggregate_dataframe_for_user(self.user)
-        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+        sleep_records_count = SleepLog.objects.filter(user=self.user).count()
 
         user_activity_events_names = UserActivityLog.objects.filter(
             user=self.user).values_list('user_activity__name', flat=True)
@@ -212,7 +212,7 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
 
     def test_aggregate_sleep_and_supplements_dataframe(self):
         dataframe = AggregateSleepActivitiesSupplementsBuilder.get_aggregate_dataframe_for_user(self.user)
-        sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
+        sleep_records_count = SleepLog.objects.filter(user=self.user).count()
 
         supplements_names = SupplementEvent.objects.filter(
             user=self.user).values_list('supplement__name', flat=True)

@@ -81,7 +81,7 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
         return '{} Productivity Log'.format(self.date)
 
 
-class SleepActivity(BaseModelWithUserGeneratedContent):
+class SleepLog(BaseModelWithUserGeneratedContent):
     """
     Records per each time a person falls asleep that combined across 24 hours is a way to see how much sleep
     a person gets.
@@ -106,8 +106,8 @@ class SleepActivity(BaseModelWithUserGeneratedContent):
 
         # make sure that there are no overlaps for activities
         # https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-        queryset = SleepActivity.objects.filter(user=self.user, end_time__gte=self.start_time,
-                                                start_time__lte=self.end_time)
+        queryset = SleepLog.objects.filter(user=self.user, end_time__gte=self.start_time,
+            start_time__lte=self.end_time)
 
         # sometimes save just happens for an update, exclude so wont always fail
         if self.pk:

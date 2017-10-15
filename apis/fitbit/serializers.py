@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from events.models import SleepActivity
+from events.models import SleepLog
 
 
 class FitbitAPIRequestSerializer(serializers.Serializer):
@@ -26,7 +26,7 @@ class FitbitResponseSleepActivitySerializer(serializers.ModelSerializer):
     source = serializers.CharField(default='api')
 
     class Meta:
-        model = SleepActivity
+        model = SleepLog
         fields = ('start_time', 'end_time', 'source', 'user')
 
     def validate(self, data):
@@ -52,10 +52,11 @@ class FitbitResponseSleepActivitySerializer(serializers.ModelSerializer):
         end_time_local = user.pytz_timezone.localize(end_time)
 
         # if we find any overlapping periods, delete them
-        overlaps = SleepActivity.objects.filter(user=user, end_time__gte=start_time_local,
-                                                start_time__lte=end_time_local)
+        overlaps = SleepLog.objects.filter(user=user, end_time__gte=start_time_local,
+            start_time__lte=end_time_local)
         overlaps.delete()
 
-        instance = SleepActivity.objects.create(user=user, end_time=end_time_local, start_time=start_time_local,
-                                                source=data['source'])
+        instance = SleepLog.objects.create(
+            user=user, end_time=end_time_local, start_time=start_time_local, source=data['source']
+        )
         return instance

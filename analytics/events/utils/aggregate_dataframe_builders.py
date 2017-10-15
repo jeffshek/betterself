@@ -2,7 +2,7 @@ import pandas as pd
 
 from analytics.events.utils.dataframe_builders import SupplementEventsDataframeBuilder, \
     ProductivityLogEventsDataframeBuilder, UserActivityEventDataframeBuilder, SleepActivityDataframeBuilder
-from events.models import SupplementEvent, DailyProductivityLog, UserActivityLog, SleepActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivityLog, SleepLog
 
 
 class AggregateDataFrameBuilder(object):
@@ -88,7 +88,7 @@ class AggregateSleepActivitiesUserActivitiesBuilder(AggregateDataFrameBuilder):
     @classmethod
     def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
         user_activity_events = UserActivityLog.objects.filter(user=user)
-        sleep_logs = SleepActivity.objects.filter(user=user)
+        sleep_logs = SleepLog.objects.filter(user=user)
 
         if cutoff_date:
             user_activity_events = user_activity_events.filter(time__gte=cutoff_date)
@@ -114,7 +114,7 @@ class AggregateSleepActivitiesSupplementsBuilder(AggregateDataFrameBuilder):
 
     @classmethod
     def get_aggregate_dataframe_for_user(cls, user, cutoff_date=None):
-        sleep_logs = SleepActivity.objects.filter(user=user)
+        sleep_logs = SleepLog.objects.filter(user=user)
         supplement_events = SupplementEvent.objects.filter(user=user)
 
         if cutoff_date:

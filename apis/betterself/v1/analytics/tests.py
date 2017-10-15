@@ -7,7 +7,7 @@ from rest_framework.test import APIClient
 
 from apis.betterself.v1.constants import UNIQUE_KEY_CONSTANT
 from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilder
-from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
+from events.models import SupplementEvent, SleepLog, DailyProductivityLog
 from supplements.models import Supplement
 
 User = get_user_model()
@@ -31,7 +31,7 @@ class BaseSupplementAnalyticsTests(TestCase):
 
 class BaseSupplementsAnalyticsTestCasesMixin(object):
     def test_view_with_no_sleep_data(self):
-        SleepActivity.objects.filter(user=self.default_user).delete()
+        SleepLog.objects.filter(user=self.default_user).delete()
 
         response = self.client.get(self.url)
 

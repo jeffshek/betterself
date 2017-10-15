@@ -21,7 +21,7 @@ from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepActivity, \
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
@@ -205,7 +205,7 @@ class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequ
 
 class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     # python manage.py test apis.betterself.v1.events.tests.TestSleepActivityViews
-    TEST_MODEL = SleepActivity
+    TEST_MODEL = SleepLog
     PAGINATION = True
 
     @classmethod
@@ -215,11 +215,11 @@ class TestSleepActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequests
         # create a sleep record for two days
         start_time = datetime.datetime(2017, 1, 1, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 1, hour=7, tzinfo=UTC_TZ)
-        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
         # day two
         start_time = datetime.datetime(2017, 1, 2, tzinfo=UTC_TZ)
         end_time = datetime.datetime(2017, 1, 2, hour=7, tzinfo=UTC_TZ)
-        SleepActivity.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
+        SleepLog.objects.create(user=cls.user_1, start_time=start_time, end_time=end_time)
 
     def setUp(self):
         start_time = datetime.datetime.utcnow() - relativedelta(hours=8)
@@ -577,7 +577,7 @@ class TestAggregatedSupplementLogViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_monthly_view_no_sleep_logs(self):
-        SleepActivity.objects.filter(user=self.default_user).delete()
+        SleepLog.objects.filter(user=self.default_user).delete()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 

@@ -12,7 +12,7 @@ from analytics.events.utils.dataframe_builders import SupplementEventsDataframeB
 from betterself.utils.api_utils import get_api_value_formatted
 from constants import VERY_PRODUCTIVE_TIME_LABEL
 from betterself.utils.date_utils import get_current_date_years_ago
-from events.models import SupplementEvent, SleepActivity, DailyProductivityLog
+from events.models import SupplementEvent, SleepLog, DailyProductivityLog
 from supplements.models import Supplement
 
 
@@ -68,7 +68,7 @@ class SupplementAnalyticsMixin(object):
         :return: Series data of how much sleep that person has gotten minutes
         """
         start_date = get_current_date_years_ago(1)
-        sleep_events = SleepActivity.objects.filter(user=user, start_time__date__gte=start_date)
+        sleep_events = SleepLog.objects.filter(user=user, start_time__date__gte=start_date)
         builder = SleepActivityDataframeBuilder(sleep_events)
         series = builder.get_sleep_history_series()
 

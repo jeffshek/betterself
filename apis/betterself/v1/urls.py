@@ -14,7 +14,7 @@ from apis.betterself.v1.supplements.views import VendorView, IngredientCompositi
     IngredientView, MeasurementView, SupplementsListView
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepActivity, \
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
 from vendors.models import Vendor
@@ -49,9 +49,9 @@ urlpatterns = [
         ])),
     url(r'^{0}/$'.format(UserActivity.RESOURCE_NAME), UserActivityView.as_view(), name=UserActivity.RESOURCE_NAME),
     url(r'^{0}/$'.format(UserActivityLog.RESOURCE_NAME), UserActivityEventView.as_view(), name=UserActivityLog.RESOURCE_NAME),  # noqa
-    url(r'^{0}/'.format(SleepActivity.RESOURCE_NAME),
+    url(r'^{0}/'.format(SleepLog.RESOURCE_NAME),
         include([
-            url(r'^$', SleepActivityView.as_view(), name=SleepActivity.RESOURCE_NAME),
+            url(r'^$', SleepActivityView.as_view(), name=SleepLog.RESOURCE_NAME),
             url(r'^aggregates$', SleepAggregatesView.as_view(), name='sleep-aggregates'),
             url(r'^averages$', SleepAveragesView.as_view(), name='sleep-averages'),
             url(r'^user_activities/correlations$', SleepActivitiesUserActivitiesCorrelationsView.as_view(), name='sleep-user-activities-correlations'),  # noqa

@@ -8,7 +8,7 @@ from django.utils import timezone
 from apis.betterself.v1.signup.fixtures.factories import SupplementReminderFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
-from events.models import DailyProductivityLog, SleepActivity, UserActivityLog, SupplementEvent, UserActivity
+from events.models import DailyProductivityLog, SleepLog, UserActivityLog, SupplementEvent, UserActivity
 from supplements.models import Supplement
 
 
@@ -92,14 +92,14 @@ class DemoHistoricalDataBuilder(object):
 
             index_end_datetime = index_start_datetime + datetime.timedelta(minutes=sleep_amount)
 
-            sleep_event = SleepActivity(
+            sleep_event = SleepLog(
                 user=self.user, source='web',
                 start_time=index_start_datetime,
                 end_time=index_end_datetime
             )
             sleep_logs.append(sleep_event)
 
-        SleepActivity.objects.bulk_create(sleep_logs)
+        SleepLog.objects.bulk_create(sleep_logs)
 
     def create_user_activities(self):
         for activity_name in USER_ACTIVITY_EVENTS.keys():
