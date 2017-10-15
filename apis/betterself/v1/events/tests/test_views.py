@@ -414,6 +414,34 @@ class TestAggregateProductivityViews(TestCase):
 
         self.assertEqual(reported_very_productive_value, expected_very_productive_time)
 
+    def test_that_rolling_window_parameter_aggregates_beginning_of_series(self):
+        six_days_ago = get_current_date_days_ago(6)
+        reported_very_productive_value = 0
+        cumulative_window = 2
+
+        # if rolling by 2, you expect the sum to be the 5th and 6th day combined
+        params = {
+            'start_date': six_days_ago.isoformat(),
+            'cumulative_window': cumulative_window,
+        }
+        response = self.client.get(self.url, data=params)
+
+        for k, v in response.data.items():
+            parsed_date = dateutil.parser.parse(k)
+            if parsed_date.date() == six_days_ago:
+                reported_very_productive_value = v[VERY_PRODUCTIVE_MINUTES_VARIABLE]
+
+        window_start_date = six_days_ago - relativedelta(days=cumulative_window)
+
+        # sum up the two individual results to make sure the analytics is correct
+        very_productive_time_list = DailyProductivityLog.objects.filter(user=self.default_user, date__lte=six_days_ago,
+            date__gt=window_start_date).values_list(
+            VERY_PRODUCTIVE_MINUTES_VARIABLE, flat=True)
+
+        expected_very_productive_time = sum(very_productive_time_list)
+
+        self.assertEqual(reported_very_productive_value, expected_very_productive_time)
+
     def test_productivity_log_works_with_appending_start_and_end_dates(self):
         start_date = get_current_date_months_ago(12)
 
