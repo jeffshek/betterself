@@ -35,4 +35,4 @@ alias start-honcho='honcho start -f Procfile_local'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-nvm use 8.6.0
+nvm use 6.11.4
