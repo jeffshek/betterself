@@ -6,7 +6,7 @@ from django.db.models import Q
 from numpy import dtype
 
 from apis.betterself.v1.adapters import BetterSelfAPIAdapter
-from events.models import SupplementEvent, DailyProductivityLog, UserActivityEvent, UserActivity
+from events.models import SupplementEvent, DailyProductivityLog, UserActivityLog, UserActivity
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 
 
@@ -228,7 +228,7 @@ class ExcelProductiveFileSerializer(ExcelFileSerializer):
 
 class ExcelUserActivityEventFileSerializer(ExcelFileSerializer):
     SOURCE = 'user_excel'
-    TEMPLATE_SAVE_MODEL = UserActivityEvent
+    TEMPLATE_SAVE_MODEL = UserActivityLog
     ACTIVITY_TYPE_UUID = {}
 
     def _create_activity_from_dataframe(self, dataframe):

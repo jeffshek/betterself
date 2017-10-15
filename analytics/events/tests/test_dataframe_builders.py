@@ -9,7 +9,7 @@ from apis.betterself.v1.signup.fixtures.builders import DemoHistoricalDataBuilde
 from betterself.users.tests.mixins.test_mixins import UsersTestsFixturesMixin
 from constants import SLEEP_MINUTES_COLUMN
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, SleepActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, SleepActivity, UserActivityLog
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
@@ -200,7 +200,7 @@ class AggregateDataframeBuilderTests(TestCase, UsersTestsFixturesMixin):
         dataframe = AggregateSleepActivitiesUserActivitiesBuilder.get_aggregate_dataframe_for_user(self.user)
         sleep_records_count = SleepActivity.objects.filter(user=self.user).count()
 
-        user_activity_events_names = UserActivityEvent.objects.filter(
+        user_activity_events_names = UserActivityLog.objects.filter(
             user=self.user).values_list('user_activity__name', flat=True)
         user_activity_events_names = set(user_activity_events_names)
 

@@ -4,7 +4,7 @@ import pytz
 
 from faker import Faker
 
-from events.models import SupplementEvent, UserActivity, UserActivityEvent, SupplementReminder
+from events.models import SupplementEvent, UserActivity, UserActivityLog, SupplementReminder
 from supplements.models import Supplement
 
 fake = Faker()
@@ -45,7 +45,7 @@ class DemoActivityEventFactory(factory.django.DjangoModelFactory):
                                        name=factory.SelfAttribute('..name'))
 
     class Meta:
-        model = UserActivityEvent
+        model = UserActivityLog
         exclude = ('name',)
 
 

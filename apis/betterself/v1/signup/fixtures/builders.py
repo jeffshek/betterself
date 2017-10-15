@@ -8,7 +8,7 @@ from django.utils import timezone
 from apis.betterself.v1.signup.fixtures.factories import SupplementReminderFactory
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
-from events.models import DailyProductivityLog, SleepActivity, UserActivityEvent, SupplementEvent, UserActivity
+from events.models import DailyProductivityLog, SleepActivity, UserActivityLog, SupplementEvent, UserActivity
 from supplements.models import Supplement
 
 
@@ -122,7 +122,7 @@ class DemoHistoricalDataBuilder(object):
             for activity_name, activity_details in USER_ACTIVITY_EVENTS.items():
                 activity = self.user_activities[activity_name]
 
-                events = self.build_events(activity, activity_details, timestamp, UserActivityEvent)
+                events = self.build_events(activity, activity_details, timestamp, UserActivityLog)
                 user_activities_bulk_create.extend(events)
 
             for supplement_name, supplement_details in SUPPLEMENTS_FIXTURES.items():
@@ -131,7 +131,7 @@ class DemoHistoricalDataBuilder(object):
                 supplement_events = self.build_events(supplement, supplement_details, timestamp, SupplementEvent)
                 supplement_logs_bulk_create.extend(supplement_events)
 
-        UserActivityEvent.objects.bulk_create(user_activities_bulk_create)
+        UserActivityLog.objects.bulk_create(user_activities_bulk_create)
         SupplementEvent.objects.bulk_create(supplement_logs_bulk_create)
 
         # calculate how much sleep from a random normal distribution
@@ -174,7 +174,7 @@ class DemoHistoricalDataBuilder(object):
             random_hour = random_hours.pop()
             random_time = timestamp.to_pydatetime().replace(hour=random_hour)
 
-            if event_type == UserActivityEvent:
+            if event_type == UserActivityLog:
                 event = event_type(user=self.user, user_activity=parent_event_key, time=random_time)
             elif event_type == SupplementEvent:
                 event = event_type(user=self.user, supplement=parent_event_key, time=random_time, quantity=1)

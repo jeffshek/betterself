@@ -21,7 +21,7 @@ from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
     UserActivityEventFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SleepActivity, \
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SleepActivity, \
     SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement
@@ -170,7 +170,7 @@ class TestUserActivityViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsT
 
 
 class TestUserActivityEventViews(BaseAPIv1Tests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
-    TEST_MODEL = UserActivityEvent
+    TEST_MODEL = UserActivityLog
     PAGINATION = True
 
     def setUp(self):

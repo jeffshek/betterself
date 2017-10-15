@@ -21,7 +21,7 @@ from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
     update_dataframe_to_be_none_instead_of_nan_for_api_responses
 from config.pagination import ModifiedPageNumberPagination
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent, SupplementReminder, \
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog, SupplementReminder, \
     SleepActivity
 from supplements.models import Supplement
 
@@ -99,7 +99,7 @@ class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
 
 
 class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
-    model = UserActivityEvent
+    model = UserActivityLog
     pagination_class = ModifiedPageNumberPagination
     read_serializer_class = UserActivityEventReadSerializer
     write_serializer_class = UserActivityEventCreateSerializer

@@ -155,7 +155,7 @@ class UserActivity(BaseModelWithUserGeneratedContent):
         ordering = ['name']
 
 
-class UserActivityEvent(BaseModelWithUserGeneratedContent):
+class UserActivityLog(BaseModelWithUserGeneratedContent):
     """
     Represents any particular type of event a user may have done
         - ie. Meditation, running, take dog the park, etc.

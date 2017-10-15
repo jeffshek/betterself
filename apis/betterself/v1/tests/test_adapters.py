@@ -6,7 +6,7 @@ from apis.betterself.v1.constants import VALID_REST_RESOURCES
 from betterself.users.models import User
 from events.fixtures.factories import SupplementEventFactory, UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import ProductivityLogFixturesGenerator
-from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityEvent
+from events.models import SupplementEvent, DailyProductivityLog, UserActivity, UserActivityLog
 from supplements.fixtures.factories import IngredientFactory, IngredientCompositionFactory, SupplementFactory
 from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement
 from vendors.fixtures.factories import VendorFactory
@@ -402,7 +402,7 @@ class UserActivityLogAdaptersTests(AdapterTests, TestResourceMixin):
 
 
 class UserActivityEventLogAdaptersTests(AdapterTests, TestResourceMixin):
-    model = UserActivityEvent
+    model = UserActivityLog
 
     @classmethod
     def setUpTestData(cls):
