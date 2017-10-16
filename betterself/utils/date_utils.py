@@ -4,6 +4,16 @@ import pytz
 from dateutil import relativedelta
 
 UTC_TZ = pytz.timezone('UTC')
+EASTERN_TZ = pytz.timezone('US/Eastern')
+
+
+# Timezones are way harder than one would imagine.
+# from betterself.utils import date_utils
+
+def get_datetime_in_eastern_timezone(year, month, day, hour, minute, second=0):
+    """ Don't judge me, I use this a lot for debugging my timezone thoughts """
+    eastern_datetime = datetime.datetime(year, month, day, hour, minute, second, tzinfo=EASTERN_TZ)
+    return eastern_datetime
 
 
 def get_current_utc_time_and_tz():

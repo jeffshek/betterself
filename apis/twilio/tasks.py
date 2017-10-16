@@ -49,7 +49,7 @@ def send_thanks_for_verification_text(phone_number):
 def send_log_confirmation(supplement_event, number):
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     # if only you could send http links prettier in text messages
-    message = "BetterSelf.io/dashboard/log/supplements_events/ - We've logged your record of {}. Thanks!"\
+    message = "BetterSelf.io/dashboard/log/supplements_events/ - We've logged your record of {}. Thanks!" \
         .format(supplement_event.supplement.name)
     client.messages.create(
         to=number,
@@ -57,11 +57,7 @@ def send_log_confirmation(supplement_event, number):
         body=message)
 
 
-@celery_app.task
-def send_text_reminders(beat_time=None):
-    if not beat_time:
-        beat_time = datetime.datetime.now()
-
+def get_reminders_to_send(beat_time):
     start_time = get_start_time_interval_from_beat_time(beat_time)
     end_time = get_end_time_interval_from_beat_time(beat_time)
 
@@ -72,8 +68,16 @@ def send_text_reminders(beat_time=None):
     queryset = queryset.filter(reminder_time__gte=start_time, reminder_time__lt=end_time)
 
     # if a text was already sent today, shouldn't do it again
-    date_today = get_current_utc_time_and_tz()
-    queryset = queryset.exclude(last_sent_reminder_time__date=date_today)
+    queryset = queryset.exclude(last_sent_reminder_time__date=beat_time)
+    return queryset
+
+
+@celery_app.task
+def send_text_reminders(beat_time=None):
+    if not beat_time:
+        beat_time = datetime.datetime.now()
+
+    queryset = get_reminders_to_send(beat_time)
 
     for result in queryset:
         send_supplement_reminder.delay(result.id)
