@@ -21,7 +21,7 @@ django-phonenumber-field==1.3.0
 django-redis==4.8.0
 django-secure==1.0.1
 django-webpack-loader==0.5
-djangorestframework==3.7.0
+djangorestframework==3.7.1
 factory-boy==2.9.2
 Faker==0.8.5
 fitbit==0.3.0
