@@ -1,6 +1,6 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
 import {
@@ -9,7 +9,7 @@ import {
 } from "./constants";
 import moment from "moment";
 
-export class UserActivityEventLogTable extends BaseEventLogTable {
+export class UserActivityEventLogTable extends BaseLogTable {
   constructor() {
     super();
     this.state = {

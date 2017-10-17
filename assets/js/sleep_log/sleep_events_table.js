@@ -1,9 +1,9 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import { SleepHistoryRow, SleepHistoryTableHeader } from "./constants";
 
-export class SleepEntryLogTable extends BaseEventLogTable {
+export class SleepEntryLogTable extends BaseLogTable {
   constructor() {
     super();
     this.confirmDelete = this.confirmDelete.bind(this);

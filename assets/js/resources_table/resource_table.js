@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 
-export class BaseEventLogTable extends Component {
+export class BaseLogTable extends Component {
   constructor() {
     super();
   }

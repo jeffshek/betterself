@@ -30,7 +30,7 @@ const CreateSupplementButton = () => {
   }
 };
 
-export class AddSupplementEvent extends Component {
+export class AddSupplementLog extends Component {
   constructor(props) {
     super(props);
 

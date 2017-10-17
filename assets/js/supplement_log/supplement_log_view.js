@@ -1,11 +1,11 @@
 import React from "react";
 
-import { AddSupplementEvent } from "./add_supplement_event";
-import { SupplementEntryLogTable } from "./supplement_events_table";
+import { AddSupplementLog } from "./add_supplement_log";
+import { SupplementLogTable } from "./supplement_log_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
-export class SupplementEventsLogView extends BasePaginatedLogView {
+export class SupplementLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.resourceName = "supplement_events";
@@ -35,11 +35,11 @@ export class SupplementEventsLogView extends BasePaginatedLogView {
   render() {
     return (
       <div>
-        <AddSupplementEvent
+        <AddSupplementLog
           addEventEntry={this.addEventEntry}
           supplements={this.state.supplements}
         />
-        <SupplementEntryLogTable
+        <SupplementLogTable
           eventHistory={this.state.eventHistory}
           supplements={this.state.supplements}
           loadedSupplements={this.state.loadedSupplements}

@@ -1,13 +1,13 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import {
   UserActivityHistoryRow,
   UserActivityHistoryTableHeader
 } from "./constants";
 
-export class UserActivityLogTable extends BaseEventLogTable {
+export class UserActivityLogTable extends BaseLogTable {
   constructor() {
     super();
     this.state = {
