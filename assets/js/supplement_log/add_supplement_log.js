@@ -42,7 +42,6 @@ export class AddSupplementLog extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log("fix duplication oh");
     const { supplements } = props;
     this.setState({ supplements: supplements });
   }
@@ -50,8 +49,9 @@ export class AddSupplementLog extends Component {
   submitSupplementEvent = e => {
     e.preventDefault();
 
-    const supplementLocation = this.selectedSupplementIndex.value;
-    const supplementSelected = this.state.supplements[supplementLocation];
+    const supplementSelected = this.state.supplements[
+      this.state.selectedSupplementIndex
+    ];
 
     // api parameters used to send
     const supplementUUID = supplementSelected.uuid;
@@ -120,7 +120,7 @@ export class AddSupplementLog extends Component {
               <div className="form-group">
                 <label className="add-event-label">Supplement</label>
                 <Select
-                  name="form-control"
+                  name="form-field-name"
                   value={this.state.selectedSupplementIndex}
                   options={supplementDetails}
                   onChange={this.handleSupplementChange}
