@@ -44,7 +44,7 @@ import { UserSettingsView } from "./user_settings/user_settings";
 import { ProductivityAnalyticsView } from "./analytics/productivity";
 import {
   SupplementEventsLogView
-} from "./supplement_events_log/supplement_events_view";
+} from "./supplement_log/supplement_events_view";
 import {
   ProductivityLogView
 } from "./productivity_log/productivity_event_view";
