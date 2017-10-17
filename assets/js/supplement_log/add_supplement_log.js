@@ -90,7 +90,7 @@ export class AddSupplementLog extends Component {
     if (val) {
       updatedLocation = val.value;
     } else {
-      updatedLocation = "";
+      updatedLocation = null;
     }
     this.setState({
       selectedSupplementIndex: updatedLocation
@@ -103,8 +103,7 @@ export class AddSupplementLog extends Component {
     }
 
     const supplementsKeys = Object.keys(this.state.supplements);
-    // React-Select needs it in this value: label format, you can also refactor this
-    // so you don't need supplementsKeys
+    // React-Select needs it in this value: label format
     const supplementDetails = supplementsKeys.map(e => {
       return {
         value: e,
