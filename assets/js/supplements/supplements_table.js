@@ -2,10 +2,10 @@ import React from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-export class SupplementTable extends BaseEventLogTable {
+export class SupplementTable extends BaseLogTable {
   constructor() {
     super();
     this.state = {

@@ -42,9 +42,7 @@ import { CreateDemoUserView } from "./create_demo_user/create_demo_user";
 import { SleepEventsLogView } from "./sleep_log/sleep_events_view";
 import { UserSettingsView } from "./user_settings/user_settings";
 import { ProductivityAnalyticsView } from "./analytics/productivity";
-import {
-  SupplementEventsLogView
-} from "./supplement_events_log/supplement_events_view";
+import { SupplementLogView } from "./supplement_log/supplement_log_view";
 import {
   ProductivityLogView
 } from "./productivity_log/productivity_event_view";
@@ -109,7 +107,7 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
-        component={e => <Dashboard view={SupplementEventsLogView} />}
+        component={e => <Dashboard view={SupplementLogView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_URL}

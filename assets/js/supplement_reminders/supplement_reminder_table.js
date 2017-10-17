@@ -1,11 +1,11 @@
 import React from "react";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import {
   SupplementReminderRow,
   SupplementReminderTableHeader
 } from "./constants";
 
-export class SupplementReminderTable extends BaseEventLogTable {
+export class SupplementReminderTable extends BaseLogTable {
   constructor(props) {
     const { reminders } = props;
     super();

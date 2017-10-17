@@ -4,8 +4,7 @@ import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
-
-// lol, you really sucked at react when you started
+import Select from "react-select";
 
 const CreateSupplementButton = () => {
   {
@@ -30,7 +29,7 @@ const CreateSupplementButton = () => {
   }
 };
 
-export class AddSupplementEvent extends Component {
+export class AddSupplementLog extends Component {
   constructor(props) {
     super(props);
 
@@ -50,8 +49,9 @@ export class AddSupplementEvent extends Component {
   submitSupplementEvent = e => {
     e.preventDefault();
 
-    const supplementLocation = this.supplementNameKey.value;
-    const supplementSelected = this.state.supplements[supplementLocation];
+    const supplementSelected = this.state.supplements[
+      this.state.selectedSupplementIndex
+    ];
 
     // api parameters used to send
     const supplementUUID = supplementSelected.uuid;
@@ -85,12 +85,31 @@ export class AddSupplementEvent extends Component {
     this.setState({ formSupplementDateTime: moment });
   };
 
+  handleSupplementChange = val => {
+    let updatedLocation;
+    if (val) {
+      updatedLocation = val.value;
+    } else {
+      updatedLocation = null;
+    }
+    this.setState({
+      selectedSupplementIndex: updatedLocation
+    });
+  };
+
   renderSubmitSupplementForm() {
     if (!this.state.supplements) {
       return <div />;
     }
 
     const supplementsKeys = Object.keys(this.state.supplements);
+    // React-Select needs it in this value: label format
+    const supplementDetails = supplementsKeys.map(e => {
+      return {
+        value: e,
+        label: this.state.supplements[e].name
+      };
+    });
 
     return (
       <div className="card-block card-block-no-padding-bottom">
@@ -99,17 +118,12 @@ export class AddSupplementEvent extends Component {
             <div className="col-sm-12">
               <div className="form-group">
                 <label className="add-event-label">Supplement</label>
-                <select
-                  className="form-control"
-                  ref={input => this.supplementNameKey = input}
-                >
-                  {/*List out all the possible supplements, use the index as the key*/}
-                  {supplementsKeys.map(key => (
-                    <option value={key} key={key}>
-                      {this.state.supplements[key].name}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  name="form-field-name"
+                  value={this.state.selectedSupplementIndex}
+                  options={supplementDetails}
+                  onChange={this.handleSupplementChange}
+                />
               </div>
             </div>
           </div>

@@ -48,6 +48,7 @@
     "react-ladda": "^5.0.7",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
+    "react-select": "^1.0.0-rc.10",
     "react-slick": "^0.15.4",
     "react-yearly-calendar": "^1.1.5",
     "reactstrap": "^4.5.0",

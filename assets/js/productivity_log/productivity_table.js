@@ -1,12 +1,12 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
-import { BaseEventLogTable } from "../resources_table/resource_table";
+import { BaseLogTable } from "../resources_table/resource_table";
 import {
   ProductivityHistoryRow,
   ProductivityHistoryTableHeader
 } from "./constants";
 
-export class ProductivityLogTable extends BaseEventLogTable {
+export class ProductivityLogTable extends BaseLogTable {
   getTableRender() {
     const historicalData = this.props.eventHistory;
     const historicalDataKeys = Object.keys(historicalData);
