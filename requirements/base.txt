@@ -11,7 +11,7 @@ django-allauth==0.33.0
 django-autoslug==1.9.3
 django-braces==1.11.0
 django-celery-beat==1.0.1
-django-crispy-forms==1.6.1
+django-crispy-forms==1.7.0
 django-environ==0.4.4
 django-extensions==1.9.6
 django-filter==1.0.4
