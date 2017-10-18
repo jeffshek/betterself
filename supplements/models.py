@@ -83,3 +83,16 @@ class Supplement(BaseModelWithUserGeneratedContent):
         ordering = ['user', 'name']
         verbose_name = 'Supplement'
         verbose_name_plural = 'Supplements'
+
+
+class UserSupplementStack(BaseModelWithUserGeneratedContent):
+    RESOURCE_NAME = 'supplements_stacks'
+
+    name = models.CharField(max_length=300)
+    supplements = models.ManyToManyField(Supplement, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'name')
+        ordering = ['user', 'name']
+        verbose_name = 'Supplements Stack'
+        verbose_name_plural = 'Supplements Stacks'

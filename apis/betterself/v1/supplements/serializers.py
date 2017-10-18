@@ -149,3 +149,10 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
 
         instance.save()
         return instance
+
+
+class UserSupplementStackCreateSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=300)
+    supplements = SupplementReadSerializer(many=True, required=False)
+    uuid = serializers.UUIDField(required=False, read_only=True)
+    created = serializers.DateTimeField()
