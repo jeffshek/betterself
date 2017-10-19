@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from apis.betterself.v1.supplements.serializers import UserSupplementStackCreateSerializer
+from apis.betterself.v1.supplements.serializers import UserSupplementStackReadSerializer
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
 from supplements.models import UserSupplementStack
 
@@ -22,5 +22,5 @@ class TestSupplementStackSerializer(TestCase):
         all_supplement_stacks = UserSupplementStack.objects.all()
 
         for stack in all_supplement_stacks:
-            serialized_data = UserSupplementStackCreateSerializer(instance=stack).data
+            serialized_data = UserSupplementStackReadSerializer(instance=stack).data
             self.assertEqual(stack.supplements.count(), len(serialized_data['supplements']))
