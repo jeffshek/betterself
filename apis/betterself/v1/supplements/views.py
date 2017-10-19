@@ -74,7 +74,7 @@ class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDD
                                                                                   ingredient_compositions_queryset))
 
 
-class UserSupplementStackViewset(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
+class UserSupplementStackViewSet(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = UserSupplementStack
     write_serializer_class = UserSupplementStackCreateUpdateSerializer
     read_serializer_class = UserSupplementStackReadSerializer
