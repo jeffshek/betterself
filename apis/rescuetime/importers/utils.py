@@ -53,7 +53,12 @@ def calculate_rescue_time_pulse(very_distracting, distracting, neutral, producti
     # final multiplier to even things out
     total_time_spent_scaled = total_time_spent * 4
 
-    return total_score / total_time_spent_scaled
+    try:
+        rt_score = total_score / total_time_spent_scaled
+    except ZeroDivisionError:
+        rt_score = 0
+
+    return rt_score
 
 
 def calculate_rescue_time_pulse_from_dataframe(dataframe):
