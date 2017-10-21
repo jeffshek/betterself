@@ -15,7 +15,7 @@ logger = logging.Logger(__name__)
 
 # I'm such an idiot, refactor all of this to be good mixins
 # switch them to a template design Pattern ... that way you don't
-# have to super over and over like a fool
+# have to inherit over and over like a fool
 class BaseAPIv1Tests(TestCase, UsersTestsFixturesMixin):
     # pagination means does the serializer return results
     # paginated or not, if paginated, the results display slightly different

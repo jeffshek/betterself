@@ -1,7 +1,8 @@
 from django.db.models.query import Prefetch
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 
-from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter
+from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter, \
+    UserSupplementStackFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateUpdateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadSerializer, IngredientCompositionCreateSerializer, UserSupplementStackReadSerializer, \
@@ -78,7 +79,11 @@ class UserSupplementStackViewSet(ListCreateAPIView, ReadOrWriteSerializerChooser
     model = UserSupplementStack
     write_serializer_class = UserSupplementStackCreateUpdateSerializer
     read_serializer_class = UserSupplementStackReadSerializer
-    update_serializer_class = SupplementCreateUpdateSerializer
+    update_serializer_class = UserSupplementStackCreateUpdateSerializer
+    filter_class = UserSupplementStackFilter
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)

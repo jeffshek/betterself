@@ -2,7 +2,7 @@
 import factory
 
 from betterself.users.fixtures.factories import UserFactory
-from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement, UserSupplementStack
+from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
 
 DEFAULT_INGREDIENT_NAME_1 = 'Leucine'
 DEFAULT_INGREDIENT_HL_MINUTE_1 = 50
@@ -75,9 +75,3 @@ class SupplementFactory(factory.DjangoModelFactory):
             # A list of groups were passed in, use them
             for group in extracted:
                 self.ingredient_compositions.add(group)
-
-
-class UserSupplementStackFactory(factory.DjangoModelFactory):
-
-    class Meta:
-        model = UserSupplementStack
