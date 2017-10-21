@@ -244,7 +244,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
             'uuid': supplement_uuid,
             # ingredient_compositions should be sent as a list of dictionaries, here we send it as a dictionary
             'ingredient_compositions': {'uuid': supplement_ingredients_uuid_to_use}
-
         }
 
         response = self.client_1.put(url, data, format='json')

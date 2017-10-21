@@ -166,23 +166,25 @@ class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     supplements = SimpleUUIDSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
-    def validate(self, validated_data):
-        if 'supplements' in validated_data:
+    @staticmethod
+    def _validate_supplements(validated_data):
+        supplements = validated_data.pop('supplements')
+        supplements_uuids = [item['uuid'] for item in supplements]
 
-            supplements = validated_data.pop('supplements')
-            supplements_uuids = [item['uuid'] for item in supplements]
+        # TODO - Check User Level too
+        supplements = Supplement.objects.filter(uuid__in=supplements_uuids)
 
-            # TODO - Check User Level too
-            supplements = Supplement.objects.filter(uuid__in=supplements_uuids)
-
-            if supplements.count() != len(supplements_uuids):
-                raise ValidationError('Not all supplements UUIDs were found {}'.format(supplements_uuids))
-
-        else:
-            supplements = []
+        if supplements.count() != len(supplements_uuids):
+            raise ValidationError('Not all supplements UUIDs were found {}'.format(supplements_uuids))
 
         validated_data['supplements'] = supplements
+        return validated_data
 
+    def validate(self, validated_data):
+        if 'supplements' not in validated_data:
+            return validated_data
+
+        validated_data = self._validate_supplements(validated_data)
         return validated_data
 
     def create(self, validated_data):
