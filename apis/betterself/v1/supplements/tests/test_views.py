@@ -3,9 +3,10 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
+from events.fixtures.mixins import UserSupplementStackFixturesGenerator
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
@@ -243,7 +244,6 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
             'uuid': supplement_uuid,
             # ingredient_compositions should be sent as a list of dictionaries, here we send it as a dictionary
             'ingredient_compositions': {'uuid': supplement_ingredients_uuid_to_use}
-
         }
 
         response = self.client_1.put(url, data, format='json')
@@ -269,3 +269,50 @@ class SupplementV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequests
         supplements_with_same_composition = Supplement.objects.filter(ingredient_compositions=ingredient_composition)
 
         self.assertEqual(length_of_compositions, supplements_with_same_composition.count())
+
+
+class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin, PUTRequestsTestsMixin):
+    TEST_MODEL = UserSupplementStack
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)
+
+    def _get_default_post_parameters(self):
+        # kind of whack, but create a list of valid IDs that could be passed
+        # when serializing
+        supplements = Supplement.objects.filter(user=self.user_1)
+        supplements_uuids = supplements.values_list('uuid', flat=True)
+        supplements_uuids = [{'uuid': str(item)} for item in supplements_uuids]
+
+        request_parameters = {
+            'name': 'Glutamine',
+            'supplements': supplements_uuids
+        }
+        return request_parameters
+
+    def test_post_request(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request(request_parameters)
+
+    def test_post_request_increments(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request_increments(request_parameters)
+
+    def test_post_request_changes_objects_for_right_user(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request_changes_objects_for_right_user(request_parameters)
+
+    def test_valid_get_request_for_key_in_response(self):
+        key = 'name'
+        super().test_valid_get_request_for_key_in_response(key)
+
+    def test_valid_get_request_with_params_filters_correctly(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        data = request.data
+        first_name = data[0]['name']
+
+        request_parameters = {'name': first_name}
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)

@@ -7,6 +7,7 @@ from events.fixtures.factories import SupplementEventFactory, DailyProductivityL
     UserActivityEventFactory
 from events.models import INPUT_SOURCES
 from supplements.fixtures.factories import SupplementFactory
+from supplements.models import UserSupplementStack
 
 VALID_QUANTITIES = range(1, 30)
 STATIC_DATE = datetime.datetime(2016, 12, 31)
@@ -48,10 +49,26 @@ class SupplementEventsFixturesGenerator(object):
             # we can't do for loop because this is a unique constraint on table
             # here, we are just getting the next possible q/input ONCE versus
             # in each of the for loops
+            #
+            # TODO - Refactor your stupidity
             quantity, input_source = test_cases.__next__()
 
             SupplementEventFactory(quantity=quantity, source=input_source,
                                    time=event_time, user=user, supplement=supplement)
+
+
+class UserSupplementStackFixturesGenerator(object):
+    @staticmethod
+    def create_fixtures(user):
+        supplement_1 = SupplementFactory(user=user, name='Fish Oil')
+        supplement_2 = SupplementFactory(user=user, name='Snake Oil')
+        supplement_3 = SupplementFactory(user=user, name='Truffle Oil')
+
+        first_stack = UserSupplementStack.objects.create(user=user, name='first_stack')
+        first_stack.supplements.add(*[supplement_1, supplement_2])
+
+        second_stack = UserSupplementStack.objects.create(user=user, name='second_stack')
+        second_stack.supplements.add(*[supplement_1, supplement_2, supplement_3])
 
 
 class ProductivityLogFixturesGenerator(object):
