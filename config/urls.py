@@ -4,12 +4,14 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from rest_framework.authtoken import views
 
 react_home_template = 'react/home.html'
 react_signup_template = 'react/signup.html'
 react_dashboard_template = 'react/dashboard.html'
+
+favicon_view = RedirectView.as_view(url='/static/images/logos/logojoy/favicon.png', permanent=True)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name=react_home_template), name='home'),
@@ -35,6 +37,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', LogoutView.as_view()),
+    url(r'^favicon\.ico$', favicon_view),
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced
