@@ -103,24 +103,6 @@ export class AddUserActivity extends Component {
             </div>
             <br />
             <label className="col-md-3 form-control-label add-event-label">
-              Is Negative?
-            </label>
-            <div className="col-md-4">
-              <select
-                id="select"
-                name="select"
-                className="form-control"
-                size="1"
-                defaultValue={false}
-                ref={input => this.isNegative = input}
-              >
-                &gt;
-                <option value={true}>True</option>
-                <option value={false}>False</option>
-              </select>
-            </div>
-            <br />
-            <label className="col-md-3 form-control-label add-event-label">
               Is All Day?
             </label>
             <div className="col-md-4">
@@ -131,6 +113,24 @@ export class AddUserActivity extends Component {
                 size="1"
                 defaultValue={false}
                 ref={input => this.isAllDay = input}
+              >
+                &gt;
+                <option value={true}>True</option>
+                <option value={false}>False</option>
+              </select>
+            </div>
+            <br />
+            <label className="col-md-3 form-control-label add-event-label">
+              Is Negative?
+            </label>
+            <div className="col-md-4">
+              <select
+                id="select"
+                name="select"
+                className="form-control"
+                size="1"
+                defaultValue={false}
+                ref={input => this.isNegative = input}
               >
                 &gt;
                 <option value={true}>True</option>
