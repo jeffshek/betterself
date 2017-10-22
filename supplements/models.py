@@ -13,6 +13,7 @@ class Measurement(BaseModel):
     def __str__(self):
         return '{obj.name}'.format(obj=self)
 
+
 ####
 # Not a flat structure because of need to support complex stacks.
 ####
@@ -60,7 +61,7 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     def __repr__(self):
         if self.measurement:
             return '{ingredient.name} ({obj.quantity} {measurement.name})'.format(obj=self, ingredient=self.ingredient,
-                measurement=self.measurement)
+                                                                                  measurement=self.measurement)
         elif self.quantity != 1:
             return '{ingredient.name} ({obj.quantity})'.format(obj=self, ingredient=self.ingredient)
         else:
@@ -76,6 +77,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     name = models.CharField(max_length=300)
     ingredient_compositions = models.ManyToManyField(IngredientComposition, blank=True)
+
     # quantity is an event type of attribute, so its not here.
 
     class Meta:
@@ -87,12 +89,26 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
 class UserSupplementStack(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplements_stacks'
-
     name = models.CharField(max_length=300)
-    supplements = models.ManyToManyField(Supplement, blank=True)
 
     class Meta:
         unique_together = ('user', 'name')
         ordering = ['user', 'name']
         verbose_name = 'Supplements Stack'
         verbose_name_plural = 'Supplements Stacks'
+
+    def __str__(self):
+        return '{}-{}'.format(self.name, self.user)
+
+
+class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
+    # RESOURCE_NAME = "supplement_stack_compositions"
+    supplement = models.ForeignKey(Supplement)
+    stack = models.ForeignKey(UserSupplementStack, related_name='compositions')
+    quantity = models.FloatField(default=1)
+
+    class Meta:
+        unique_together = ('supplement', 'stack')
+
+    def __str__(self):
+        return '{}-{}'.format(self.supplement, self.stack)

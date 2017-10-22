@@ -7,7 +7,7 @@ from events.fixtures.factories import SupplementEventFactory, DailyProductivityL
     UserActivityEventFactory
 from events.models import INPUT_SOURCES
 from supplements.fixtures.factories import SupplementFactory
-from supplements.models import UserSupplementStack
+from supplements.models import UserSupplementStack, UserSupplementStackComposition
 
 VALID_QUANTITIES = range(1, 30)
 STATIC_DATE = datetime.datetime(2016, 12, 31)
@@ -65,10 +65,13 @@ class UserSupplementStackFixturesGenerator(object):
         supplement_3 = SupplementFactory(user=user, name='Truffle Oil')
 
         first_stack = UserSupplementStack.objects.create(user=user, name='first_stack')
-        first_stack.supplements.add(*[supplement_1, supplement_2])
+        UserSupplementStackComposition.objects.create(stack=first_stack, user=user, supplement=supplement_1)
+        UserSupplementStackComposition.objects.create(stack=first_stack, user=user, supplement=supplement_2)
 
         second_stack = UserSupplementStack.objects.create(user=user, name='second_stack')
-        second_stack.supplements.add(*[supplement_1, supplement_2, supplement_3])
+        UserSupplementStackComposition.objects.create(stack=second_stack, user=user, supplement=supplement_1)
+        UserSupplementStackComposition.objects.create(stack=second_stack, user=user, supplement=supplement_2)
+        UserSupplementStackComposition.objects.create(stack=second_stack, user=user, supplement=supplement_3)
 
 
 class ProductivityLogFixturesGenerator(object):

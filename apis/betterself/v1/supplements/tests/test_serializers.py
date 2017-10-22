@@ -17,10 +17,8 @@ class TestSupplementStackSerializer(TestCase):
         super().setUpTestData()
 
     def test_serializer(self):
-        UserSupplementStack.objects.all()
-
         all_supplement_stacks = UserSupplementStack.objects.all()
 
         for stack in all_supplement_stacks:
             serialized_data = UserSupplementStackReadSerializer(instance=stack).data
-            self.assertEqual(stack.supplements.count(), len(serialized_data['supplements']))
+            self.assertEqual(stack.compositions.count(), len(serialized_data['supplements']))
