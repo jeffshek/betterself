@@ -11,12 +11,12 @@ from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesC
     ProductivityLogsUserActivitiesCorrelationsView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
-    IngredientView, MeasurementView, SupplementsListView
+    IngredientView, MeasurementView, SupplementsListView, UserSupplementStackViewSet
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
-from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement
+from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement, UserSupplementStack
 from vendors.models import Vendor
 
 urlpatterns = [
@@ -58,6 +58,7 @@ urlpatterns = [
             url(r'^supplements/correlations$', SleepActivitiesSupplementsCorrelationsView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
     url(r'^{0}/$'.format(SupplementReminder.RESOURCE_NAME), SupplementReminderView.as_view(), name=SupplementReminder.RESOURCE_NAME),  # noqa
+    url(r'^{0}/$'.format(UserSupplementStack.RESOURCE_NAME), UserSupplementStackViewSet.as_view(), name=UserSupplementStack.RESOURCE_NAME),  # noqa
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),

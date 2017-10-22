@@ -1,8 +1,8 @@
 import datetime
 import json
+
 import pandas as pd
 from dateutil import relativedelta
-
 from rest_framework.generics import ListCreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -237,7 +237,7 @@ class AggregatedSupplementLogView(APIView):
         if not params['frequency']:
             dataframe_localized_date_index = dataframe_localized.index.date
             dataframe_localized_date_index = pd.DatetimeIndex(dataframe_localized_date_index,
-                tz=request.user.pytz_timezone)
+                                                              tz=request.user.pytz_timezone)
 
             productivity_series = dataframe_localized['productivity_time'].dropna()
             productivity_series_filled = productivity_series[dataframe_localized_date_index]
