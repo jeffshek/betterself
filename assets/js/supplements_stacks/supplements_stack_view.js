@@ -1,7 +1,7 @@
 import React from "react";
 
-import { AddSupplementLog } from "./add_supplement_log";
-import { SupplementLogTable } from "./supplement_log_table";
+import { AddSupplementsStack } from "./add_supplements_stack";
+import { SupplementsStackTable } from "./supplements_stack_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 
@@ -35,11 +35,11 @@ export class SupplementsStackView extends BasePaginatedLogView {
   render() {
     return (
       <div>
-        <AddSupplementLog
+        <AddSupplementsStack
           addEventEntry={this.addEventEntry}
           supplements={this.state.supplements}
         />
-        <SupplementLogTable
+        <SupplementsStackTable
           eventHistory={this.state.eventHistory}
           supplements={this.state.supplements}
           loadedSupplements={this.state.loadedSupplements}

@@ -6,30 +6,17 @@ import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 
-const CreateSupplementButton = () => {
+const CreateSupplementsStackButton = () => {
   {
     return (
       <div className="card-header">
-        <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
-        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="add-new-object-button"
-              className="btn btn-sm btn-success"
-            >
-              <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Supplement
-              </div>
-            </button>
-          </div>
-        </Link>
+        <strong id="add-supplement-entry-text">Create Supplement Stack</strong>
       </div>
     );
   }
 };
 
-export class AddSupplementLog extends Component {
+export class AddSupplementsStack extends Component {
   constructor(props) {
     super(props);
 
@@ -170,7 +157,7 @@ export class AddSupplementLog extends Component {
               className="btn btn-sm btn-success"
               onClick={e => this.submitSupplementEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Add Supplement Log
+              <i className="fa fa-dot-circle-o" /> Create Supplement Stack
             </button>
           </div>
         </form>
@@ -181,7 +168,7 @@ export class AddSupplementLog extends Component {
   render() {
     return (
       <div className="card">
-        <CreateSupplementButton />
+        <CreateSupplementsStackButton />
         {this.renderSubmitSupplementForm()}
       </div>
     );

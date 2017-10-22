@@ -9,7 +9,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Datetime from "react-datetime";
 import moment from "moment";
 
-export class SupplementLogTable extends BaseLogTable {
+export class SupplementsStackTable extends BaseLogTable {
   constructor() {
     super();
 
@@ -168,7 +168,7 @@ export class SupplementLogTable extends BaseLogTable {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Supplement History</strong>
+          <strong>Supplement Stacks</strong>
         </div>
         {this.renderReady()}
         {this.renderEditModal()}
