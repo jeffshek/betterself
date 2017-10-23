@@ -61,7 +61,7 @@ class IngredientComposition(BaseModelWithUserGeneratedContent):
     def __repr__(self):
         if self.measurement:
             return '{ingredient.name} ({obj.quantity} {measurement.name})'.format(obj=self, ingredient=self.ingredient,
-                                                                                  measurement=self.measurement)
+                measurement=self.measurement)
         elif self.quantity != 1:
             return '{ingredient.name} ({obj.quantity})'.format(obj=self, ingredient=self.ingredient)
         else:
@@ -108,7 +108,7 @@ class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
     quantity = models.FloatField(default=1)
 
     class Meta:
-        unique_together = ('supplement', 'stack')
+        unique_together = ('user', 'supplement', 'stack')
 
     def __str__(self):
         return '{}-{}'.format(self.supplement, self.stack)
