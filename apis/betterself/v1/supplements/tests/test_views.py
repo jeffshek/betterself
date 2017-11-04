@@ -284,11 +284,11 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
         # when serializing
         supplements = Supplement.objects.filter(user=self.user_1)
         supplements_uuids = supplements.values_list('uuid', flat=True)
-        supplements_uuids = [{'uuid': str(item)} for item in supplements_uuids]
+        supplements_uuids = [{'supplement_uuid': str(item)} for item in supplements_uuids]
 
         request_parameters = {
             'name': 'Glutamine',
-            'supplements': supplements_uuids
+            'compositions': supplements_uuids
         }
         return request_parameters
 
