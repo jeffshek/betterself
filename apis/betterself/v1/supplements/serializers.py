@@ -157,7 +157,6 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
 
 
 class UserSupplementStackCompositionReadSerializer(serializers.ModelSerializer):
-    # supplement read serializers get the ingredient compositions, which maybe unnecessary
     supplement = SupplementReadSerializer()
 
     class Meta:
