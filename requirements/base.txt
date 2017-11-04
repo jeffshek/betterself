@@ -5,7 +5,7 @@ celery==4.1.0
 contextlib2==0.5.5
 coverage==4.4.1
 cython==0.27.2
-django==1.11.6
+django==1.11.7
 django-admin-honeypot==1.0.0
 django-allauth==0.34.0
 django-autoslug==1.9.3
@@ -37,12 +37,12 @@ openpyxl==2.4.9
 pandas==0.21.0
 patch==1.16
 patsy==0.4.1
-phonenumberslite==8.8.4
+phonenumberslite==8.8.5
 Pillow==4.3.0
-psycopg2==2.7.3.1
+psycopg2==2.7.3.2
 PyJWT==1.5.3
 pysocks==1.6.7
-pytz==2017.2
+pytz==2017.3
 raven==6.3.0
 readline==6.2.4.1
 redis==2.10.6
