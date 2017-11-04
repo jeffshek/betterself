@@ -2,7 +2,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from apis.betterself.v1.supplements.serializers import UserSupplementStackReadSerializer
+from apis.betterself.v1.supplements.serializers import UserSupplementStackReadSerializer, \
+    UserSupplementStackCreateUpdateSerializer
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
 from supplements.models import UserSupplementStack
 
@@ -22,3 +23,29 @@ class TestSupplementStackSerializer(TestCase):
         for stack in all_supplement_stacks:
             serialized_data = UserSupplementStackReadSerializer(instance=stack).data
             self.assertEqual(stack.compositions.count(), len(serialized_data['supplements']))
+
+    def test_updating_serializing(self):
+        stack = UserSupplementStack.objects.first()
+        stack_id = stack.id
+        initial_data = UserSupplementStackCreateUpdateSerializer(instance=stack).data
+        stack_compositions = initial_data['compositions']
+        compositions_count = stack.compositions.count()
+
+        self.assertTrue(compositions_count > 1)
+
+        one_composition = stack_compositions[0:1]
+
+        data = {}
+        data['name'] = stack.name
+        data['compositions'] = one_composition
+
+        context = {}
+        context['user'] = stack.user
+
+        serializer = UserSupplementStackCreateUpdateSerializer(instance=stack, data=data, context=context)
+        serializer.is_valid()
+        serializer.save()
+
+        revised_stack = UserSupplementStack.objects.get(id=stack_id)
+        revised_composition_count = revised_stack.compositions.count()
+        self.assertEqual(revised_composition_count, 1)

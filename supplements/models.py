@@ -102,7 +102,6 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
 
 
 class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
-    # RESOURCE_NAME = "supplement_stack_compositions"
     supplement = models.ForeignKey(Supplement)
     stack = models.ForeignKey(UserSupplementStack, related_name='compositions')
     quantity = models.FloatField(default=1)

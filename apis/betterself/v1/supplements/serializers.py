@@ -111,7 +111,6 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
 
     def validate(self, validated_data):
         if 'ingredient_compositions' in validated_data:
-
             ingredient_compositions = validated_data.pop('ingredient_compositions')
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 
@@ -185,7 +184,8 @@ class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate_compositions(self, data):
-        user = self.context['request'].user
+        # for updates and testing, a user is often passed via context
+        user = self.context.get('user') or self.context['request'].user
 
         supplement_uuids = [item['supplement']['uuid'] for item in data]
         if settings.TESTING:  # do a more thorough check for production
@@ -198,9 +198,11 @@ class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
 
         return data
 
-    def _create_compositions_from_validated_data(self, stack, compositions_data):
+    @staticmethod
+    def _create_compositions_from_validated_data(stack, compositions_data):
+        user = stack.user
+
         for composition in compositions_data:
-            user = self.context['request'].user
             supplement = Supplement.objects.get(uuid=composition['supplement']['uuid'])
             quantity = composition['quantity']
 
@@ -222,14 +224,11 @@ class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
+        compositions = validated_data.get('compositions', [])
 
-        # if compositions in the data, clear out any existing compositions that might have been there
-        # and reset it with any new ingredient compositions
-        if 'supplements' in validated_data:
-            instance.supplements.clear()
-
-            for supplement in validated_data['supplements']:
-                instance.supplements.add(supplement)
+        if compositions:
+            instance.compositions.all().delete()
+            self._create_compositions_from_validated_data(instance, compositions)
 
         instance.save()
         return instance
