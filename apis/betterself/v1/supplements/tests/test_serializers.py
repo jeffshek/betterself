@@ -22,7 +22,7 @@ class TestSupplementStackSerializer(TestCase):
 
         for stack in all_supplement_stacks:
             serialized_data = UserSupplementStackReadSerializer(instance=stack).data
-            self.assertEqual(stack.compositions.count(), len(serialized_data['supplements']))
+            self.assertEqual(stack.compositions.count(), len(serialized_data['compositions']))
 
     def test_updating_serializing(self):
         stack = UserSupplementStack.objects.first()

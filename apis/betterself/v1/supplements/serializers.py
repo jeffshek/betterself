@@ -166,11 +166,11 @@ class UserSupplementStackCompositionReadSerializer(serializers.ModelSerializer):
 
 
 class UserSupplementStackReadSerializer(serializers.ModelSerializer):
-    supplements = UserSupplementStackCompositionReadSerializer(source='compositions', many=True)
+    compositions = UserSupplementStackCompositionReadSerializer(many=True)
 
     class Meta:
         model = UserSupplementStack
-        fields = ('name', 'supplements', 'uuid', 'created')
+        fields = ('name', 'compositions', 'uuid', 'created')
 
 
 class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
