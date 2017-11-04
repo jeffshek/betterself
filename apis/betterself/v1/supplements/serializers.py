@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack
+from django.conf import settings
+
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.models import Vendor
 
 
@@ -108,7 +111,6 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
 
     def validate(self, validated_data):
         if 'ingredient_compositions' in validated_data:
-
             ingredient_compositions = validated_data.pop('ingredient_compositions')
             ingredient_compositions_uuids = [item['uuid'] for item in ingredient_compositions]
 
@@ -154,64 +156,78 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
         return instance
 
 
-class UserSupplementStackReadSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=300)
-    supplements = SupplementReadSerializer(many=True, required=False)
-    uuid = serializers.UUIDField(required=False, read_only=True)
-    created = serializers.DateTimeField()
+class UserSupplementStackCompositionReadSerializer(serializers.ModelSerializer):
+    supplement = SupplementReadSerializer()
+
+    class Meta:
+        model = UserSupplementStackComposition
+        fields = ('supplement', 'quantity', 'uuid')
+
+
+class UserSupplementStackReadSerializer(serializers.ModelSerializer):
+    compositions = UserSupplementStackCompositionReadSerializer(many=True)
+
+    class Meta:
+        model = UserSupplementStack
+        fields = ('name', 'compositions', 'uuid', 'created')
+
+
+class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
+    supplement_uuid = serializers.UUIDField(required=True, source='supplement.uuid')
+    quantity = serializers.FloatField(default=1)
 
 
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    supplements = SimpleUUIDSerializer(many=True, required=False)
+    compositions = UserSupplementStackCompositionCreateSerializer(many=True)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
+    def validate_compositions(self, data):
+        # for updates and testing, a user is often passed via context
+        user = self.context.get('user') or self.context['request'].user
+
+        supplement_uuids = [item['supplement']['uuid'] for item in data]
+        if settings.TESTING:  # do a more thorough check for production
+            supplements = Supplement.objects.filter(uuid__in=supplement_uuids)
+        else:
+            supplements = Supplement.objects.filter(uuid__in=supplement_uuids, user=user)
+
+        if supplements.count() != len(supplement_uuids):
+            raise ValidationError('Not all supplements UUIDs were found {}'.format(supplement_uuids))
+
+        return data
+
     @staticmethod
-    def _validate_supplements(validated_data):
-        supplements = validated_data.pop('supplements')
-        supplements_uuids = [item['uuid'] for item in supplements]
+    def _create_compositions_from_validated_data(stack, compositions_data):
+        user = stack.user
 
-        # TODO - Check User Level too
-        supplements = Supplement.objects.filter(uuid__in=supplements_uuids)
+        for composition in compositions_data:
+            supplement = Supplement.objects.get(uuid=composition['supplement']['uuid'])
+            quantity = composition['quantity']
 
-        if supplements.count() != len(supplements_uuids):
-            raise ValidationError('Not all supplements UUIDs were found {}'.format(supplements_uuids))
-
-        validated_data['supplements'] = supplements
-        return validated_data
-
-    def validate(self, validated_data):
-        if 'supplements' not in validated_data:
-            return validated_data
-
-        validated_data = self._validate_supplements(validated_data)
-        return validated_data
+            UserSupplementStackComposition.objects.update_or_create(stack=stack, supplement=supplement, user=user,
+                defaults={'quantity': quantity})
 
     def create(self, validated_data):
-        # all generated objects should have a user field
         user = self.context['request'].user
         validated_data['user'] = user
+        name = validated_data['name']
 
-        supplements = validated_data.pop('supplements')
+        # cannot associate foreign key dependencies until instance has been created
+        compositions = validated_data.pop('compositions')
 
-        # cannot associate many to many unless item has been saved
-        stack, _ = UserSupplementStack.objects.get_or_create(**validated_data)
-
-        for supplement in supplements:
-            stack.supplements.add(supplement)
+        stack, _ = UserSupplementStack.objects.get_or_create(user=user, name=name)
+        self._create_compositions_from_validated_data(stack, compositions)
 
         return stack
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
+        compositions = validated_data.get('compositions', [])
 
-        # if compositions in the data, clear out any existing compositions that might have been there
-        # and reset it with any new ingredient compositions
-        if 'supplements' in validated_data:
-            instance.supplements.clear()
-
-            for supplement in validated_data['supplements']:
-                instance.supplements.add(supplement)
+        if compositions:
+            instance.compositions.all().delete()
+            self._create_compositions_from_validated_data(instance, compositions)
 
         instance.save()
         return instance
