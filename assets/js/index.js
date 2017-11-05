@@ -62,7 +62,7 @@ import {
 } from "./supplement_reminders/supplement_reminders_view";
 import {
   SupplementsStackView
-} from "./supplements_stacks/supplements_stack_view";
+} from "./supplements_stacks/supplement_stack_view";
 
 const BetterSelfRouter = () => (
   <Router>

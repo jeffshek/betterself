@@ -12,7 +12,7 @@ export class SupplementStackTable extends BaseLogTable {
 
     this.state = {
       supplements: [],
-      supplementsStacks: [],
+      supplementStacks: [],
       renderReady: false,
       addModal: false,
       selectedSupplementQuantity: 1
@@ -46,7 +46,7 @@ export class SupplementStackTable extends BaseLogTable {
     const url = "api/v1/supplements_stacks";
     getFetchJSONAPI(url).then(responseData => {
       this.setState({
-        supplementsStacks: responseData,
+        supplementStacks: responseData,
         renderReady: true
       });
     });
@@ -69,7 +69,7 @@ export class SupplementStackTable extends BaseLogTable {
   };
 
   getTableRender() {
-    const historicalData = this.state.supplementsStacks;
+    const historicalData = this.state.supplementStacks;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (

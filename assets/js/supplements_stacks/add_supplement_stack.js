@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 
-const CreateSupplementsStackButton = () => {
+const CreateSupplementStackButton = () => {
   return (
     <div className="card-header">
       <strong id="add-supplement-entry-text">Create Supplement Stack</strong>
@@ -10,12 +9,8 @@ const CreateSupplementsStackButton = () => {
   );
 };
 
-export class AddSupplementsStack extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  submitSupplementsStackEvent = e => {
+export class AddSupplementStack extends Component {
+  submitSupplementStackEvent = e => {
     e.preventDefault();
 
     // api parameters used to send
@@ -31,10 +26,10 @@ export class AddSupplementsStack extends Component {
     });
   };
 
-  renderSubmitSupplementForm() {
+  renderAddSupplementStackForm() {
     return (
       <div className="card-block card-block-no-padding-bottom">
-        <form onSubmit={e => this.submitSupplementsStackEvent(e)}>
+        <form onSubmit={e => this.submitSupplementStackEvent(e)}>
           <div className="row">
             <div className="col-sm-12">
               <div className="form-group">
@@ -42,7 +37,7 @@ export class AddSupplementsStack extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Black Tea"
+                  placeholder="Morning Stack"
                   ref={input => this.stackName = input}
                 />
               </div>
@@ -53,7 +48,7 @@ export class AddSupplementsStack extends Component {
               type="submit"
               id="event-dashboard-submit"
               className="btn btn-sm btn-success"
-              onClick={e => this.submitSupplementsStackEvent(e)}
+              onClick={e => this.submitSupplementStackEvent(e)}
             >
               <i className="fa fa-dot-circle-o" /> Create Supplement Stack
             </button>
@@ -66,8 +61,8 @@ export class AddSupplementsStack extends Component {
   render() {
     return (
       <div className="card">
-        <CreateSupplementsStackButton />
-        {this.renderSubmitSupplementForm()}
+        <CreateSupplementStackButton />
+        {this.renderAddSupplementStackForm()}
       </div>
     );
   }

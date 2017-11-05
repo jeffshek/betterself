@@ -10,7 +10,7 @@ const CreateSupplementButton = () => {
   {
     return (
       <div className="card-header">
-        <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
+        <strong id="add-supplement-entry-text">Log Supplement Entry</strong>
         <Link to={DASHBOARD_SUPPLEMENTS_URL}>
           <div className="float-right">
             <button
@@ -170,7 +170,7 @@ export class AddSupplementLog extends Component {
               className="btn btn-sm btn-success"
               onClick={e => this.submitSupplementEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Add Supplement Log
+              <i className="fa fa-dot-circle-o" /> Log Supplement Entry
             </button>
           </div>
         </form>
