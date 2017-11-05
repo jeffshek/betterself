@@ -4,7 +4,6 @@ import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
 
 export const SupplementStackRow = props => {
   const data = props.object;
-  //console.log(data)
   const { name, uuid, created, compositions } = data;
   const createTimeFormat = moment(created).format(READABLE_DATE_TIME_FORMAT);
 
@@ -27,7 +26,7 @@ export const SupplementStackRow = props => {
               className="btn-link"
               onClick={e => props.selectedStackChange(data)}
             >
-              Click here to add a supplement
+              Click to add a supplement
             </div>}
       </td>
       <td>

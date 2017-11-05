@@ -22,16 +22,41 @@ export class SupplementStackTable extends BaseLogTable {
   }
 
   componentDidMount() {
-    this.getSupplementStacks();
-    this.getSupplements();
+    this.fetchSupplementStacks();
+    this.fetchSupplements();
   }
 
-  getSupplementStacks() {
+  confirmDelete = (uuid, name) => {
+    const answer = confirm(
+      `WARNING: This will delete the following Supplement Stack \n\n${name} \n\nConfirm? `
+    );
+
+    if (answer) {
+      this.deleteUUID(uuid);
+    }
+  };
+
+  toggle = () => {
+    this.setState({
+      addModal: !this.state.addModal
+    });
+  };
+
+  fetchSupplementStacks() {
     const url = "api/v1/supplements_stacks";
     getFetchJSONAPI(url).then(responseData => {
       this.setState({
         supplementsStacks: responseData,
         renderReady: true
+      });
+    });
+  }
+
+  fetchSupplements() {
+    const url = "/api/v1/supplements/";
+    getFetchJSONAPI(url).then(responseData => {
+      this.setState({
+        supplements: responseData
       });
     });
   }
@@ -56,6 +81,7 @@ export class SupplementStackTable extends BaseLogTable {
               key={key}
               object={historicalData[key]}
               selectedStackChange={this.selectedStackChange}
+              confirmDelete={this.confirmDelete}
             />
           ))}
         </tbody>
@@ -90,7 +116,6 @@ export class SupplementStackTable extends BaseLogTable {
     }
 
     let compositionsParams = [];
-
     previousCompositions.map(e => {
       const compositionDetails = {
         quantity: e.quantity,
@@ -99,6 +124,7 @@ export class SupplementStackTable extends BaseLogTable {
       compositionsParams.push(compositionDetails);
     });
 
+    // This is the supplement and quantity we are adding to the stack
     const supplementParams = {
       supplement_uuid: selectedSupplement.uuid,
       quantity: this.state.selectedSupplementQuantity
@@ -107,22 +133,14 @@ export class SupplementStackTable extends BaseLogTable {
     compositionsParams.push(supplementParams);
 
     const params = {
-      uuid: this.state.selectedStack["uuid"],
+      name: this.state.selectedStack.name,
+      uuid: this.state.selectedStack.uuid,
       compositions: compositionsParams
     };
 
     this.putParamsUpdate(params);
     this.toggle();
   };
-
-  getSupplements() {
-    const url = "/api/v1/supplements/";
-    getFetchJSONAPI(url).then(responseData => {
-      this.setState({
-        supplements: responseData
-      });
-    });
-  }
 
   handleSupplementChange = val => {
     let updatedLocation;
@@ -136,13 +154,7 @@ export class SupplementStackTable extends BaseLogTable {
     });
   };
 
-  toggle = () => {
-    this.setState({
-      addModal: !this.state.addModal
-    });
-  };
-
-  handleSettingsChange = event => {
+  handleSupplementQuantityChange = event => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -175,7 +187,7 @@ export class SupplementStackTable extends BaseLogTable {
     return (
       <Modal isOpen={this.state.addModal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
-          Add a supplement to {this.state.selectedStack.name} stack
+          Add supplement to {this.state.selectedStack.name} stack
         </ModalHeader>
         <ModalBody>
           <label className="form-control-label add-event-label">
@@ -196,7 +208,7 @@ export class SupplementStackTable extends BaseLogTable {
             type="number"
             className="form-control"
             defaultValue={this.state.selectedSupplementQuantity}
-            onChange={this.handleSettingsChange}
+            onChange={this.handleSupplementQuantityChange}
           />
           <br />
         </ModalBody>

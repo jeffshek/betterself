@@ -176,7 +176,7 @@ class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
 
 
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=300, required=False)
+    name = serializers.CharField(max_length=300)
     compositions = UserSupplementStackCompositionCreateSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
