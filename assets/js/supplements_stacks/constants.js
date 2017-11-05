@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
+import { Link } from "react-router-dom";
 
-export const SupplementsStackRow = props => {
+export const SupplementStackRow = props => {
   const data = props.object;
   const { name, uuid, created, compositions } = data;
   const createTimeFormat = moment(created).format(READABLE_DATE_TIME_FORMAT);
@@ -10,7 +11,9 @@ export const SupplementsStackRow = props => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{compositions}</td>
+      <td>
+        <Link to="www.google.com">Click here to add a supplement ... </Link>
+      </td>
       <td>
         <div className="center-icon">
           <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>

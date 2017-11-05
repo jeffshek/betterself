@@ -1,11 +1,11 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseLogTable } from "../resources_table/resource_table";
-import { SupplementsStackRow, SupplementStackTableHeader } from "./constants";
+import { SupplementStackRow, SupplementStackTableHeader } from "./constants";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 
-export class SupplementsStackTable extends BaseLogTable {
+export class SupplementStackTable extends BaseLogTable {
   constructor() {
     super();
 
@@ -18,17 +18,10 @@ export class SupplementsStackTable extends BaseLogTable {
   }
 
   componentDidMount() {
-    this.getSupplementsStacks();
+    this.getSupplementStacks();
   }
 
-  //getReminders() {
-  //  const url = "api/v1/supplement_reminders/";
-  //  getFetchJSONAPI(url).then(responseData => {
-  //    this.setState({ supplementReminders: responseData });
-  //  });
-  //}
-
-  getSupplementsStacks() {
+  getSupplementStacks() {
     const url = "api/v1/supplements_stacks";
     getFetchJSONAPI(url).then(responseData => {
       this.setState({
@@ -47,7 +40,7 @@ export class SupplementsStackTable extends BaseLogTable {
         <SupplementStackTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementsStackRow key={key} object={historicalData[key]} />
+            <SupplementStackRow key={key} object={historicalData[key]} />
           ))}
         </tbody>
       </table>

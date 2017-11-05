@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
 
 const CreateSupplementsStackButton = () => {
   return (
@@ -23,15 +24,11 @@ export class AddSupplementsStack extends Component {
       name: stackName
     };
 
-    fetch("/api/v1/supplements_stacks/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {});
+    const url = "/api/v1/supplements_stacks/";
+    postFetchJSONAPI(url, postParams).then(responseData => {
+      window.location.reload();
+      return responseData;
+    });
   };
 
   renderSubmitSupplementForm() {
