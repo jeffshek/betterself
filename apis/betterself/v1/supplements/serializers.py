@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from django.conf import settings
-
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack, \
     UserSupplementStackComposition
 from vendors.models import Vendor
@@ -178,19 +176,13 @@ class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
 
 
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=300)
+    name = serializers.CharField(max_length=300, required=False)
     compositions = UserSupplementStackCompositionCreateSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate_compositions(self, data):
-        # for updates and testing, a user is often passed via context
-        user = self.context.get('user') or self.context['request'].user
-
         supplement_uuids = [item['supplement']['uuid'] for item in data]
-        if settings.TESTING:  # do a more thorough check for production
-            supplements = Supplement.objects.filter(uuid__in=supplement_uuids)
-        else:
-            supplements = Supplement.objects.filter(uuid__in=supplement_uuids, user=user)
+        supplements = Supplement.objects.filter(uuid__in=supplement_uuids)
 
         if supplements.count() != len(supplement_uuids):
             raise ValidationError('Not all supplements UUIDs were found {}'.format(supplement_uuids))

@@ -1,18 +1,34 @@
 import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
-import { Link } from "react-router-dom";
 
 export const SupplementStackRow = props => {
   const data = props.object;
+  //console.log(data)
   const { name, uuid, created, compositions } = data;
   const createTimeFormat = moment(created).format(READABLE_DATE_TIME_FORMAT);
+
+  let compositionsFormat;
+  if (compositions) {
+    compositionsFormat = compositions.map(e => {
+      return `${e.quantity} ${e.supplement.name}`;
+    });
+  }
+
+  compositionsFormat = compositionsFormat.join(", ");
 
   return (
     <tr>
       <td>{name}</td>
       <td>
-        <Link to="www.google.com">Click here to add a supplement ... </Link>
+        {compositions.length > 0
+          ? compositionsFormat
+          : <div
+              className="btn-link"
+              onClick={e => props.selectedStackChange(data)}
+            >
+              Click here to add a supplement
+            </div>}
       </td>
       <td>
         <div className="center-icon">

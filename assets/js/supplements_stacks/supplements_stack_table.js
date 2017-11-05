@@ -74,15 +74,46 @@ export class SupplementStackTable extends BaseLogTable {
     );
   }
 
-  submitEdit() {
+  submitEdit = () => {
+    const selectedSupplement = this.state.supplements[
+      this.state.selectedSupplementIndex
+    ];
+    const selectedSupplementUUID = selectedSupplement.uuid;
+
+    // When doing a PUT, we want to know what the existing objects
+    // were and not to modify those.
+    let previousCompositions = [];
+    if (this.state.selectedStack.compositions) {
+      previousCompositions = this.state.selectedStack.compositions.filter(e => {
+        return e.supplement.uuid != selectedSupplementUUID;
+      });
+    }
+
+    let compositionsParams = [];
+
+    previousCompositions.map(e => {
+      const compositionDetails = {
+        quantity: e.quantity,
+        supplement_uuid: e.supplement.uuid
+      };
+      compositionsParams.push(compositionDetails);
+    });
+
+    const supplementParams = {
+      supplement_uuid: selectedSupplement.uuid,
+      quantity: this.state.selectedSupplementQuantity
+    };
+
+    compositionsParams.push(supplementParams);
+
     const params = {
-      uuid: this.state.selectedStack["uuid"]
-      //name: this.state["supplementName"]
+      uuid: this.state.selectedStack["uuid"],
+      compositions: compositionsParams
     };
 
     this.putParamsUpdate(params);
     this.toggle();
-  }
+  };
 
   getSupplements() {
     const url = "/api/v1/supplements/";
@@ -144,7 +175,7 @@ export class SupplementStackTable extends BaseLogTable {
     return (
       <Modal isOpen={this.state.addModal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
-          Add a supplement to {this.state.selectedStack.name}
+          Add a supplement to {this.state.selectedStack.name} stack
         </ModalHeader>
         <ModalBody>
           <label className="form-control-label add-event-label">
