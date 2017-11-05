@@ -16,7 +16,10 @@ export const SupplementStackRow = props => {
       </td>
       <td>
         <div className="center-icon">
-          <div className="edit-icon" onClick={e => props.selectModalEdit(data)}>
+          <div
+            className="edit-icon"
+            onClick={e => props.selectedStackChange(data)}
+          >
             <i className="fa fa-edit fa-1x" />
           </div>
           &nbsp;

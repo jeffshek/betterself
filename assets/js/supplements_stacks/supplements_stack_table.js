@@ -14,7 +14,7 @@ export class SupplementStackTable extends BaseLogTable {
       supplements: [],
       supplementsStacks: [],
       renderReady: false,
-      addModal: true,
+      addModal: false,
       selectedSupplementQuantity: 1
     };
 
@@ -36,6 +36,13 @@ export class SupplementStackTable extends BaseLogTable {
     });
   }
 
+  selectedStackChange = props => {
+    this.setState({
+      selectedStack: props,
+      addModal: true
+    });
+  };
+
   getTableRender() {
     const historicalData = this.state.supplementsStacks;
     const historicalDataKeys = Object.keys(historicalData);
@@ -45,7 +52,11 @@ export class SupplementStackTable extends BaseLogTable {
         <SupplementStackTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementStackRow key={key} object={historicalData[key]} />
+            <SupplementStackRow
+              key={key}
+              object={historicalData[key]}
+              selectedStackChange={this.selectedStackChange}
+            />
           ))}
         </tbody>
       </table>
@@ -65,8 +76,8 @@ export class SupplementStackTable extends BaseLogTable {
 
   submitEdit() {
     const params = {
-      uuid: this.state.editObject["uuid"],
-      name: this.state["supplementName"]
+      uuid: this.state.selectedStack["uuid"]
+      //name: this.state["supplementName"]
     };
 
     this.putParamsUpdate(params);
@@ -91,6 +102,12 @@ export class SupplementStackTable extends BaseLogTable {
     }
     this.setState({
       selectedSupplementIndex: updatedLocation
+    });
+  };
+
+  toggle = () => {
+    this.setState({
+      addModal: !this.state.addModal
     });
   };
 
@@ -126,7 +143,9 @@ export class SupplementStackTable extends BaseLogTable {
 
     return (
       <Modal isOpen={this.state.addModal} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Add Supplement to Stack</ModalHeader>
+        <ModalHeader toggle={this.toggle}>
+          Add a supplement to {this.state.selectedStack.name}
+        </ModalHeader>
         <ModalBody>
           <label className="form-control-label add-event-label">
             Supplement Name
@@ -142,12 +161,13 @@ export class SupplementStackTable extends BaseLogTable {
             Supplement Quantity
           </label>
           <input
-            name="updateRollingWindow"
+            name="selectedSupplementQuantity"
             type="number"
             className="form-control"
             defaultValue={this.state.selectedSupplementQuantity}
             onChange={this.handleSettingsChange}
           />
+          <br />
         </ModalBody>
         <ModalFooter>
           <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
