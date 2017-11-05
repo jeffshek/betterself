@@ -1,6 +1,5 @@
 import React from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
-import { Link } from "react-router-dom";
 import { SupplementHistoryTableHeader, SupplementRow } from "./constants";
 import { BaseLogTable } from "../resources_table/resource_table";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";

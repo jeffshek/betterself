@@ -1,164 +1,66 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseLogTable } from "../resources_table/resource_table";
-import {
-  SupplementHistoryRow,
-  SupplementHistoryTableHeader
-} from "./constants";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import Datetime from "react-datetime";
-import moment from "moment";
+import { SupplementsStackRow, SupplementStackTableHeader } from "./constants";
+import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
 
 export class SupplementsStackTable extends BaseLogTable {
   constructor() {
     super();
 
     this.state = {
-      modal: false,
-      editObject: {
-        supplement: null,
-        time: null,
-        servingSize: null
-      }
+      supplementsStacks: [],
+      renderReady: false
     };
 
-    this.submitEdit = this.submitEdit.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
-    this.handleSupplementChangeOnEditObject = this.handleSupplementChangeOnEditObject.bind(
-      this
-    );
-    this.resourceURL = "/api/v1/supplement_events/";
+    this.resourceURL = "/api/v1/supplements_stacks/";
   }
 
-  handleSupplementChangeOnEditObject(event) {
-    const target = event.target;
-    const value = target.value;
-
-    const updatedSupplement = this.props.supplements[value];
-
-    this.state.editObject["supplement_name"] = updatedSupplement.name;
-    this.state.editObject["supplement_uuid"] = updatedSupplement.uuid;
-
-    this.setState({ editObject: this.state.editObject });
+  componentDidMount() {
+    this.getSupplementsStacks();
   }
 
-  confirmDelete = (uuid, supplementName, supplementTime) => {
-    const answer = confirm(
-      `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplementName} at ${supplementTime}!\n\nConfirm? `
-    );
+  //getReminders() {
+  //  const url = "api/v1/supplement_reminders/";
+  //  getFetchJSONAPI(url).then(responseData => {
+  //    this.setState({ supplementReminders: responseData });
+  //  });
+  //}
 
-    if (answer) {
-      this.deleteUUID(uuid);
-    }
-  };
-
-  submitEdit() {
-    const params = {
-      uuid: this.state.editObject["uuid"],
-      quantity: this.state["servingSizeUpdate"],
-      time: this.state.editObject["time"]
-    };
-
-    if (this.state.editObject["supplement_uuid"]) {
-      params["supplement_uuid"] = this.state.editObject["supplement_uuid"];
-    }
-
-    this.putParamsUpdate(params);
-    this.toggle();
+  getSupplementsStacks() {
+    const url = "api/v1/supplements_stacks";
+    getFetchJSONAPI(url).then(responseData => {
+      this.setState({
+        supplementsStacks: responseData,
+        renderReady: true
+      });
+    });
   }
 
   getTableRender() {
-    const historicalData = this.props.eventHistory;
+    const historicalData = this.state.supplementsStacks;
     const historicalDataKeys = Object.keys(historicalData);
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <SupplementHistoryTableHeader />
+        <SupplementStackTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SupplementHistoryRow
-              key={key}
-              object={historicalData[key]}
-              confirmDelete={this.confirmDelete}
-              selectModalEdit={this.selectModalEdit}
-            />
+            <SupplementsStackRow key={key} object={historicalData[key]} />
           ))}
         </tbody>
       </table>
     );
   }
 
-  renderEditModal() {
-    if (!this.state.modal) {
-      return <div />;
-    }
-
-    const supplementKeys = Object.keys(this.props.supplements);
-    const supplementNames = supplementKeys.map(
-      key => this.props.supplements[key].name
-    );
-    const indexOfSupplementSelected = supplementNames.indexOf(
-      this.state.editObject["supplement_name"]
-    );
-
-    return (
-      <Modal isOpen={this.state.modal} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Edit Supplement</ModalHeader>
-        <ModalBody>
-          <label className="form-control-label add-event-label">
-            Supplement
-          </label>
-          <select
-            className="form-control"
-            name="activityTypeIndexSelected"
-            onChange={this.handleSupplementChangeOnEditObject}
-            value={indexOfSupplementSelected}
-          >
-            {supplementKeys.map(key => (
-              <option value={key} key={key}>
-                {this.props.supplements[key].name}
-              </option>
-            ))}
-          </select>
-          <br />
-          <label className="form-control-label add-event-label">
-            Serving Size
-          </label>
-          <input
-            name="servingSizeUpdate"
-            type="text"
-            className="form-control"
-            defaultValue={this.state.editObject["quantity"]}
-            onChange={this.handleInputChange}
-          />
-          <br />
-          <label className="form-control-label add-event-label">
-            Time
-          </label>
-          <Datetime
-            onChange={this.handleDatetimeChangeOnEditObject}
-            defaultValue={moment(this.state.editObject.time)}
-          />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.submitEdit}>Update</Button>
-          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
-    );
-  }
-
   renderReady() {
-    if (!this.props.renderReady) {
+    if (!this.state.renderReady) {
       return <CubeLoadingStyle />;
     }
     return (
       <div className="card-block">
-        <div className="float-right">
-          {this.getNavPaginationControlRender()}
-        </div>
         {this.getTableRender()}
-        {this.getNavPaginationControlRender()}
       </div>
     );
   }
@@ -171,7 +73,6 @@ export class SupplementsStackTable extends BaseLogTable {
           <strong>Supplement Stacks</strong>
         </div>
         {this.renderReady()}
-        {this.renderEditModal()}
       </div>
     );
   }
