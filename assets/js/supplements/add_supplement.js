@@ -69,7 +69,6 @@ export class AddSupplementView extends Component {
                   placeholder="Black Tea"
                   ref={input => this.supplementName = input}
                 />
-
               </div>
             </div>
             <span className="float-right">

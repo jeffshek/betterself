@@ -179,7 +179,7 @@ class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
 
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    compositions = UserSupplementStackCompositionCreateSerializer(many=True)
+    compositions = UserSupplementStackCompositionCreateSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate_compositions(self, data):
@@ -214,7 +214,7 @@ class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
         name = validated_data['name']
 
         # cannot associate foreign key dependencies until instance has been created
-        compositions = validated_data.pop('compositions')
+        compositions = validated_data.get('compositions', [])
 
         stack, _ = UserSupplementStack.objects.get_or_create(user=user, name=name)
         self._create_compositions_from_validated_data(stack, compositions)
