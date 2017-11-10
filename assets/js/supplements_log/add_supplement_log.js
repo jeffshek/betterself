@@ -30,14 +30,11 @@ const CreateSupplementButton = () => {
 };
 
 export class AddSupplementLog extends Component {
-  constructor(props) {
-    super(props);
-
-    const { supplements } = props;
+  constructor() {
+    super();
 
     this.state = {
-      formSupplementDateTime: moment(),
-      supplements: supplements
+      formSupplementDateTime: moment()
     };
   }
 
