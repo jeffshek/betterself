@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
+import { SUPPLEMENT_STACKS_RESOURCE_URL } from "../constants/api_urls";
 
 const CreateSupplementStackButton = () => {
   return (
@@ -19,8 +20,10 @@ export class AddSupplementStack extends Component {
       name: stackName
     };
 
-    const url = "/api/v1/supplements_stacks/";
-    postFetchJSONAPI(url, postParams).then(responseData => {
+    postFetchJSONAPI(
+      SUPPLEMENT_STACKS_RESOURCE_URL,
+      postParams
+    ).then(responseData => {
       window.location.reload();
       return responseData;
     });

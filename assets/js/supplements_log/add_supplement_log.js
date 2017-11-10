@@ -5,6 +5,10 @@ import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
+import {
+  SUPPLEMENT_EVENTS_RESOURCE_URL,
+  SUPPLEMENT_STACKS_RECORD_URL
+} from "../constants/api_urls";
 
 const CreateSupplementButton = () => {
   {
@@ -64,15 +68,16 @@ export class AddSupplementLog extends Component {
       duration_minutes: durationMinutes
     };
 
-    const url = "/api/v1/supplement_events/";
-    postFetchJSONAPI(url, postParams).then(responseData => {
+    postFetchJSONAPI(
+      SUPPLEMENT_EVENTS_RESOURCE_URL,
+      postParams
+    ).then(responseData => {
       this.props.addEventEntry(responseData);
     });
   };
 
   submitSupplementStack = indexLocation => {
     const supplementStack = this.state.supplementStacks[indexLocation];
-
     const time = this.state.formSupplementDateTime.toISOString();
 
     const postParams = {
@@ -80,8 +85,11 @@ export class AddSupplementLog extends Component {
       time: time,
       source: "web"
     };
-    const url = "/api/v1/supplements_stacks/record/";
-    postFetchJSONAPI(url, postParams).then(responseData => {
+
+    postFetchJSONAPI(
+      SUPPLEMENT_STACKS_RECORD_URL,
+      postParams
+    ).then(responseData => {
       window.location.reload();
     });
   };

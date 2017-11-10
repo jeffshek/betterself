@@ -4,6 +4,10 @@ import { AddSupplementLog } from "./add_supplement_log";
 import { SupplementLogTable } from "./supplement_log_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
+import {
+  SUPPLEMENT_RESOURCE_URL,
+  SUPPLEMENT_STACKS_RESOURCE_URL
+} from "../constants/api_urls";
 
 export class SupplementLogView extends BasePaginatedLogView {
   constructor() {
@@ -18,15 +22,13 @@ export class SupplementLogView extends BasePaginatedLogView {
   }
 
   getSupplements() {
-    const url = "/api/v1/supplements/";
-    getFetchJSONAPI(url).then(responseData => {
+    getFetchJSONAPI(SUPPLEMENT_RESOURCE_URL).then(responseData => {
       this.setState({ supplements: responseData });
     });
   }
 
   getSupplementStacks() {
-    const url = "/api/v1/supplements_stacks/";
-    getFetchJSONAPI(url).then(responseData => {
+    getFetchJSONAPI(SUPPLEMENT_STACKS_RESOURCE_URL).then(responseData => {
       this.setState({ supplementStacks: responseData });
     });
   }

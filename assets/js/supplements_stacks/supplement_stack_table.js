@@ -111,7 +111,7 @@ export class SupplementStackTable extends BaseLogTable {
     let previousCompositions = [];
     if (this.state.selectedStack.compositions) {
       previousCompositions = this.state.selectedStack.compositions.filter(e => {
-        return e.supplement.uuid != selectedSupplementUUID;
+        return e.supplement.uuid !== selectedSupplementUUID;
       });
     }
 
