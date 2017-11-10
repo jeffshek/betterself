@@ -5,6 +5,7 @@ import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import Select from "react-select";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
 
 const CreateSupplementButton = () => {
   {
@@ -43,15 +44,9 @@ export class AddSupplementLog extends Component {
     this.setState({ supplements: supplements });
   }
 
-  submitSupplementEvent = e => {
-    e.preventDefault();
-
-    const supplementSelected = this.state.supplements[
-      this.state.selectedSupplementIndex
-    ];
-
+  submitIndividualSupplement = supplement => {
     // api parameters used to send
-    const supplementUUID = supplementSelected.uuid;
+    const supplementUUID = supplement.uuid;
     const quantity = this.servingSize.value;
     const time = this.state.formSupplementDateTime.toISOString();
     const source = "web";
@@ -65,17 +60,20 @@ export class AddSupplementLog extends Component {
       duration_minutes: durationMinutes
     };
 
-    fetch("/api/v1/supplement_events/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.props.addEventEntry(responseData);
-      });
+    const url = "/api/v1/supplement_events/";
+    postFetchJSONAPI(url, postParams).then(responseData => {
+      this.props.addEventEntry(responseData);
+    });
+  };
+
+  submitSupplementEvent = e => {
+    e.preventDefault();
+
+    const supplement = this.state.supplements[
+      this.state.selectedSupplementIndex
+    ];
+
+    this.submitIndividualSupplement(supplement);
   };
 
   handleDateInputChange = moment => {
