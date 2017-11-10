@@ -57,7 +57,7 @@ export const SupplementStackTableHeader = () => (
       <th>Stack Name</th>
       <th>Supplements</th>
       <th className="center-source">Actions</th>
-      <th>Create Time</th>
+      <th>Created</th>
     </tr>
   </thead>
 );

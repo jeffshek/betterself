@@ -5,6 +5,10 @@ import { SupplementStackRow, SupplementStackTableHeader } from "./constants";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Select from "react-select";
+import {
+  SUPPLEMENT_RESOURCE_URL,
+  SUPPLEMENT_STACKS_RESOURCE_URL
+} from "../constants/api_urls";
 
 export class SupplementStackTable extends BaseLogTable {
   constructor() {
@@ -18,7 +22,7 @@ export class SupplementStackTable extends BaseLogTable {
       selectedSupplementQuantity: 1
     };
 
-    this.resourceURL = "/api/v1/supplements_stacks/";
+    this.resourceURL = SUPPLEMENT_STACKS_RESOURCE_URL;
   }
 
   componentDidMount() {
@@ -43,8 +47,7 @@ export class SupplementStackTable extends BaseLogTable {
   };
 
   fetchSupplementStacks() {
-    const url = "api/v1/supplements_stacks";
-    getFetchJSONAPI(url).then(responseData => {
+    getFetchJSONAPI(SUPPLEMENT_STACKS_RESOURCE_URL).then(responseData => {
       this.setState({
         supplementStacks: responseData,
         renderReady: true
@@ -53,8 +56,7 @@ export class SupplementStackTable extends BaseLogTable {
   }
 
   fetchSupplements() {
-    const url = "/api/v1/supplements/";
-    getFetchJSONAPI(url).then(responseData => {
+    getFetchJSONAPI(SUPPLEMENT_RESOURCE_URL).then(responseData => {
       this.setState({
         supplements: responseData
       });
