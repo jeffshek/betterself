@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 
 from apis.betterself.v1.events.views import SupplementEventView, ProductivityLogView, UserActivityView, \
     UserActivityEventView, ProductivityLogAggregatesView, SupplementLogListView, SupplementReminderView, \
-    AggregatedSupplementLogView
+    AggregatedSupplementLogView, UserSupplementStackRecordEvent
 from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary, SupplementSleepAnalytics, \
     SupplementProductivityAnalytics, SupplementDosageAnalytics
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
@@ -58,7 +58,11 @@ urlpatterns = [
             url(r'^supplements/correlations$', SleepActivitiesSupplementsCorrelationsView.as_view(), name='sleep-supplements-correlations'),  # noqa
         ])),
     url(r'^{0}/$'.format(SupplementReminder.RESOURCE_NAME), SupplementReminderView.as_view(), name=SupplementReminder.RESOURCE_NAME),  # noqa
-    url(r'^{0}/$'.format(UserSupplementStack.RESOURCE_NAME), UserSupplementStackViewSet.as_view(), name=UserSupplementStack.RESOURCE_NAME),  # noqa
+    url(r'^{0}/'.format(UserSupplementStack.RESOURCE_NAME),
+        include([
+            url(r'^$', UserSupplementStackViewSet.as_view(), name=UserSupplementStack.RESOURCE_NAME),
+            url(r'^record/$', UserSupplementStackRecordEvent.as_view(), name='record-supplement-stack'),
+        ])),
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),

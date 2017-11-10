@@ -13,7 +13,8 @@ import {
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
   EXPORT_ALL_DATA_URL,
   DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
-  DASHBOARD_SUPPLEMENT_REMINDERS_URL
+  DASHBOARD_SUPPLEMENT_REMINDERS_URL,
+  DASHBOARD_SUPPLEMENTS_STACKS_URL
 } from "../constants/urls";
 
 const DashboardButton = () => (
@@ -56,6 +57,11 @@ const DataSourcesMenuLinks = () => (
       iconName="icon-calendar"
       label="Text Reminders"
       link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
+    />
+    <NavigationLink
+      iconName="icon-calendar"
+      label="Supp. Stacks"
+      link={DASHBOARD_SUPPLEMENTS_STACKS_URL}
       isNew={true}
     />
     <NavigationLink

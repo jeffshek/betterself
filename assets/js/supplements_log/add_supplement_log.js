@@ -1,16 +1,22 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
 import Select from "react-select";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
+import {
+  SUPPLEMENT_EVENTS_RESOURCE_URL,
+  SUPPLEMENT_STACKS_RECORD_URL
+} from "../constants/api_urls";
 
 const CreateSupplementButton = () => {
   {
     return (
       <div className="card-header">
-        <strong id="add-supplement-entry-text">Add Supplement Entry</strong>
+        <strong id="add-supplement-entry-text">
+          Log Supplement (Stack) Entry
+        </strong>
         <Link to={DASHBOARD_SUPPLEMENTS_URL}>
           <div className="float-right">
             <button
@@ -30,31 +36,25 @@ const CreateSupplementButton = () => {
 };
 
 export class AddSupplementLog extends Component {
-  constructor(props) {
-    super(props);
-
-    const { supplements } = props;
+  constructor() {
+    super();
 
     this.state = {
-      formSupplementDateTime: moment(),
-      supplements: supplements
+      formSupplementDateTime: moment()
     };
   }
 
   componentWillReceiveProps(props) {
-    const { supplements } = props;
+    const { supplements, supplementStacks } = props;
     this.setState({ supplements: supplements });
+    this.setState({ supplementStacks: supplementStacks });
   }
 
-  submitSupplementEvent = e => {
-    e.preventDefault();
-
-    const supplementSelected = this.state.supplements[
-      this.state.selectedSupplementIndex
-    ];
+  submitIndividualSupplement = indexLocation => {
+    const supplement = this.state.supplements[indexLocation];
 
     // api parameters used to send
-    const supplementUUID = supplementSelected.uuid;
+    const supplementUUID = supplement.uuid;
     const quantity = this.servingSize.value;
     const time = this.state.formSupplementDateTime.toISOString();
     const source = "web";
@@ -68,24 +68,61 @@ export class AddSupplementLog extends Component {
       duration_minutes: durationMinutes
     };
 
-    fetch("/api/v1/supplement_events/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.props.addEventEntry(responseData);
-      });
+    postFetchJSONAPI(
+      SUPPLEMENT_EVENTS_RESOURCE_URL,
+      postParams
+    ).then(responseData => {
+      this.props.addEventEntry(responseData);
+    });
+  };
+
+  submitSupplementStack = indexLocation => {
+    const supplementStack = this.state.supplementStacks[indexLocation];
+    const time = this.state.formSupplementDateTime.toISOString();
+
+    const postParams = {
+      stack_uuid: supplementStack.uuid,
+      time: time,
+      source: "web"
+    };
+
+    postFetchJSONAPI(
+      SUPPLEMENT_STACKS_RECORD_URL,
+      postParams
+    ).then(responseData => {
+      window.location.reload();
+    });
+  };
+
+  submitSupplementEvent = e => {
+    e.preventDefault();
+
+    const supplementStackLength = this.state.supplementStacks.length;
+
+    let checkIfSupplementStackSelected;
+    // For the underlying array, what is true point that was selected?
+    let selectionIndex = this.state.selectedSupplementIndex;
+    if (this.state.selectedSupplementIndex < supplementStackLength) {
+      checkIfSupplementStackSelected = true;
+    } else {
+      checkIfSupplementStackSelected = false;
+      // If a stack wasn't selected, but the stack is a length of 4
+      // we want to subtract 4 from it
+      selectionIndex = selectionIndex - supplementStackLength;
+    }
+
+    if (checkIfSupplementStackSelected) {
+      this.submitSupplementStack(selectionIndex);
+    } else {
+      this.submitIndividualSupplement(selectionIndex);
+    }
   };
 
   handleDateInputChange = moment => {
     this.setState({ formSupplementDateTime: moment });
   };
 
-  handleSupplementChange = val => {
+  handleSupplementSelectionChange = val => {
     let updatedLocation;
     if (val) {
       updatedLocation = val.value;
@@ -98,16 +135,20 @@ export class AddSupplementLog extends Component {
   };
 
   renderSubmitSupplementForm() {
-    if (!this.state.supplements) {
+    if (!this.state.supplements || !this.state.supplementStacks) {
       return <div />;
     }
 
-    const supplementsKeys = Object.keys(this.state.supplements);
-    // React-Select needs it in this value: label format
-    const supplementDetails = supplementsKeys.map(e => {
+    // Combine both to allow a user to select a stack or an individual supplement
+    const supplementsAndStacks = this.state.supplementStacks.concat(
+      this.state.supplements
+    );
+
+    const supplementStackKeys = Object.keys(supplementsAndStacks);
+    const supplementStackDetails = supplementStackKeys.map(e => {
       return {
         value: e,
-        label: this.state.supplements[e].name
+        label: supplementsAndStacks[e].name
       };
     });
 
@@ -121,8 +162,8 @@ export class AddSupplementLog extends Component {
                 <Select
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
-                  options={supplementDetails}
-                  onChange={this.handleSupplementChange}
+                  options={supplementStackDetails}
+                  onChange={this.handleSupplementSelectionChange}
                 />
               </div>
             </div>
@@ -170,7 +211,7 @@ export class AddSupplementLog extends Component {
               className="btn btn-sm btn-success"
               onClick={e => this.submitSupplementEvent(e)}
             >
-              <i className="fa fa-dot-circle-o" /> Add Supplement Log
+              <i className="fa fa-dot-circle-o" /> Log Supplement Entry
             </button>
           </div>
         </form>
