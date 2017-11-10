@@ -53,7 +53,7 @@ setuptools==36.7.0
 simplejson==3.12.0
 sqlparse==0.2.4
 text-unidecode==1.0
-twilio==6.7.1
+twilio==6.8.3
 unicode-slugify==0.1.3
 uuid==1.30
 vine==1.1.4
