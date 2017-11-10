@@ -14,6 +14,7 @@ export class SupplementLogView extends BasePaginatedLogView {
   componentDidMount() {
     this.getEventHistory();
     this.getSupplements();
+    this.getSupplementStacks();
   }
 
   getSupplements() {
@@ -23,12 +24,20 @@ export class SupplementLogView extends BasePaginatedLogView {
     });
   }
 
+  getSupplementStacks() {
+    const url = "/api/v1/supplements_stacks/";
+    getFetchJSONAPI(url).then(responseData => {
+      this.setState({ supplementStacks: responseData });
+    });
+  }
+
   render() {
     return (
       <div>
         <AddSupplementLog
           addEventEntry={this.addEventEntry}
           supplements={this.state.supplements}
+          supplementStacks={this.state.supplementStacks}
         />
         <SupplementLogTable
           eventHistory={this.state.eventHistory}

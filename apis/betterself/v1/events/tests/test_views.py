@@ -16,15 +16,16 @@ from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTests
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
-from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_current_date_months_ago
+from betterself.utils.date_utils import UTC_TZ, get_current_date_days_ago, get_current_date_months_ago, \
+    get_current_utc_time_and_tz
 from constants import VERY_PRODUCTIVE_MINUTES_VARIABLE
 from events.fixtures.factories import UserActivityFactory, UserActivityEventFactory
 from events.fixtures.mixins import SupplementEventsFixturesGenerator, ProductivityLogFixturesGenerator, \
-    UserActivityEventFixturesGenerator
+    UserActivityEventFixturesGenerator, UserSupplementStackFixturesGenerator
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement
+from supplements.models import Supplement, UserSupplementStack
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 
 User = get_user_model()
@@ -693,3 +694,58 @@ class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
 
         supplement_reminder_count = SupplementReminder.objects.filter(user=self.user_1).count()
         self.assertEqual(supplement_reminder_count, len(response.data))
+
+
+class UserStackRecordViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        User = get_user_model()
+        cls.default_user, _ = User.objects.get_or_create(username='user-stack-testing')
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.default_user)
+        cls.url = reverse('record-supplement-stack')
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.default_user)
+
+    def test_stack_record_view(self):
+        stack = UserSupplementStack.objects.all().first()
+        data = {
+            'stack_uuid': str(stack.uuid)
+        }
+        response = self.client.post(self.url, data=data, format='json')
+        self.assertEqual(response.status_code, 201, response.data)
+
+    def test_stack_record_events_correctly(self):
+        original_log_count = SupplementLog.objects.filter(user=self.default_user).count()
+
+        stack = UserSupplementStack.objects.all().first()
+        data = {
+            'stack_uuid': str(stack.uuid)
+        }
+        response = self.client.post(self.url, data=data, format='json')
+        self.assertEqual(response.status_code, 201, response.data)
+
+        expected_log_size = original_log_count + stack.compositions.count()
+        updated_log_count = SupplementLog.objects.filter(user=self.default_user).count()
+        self.assertEqual(expected_log_size, updated_log_count)
+
+    def test_stack_record_log_records_will_not_duplicate(self):
+        original_log_count = SupplementLog.objects.filter(user=self.default_user).count()
+
+        stack = UserSupplementStack.objects.all().first()
+        data = {
+            'stack_uuid': str(stack.uuid),
+            'time': get_current_utc_time_and_tz().isoformat()
+        }
+        response = self.client.post(self.url, data=data, format='json')
+        self.assertEqual(response.status_code, 201, response.data)
+
+        # now post this multiple times to make sure won't duplicate
+        self.client.post(self.url, data=data, format='json')
+        self.client.post(self.url, data=data, format='json')
+
+        expected_log_size = original_log_count + stack.compositions.count()
+        updated_log_count = SupplementLog.objects.filter(user=self.default_user).count()
+        self.assertEqual(expected_log_size, updated_log_count)

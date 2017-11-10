@@ -16,7 +16,8 @@ from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSer
     SupplementEventReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
     UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, \
-    SupplementLogRequestParametersSerializer, SupplementReminderReadSerializer, SupplementReminderCreateSerializer
+    SupplementLogRequestParametersSerializer, SupplementReminderReadSerializer, SupplementReminderCreateSerializer, \
+    SupplementStackEventSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
@@ -24,7 +25,7 @@ from betterself.utils.pandas_utils import force_start_end_date_to_series, force_
 from config.pagination import ModifiedPageNumberPagination
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SupplementReminder, \
     SleepLog
-from supplements.models import Supplement
+from supplements.models import Supplement, UserSupplementStack
 
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
@@ -269,3 +270,26 @@ class AggregatedSupplementLogView(APIView):
             results.append(result)
 
         return Response(results)
+
+
+class UserSupplementStackRecordEvent(APIView):
+    def post(self, request):
+        user = request.user
+
+        serializer = SupplementStackEventSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        stack_uuid = serializer.data['stack_uuid']
+        time = serializer.data['time']
+
+        stack = UserSupplementStack.objects.get(user=user, uuid=stack_uuid)
+        for composition in stack.compositions.all():
+            supplement = composition.supplement
+            quantity = composition.quantity
+            SupplementLog.objects.get_or_create(
+                time=time,
+                supplement=supplement,
+                user=user, defaults={'quantity': quantity}
+            )
+
+        return Response(status=201)

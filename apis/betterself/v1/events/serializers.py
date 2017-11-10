@@ -7,10 +7,10 @@ from rest_framework.generics import get_object_or_404
 from apis.betterself.v1.supplements.serializers import SupplementReadSerializer
 from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer
-from betterself.utils.date_utils import get_current_date_months_ago
+from betterself.utils.date_utils import get_current_date_months_ago, get_current_utc_time_and_tz
 from config.settings.constants import TESTING, LOCAL
 from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
-from supplements.models import Supplement
+from supplements.models import Supplement, UserSupplementStack
 
 
 def valid_daily_max_minutes(value):
@@ -340,3 +340,16 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
             defaults=validated_data)
 
         return obj
+
+
+class SupplementStackEventSerializer(serializers.Serializer):
+    stack_uuid = serializers.UUIDField()
+    time = serializers.DateTimeField(default=get_current_utc_time_and_tz)
+
+    @classmethod
+    def validate_stack_uuid(cls, value):
+        check_if_exists = UserSupplementStack.objects.filter(uuid=value).exists()
+        if not check_if_exists:
+            raise ValidationError('Supplement Stack UUID {} does not exist'.format(value))
+
+        return value

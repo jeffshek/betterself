@@ -1,6 +1,5 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
@@ -40,11 +39,14 @@ export class AddSupplementLog extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { supplements } = props;
+    const { supplements, supplementStacks } = props;
     this.setState({ supplements: supplements });
+    this.setState({ supplementStacks: supplementStacks });
   }
 
-  submitIndividualSupplement = supplement => {
+  submitIndividualSupplement = indexLocation => {
+    const supplement = this.state.supplements[indexLocation];
+
     // api parameters used to send
     const supplementUUID = supplement.uuid;
     const quantity = this.servingSize.value;
@@ -66,21 +68,47 @@ export class AddSupplementLog extends Component {
     });
   };
 
+  submitSupplementStack = indexLocation => {
+    const supplementStack = this.state.supplementStack[indexLocation];
+
+    const time = this.state.formSupplementDateTime.toISOString();
+
+    const postParams = {
+      supplement_uuid: supplementStack.uuid,
+      time: time,
+      source: "web"
+    };
+  };
+
   submitSupplementEvent = e => {
     e.preventDefault();
 
-    const supplement = this.state.supplements[
-      this.state.selectedSupplementIndex
-    ];
+    const supplementStackLength = this.state.supplementStacks.length;
 
-    this.submitIndividualSupplement(supplement);
+    let supplementStackSelected;
+    // For the underlying array, what is true point that was selected?
+    let selectionIndex = this.state.selectedSupplementIndex;
+    if (this.state.selectedSupplementIndex < supplementStackLength) {
+      supplementStackSelected = true;
+    } else {
+      supplementStackSelected = false;
+      // If a stack wasn't selected, but the stack is a length of 4
+      // we want to subtract 4 from it
+      selectionIndex = selectionIndex - supplementStackLength;
+    }
+
+    if (supplementStackSelected) {
+      this.submitSupplementStack(selectionIndex);
+    } else {
+      this.submitIndividualSupplement(selectionIndex);
+    }
   };
 
   handleDateInputChange = moment => {
     this.setState({ formSupplementDateTime: moment });
   };
 
-  handleSupplementChange = val => {
+  handleSupplementSelectionChange = val => {
     let updatedLocation;
     if (val) {
       updatedLocation = val.value;
@@ -97,12 +125,16 @@ export class AddSupplementLog extends Component {
       return <div />;
     }
 
-    const supplementsKeys = Object.keys(this.state.supplements);
-    // React-Select needs it in this value: label format
-    const supplementDetails = supplementsKeys.map(e => {
+    // Combine both to allow a user to select a stack or an individual supplement
+    const supplementsAndStacks = this.state.supplementStacks.concat(
+      this.state.supplements
+    );
+
+    const supplementStackKeys = Object.keys(supplementsAndStacks);
+    const supplementStackDetails = supplementStackKeys.map(e => {
       return {
         value: e,
-        label: this.state.supplements[e].name
+        label: supplementsAndStacks[e].name
       };
     });
 
@@ -116,8 +148,8 @@ export class AddSupplementLog extends Component {
                 <Select
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
-                  options={supplementDetails}
-                  onChange={this.handleSupplementChange}
+                  options={supplementStackDetails}
+                  onChange={this.handleSupplementSelectionChange}
                 />
               </div>
             </div>

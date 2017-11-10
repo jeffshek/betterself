@@ -252,7 +252,7 @@ class DemoAccountsTest(TestCase):
 
     def test_demo_user_creation(self):
         response = self.client.get(self.create_url)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201, response.data)
 
     def test_demo_user_creation_is_in_demo_user_log(self):
         response = self.client.get(self.create_url)
@@ -297,7 +297,7 @@ class DemoAccountsTest(TestCase):
         DemoUserLog.objects.all().delete()
 
         response = self.client.get(self.create_url)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201, response.data)
 
 
 class UserViewTests(TestCase):
