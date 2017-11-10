@@ -9,7 +9,7 @@ from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer
 from betterself.utils.date_utils import get_current_date_months_ago, get_current_utc_time_and_tz
 from config.settings.constants import TESTING, LOCAL
-from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder
+from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder, WEB_INPUT_SOURCE
 from supplements.models import Supplement, UserSupplementStack
 
 
@@ -345,6 +345,7 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
 class SupplementStackEventSerializer(serializers.Serializer):
     stack_uuid = serializers.UUIDField()
     time = serializers.DateTimeField(default=get_current_utc_time_and_tz)
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
 
     @classmethod
     def validate_stack_uuid(cls, value):

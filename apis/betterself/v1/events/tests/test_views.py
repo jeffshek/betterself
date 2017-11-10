@@ -749,3 +749,10 @@ class UserStackRecordViewTests(TestCase):
         expected_log_size = original_log_count + stack.compositions.count()
         updated_log_count = SupplementLog.objects.filter(user=self.default_user).count()
         self.assertEqual(expected_log_size, updated_log_count)
+
+    def test_invalid_stack_record_view(self):
+        data = {
+            'stack_uuid': '1234'
+        }
+        response = self.client.post(self.url, data=data, format='json')
+        self.assertEqual(response.status_code, 400, response.data)

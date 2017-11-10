@@ -10,7 +10,9 @@ const CreateSupplementButton = () => {
   {
     return (
       <div className="card-header">
-        <strong id="add-supplement-entry-text">Log Supplement Entry</strong>
+        <strong id="add-supplement-entry-text">
+          Log Supplement (Stack) Entry
+        </strong>
         <Link to={DASHBOARD_SUPPLEMENTS_URL}>
           <div className="float-right">
             <button
@@ -69,15 +71,19 @@ export class AddSupplementLog extends Component {
   };
 
   submitSupplementStack = indexLocation => {
-    const supplementStack = this.state.supplementStack[indexLocation];
+    const supplementStack = this.state.supplementStacks[indexLocation];
 
     const time = this.state.formSupplementDateTime.toISOString();
 
     const postParams = {
-      supplement_uuid: supplementStack.uuid,
+      stack_uuid: supplementStack.uuid,
       time: time,
       source: "web"
     };
+    const url = "/api/v1/supplements_stacks/record/";
+    postFetchJSONAPI(url, postParams).then(responseData => {
+      window.location.reload();
+    });
   };
 
   submitSupplementEvent = e => {
@@ -85,19 +91,19 @@ export class AddSupplementLog extends Component {
 
     const supplementStackLength = this.state.supplementStacks.length;
 
-    let supplementStackSelected;
+    let checkIfSupplementStackSelected;
     // For the underlying array, what is true point that was selected?
     let selectionIndex = this.state.selectedSupplementIndex;
     if (this.state.selectedSupplementIndex < supplementStackLength) {
-      supplementStackSelected = true;
+      checkIfSupplementStackSelected = true;
     } else {
-      supplementStackSelected = false;
+      checkIfSupplementStackSelected = false;
       // If a stack wasn't selected, but the stack is a length of 4
       // we want to subtract 4 from it
       selectionIndex = selectionIndex - supplementStackLength;
     }
 
-    if (supplementStackSelected) {
+    if (checkIfSupplementStackSelected) {
       this.submitSupplementStack(selectionIndex);
     } else {
       this.submitIndividualSupplement(selectionIndex);
@@ -121,7 +127,7 @@ export class AddSupplementLog extends Component {
   };
 
   renderSubmitSupplementForm() {
-    if (!this.state.supplements) {
+    if (!this.state.supplements || !this.state.supplementStacks) {
       return <div />;
     }
 

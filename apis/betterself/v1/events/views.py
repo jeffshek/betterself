@@ -281,6 +281,7 @@ class UserSupplementStackRecordEvent(APIView):
 
         stack_uuid = serializer.data['stack_uuid']
         time = serializer.data['time']
+        source = serializer.data['source']
 
         stack = UserSupplementStack.objects.get(user=user, uuid=stack_uuid)
         for composition in stack.compositions.all():
@@ -289,7 +290,10 @@ class UserSupplementStackRecordEvent(APIView):
             SupplementLog.objects.get_or_create(
                 time=time,
                 supplement=supplement,
-                user=user, defaults={'quantity': quantity}
+                user=user, defaults={
+                    'quantity': quantity,
+                    'source': source
+                }
             )
 
-        return Response(status=201)
+        return Response([], status=201)
