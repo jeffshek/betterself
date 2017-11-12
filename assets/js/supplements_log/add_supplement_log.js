@@ -9,6 +9,7 @@ import {
 } from "../constants/api_urls";
 import { CreateSupplement } from "../supplements/constants";
 import { LogSupplementButton } from "./constants";
+import { SelectDetailsSerializer } from "../utils/select_utils";
 
 export class AddSupplementLog extends Component {
   constructor() {
@@ -124,13 +125,9 @@ export class AddSupplementLog extends Component {
       this.state.supplements
     );
 
-    const supplementStackKeys = Object.keys(supplementsAndStacks);
-    const supplementStackDetails = supplementStackKeys.map(e => {
-      return {
-        value: e,
-        label: supplementsAndStacks[e].name
-      };
-    });
+    const supplementStackDetails = SelectDetailsSerializer(
+      supplementsAndStacks
+    );
 
     return (
       <div className="card-block card-block-no-padding-bottom">
