@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { getFetchJSONAPI, postFetchJSONAPI } from "../utils/fetch_utils";
-import {
-  MEASUREMENTS_RESOURCE_URL,
-  SUPPLEMENT_RESOURCE_URL
-} from "../constants/api_urls";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { MEASUREMENTS_RESOURCE_URL } from "../constants/api_urls";
+import { CreateSupplement } from "./constants";
 
 export class AddSupplementView extends Component {
   constructor() {
@@ -15,22 +13,9 @@ export class AddSupplementView extends Component {
     this.getPossibleMeasurements();
   }
 
-  createSupplement = supplementName => {
-    let params = {
-      name: supplementName
-    };
-
-    return postFetchJSONAPI(
-      SUPPLEMENT_RESOURCE_URL,
-      params
-    ).then(responseData => {
-      window.location.reload();
-    });
-  };
-
   addSupplementFormData = e => {
     e.preventDefault();
-    this.createSupplement(this.supplementName.value);
+    CreateSupplement(this.supplementName.value);
   };
 
   getPossibleMeasurements() {

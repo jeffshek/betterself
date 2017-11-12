@@ -1,15 +1,13 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
-import { Link } from "react-router-dom";
 import { Creatable } from "react-select";
-import Select from "react-select";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import {
   SUPPLEMENT_EVENTS_RESOURCE_URL,
   SUPPLEMENT_STACKS_RECORD_URL
 } from "../constants/api_urls";
+import { CreateSupplement } from "../supplements/constants";
 
 const CreateSupplementButton = () => {
   {
@@ -18,19 +16,6 @@ const CreateSupplementButton = () => {
         <strong id="add-supplement-entry-text">
           Log Supplement (Stack) Entry
         </strong>
-        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="add-new-object-button"
-              className="btn btn-sm btn-success"
-            >
-              <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Supplement
-              </div>
-            </button>
-          </div>
-        </Link>
       </div>
     );
   }
@@ -135,24 +120,9 @@ export class AddSupplementLog extends Component {
     });
   };
 
-  isValidNewOption(props) {
-    //console.log(props)
-    return true;
-  }
-
-  createNewSupplement(props) {
-    //console.log(props)
-    //console.log("im here")
-    return props;
-  }
-
   onNewOptionClick(props) {
     const label = props.label;
-    console.log(label);
-
-    //console.log(props)
-    //console.log('hi')
-    return props;
+    CreateSupplement(label);
   }
 
   renderSubmitSupplementForm() {
