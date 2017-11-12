@@ -60,3 +60,11 @@ export const UserActivityEventHistoryTableHeader = () => (
     </tr>
   </thead>
 );
+
+export const RenderCreateActivityButton = () => {
+  return (
+    <div className="card-header">
+      <strong id="add-supplement-entry-text">Log Activity Event</strong>
+    </div>
+  );
+};

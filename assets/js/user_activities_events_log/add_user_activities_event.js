@@ -1,11 +1,15 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
-import { Link } from "react-router-dom";
-import { DASHBOARD_USER_ACTIVITIES_URL } from "../constants/urls";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { Creatable } from "react-select";
+import { SelectDetailsSerializer } from "../utils/select_utils";
+import {
+  USER_ACTIVITIES_EVENTS_RESOURCE_URL,
+  USER_ACTIVITIES_RESOURCE_URL
+} from "../constants/api_urls";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
+import { RenderCreateActivityButton } from "../user_activities_log/constants";
 
 export class AddUserActivityEvent extends Component {
   constructor() {
@@ -29,8 +33,30 @@ export class AddUserActivityEvent extends Component {
     this.setState({ inputDateTime: moment });
   };
 
+  handleIndexChange = val => {
+    this.setState({
+      activityTypeIndexSelected: val.value
+    });
+  };
+
+  onNewOptionClick = props => {
+    const { label } = props;
+    const postParams = {
+      name: label
+    };
+
+    postFetchJSONAPI(
+      USER_ACTIVITIES_RESOURCE_URL,
+      postParams
+    ).then(responseData => {
+      window.location.reload();
+    });
+  };
+
   renderActivitySelect() {
-    const activitiesKeys = Object.keys(this.props.userActivityTypes);
+    const activitiesDetails = SelectDetailsSerializer(
+      this.props.userActivityTypes
+    );
 
     return (
       <div className="col-sm-4">
@@ -38,24 +64,13 @@ export class AddUserActivityEvent extends Component {
           <label className="add-event-label">
             Activity Type
           </label>
-          {/*<Creatable*/}
-          {/*name="form-field-name"*/}
-          {/*value={this.state.selectedSupplementIndex}*/}
-          {/*onNewOptionClick={this.onNewOptionClick}*/}
-          {/*options={supplementStackDetails}*/}
-          {/*onChange={this.handleSupplementSelectionChange}*/}
-          {/*/>*/}
-          <select
-            className="form-control"
-            ref={input => this.activityTypeIndexSelected = input}
-          >
-            {/*List out all the possible supplements, use the index as the key*/}
-            {activitiesKeys.map(key => (
-              <option value={key} key={key}>
-                {this.props.userActivityTypes[key].name}
-              </option>
-            ))}
-          </select>
+          <Creatable
+            name="form-field-name"
+            value={this.state.activityTypeIndexSelected}
+            onNewOptionClick={this.onNewOptionClick}
+            options={activitiesDetails}
+            onChange={this.handleIndexChange}
+          />
         </div>
       </div>
     );
@@ -82,7 +97,7 @@ export class AddUserActivityEvent extends Component {
 
   submitEventDetails = e => {
     e.preventDefault();
-    const indexSelected = this.activityTypeIndexSelected.value;
+    const indexSelected = this.state.activityTypeIndexSelected;
     const userActivityUUIDSelected = this.props.userActivityTypes[indexSelected]
       .uuid;
 
@@ -93,14 +108,7 @@ export class AddUserActivityEvent extends Component {
       source: "web"
     };
 
-    fetch("api/v1/user_activity_events/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
+    postFetchJSONAPI(USER_ACTIVITIES_EVENTS_RESOURCE_URL, postParams)
       .then(responseData => {
         this.props.addEventEntry(responseData);
         return responseData;
@@ -109,27 +117,6 @@ export class AddUserActivityEvent extends Component {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
   };
-
-  renderCreateActivityButton() {
-    return (
-      <div className="card-header">
-        <strong id="add-supplement-entry-text">Add Activity Event</strong>
-        <Link to={DASHBOARD_USER_ACTIVITIES_URL}>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="add-new-object-button"
-              className="btn btn-sm btn-success"
-            >
-              <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Activity Type
-              </div>
-            </button>
-          </div>
-        </Link>
-      </div>
-    );
-  }
 
   renderSubmitEventForm() {
     return (
@@ -170,7 +157,7 @@ export class AddUserActivityEvent extends Component {
 
     return (
       <div>
-        {this.renderCreateActivityButton()}
+        <RenderCreateActivityButton />
         {this.renderSubmitEventForm()}
       </div>
     );

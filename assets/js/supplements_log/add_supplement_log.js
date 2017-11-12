@@ -9,7 +9,10 @@ import {
 } from "../constants/api_urls";
 import { CreateSupplement } from "../supplements/constants";
 import { LogSupplementButton } from "./constants";
-import { SelectDetailsSerializer } from "../utils/select_utils";
+import {
+  CreateSupplementOnNewOptionClick,
+  SelectDetailsSerializer
+} from "../utils/select_utils";
 
 export class AddSupplementLog extends Component {
   constructor() {
@@ -139,7 +142,7 @@ export class AddSupplementLog extends Component {
                 <Creatable
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
-                  onNewOptionClick={this.onNewOptionClick}
+                  onNewOptionClick={CreateSupplementOnNewOptionClick}
                   options={supplementStackDetails}
                   onChange={this.handleSupplementSelectionChange}
                 />

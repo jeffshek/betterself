@@ -1,3 +1,5 @@
+import { CreateSupplement } from "../supplements/constants";
+
 export const SelectDetailsSerializer = detailsList => {
   // Formats a list of resources into a format that react-select uses
 
@@ -10,4 +12,9 @@ export const SelectDetailsSerializer = detailsList => {
   });
 
   return selectDetails;
+};
+
+export const CreateSupplementOnNewOptionClick = props => {
+  const label = props.label;
+  CreateSupplement(label);
 };

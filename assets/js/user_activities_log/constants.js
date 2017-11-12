@@ -46,3 +46,11 @@ export const UserActivityHistoryTableHeader = () => (
     </tr>
   </thead>
 );
+
+export const RenderCreateActivityButton = () => {
+  return (
+    <div className="card-header">
+      <strong id="add-supplement-entry-text">Create Activity Type</strong>
+    </div>
+  );
+};
