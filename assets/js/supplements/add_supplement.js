@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import { getFetchJSONAPI, postFetchJSONAPI } from "../utils/fetch_utils";
 import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/requests";
+  MEASUREMENTS_RESOURCE_URL,
+  SUPPLEMENT_RESOURCE_URL
+} from "../constants/api_urls";
 
 export class AddSupplementView extends Component {
   constructor() {
@@ -12,7 +12,7 @@ export class AddSupplementView extends Component {
   }
 
   componentDidMount() {
-    this.getPossibleSupplements();
+    this.getPossibleMeasurements();
   }
 
   createSupplement = supplementName => {
@@ -20,17 +20,12 @@ export class AddSupplementView extends Component {
       name: supplementName
     };
 
-    return fetch("/api/v1/supplements/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(function(responseData) {
-        window.location.reload();
-      });
+    return postFetchJSONAPI(
+      SUPPLEMENT_RESOURCE_URL,
+      params
+    ).then(responseData => {
+      window.location.reload();
+    });
   };
 
   addSupplementFormData = e => {
@@ -38,18 +33,11 @@ export class AddSupplementView extends Component {
     this.createSupplement(this.supplementName.value);
   };
 
-  getPossibleSupplements() {
-    fetch("/api/v1/measurements/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({ measurements: responseData });
-        this.setState({ ready: true });
-      });
+  getPossibleMeasurements() {
+    getFetchJSONAPI(MEASUREMENTS_RESOURCE_URL).then(responseData => {
+      this.setState({ measurements: responseData });
+      this.setState({ ready: true });
+    });
   }
 
   render() {

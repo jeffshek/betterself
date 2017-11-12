@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import moment from "moment";
 import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
 import { Link } from "react-router-dom";
+import { Creatable } from "react-select";
 import Select from "react-select";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import {
@@ -134,6 +135,26 @@ export class AddSupplementLog extends Component {
     });
   };
 
+  isValidNewOption(props) {
+    //console.log(props)
+    return true;
+  }
+
+  createNewSupplement(props) {
+    //console.log(props)
+    //console.log("im here")
+    return props;
+  }
+
+  onNewOptionClick(props) {
+    const label = props.label;
+    console.log(label);
+
+    //console.log(props)
+    //console.log('hi')
+    return props;
+  }
+
   renderSubmitSupplementForm() {
     if (!this.state.supplements || !this.state.supplementStacks) {
       return <div />;
@@ -159,9 +180,10 @@ export class AddSupplementLog extends Component {
             <div className="col-sm-12">
               <div className="form-group">
                 <label className="add-event-label">Supplement</label>
-                <Select
+                <Creatable
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
+                  onNewOptionClick={this.onNewOptionClick}
                   options={supplementStackDetails}
                   onChange={this.handleSupplementSelectionChange}
                 />
