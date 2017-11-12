@@ -1,9 +1,7 @@
-import { Link } from "react-router-dom";
 import React, { Component } from "react";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/requests";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { MEASUREMENTS_RESOURCE_URL } from "../constants/api_urls";
+import { CreateSupplement } from "./constants";
 
 export class AddSupplementView extends Component {
   constructor() {
@@ -12,44 +10,19 @@ export class AddSupplementView extends Component {
   }
 
   componentDidMount() {
-    this.getPossibleSupplements();
+    this.getPossibleMeasurements();
   }
-
-  createSupplement = supplementName => {
-    let params = {
-      name: supplementName
-    };
-
-    return fetch("/api/v1/supplements/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(function(responseData) {
-        window.location.reload();
-      });
-  };
 
   addSupplementFormData = e => {
     e.preventDefault();
-    this.createSupplement(this.supplementName.value);
+    CreateSupplement(this.supplementName.value);
   };
 
-  getPossibleSupplements() {
-    fetch("/api/v1/measurements/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({ measurements: responseData });
-        this.setState({ ready: true });
-      });
+  getPossibleMeasurements() {
+    getFetchJSONAPI(MEASUREMENTS_RESOURCE_URL).then(responseData => {
+      this.setState({ measurements: responseData });
+      this.setState({ ready: true });
+    });
   }
 
   render() {

@@ -1,39 +1,15 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import { DASHBOARD_SUPPLEMENTS_URL } from "../constants/urls";
-import { Link } from "react-router-dom";
-import Select from "react-select";
+import { Creatable } from "react-select";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import {
   SUPPLEMENT_EVENTS_RESOURCE_URL,
   SUPPLEMENT_STACKS_RECORD_URL
 } from "../constants/api_urls";
-
-const CreateSupplementButton = () => {
-  {
-    return (
-      <div className="card-header">
-        <strong id="add-supplement-entry-text">
-          Log Supplement (Stack) Entry
-        </strong>
-        <Link to={DASHBOARD_SUPPLEMENTS_URL}>
-          <div className="float-right">
-            <button
-              type="submit"
-              id="add-new-object-button"
-              className="btn btn-sm btn-success"
-            >
-              <div id="white-text">
-                <i className="fa fa-dot-circle-o" /> Create Supplement
-              </div>
-            </button>
-          </div>
-        </Link>
-      </div>
-    );
-  }
-};
+import { CreateSupplement } from "../supplements/constants";
+import { LogSupplementButton } from "./constants";
+import { SelectDetailsSerializer } from "../utils/select_utils";
 
 export class AddSupplementLog extends Component {
   constructor() {
@@ -134,6 +110,11 @@ export class AddSupplementLog extends Component {
     });
   };
 
+  onNewOptionClick(props) {
+    const label = props.label;
+    CreateSupplement(label);
+  }
+
   renderSubmitSupplementForm() {
     if (!this.state.supplements || !this.state.supplementStacks) {
       return <div />;
@@ -144,13 +125,9 @@ export class AddSupplementLog extends Component {
       this.state.supplements
     );
 
-    const supplementStackKeys = Object.keys(supplementsAndStacks);
-    const supplementStackDetails = supplementStackKeys.map(e => {
-      return {
-        value: e,
-        label: supplementsAndStacks[e].name
-      };
-    });
+    const supplementStackDetails = SelectDetailsSerializer(
+      supplementsAndStacks
+    );
 
     return (
       <div className="card-block card-block-no-padding-bottom">
@@ -159,9 +136,10 @@ export class AddSupplementLog extends Component {
             <div className="col-sm-12">
               <div className="form-group">
                 <label className="add-event-label">Supplement</label>
-                <Select
+                <Creatable
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
+                  onNewOptionClick={this.onNewOptionClick}
                   options={supplementStackDetails}
                   onChange={this.handleSupplementSelectionChange}
                 />
@@ -222,7 +200,7 @@ export class AddSupplementLog extends Component {
   render() {
     return (
       <div className="card">
-        <CreateSupplementButton />
+        <LogSupplementButton />
         {this.renderSubmitSupplementForm()}
       </div>
     );

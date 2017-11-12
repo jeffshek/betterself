@@ -5,6 +5,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../constants/urls";
 import { CubeLoadingStyle } from "../constants/loading_styles";
+import { Creatable } from "react-select";
 
 export class AddUserActivityEvent extends Component {
   constructor() {
@@ -12,10 +13,6 @@ export class AddUserActivityEvent extends Component {
     this.state = {
       inputDateTime: moment()
     };
-
-    this.submitEventDetails = this.submitEventDetails.bind(this);
-    this.handleDatetimeChange = this.handleDatetimeChange.bind(this);
-    this.renderInputRow = this.renderInputRow.bind(this);
   }
 
   handleInputChange = event => {
@@ -28,9 +25,9 @@ export class AddUserActivityEvent extends Component {
     });
   };
 
-  handleDatetimeChange(moment) {
+  handleDatetimeChange = moment => {
     this.setState({ inputDateTime: moment });
-  }
+  };
 
   renderActivitySelect() {
     const activitiesKeys = Object.keys(this.props.userActivityTypes);
@@ -41,6 +38,13 @@ export class AddUserActivityEvent extends Component {
           <label className="add-event-label">
             Activity Type
           </label>
+          {/*<Creatable*/}
+          {/*name="form-field-name"*/}
+          {/*value={this.state.selectedSupplementIndex}*/}
+          {/*onNewOptionClick={this.onNewOptionClick}*/}
+          {/*options={supplementStackDetails}*/}
+          {/*onChange={this.handleSupplementSelectionChange}*/}
+          {/*/>*/}
           <select
             className="form-control"
             ref={input => this.activityTypeIndexSelected = input}
@@ -57,7 +61,7 @@ export class AddUserActivityEvent extends Component {
     );
   }
 
-  renderInputRow(label, inputName) {
+  renderInputRow = (label, inputName) => {
     return (
       <div className="col-sm-4">
         <div className="form-group">
@@ -74,9 +78,9 @@ export class AddUserActivityEvent extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  submitEventDetails(e) {
+  submitEventDetails = e => {
     e.preventDefault();
     const indexSelected = this.activityTypeIndexSelected.value;
     const userActivityUUIDSelected = this.props.userActivityTypes[indexSelected]
@@ -104,7 +108,7 @@ export class AddUserActivityEvent extends Component {
       .catch(error => {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
-  }
+  };
 
   renderCreateActivityButton() {
     return (
