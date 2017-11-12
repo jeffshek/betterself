@@ -6,6 +6,7 @@ import {
   UserActivityHistoryRow,
   UserActivityHistoryTableHeader
 } from "./constants";
+import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/api_urls";
 
 export class UserActivityLogTable extends BaseLogTable {
   constructor() {
@@ -15,7 +16,7 @@ export class UserActivityLogTable extends BaseLogTable {
       editObject: { name: null }
     };
 
-    this.resourceURL = "/api/v1/user_activities/";
+    this.resourceURL = USER_ACTIVITIES_RESOURCE_URL;
   }
 
   confirmDelete = (uuid, name) => {

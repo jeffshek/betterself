@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/api_urls";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import { RenderCreateActivityButton } from "./constants";
