@@ -4,6 +4,7 @@ import { CubeLoadingStyle } from "../constants/loading_styles";
 import moment from "moment";
 import Datetime from "react-datetime";
 import { TEXT_TIME_FORMAT } from "../constants/dates_and_times";
+import { CreateSupplement } from "../supplements/constants";
 
 export class AddSupplementReminderView extends Component {
   constructor(props) {

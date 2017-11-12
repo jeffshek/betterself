@@ -60,3 +60,15 @@ export const SupplementHistoryTableHeader = () => (
     </tr>
   </thead>
 );
+
+export const LogSupplementButton = () => {
+  {
+    return (
+      <div className="card-header">
+        <strong id="add-supplement-entry-text">
+          Log Supplement (Stack) Entry
+        </strong>
+      </div>
+    );
+  }
+};

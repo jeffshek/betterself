@@ -8,18 +8,7 @@ import {
   SUPPLEMENT_STACKS_RECORD_URL
 } from "../constants/api_urls";
 import { CreateSupplement } from "../supplements/constants";
-
-const CreateSupplementButton = () => {
-  {
-    return (
-      <div className="card-header">
-        <strong id="add-supplement-entry-text">
-          Log Supplement (Stack) Entry
-        </strong>
-      </div>
-    );
-  }
-};
+import { LogSupplementButton } from "./constants";
 
 export class AddSupplementLog extends Component {
   constructor() {
@@ -214,7 +203,7 @@ export class AddSupplementLog extends Component {
   render() {
     return (
       <div className="card">
-        <CreateSupplementButton />
+        <LogSupplementButton />
         {this.renderSubmitSupplementForm()}
       </div>
     );
