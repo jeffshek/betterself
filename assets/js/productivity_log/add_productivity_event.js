@@ -2,7 +2,6 @@ import Datetime from "react-datetime";
 import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import {
   DATE_REQUEST_FORMAT,
   YEAR_MONTH_DAY_FORMAT

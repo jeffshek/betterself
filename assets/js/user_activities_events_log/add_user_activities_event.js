@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { DASHBOARD_USER_ACTIVITIES_URL } from "../constants/urls";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { Creatable } from "react-select";
+import { SelectDetailsSerializer } from "../utils/select_utils";
 
 export class AddUserActivityEvent extends Component {
   constructor() {
@@ -29,8 +30,18 @@ export class AddUserActivityEvent extends Component {
     this.setState({ inputDateTime: moment });
   };
 
+  handleIndexChange = val => {
+    this.setState({
+      activityTypeIndexSelected: val
+    });
+  };
+
   renderActivitySelect() {
     const activitiesKeys = Object.keys(this.props.userActivityTypes);
+    const activitiesDetails = SelectDetailsSerializer(
+      this.props.userActivityTypes
+    );
+    console.log(activitiesDetails);
 
     return (
       <div className="col-sm-4">
@@ -42,8 +53,8 @@ export class AddUserActivityEvent extends Component {
           {/*name="form-field-name"*/}
           {/*value={this.state.selectedSupplementIndex}*/}
           {/*onNewOptionClick={this.onNewOptionClick}*/}
-          {/*options={supplementStackDetails}*/}
-          {/*onChange={this.handleSupplementSelectionChange}*/}
+          {/*options={activitiesDetails}*/}
+          {/*onChange={this.handleIndexChange}*/}
           {/*/>*/}
           <select
             className="form-control"

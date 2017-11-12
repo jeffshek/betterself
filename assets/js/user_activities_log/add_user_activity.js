@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/api_urls";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
+import { RenderCreateActivityButton } from "./constants";
 
 export class AddUserActivity extends Component {
   constructor(props) {
@@ -54,14 +57,7 @@ export class AddUserActivity extends Component {
       name: this.state["activityName"]
     };
 
-    fetch("api/v1/user_activities/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        return response.json();
-      })
+    postFetchJSONAPI(USER_ACTIVITIES_RESOURCE_URL, postParams)
       .then(responseData => {
         this.props.addEventEntry(responseData);
         return responseData;
@@ -69,14 +65,6 @@ export class AddUserActivity extends Component {
       .catch(error => {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
-  }
-
-  renderCreateActivityButton() {
-    return (
-      <div className="card-header">
-        <strong id="add-supplement-entry-text">Create Activity Type</strong>
-      </div>
-    );
   }
 
   renderSubmitEventForm() {
@@ -158,7 +146,7 @@ export class AddUserActivity extends Component {
   render() {
     return (
       <div>
-        {this.renderCreateActivityButton()}
+        <RenderCreateActivityButton />
         {this.renderSubmitEventForm()}
       </div>
     );
