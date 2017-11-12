@@ -18,8 +18,3 @@ export const CreateSupplementOnNewOptionClick = props => {
   const label = props.label;
   CreateSupplement(label);
 };
-
-export const CreateActivityOnNewOptionClick = props => {
-  const label = props.label;
-  CreateSupplement(label);
-};
