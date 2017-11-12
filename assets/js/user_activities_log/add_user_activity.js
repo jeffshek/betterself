@@ -126,13 +126,11 @@ export class AddUserActivity extends Component {
             <div className="float-right">
               <button
                 type="submit"
-                id="add-new-object-button"
+                id="event-dashboard-submit"
                 className="btn btn-sm btn-success"
                 onClick={e => this.submitEventDetails(e)}
               >
-                <div id="white-text">
-                  <i className="fa fa-dot-circle-o" /> Create Activity Type
-                </div>
+                <i className="fa fa-dot-circle-o" /> Create Activity Type
               </button>
             </div>
           </form>
