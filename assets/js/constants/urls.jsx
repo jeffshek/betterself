@@ -7,7 +7,7 @@ export const DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL = '/dashboard/log/events/
 export const DASHBOARD_HEART_RATE_LOGS_URL = '/dashboard/log/heart_rates/'
 export const DASHBOARD_PRODUCTIVITY_LOGS_URL = '/dashboard/logs/productivity/'
 export const DASHBOARD_SLEEP_LOGS_URL = '/dashboard/logs/sleep/'
-
+export const DASHBOARD_MOOD_LOGS_URL = '/dashboard/logs/mood/'
 export const DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL = '/dashboard/log/supplements_events/'
 
 // Resources

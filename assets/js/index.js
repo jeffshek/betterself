@@ -10,6 +10,7 @@ import {
 import {
   DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
   DASHBOARD_INDEX_URL,
+  DASHBOARD_MOOD_LOGS_URL,
   DASHBOARD_PRODUCTIVITY_ANALYTICS_URL,
   DASHBOARD_PRODUCTIVITY_LOGS_URL,
   DASHBOARD_SLEEP_ANALYTICS_URL,
@@ -63,6 +64,7 @@ import {
 import {
   SupplementsStackView
 } from "./supplements_stacks/supplement_stack_view";
+import { MoodEventsLogView } from "./mood_log/mood_events_view";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -120,6 +122,10 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={DASHBOARD_PRODUCTIVITY_LOGS_URL}
         component={e => <Dashboard view={ProductivityLogView} />}
+      />
+      <PrivateRoute
+        path={DASHBOARD_MOOD_LOGS_URL}
+        component={e => <Dashboard view={MoodEventsLogView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_STACKS_URL}
