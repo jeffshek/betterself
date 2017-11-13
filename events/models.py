@@ -200,7 +200,7 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
         return '{} {} {}'.format(self.user, self.supplement, self.reminder_time)
 
 
-class MoodLog(BaseModelWithUserGeneratedContent):
+class UserMoodLog(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'mood_logs'
 
     time = models.TimeField()

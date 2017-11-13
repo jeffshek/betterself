@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='MoodLog',
+            name='UserMoodLog',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AlterUniqueTogether(
-            name='moodlog',
+            name='usermoodlog',
             unique_together=set([('user', 'time')]),
         ),
     ]
