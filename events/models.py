@@ -27,6 +27,7 @@ class SupplementLog(BaseModelWithUserGeneratedContent):
     # since django model id is constrained to 2^31, but if we hit 2^31,
     # will figure that out when we get there ...
     """
+    # TODO - Probably change this to supplement_logs
     RESOURCE_NAME = 'supplement_events'
 
     supplement = models.ForeignKey(Supplement)
@@ -197,3 +198,20 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
 
     def __str__(self):
         return '{} {} {}'.format(self.user, self.supplement, self.reminder_time)
+
+
+class MoodLog(BaseModelWithUserGeneratedContent):
+    RESOURCE_NAME = 'mood_logs'
+
+    time = models.TimeField()
+    value = models.PositiveSmallIntegerField()
+    notes = models.TextField(blank=True)
+    source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
+
+    class Meta:
+        unique_together = ('user', 'time')
+        verbose_name = 'Mood Log'
+        verbose_name_plural = 'Mood Logs'
+
+    def __str__(self):
+        return 'User - {}, Mood - {} at {}'.format(self.user, self.value, self.time)
