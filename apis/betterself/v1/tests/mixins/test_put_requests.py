@@ -97,7 +97,7 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
             result = self.client_1.put(url, data=copied_result, format='json')
 
             for attribute in attributes_to_update:
-                self.assertEqual(result.data[attribute], number_update_param)
+                self.assertEqual(result.data[attribute], number_update_param, result.data)
 
             # now for safe measure, let's use a get to retrieve the same object via UUID
             get_response = self._get_initial_data(data={'uuid': uuid})

@@ -213,6 +213,7 @@ class UserMoodLog(BaseModelWithUserGeneratedContent):
 
     class Meta:
         unique_together = ('user', 'time')
+        ordering = ['user', '-time']
         verbose_name = 'Mood Log'
         verbose_name_plural = 'Mood Logs'
 
