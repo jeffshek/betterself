@@ -19,6 +19,8 @@ INPUT_SOURCES = [
 
 INPUT_SOURCES_TUPLES = create_django_choice_tuple_from_list(INPUT_SOURCES)
 
+# TODO - Rename User in front of some of these ...
+
 
 class SupplementLog(BaseModelWithUserGeneratedContent):
     """
