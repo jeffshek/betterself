@@ -14,7 +14,8 @@ import {
   EXPORT_ALL_DATA_URL,
   DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
   DASHBOARD_SUPPLEMENT_REMINDERS_URL,
-  DASHBOARD_SUPPLEMENTS_STACKS_URL
+  DASHBOARD_SUPPLEMENTS_STACKS_URL,
+  DASHBOARD_MOOD_LOGS_URL
 } from "../constants/urls";
 
 const NewStatus = () => <span className="badge badge-info">NEW</span>;
@@ -66,7 +67,7 @@ const LogSidebar = () => {
       <NavigationLink
         iconName="icon-volume-off"
         label="Mood"
-        link={DASHBOARD_SLEEP_LOGS_URL}
+        link={DASHBOARD_MOOD_LOGS_URL}
         isNew={true}
       />
     </div>
@@ -151,7 +152,6 @@ const Sidebar = () => {
         <DataSourcesMenu />
         <li className="divider" />
         <ExportSidebar />
-
       </ul>
     </nav>
   );
