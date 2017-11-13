@@ -29,53 +29,9 @@ const NavigationLink = props => (
   <li className="nav-item">
     <Link className="nav-link" to={props.link}>
       <i className={props.iconName} /> {props.label}
-      {props.isNew ? <span className="badge badge-info"> NEW</span> : <span />}
+      {props.isNew ? <NewStatus /> : <span />}
     </Link>
   </li>
-);
-
-const DataSourcesMenu = props => (
-  <div>
-    <NavigationTitle title="Data Sources" />
-    <DataSourcesMenuLinks />
-  </div>
-);
-
-const DataSourcesMenuLinks = () => (
-  <div>
-    <NavigationLink
-      iconName="icon-calendar"
-      label="Text Reminders"
-      link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
-    />
-    <NavigationLink
-      iconName="icon-calendar"
-      label="Supp. Stacks"
-      link={DASHBOARD_SUPPLEMENTS_STACKS_URL}
-      isNew={true}
-    />
-    <NavigationLink
-      iconName="icon-list"
-      label="Activity Types"
-      link={DASHBOARD_USER_ACTIVITIES_URL}
-    />
-    <NavigationLink
-      iconName="icon-list"
-      label="Supplements"
-      link={DASHBOARD_SUPPLEMENTS_URL}
-    />
-  </div>
-);
-
-const ExportSidebar = () => (
-  <div>
-    <NavigationTitle title="Export Data" />
-    <NavigationLink
-      iconName="icon-cloud-download"
-      label="All Data"
-      link={EXPORT_ALL_DATA_URL}
-    />
-  </div>
 );
 
 const LogSidebar = () => {
@@ -139,6 +95,50 @@ const AnalyticsSidebar = () => {
     </div>
   );
 };
+
+const DataSourcesMenu = props => (
+  <div>
+    <NavigationTitle title="Data Sources" />
+    <DataSourcesMenuLinks />
+  </div>
+);
+
+const DataSourcesMenuLinks = () => (
+  <div>
+    <NavigationLink
+      iconName="icon-calendar"
+      label="Text Reminders"
+      link={DASHBOARD_SUPPLEMENT_REMINDERS_URL}
+    />
+    <NavigationLink
+      iconName="icon-calendar"
+      label="Supp. Stacks"
+      link={DASHBOARD_SUPPLEMENTS_STACKS_URL}
+      isNew={true}
+    />
+    <NavigationLink
+      iconName="icon-list"
+      label="Activity Types"
+      link={DASHBOARD_USER_ACTIVITIES_URL}
+    />
+    <NavigationLink
+      iconName="icon-list"
+      label="Supplements"
+      link={DASHBOARD_SUPPLEMENTS_URL}
+    />
+  </div>
+);
+
+const ExportSidebar = () => (
+  <div>
+    <NavigationTitle title="Export Data" />
+    <NavigationLink
+      iconName="icon-cloud-download"
+      label="All Data"
+      link={EXPORT_ALL_DATA_URL}
+    />
+  </div>
+);
 
 const Sidebar = () => {
   return (
