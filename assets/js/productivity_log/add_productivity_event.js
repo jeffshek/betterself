@@ -149,6 +149,10 @@ export class AddProductivityEvent extends Component {
   };
 
   renderRescueTimeExplainModal() {
+    if (!this.state.rescueTimeModal) {
+      return <div />;
+    }
+
     return (
       <Modal
         isOpen={this.state.rescueTimeModal}
@@ -195,6 +199,10 @@ export class AddProductivityEvent extends Component {
   }
 
   renderImportModal() {
+    if (!this.state.modal) {
+      return <div />;
+    }
+
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
@@ -320,10 +328,8 @@ export class AddProductivityEvent extends Component {
     return (
       <div>
         {this.renderAddProductivityTimeManually()}
-        {this.state.modal ? <div>{this.renderImportModal()}</div> : <div />}
-        {this.state.rescueTimeModal
-          ? <div>{this.renderRescueTimeExplainModal()}</div>
-          : <div />}
+        {this.renderImportModal()}
+        {this.renderRescueTimeExplainModal()}
       </div>
     );
   }

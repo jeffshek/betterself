@@ -1,24 +1,23 @@
 import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseLogTable } from "../resources_table/resource_table";
-import { SleepHistoryRow, SleepHistoryTableHeader } from "./constants";
+import { MoodHistoryRow, MoodHistoryTableHeader } from "./constants";
 
-export class SleepEntryLogTable extends BaseLogTable {
+export class MoodEntryLogTable extends BaseLogTable {
   constructor() {
     super();
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.resourceURL = "/api/v1/sleep_activities/";
   }
 
-  confirmDelete(uuid, startTime, endTime) {
+  confirmDelete = (uuid, time, value) => {
     const answer = confirm(
-      `WARNING: This will delete the following Sleep Log \n\nStart: ${startTime} \nEnd: ${endTime} \n\nConfirm?`
+      `WARNING: This will delete the following Mood Log \n\nTime: ${time} \nValue: ${value} \n\nConfirm?`
     );
 
     if (answer) {
       this.deleteUUID(uuid);
     }
-  }
+  };
 
   getTableRender() {
     const historicalData = this.props.eventHistory;
@@ -26,10 +25,10 @@ export class SleepEntryLogTable extends BaseLogTable {
 
     return (
       <table className="table table-bordered table-striped table-condensed">
-        <SleepHistoryTableHeader />
+        <MoodHistoryTableHeader />
         <tbody>
           {historicalDataKeys.map(key => (
-            <SleepHistoryRow
+            <MoodHistoryRow
               key={key}
               object={historicalData[key]}
               confirmDelete={this.confirmDelete}
@@ -61,7 +60,7 @@ export class SleepEntryLogTable extends BaseLogTable {
       <div className="card">
         <div className="card-header">
           <i className="fa fa-align-justify" />
-          <strong>Sleep History</strong>
+          <strong>Mood History</strong>
         </div>
         {this.renderReady()}
       </div>

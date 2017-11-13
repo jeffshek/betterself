@@ -64,6 +64,7 @@ import {
 import {
   SupplementsStackView
 } from "./supplements_stacks/supplement_stack_view";
+import { MoodEventsLogView } from "./mood_log/mood_events_view";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -124,7 +125,7 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={DASHBOARD_MOOD_LOGS_URL}
-        component={e => <Dashboard view={ProductivityLogView} />}
+        component={e => <Dashboard view={MoodEventsLogView} />}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_STACKS_URL}

@@ -1,10 +1,10 @@
 import React from "react";
 
-import { AddSleepEvent } from "./add_mood_event";
-import { SleepEntryLogTable } from "./mood_events_table";
+import { AddMoodEvent } from "./add_mood_event";
+import { MoodEntryLogTable } from "./mood_events_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 
-export class SleepEventsLogView extends BasePaginatedLogView {
+export class MoodEventsLogView extends BasePaginatedLogView {
   constructor() {
     super();
     this.resourceName = "sleep_activities";
@@ -13,8 +13,8 @@ export class SleepEventsLogView extends BasePaginatedLogView {
   render() {
     return (
       <div>
-        <AddSleepEvent addEventEntry={this.addEventEntry} />
-        <SleepEntryLogTable
+        <AddMoodEvent addEventEntry={this.addEventEntry} />
+        <MoodEntryLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
           lastPageNumber={this.state.lastPageNumber}

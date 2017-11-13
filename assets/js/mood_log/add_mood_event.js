@@ -1,7 +1,6 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
@@ -12,7 +11,7 @@ import {
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 
-export class AddSleepEvent extends Component {
+export class AddMoodEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {

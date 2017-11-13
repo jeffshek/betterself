@@ -12,7 +12,7 @@ const MinutesToHourMinutesFormat = minutes => {
   return `${hoursSlept} hours ${minutesSlept} minutes`;
 };
 
-export const SleepHistoryRow = props => {
+export const MoodHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
 
@@ -52,7 +52,7 @@ export const SleepHistoryRow = props => {
   );
 };
 
-export const SleepHistoryTableHeader = () => (
+export const MoodHistoryTableHeader = () => (
   <thead>
     <tr>
       <th>Sleep - Start Time</th>
