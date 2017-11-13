@@ -1,233 +1,99 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import {
-  JSON_AUTHORIZATION_HEADERS,
-  JSON_POST_AUTHORIZATION_HEADERS
-} from "../constants/requests";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import {
-  DATE_REQUEST_FORMAT,
-  YEAR_MONTH_DAY_FORMAT
-} from "../constants/dates_and_times";
+import { MOOD_RESOURCE_URL } from "../constants/api_urls";
+import { postFetchJSONAPI } from "../utils/fetch_utils";
 
 export class AddMoodEvent extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      eventStartTime: moment(),
-      eventEndTime: moment(),
-      fitbitAuthorized: false,
-      fitbitImportModal: false,
-      apiStartDate: moment().subtract(7, "days"),
-      apiEndDate: moment()
+      inputDateTime: moment()
     };
   }
 
-  handleAPIStartTimeChange = moment => {
-    this.setState({ apiStartDate: moment });
-  };
+  handleInputChange = event => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
 
-  handleAPIEndTimeChange = moment => {
-    this.setState({ apiEndDate: moment });
-  };
-
-  componentDidMount() {
-    this.checkIfFitbitAuthorized();
-  }
-
-  toggle = () => {
     this.setState({
-      fitbitImportModal: !this.state.fitbitImportModal
+      [name]: value
     });
   };
 
-  checkIfFitbitAuthorized = () => {
-    const url = "/api/fitbit/user-auth-check";
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({
-          fitbitAuthorized: responseData
-        });
-      });
+  handleDatetimeChange = moment => {
+    this.setState({ inputDateTime: moment });
   };
 
-  submitSleepEvent = e => {
-    e.preventDefault();
-
-    const params = {
-      start_time: this.state.eventStartTime.toISOString(),
-      end_time: this.state.eventEndTime.toISOString(),
-      source: "web"
-    };
-
-    fetch("/api/v1/sleep_activities/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(params)
-    })
-      .then(response => {
-        if (!response.ok) {
-          alert(
-            "Input Error!\n\nCheck that end date is after the start date OR for overlapping periods."
-          );
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        this.props.addEventEntry(responseData);
-      });
+  renderInputRow = (label, inputName) => {
+    return (
+      <div className="col-sm-6">
+        <div className="form-group">
+          <label className="add-event-label">
+            {label}
+          </label>
+          <input
+            name={inputName}
+            type="text"
+            className="form-control"
+            defaultValue={0}
+            onChange={this.handleInputChange}
+          />
+        </div>
+      </div>
+    );
   };
 
-  handleStartTimeChange = moment => {
-    this.setState({ eventStartTime: moment });
-  };
-
-  handleEndTimeChange = moment => {
-    this.setState({ eventEndTime: moment });
-  };
-
-  submitUpdateFitbitAPIRequest = e => {
+  submitEventDetails = e => {
     e.preventDefault();
 
     const postParams = {
-      start_date: this.state.apiStartDate.format(DATE_REQUEST_FORMAT),
-      end_date: this.state.apiEndDate.format(DATE_REQUEST_FORMAT)
+      value: this.state.moodValue,
+      notes: this.state.notes,
+      time: this.state.inputDateTime.toISOString(),
+      source: "web"
     };
 
-    fetch("/api/fitbit/update-sleep-history/", {
-      method: "POST",
-      headers: JSON_POST_AUTHORIZATION_HEADERS,
-      body: JSON.stringify(postParams)
-    })
-      .then(response => {
-        {
-          this.toggle();
-        }
-        return response;
-      })
+    postFetchJSONAPI(MOOD_RESOURCE_URL, postParams)
       .then(responseData => {
-        alert("User's FitBit history will update in the next thirty minutes.");
-        return responseData;
+        window.location.reload();
       })
       .catch(error => {
         alert("Invalid Error Occurred When Submitting Data " + error);
       });
   };
 
-  renderFitbitButton() {
-    // Either show a logged in Fitbit Button (ie. import) or a setup FitBit
-    if (this.state.fitbitAuthorized) {
-      return (
-        <div className="float-right">
-          <button
-            type="submit"
-            id="setup-fitbit-button"
-            className="btn btn-sm btn-success"
-            onClick={this.toggle}
-          >
-            <i className="fa fa-dot-circle-o" /> Import from FitBit
-          </button>
-        </div>
-      );
-    } else {
-      // if user doesn't have oauth setup with us yet, need to get it setup
-      return (
-        <div className="float-right">
-          <a href="/api/fitbit/oauth2/login/">
-            <button
-              type="submit"
-              id="setup-fitbit-button"
-              className="btn btn-sm btn-success"
-            >
-              <i className="fa fa-dot-circle-o" /> Setup FitBit Access
-            </button>
-          </a>
-        </div>
-      );
-    }
-  }
-
-  renderImportFitbitModal() {
-    return (
-      <Modal isOpen={this.state.fitbitImportModal} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>
-          Import Sleep History from Fitbit
-        </ModalHeader>
-        <ModalBody>
-          <label className="form-control-label add-event-label">
-            Start Date
-          </label>
-          <Datetime
-            onChange={this.handleAPIStartTimeChange}
-            value={this.state.apiStartDate.format(YEAR_MONTH_DAY_FORMAT)}
-          />
-          <br />
-          <label className="form-control-label add-event-label">
-            End Date
-          </label>
-          <Datetime
-            onChange={this.handleAPIEndTimeChange}
-            value={this.state.apiEndDate.format(YEAR_MONTH_DAY_FORMAT)}
-          />
-          <br />
-          {/*the curse of prettier*/}
-          This will <b> OVERWRITE </b> any <b> OVERLAPPING </b>
-          days stored. Data may take up to
-          <b> THIRTY </b>
-          minutes to be reflected.
-          <br />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.submitUpdateFitbitAPIRequest}>
-            Update
-          </Button>
-          <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
-    );
-  }
-
-  renderSubmitSleepForm() {
+  renderSubmitEventForm() {
     return (
       <div className="card">
         <div className="card-block card-block-no-padding-bottom">
-          {this.renderFitbitButton()}
-          <form onSubmit={e => this.submitSleepEvent(e)}>
-            <div className="row">
-              <div className="form-group col-sm-4">
-                <label className="add-event-label">
-                  Sleep Start Time
-                </label>
-                <Datetime
-                  onChange={this.handleStartTimeChange}
-                  value={this.state.eventStartTime}
-                />
-              </div>
-              <div className="form-group col-sm-4">
-                <label className="add-event-label">
-                  Sleep End Time
-                </label>
-                <Datetime
-                  onChange={this.handleEndTimeChange}
-                  value={this.state.eventEndTime}
-                />
-              </div>
+          <form onSubmit={e => this.submitEventDetails(e)}>
+            <div className="form-group col-sm-3">
+              <label className="add-event-label">
+                Time
+              </label>
+              <Datetime
+                onChange={this.handleDatetimeChange}
+                value={this.state.inputDateTime}
+              />
             </div>
-            <div className="float-left">
+            {this.renderInputRow(
+              "Mood (Score of 1 to 10, 10 being the happiest!)",
+              "moodValue"
+            )}
+            {this.renderInputRow(
+              "Notes / Details (ie. Got a promotion!)",
+              "notes"
+            )}
+            <div className="float-right">
               <button
                 type="submit"
                 id="event-dashboard-submit"
                 className="btn btn-sm btn-success"
-                onClick={e => this.submitSleepEvent(e)}
+                onClick={e => this.submitEventDetails(e)}
               >
-                <i className="fa fa-dot-circle-o" /> Log Sleep Entry
+                <i className="fa fa-dot-circle-o" /> Log Mood
               </button>
             </div>
           </form>
@@ -239,8 +105,7 @@ export class AddMoodEvent extends Component {
   render() {
     return (
       <div>
-        {this.renderSubmitSleepForm()}
-        {this.renderImportFitbitModal()}
+        {this.renderSubmitEventForm()}
       </div>
     );
   }
