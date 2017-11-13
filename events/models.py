@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from betterself.base_models import BaseModelWithUserGeneratedContent
+from betterself.utils.date_utils import get_current_utc_time_and_tz
 from betterself.utils.django_utils import create_django_choice_tuple_from_list
 from supplements.models import Supplement
 
@@ -205,7 +206,7 @@ class SupplementReminder(BaseModelWithUserGeneratedContent):
 class UserMoodLog(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'mood_logs'
 
-    time = models.TimeField()
+    time = models.DateTimeField(default=get_current_utc_time_and_tz)
     value = models.PositiveSmallIntegerField()
     notes = models.TextField(blank=True)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)

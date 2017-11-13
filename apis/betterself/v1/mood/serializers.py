@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from events.models import UserMoodLog, INPUT_SOURCES_TUPLES
+from betterself.utils.date_utils import get_current_utc_time_and_tz
+from events.models import UserMoodLog, INPUT_SOURCES_TUPLES, WEB_INPUT_SOURCE
 
 
 class MoodReadOnlySerializer(serializers.ModelSerializer):
@@ -15,15 +16,16 @@ class MoodCreateUpdateSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     value = serializers.IntegerField(max_value=10, min_value=1)
     notes = serializers.CharField(required=False)
-    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
+    source = serializers.ChoiceField(INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
+    time = serializers.DateTimeField(default=get_current_utc_time_and_tz)
 
     class Meta:
         fields = ('value', 'time', 'notes', 'source', 'uuid')
         model = UserMoodLog
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        create_model = self.context['view'].model
+        user = self.context.get('user') or self.context['request'].user
+        create_model = self.Meta.model
         time = validated_data.pop('time')
 
         obj, created = create_model.objects.update_or_create(
