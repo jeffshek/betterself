@@ -17,16 +17,6 @@ import {
   DASHBOARD_SUPPLEMENTS_STACKS_URL
 } from "../constants/urls";
 
-const DashboardButton = () => (
-  <li className="nav-item">
-    <Link to={DASHBOARD_INDEX_URL} className="nav-link">
-      <i className="icon-speedometer" />
-      Dashboard
-      <NewStatus />
-    </Link>
-  </li>
-);
-
 const NewStatus = () => <span className="badge badge-info">NEW</span>;
 
 const NavigationTitle = props => (
@@ -88,6 +78,68 @@ const ExportSidebar = () => (
   </div>
 );
 
+const LogSidebar = () => {
+  return (
+    <div>
+      <NavigationTitle title="Log" />
+      <NavigationLink
+        iconName="icon-chemistry"
+        label="Supplements"
+        link={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
+      />
+      <NavigationLink
+        iconName="icon-note"
+        label="Events"
+        link={DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL}
+      />
+      {/*<NavigationLink*/}
+      {/*iconName="icon-heart"*/}
+      {/*label="Heart Rate"*/}
+      {/*link={DASHBOARD_HEART_RATE_LOGS_URL}*/}
+      {/*/>*/}
+      <NavigationLink
+        iconName="icon-graph"
+        label="Productivity"
+        link={DASHBOARD_PRODUCTIVITY_LOGS_URL}
+      />
+      <NavigationLink
+        iconName="icon-volume-off"
+        label="Sleep"
+        link={DASHBOARD_SLEEP_LOGS_URL}
+      />
+      <NavigationLink
+        iconName="icon-volume-off"
+        label="Mood"
+        link={DASHBOARD_SLEEP_LOGS_URL}
+        isNew={true}
+      />
+    </div>
+  );
+};
+
+const AnalyticsSidebar = () => {
+  return (
+    <div>
+      <NavigationTitle title="Analytics" />
+      <NavigationLink
+        iconName="icon-chart"
+        label="Sleep"
+        link={DASHBOARD_SLEEP_ANALYTICS_URL}
+      />
+      <NavigationLink
+        iconName="icon-speedometer"
+        label="Productivity"
+        link={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
+      />
+      <NavigationLink
+        iconName="icon-clock"
+        label="Daily Overview"
+        link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
+      />
+    </div>
+  );
+};
+
 class Sidebar extends Component {
   handleClick(e) {
     e.preventDefault();
@@ -98,52 +150,11 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar sidebar-nav">
         <ul className="nav">
-          {/*<DashboardButton />*/}
-          <NavigationTitle title="Log" />
-          <NavigationLink
-            iconName="icon-chemistry"
-            label="Supplements"
-            link={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
-          />
-          <NavigationLink
-            iconName="icon-note"
-            label="Events"
-            link={DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL}
-          />
-          {/*<NavigationLink*/}
-          {/*iconName="icon-heart"*/}
-          {/*label="Heart Rate"*/}
-          {/*link={DASHBOARD_HEART_RATE_LOGS_URL}*/}
-          {/*/>*/}
-          <NavigationLink
-            iconName="icon-graph"
-            label="Productivity"
-            link={DASHBOARD_PRODUCTIVITY_LOGS_URL}
-          />
-          <NavigationLink
-            iconName="icon-volume-off"
-            label="Sleep"
-            link={DASHBOARD_SLEEP_LOGS_URL}
-          />
+          <LogSidebar />
           <li className="divider" />
-          <NavigationTitle title="Analytics" />
-          <NavigationLink
-            iconName="icon-chart"
-            label="Sleep"
-            link={DASHBOARD_SLEEP_ANALYTICS_URL}
-          />
-          <NavigationLink
-            iconName="icon-speedometer"
-            label="Productivity"
-            link={DASHBOARD_PRODUCTIVITY_ANALYTICS_URL}
-          />
-          <NavigationLink
-            iconName="icon-clock"
-            label="Daily Overview"
-            link={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
-          />
+          <AnalyticsSidebar />
           <li className="divider" />
-          <DataSourcesMenu onClick={this.handleClick.bind(this)} />
+          <DataSourcesMenu />
           <li className="divider" />
           <ExportSidebar />
 
