@@ -5,6 +5,7 @@ from apis.betterself.v1.events.views import SupplementEventView, ProductivityLog
     AggregatedSupplementLogView, UserSupplementStackRecordEvent
 from apis.betterself.v1.analytics.views import SupplementAnalyticsSummary, SupplementSleepAnalytics, \
     SupplementProductivityAnalytics, SupplementDosageAnalytics
+from apis.betterself.v1.mood.views import UserMoodViewSet
 from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesView, SleepAveragesView
 from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesCorrelationsView, \
     SleepActivitiesSupplementsCorrelationsView, ProductivityLogsSupplementsCorrelationsView, \
@@ -15,7 +16,7 @@ from apis.betterself.v1.supplements.views import VendorView, IngredientCompositi
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
-    SupplementReminder
+    SupplementReminder, UserMoodLog
 from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement, UserSupplementStack
 from vendors.models import Vendor
 
@@ -63,6 +64,7 @@ urlpatterns = [
             url(r'^$', UserSupplementStackViewSet.as_view(), name=UserSupplementStack.RESOURCE_NAME),
             url(r'^record/$', UserSupplementStackRecordEvent.as_view(), name='record-supplement-stack'),
         ])),
+    url(r'^{0}/$'.format(UserMoodLog.RESOURCE_NAME), UserMoodViewSet.as_view(), name=UserMoodLog.RESOURCE_NAME),
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
