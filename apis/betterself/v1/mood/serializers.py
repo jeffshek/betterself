@@ -28,7 +28,7 @@ class MoodCreateUpdateSerializer(serializers.ModelSerializer):
         create_model = self.Meta.model
         time = validated_data.pop('time')
 
-        obj, created = create_model.objects.update_or_create(
+        obj, _ = create_model.objects.update_or_create(
             user=user,
             time=time,
             defaults=validated_data)
