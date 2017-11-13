@@ -1,39 +1,18 @@
 import React from "react";
 import moment from "moment";
 import { READABLE_DATE_TIME_FORMAT } from "../constants/dates_and_times";
-import { Link } from "react-router-dom";
-import { getDailyOverViewURLFromDate } from "../routing/routing_utils";
-
-const MinutesToHourMinutesFormat = minutes => {
-  const durationFormattedRounded = Math.floor(minutes);
-
-  const hoursSlept = Math.floor(durationFormattedRounded / 60);
-  const minutesSlept = durationFormattedRounded % 60;
-  return `${hoursSlept} hours ${minutesSlept} minutes`;
-};
 
 export const MoodHistoryRow = props => {
   // Used to render the data from the API
   const data = props.object;
-
-  const uuid = data.uuid;
-  const startTime = moment(data.start_time);
-  const endTime = moment(data.end_time);
-  const source = data.source;
-
-  const startTimeFormatted = startTime.format(READABLE_DATE_TIME_FORMAT);
-  const endTimeFormatted = endTime.format(READABLE_DATE_TIME_FORMAT);
-  const duration = moment.duration(endTime.diff(startTime));
-  const durationAsMinutes = duration.asMinutes();
-  const dailyOverviewLink = getDailyOverViewURLFromDate(startTime);
-
-  const timeSlept = MinutesToHourMinutesFormat(durationAsMinutes);
+  const { uuid, time, value, notes, source } = data;
+  const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
 
   return (
     <tr>
-      <td><Link to={dailyOverviewLink}>{startTimeFormatted}</Link></td>
-      <td>{endTimeFormatted}</td>
-      <td>{timeSlept}</td>
+      <td>{timeFormatted}</td>
+      <td>{value}</td>
+      <td>{notes}</td>
       <td className="center-source">
         <span className="badge badge-success">{source}</span>
       </td>
@@ -42,7 +21,7 @@ export const MoodHistoryRow = props => {
           <div
             className="remove-icon"
             onClick={e =>
-              props.confirmDelete(uuid, startTimeFormatted, endTimeFormatted)}
+              props.confirmDelete(uuid, timeFormatted, value, notes)}
           >
             <i className="fa fa-remove fa-1x" />
           </div>
@@ -55,9 +34,9 @@ export const MoodHistoryRow = props => {
 export const MoodHistoryTableHeader = () => (
   <thead>
     <tr>
-      <th>Sleep - Start Time</th>
-      <th>Sleep - End Time </th>
-      <th className="center-source">Time Slept</th>
+      <th>Time</th>
+      <th>Mood Value</th>
+      <th className="center-source">Notes</th>
       <th className="center-source">Source</th>
       <th className="center-source">Actions</th>
     </tr>

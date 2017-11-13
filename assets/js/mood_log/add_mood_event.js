@@ -8,7 +8,9 @@ export class AddMoodEvent extends Component {
   constructor() {
     super();
     this.state = {
-      inputDateTime: moment()
+      inputDateTime: moment(),
+      moodValue: 5,
+      notes: ""
     };
   }
 
@@ -28,7 +30,26 @@ export class AddMoodEvent extends Component {
 
   renderInputRow = (label, inputName) => {
     return (
-      <div className="col-sm-6">
+      <div className="col-sm-3">
+        <div className="form-group">
+          <label className="add-event-label">
+            {label}
+          </label>
+          <input
+            name={inputName}
+            type="number"
+            className="form-control"
+            defaultValue={5}
+            onChange={this.handleInputChange}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  renderTextInputRow = (label, inputName) => {
+    return (
+      <div className="col-sm-7">
         <div className="form-group">
           <label className="add-event-label">
             {label}
@@ -37,7 +58,6 @@ export class AddMoodEvent extends Component {
             name={inputName}
             type="text"
             className="form-control"
-            defaultValue={0}
             onChange={this.handleInputChange}
           />
         </div>
@@ -50,10 +70,13 @@ export class AddMoodEvent extends Component {
 
     const postParams = {
       value: this.state.moodValue,
-      notes: this.state.notes,
       time: this.state.inputDateTime.toISOString(),
       source: "web"
     };
+
+    if (this.state.notes !== "") {
+      postParams.notes = this.state.notes;
+    }
 
     postFetchJSONAPI(MOOD_RESOURCE_URL, postParams)
       .then(responseData => {
@@ -79,10 +102,10 @@ export class AddMoodEvent extends Component {
               />
             </div>
             {this.renderInputRow(
-              "Mood (Score of 1 to 10, 10 being the happiest!)",
+              "Mood - Score of 1 to 10, 10 being the happiest!",
               "moodValue"
             )}
-            {this.renderInputRow(
+            {this.renderTextInputRow(
               "Notes / Details (ie. Got a promotion!)",
               "notes"
             )}

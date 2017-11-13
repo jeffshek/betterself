@@ -6,12 +6,12 @@ import { MoodHistoryRow, MoodHistoryTableHeader } from "./constants";
 export class MoodEntryLogTable extends BaseLogTable {
   constructor() {
     super();
-    this.resourceURL = "/api/v1/sleep_activities/";
+    this.resourceURL = "/api/v1/mood_logs/";
   }
 
-  confirmDelete = (uuid, time, value) => {
+  confirmDelete = (uuid, time, value, notes) => {
     const answer = confirm(
-      `WARNING: This will delete the following Mood Log \n\nTime: ${time} \nValue: ${value} \n\nConfirm?`
+      `WARNING: This will delete the following Mood Log \n\nTime: ${time} \nMood Value: ${value} \nNotes: ${notes} \n\nConfirm?`
     );
 
     if (answer) {

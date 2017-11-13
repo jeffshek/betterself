@@ -7,13 +7,13 @@ import { BasePaginatedLogView } from "../resources_table/resource_view";
 export class MoodEventsLogView extends BasePaginatedLogView {
   constructor() {
     super();
-    this.resourceName = "sleep_activities";
+    this.resourceName = "mood_logs";
   }
 
   render() {
     return (
       <div>
-        <AddMoodEvent addEventEntry={this.addEventEntry} />
+        <AddMoodEvent />
         <MoodEntryLogTable
           eventHistory={this.state.eventHistory}
           currentPageNumber={this.state.currentPageNumber}
