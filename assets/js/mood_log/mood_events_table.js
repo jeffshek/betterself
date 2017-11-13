@@ -2,11 +2,12 @@ import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseLogTable } from "../resources_table/resource_table";
 import { MoodHistoryRow, MoodHistoryTableHeader } from "./constants";
+import { MOOD_RESOURCE_URL } from "../constants/api_urls";
 
 export class MoodEntryLogTable extends BaseLogTable {
   constructor() {
     super();
-    this.resourceURL = "/api/v1/mood_logs/";
+    this.resourceURL = MOOD_RESOURCE_URL;
   }
 
   confirmDelete = (uuid, time, value, notes) => {
