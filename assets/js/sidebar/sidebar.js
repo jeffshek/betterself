@@ -140,28 +140,21 @@ const AnalyticsSidebar = () => {
   );
 };
 
-class Sidebar extends Component {
-  handleClick(e) {
-    e.preventDefault();
-    e.target.parentElement.classList.toggle("open");
-  }
+const Sidebar = () => {
+  return (
+    <nav className="sidebar sidebar-nav">
+      <ul className="nav">
+        <LogSidebar />
+        <li className="divider" />
+        <AnalyticsSidebar />
+        <li className="divider" />
+        <DataSourcesMenu />
+        <li className="divider" />
+        <ExportSidebar />
 
-  render() {
-    return (
-      <nav className="sidebar sidebar-nav">
-        <ul className="nav">
-          <LogSidebar />
-          <li className="divider" />
-          <AnalyticsSidebar />
-          <li className="divider" />
-          <DataSourcesMenu />
-          <li className="divider" />
-          <ExportSidebar />
-
-        </ul>
-      </nav>
-    );
-  }
-}
+      </ul>
+    </nav>
+  );
+};
 
 export default Sidebar;
