@@ -1,11 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  withRouter
-} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
 import {
   DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
