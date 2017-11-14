@@ -29,7 +29,12 @@ class CreateUserView(APIView):
         # Per some signups, custom supplements are pre-filled for custom users
         supplements = serializer.validated_data.pop('supplements')
 
-        user = serializer.save()
+        try:
+            user = serializer.save()
+        except IntegrityError:
+            # if a user hits signup multiple times very very quickly, this causes issues ... when that happens
+            # return an empty response instead
+            return Response(status=400)
 
         # if there's a custom set of supplements that were added along with signup
         # this signup is coming programmatically and supplements should automatically be created
