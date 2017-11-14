@@ -3,6 +3,7 @@
 ![Travis](https://travis-ci.org/jeffshek/betterself.svg?branch=master)
 ![CookieCutter](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg)
 ![PyUp](https://img.shields.io/pypi/v/pyupio.svg)
+![BrowserStack](https://d2ogrdw2mh0rsl.cloudfront.net/production/images/static/header/header-logo.svg)
 
 BetterSelf - Your Body's Dashboard
 ==============================
