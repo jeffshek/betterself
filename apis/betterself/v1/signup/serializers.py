@@ -12,7 +12,6 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=4, max_length=32,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
-
     password = serializers.CharField(min_length=8, max_length=32, write_only=True)
     timezone = serializers.ChoiceField(choices=TIMEZONE_CHOICES, default='US/Eastern')
     supplements = serializers.CharField(max_length=350, default=None)
