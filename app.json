@@ -1,8 +1,8 @@
 {
-  "name": "betterself",
-  "description": "Figure Out How To Be Better",
+  "name": "BetterSelf",
+  "description": "Quantify Your Health",
   "env": {
-    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-python",
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-python"
   },
   "scripts": {
     "postdeploy": "python manage.py migrate"
