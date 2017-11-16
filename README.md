@@ -4,6 +4,10 @@
 ![CookieCutter](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg)
 ![PyUp](https://img.shields.io/pypi/v/pyupio.svg)
 
+Powered by [BrowserStack](https://www.browserstack.com/)
+
+![BrowserStack Logo](https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780) 
+
 BetterSelf - Your Body's Dashboard
 ==============================
 ![Analytics](https://user-images.githubusercontent.com/392678/29753400-b58d00b4-8b3e-11e7-93eb-60c9eb206d16.png)
@@ -27,7 +31,7 @@ For the nerds ...
 - RESTful architecture (I'm just not convinced about Level 3). We eat our own dog food and use it to create all events you send us. All events and tracking is done through an API. Rest assured, it's meant to be developer friendly.
 - Fully open sourced. Developer environments are easily deployed via Vagrant with pre/post commit hooks, tests + travis to maintain sanity. Pull Request friendly. Probably switch to Docker, eventually, stage two ...
 
-Why are we (unfortunately, just me) doing this?
+Why are we doing this?
 
 - Inspired by reddit nootropics (specifically Scott Alexander's survey), gwern's doubleblind studies, lots of anecdotal posts on Longecity / Reddit. Also partially motivated by the really bad posts (that time someone was convinced theanine made him a genius).
 - There HAS GOT to be a better way for me to know supplements I'm taking is snake oil, placebo or meaningful.
