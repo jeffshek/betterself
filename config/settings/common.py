@@ -35,6 +35,7 @@ THIRD_PARTY_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
     'rest_framework',
     'django_extensions',
     'webpack_loader',
@@ -232,7 +233,7 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 # this url is changed to prevent bots looking for /admins urls
 # obviously since this is open-sourced, everyone knows what the actual admin url is
-ADMIN_URL = r'^potato/'
+ADMIN_URL = r'^zzz/'
 
 REST_FRAMEWORK = {
     # by default, someone will need to be logged in before they are
