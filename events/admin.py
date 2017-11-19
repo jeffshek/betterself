@@ -8,6 +8,7 @@ from events.models import SupplementLog, DailyProductivityLog, SupplementReminde
 class SupplementEventAdmin(admin.ModelAdmin):
     list_display = ('user', 'supplement', 'quantity', 'time', 'source')
     search_fields = ('supplement__name',)
+    ordering = ['-time']
 
     class Meta:
         model = SupplementLog
