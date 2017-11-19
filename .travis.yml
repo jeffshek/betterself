@@ -10,7 +10,7 @@ before_script:
   - psql -c 'create database travisci;' -U postgres
 install:
   - pip install -r requirements/test.txt
-script: "python manage.py test"
+script: "python manage.py test --parallel"
 notifications:
   email:
     recipients:
