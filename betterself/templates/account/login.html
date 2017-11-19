@@ -11,30 +11,33 @@
 {% block head_title %}{% trans "Sign In!" %}{% endblock %}
 
 {% block content %}
-    <div id="login-background-color">
-        <section id="promo-1" class="content-block promo-2 min-height-900px bg-black">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-5">
-                    <h2><img src="{% static "images/logos/logojoy/png/white_logo_transparent_background.png" %}" width="50%" /></h2>
-                    <p /><br />
+<div id="login-background-color">
+    <section id="promo-1" class="content-block promo-2 min-height-900px bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <h2><img src="{% static " images/logos/logojoy/png/white_logo_transparent_background.png" %}"
+                        width="50%" /></h2>
+                    <p/><br/>
+                    <a href="{% provider_login_url " github" %}">Twitter</a>
                     <form class="login" method="POST" id="white-text" action="{% url 'account_login' %}">
                         {% csrf_token %}
                         {{ form|crispy }}
                         {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                         {% endif %}
-                        <button id="sign-in-button" class="btn btn-primary" type="submit">{% trans "Login In" %}</button>
+                        <button id="sign-in-button" class="btn btn-primary" type="submit">{% trans "Login In" %}
+                        </button>
                     </form>
-                    </div>
+                </div>
                 <div class="col-md-6 col-md-offset-1">
-                  <img src="{% static "images/login/login_side_photo.jpeg" %}" width="100%" />
+                    <img src="{% static " images/login/login_side_photo.jpeg" %}" width="100%" />
                 </div>
-                </div>
-              </div>
-            {# Lazy way to make the colors look right#}
-            <br /><br /><br /><br /><br /><br />
-        </section>
-    </div>
+            </div>
+        </div>
+        {# Lazy way to make the colors look right#}
+        <br/><br/><br/><br/><br/><br/>
+    </section>
+</div>
 {% endblock %}
 
