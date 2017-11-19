@@ -24,11 +24,19 @@ alias startcelery="celery -A betterself worker -l info"
 git status
 
 alias gs='git status'
-alias gc='git commit -am'
-alias gb='git branch'
+alias gcam="git commit -am"
+alias gk='git commit -m'
+alias gco='git checkout'
+alias gb='git branch -vv'
 alias gp='git pull'
 alias ga='git add --all'
 alias gd='git diff'
+alias gg='git grep'
+alias gpos='git pull origin staging'
+alias gset='git push -u origin'
+alias gahead='git branch -vv|grep ahead'
+alias gbehind='git branch -vv|grep behind'
+
 alias ls='ls -la'
 alias pack='node_modules/.bin/webpack --watch'
 alias start-honcho='honcho start -f Procfile_local'
