@@ -94,6 +94,7 @@ FIXTURE_DIRS = (
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+DEFAULT_FROM_EMAIL = 'team@betterself.io'
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------

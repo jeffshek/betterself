@@ -87,10 +87,11 @@ DEBUG = True
 
 # SHELL_PLUS_PRINT_SQL = True
 
-
 # use this file to rewrite over local db passwords
 try:
     from config.settings.local_secret_settings import *
+    # if able to import, that means we have pulled api keys
+    INSTALLED_APPS += ('anymail',)
 except ImportError:
     # if you have a secret API settings, import them, otherwise on your merry way
     pass
