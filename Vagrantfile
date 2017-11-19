@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
   end
 
   # Copy a bash_profile config that can be customized
-  config.vm.provision "file", source: "config/development/vagrant/developer_bash_profile", destination: "~/.bash_profile"
+  config.vm.provision "file", source: "config/development/vagrant/developer_aliases", destination: "~/.bash_profile"
 
   # Provision scripts that install necessary requirements
   config.vm.provision "shell", path: "config/development/vagrant/provision_bootstrap.sh"

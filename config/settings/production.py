@@ -6,7 +6,6 @@ Production Configurations
 - Use Amazon's S3 for storing static files and uploaded media
 # TD
 - Change S3 to whitespace
-- Use mailgun to send emails
 - Use Redis on Heroku
 - Use sentry for error logging
 - Use opbeat for error reporting
@@ -142,14 +141,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # EMAIL
 # ------------------------------------------------------------------------------
-DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
-                         default='betterself <noreply@betterself.io>')
+INSTALLED_APPS += ('anymail', )
 
-# EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-# MAILGUN_ACCESS_KEY = env('DJANGO_MAILGUN_API_KEY')
-# MAILGUN_SERVER_NAME = env('DJANGO_MAILGUN_SERVER_NAME')
-# EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[betterself] ')
-# SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
+ANYMAIL = {
+    'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
+    'MAILGUN_SENDER_DOMAIN': 'betterself.io'
+}
+
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
 
 # TEMPLATE CONFIGURATION
