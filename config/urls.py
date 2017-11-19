@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name=react_home_template), name='home'),
 
     url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
-    url(r'^zzz/', include(admin.site.urls)),
+    url(settings.ADMIN_URL, include(admin.site.urls)),
 
     # User Management
     url(r'^users/', include('betterself.users.urls', namespace='users')),
