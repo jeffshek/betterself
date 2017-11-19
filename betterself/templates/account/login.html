@@ -16,8 +16,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
-                    <h2><img src="{% static "images/logos/logojoy/png/white_logo_transparent_background.png" %}"
-                        width="50%" /></h2>
+                    <h2>
+                        <img src="{% static "images/logos/logojoy/png/white_logo_transparent_background.png" %}"
+                        width="50%" />
+                    </h2>
                     <p/><br/>
                     <form class="login" method="POST" id="white-text" action="{% url 'account_login' %}">
                         {% csrf_token %}
