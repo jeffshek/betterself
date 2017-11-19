@@ -35,7 +35,7 @@ numpy==1.13.3
 oauthlib==2.0.6
 openpyxl==2.4.9
 pandas==0.21.0
-patch==1.16
+patch==10.04
 patsy==0.4.1
 phonenumberslite==8.8.6
 Pillow==4.3.0
