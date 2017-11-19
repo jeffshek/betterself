@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from supplements.models import Measurement, Ingredient, IngredientComposition, Supplement
+from supplements.models import Measurement, Ingredient, IngredientComposition, Supplement, UserSupplementStack
 
 
 @admin.register(Measurement)
@@ -48,3 +48,17 @@ class SupplementAdmin(admin.ModelAdmin):
 
         if ingredient_composition.exists():
             return ingredient_composition.values_list('ingredient__name', flat=True)
+
+
+@admin.register(UserSupplementStack)
+class UserSupplementStackAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name', 'compositions_display', )
+
+    class Meta:
+        model = UserSupplementStack
+
+    @staticmethod
+    def compositions_display(instance):
+        compositions = instance.compositions.all()
+        if compositions.exists():
+            return compositions.values_list('supplement__name', flat=True)

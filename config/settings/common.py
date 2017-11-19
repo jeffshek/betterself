@@ -100,6 +100,8 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = []
 
+EXCLUDE_ADMINS_USERNAMES = env('EXCLUDE_ADMIN_USERNAMES', default='admin-user')
+
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 

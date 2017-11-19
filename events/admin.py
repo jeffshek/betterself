@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.conf import settings
 
 from betterself.users.models import UserPhoneNumberDetails
 from events.models import SupplementLog, DailyProductivityLog, SupplementReminder
@@ -12,6 +13,9 @@ class SupplementEventAdmin(admin.ModelAdmin):
 
     class Meta:
         model = SupplementLog
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).exclude(user__username__contains=settings.EXCLUDE_ADMINS_USERNAMES)
 
 
 @admin.register(DailyProductivityLog)
