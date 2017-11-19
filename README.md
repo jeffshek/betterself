@@ -4,9 +4,7 @@
 ![CookieCutter](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg)
 ![PyUp](https://img.shields.io/pypi/v/pyupio.svg)
 
-Powered by [BrowserStack](https://www.browserstack.com/)
-
-![BrowserStack Logo](https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780) 
+Powered by [BrowserStack](https://BrowserStack.com) (Logo on button of README.md)
 
 BetterSelf - Your Body's Dashboard
 ==============================
@@ -39,3 +37,8 @@ Why are we doing this?
 - I want an app that doesn't care about my name and what I'm doing (we don't ask for anything besides email and a password to start). If you're scared, hit the big "delete all my data" button. We do have database backups, but those only go a month back.
 - With enough data, we can build reports that show correlations across supplements, what is synergistic, what isn't.
 - I want a app that is more robust than Excel, allow me to choose different correlation methods to productivity (Simple / Exponential / whatever I can think of)
+
+Powered by [BrowserStack](https://www.browserstack.com/)
+
+![BrowserStack Logo](https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780) 
+
