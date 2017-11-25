@@ -5,8 +5,8 @@ import { SleepEntryLogTable } from "./sleep_events_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 
 export class SleepEventsLogView extends BasePaginatedLogView {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.resourceName = "sleep_activities";
   }
 

@@ -1,9 +1,6 @@
-from django.contrib.auth.decorators import login_required
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.utils.datastructures import MultiValueDictKeyError
-from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -12,13 +9,11 @@ from rest_framework.views import APIView
 from apis.fitbit import utils
 from apis.fitbit.models import UserFitbit
 from apis.fitbit.serializers import FitbitAPIRequestSerializer
-from apis.fitbit.utils import is_integrated
 from apis.fitbit.tasks import import_user_fitbit_history_via_api
+from apis.fitbit.utils import is_integrated
 
 
-class FitbitLoginView(TemplateView):
-
-    @method_decorator(login_required)
+class FitbitLoginView(APIView):
     def get(self, request):
         next_url = request.GET.get('next', None)
         if next_url:
@@ -30,12 +25,12 @@ class FitbitLoginView(TemplateView):
         fb = utils.create_fitbit(callback_uri=callback_uri)
         # returns back token_url and code ... set as _ for flake8
         token_url, _ = fb.client.authorize_token_url(redirect_uri=callback_uri)
-        return redirect(token_url)
+
+        response = {'url': token_url}
+        return Response(response)
 
 
 class FitbitCompleteView(APIView):
-
-    @method_decorator(login_required)
     def post(self, request):
         try:
             code = request.data['code']

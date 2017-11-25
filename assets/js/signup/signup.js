@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/requests";
 import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
-import { Redirect } from "react-router-dom";
 import moment from "moment-timezone";
 
 export class SignupView extends Component {

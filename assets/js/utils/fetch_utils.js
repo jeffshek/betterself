@@ -4,11 +4,15 @@ import {
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/requests";
 
-export const getFetchJSONAPI = url => {
+export const getFetch = url => {
   return fetch(url, {
     method: "GET",
     headers: JSON_AUTHORIZATION_HEADERS
-  }).then(response => {
+  });
+};
+
+export const getFetchJSONAPI = url => {
+  return getFetch(url).then(response => {
     return response.json();
   });
 };

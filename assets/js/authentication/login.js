@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Authenticator } from "./auth";
-import { Redirect, withRouter } from "react-router-dom";
 import { LOGIN_SIDE_PHOTO_PATH } from "../constants/image_paths";
 import LoggedOutHeader from "../header/external_header";
 
@@ -91,7 +90,18 @@ export class LoginView extends Component {
         </section>
         <footer>
           {/*Simple but effective way to fill screen space with background color*/}
-          <br /><br /><br /><br /><br /><br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
         </footer>
       </div>
     );

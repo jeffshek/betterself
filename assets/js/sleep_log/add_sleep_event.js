@@ -1,7 +1,6 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
@@ -11,10 +10,12 @@ import {
   DATE_REQUEST_FORMAT,
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
 
 export class AddSleepEvent extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       eventStartTime: moment(),
       eventEndTime: moment(),
@@ -122,6 +123,13 @@ export class AddSleepEvent extends Component {
       });
   };
 
+  setupFitbitAccess = () => {
+    const url = "/api/fitbit/oauth2/login/";
+    getFetchJSONAPI(url).then(responseData => {
+      window.location.assign(responseData.url);
+    });
+  };
+
   renderFitbitButton() {
     // Either show a logged in Fitbit Button (ie. import) or a setup FitBit
     if (this.state.fitbitAuthorized) {
@@ -141,15 +149,14 @@ export class AddSleepEvent extends Component {
       // if user doesn't have oauth setup with us yet, need to get it setup
       return (
         <div className="float-right">
-          <a href="/api/fitbit/oauth2/login/">
-            <button
-              type="submit"
-              id="setup-fitbit-button"
-              className="btn btn-sm btn-success"
-            >
-              <i className="fa fa-dot-circle-o" /> Setup FitBit Access
-            </button>
-          </a>
+          <button
+            type="submit"
+            id="setup-fitbit-button"
+            className="btn btn-sm btn-success"
+            onClick={this.setupFitbitAccess}
+          >
+            <i className="fa fa-dot-circle-o" /> Setup FitBit Access
+          </button>
         </div>
       );
     }

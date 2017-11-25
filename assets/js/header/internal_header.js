@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Dropdown, DropdownItem, DropdownMenu } from "reactstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LOGOUT_URL, SETTINGS_URL } from "../constants/urls";
 
 const AVATAR_IMG = require("../../img/icons/small_brain.svg");
