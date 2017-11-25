@@ -61,7 +61,7 @@ import {
   SupplementsStackView
 } from "./supplements_stacks/supplement_stack_view";
 import { MoodEventsLogView } from "./mood_log/mood_events_view";
-import { FitBitComplete } from "./fitbit/fitbit";
+import { FitBitCompleteCallbackView } from "./fitbit/fitbit";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -110,7 +110,7 @@ const BetterSelfRouter = () => (
       />
       <PrivateRoute
         path={FITBIT_COMPLETE_CALLBACK_URL}
-        component={FitBitComplete}
+        component={FitBitCompleteCallbackView}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}

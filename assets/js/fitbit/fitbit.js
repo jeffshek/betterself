@@ -1,9 +1,9 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import qs from "query-string";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import { FITBIT_BACKEND_API_CALLBACK_URL } from "../constants/urls";
 
-export class FitBitComplete extends Component {
+export class FitBitCompleteCallbackView extends Component {
   constructor(props) {
     super(props);
 
