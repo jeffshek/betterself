@@ -12,10 +12,7 @@ export const getFetch = url => {
 };
 
 export const getFetchJSONAPI = url => {
-  return fetch(url, {
-    method: "GET",
-    headers: JSON_AUTHORIZATION_HEADERS
-  }).then(response => {
+  return getFetch(url).then(response => {
     return response.json();
   });
 };
