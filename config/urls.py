@@ -1,4 +1,4 @@
-from allauth.account.views import LoginView, LogoutView
+from allauth.account.views import LoginView, LogoutView, ConfirmEmailView
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -35,7 +35,10 @@ urlpatterns = [
     # im not sure if you even use rest_framework/api-auth anymore
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+
     url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
+        name='account_confirm_email'),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', LogoutView.as_view()),
