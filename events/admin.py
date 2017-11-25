@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from betterself.users.models import UserPhoneNumberDetails
-from events.models import SupplementLog, DailyProductivityLog, SupplementReminder
+from events.models import SupplementLog, DailyProductivityLog, SupplementReminder, UserMoodLog
 
 
 @admin.register(SupplementLog)
@@ -36,3 +36,4 @@ class DailyProductivityLogAdmin(admin.ModelAdmin):
 
 admin.site.register(UserPhoneNumberDetails)
 admin.site.register(SupplementReminder)
+admin.site.register(UserMoodLog)
