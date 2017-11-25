@@ -31,7 +31,6 @@ class FitbitLoginView(APIView):
 
 
 class FitbitCompleteView(APIView):
-
     def post(self, request):
         try:
             code = request.data['code']
