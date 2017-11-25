@@ -43,6 +43,8 @@ THIRD_PARTY_APPS = (
     'phonenumber_field',
     'django_celery_beat',
     'admin_honeypot',
+    'rest_auth',
+    'rest_auth.registration',
 )
 
 # Apps specific for this project go here.
