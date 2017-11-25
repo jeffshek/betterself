@@ -7,35 +7,6 @@ import {
   SupplementsAndUserActivitiesMultiTab
 } from "./supplements_and_events_historical_tables";
 import { DailyOverviewWidgetsView } from "./supplements_and_events_widgets";
-import qs from "query-string";
-import { FITBIT_BACKEND_API_CALLBACK_URL } from "../constants/urls";
-import { postFetchJSONAPI } from "../utils/fetch_utils";
-
-export class FitBitComplete extends Component {
-  constructor(props) {
-    super(props);
-
-    const { location } = props;
-    const fitbitCodeDetails = qs.parse(location.search);
-    const { code } = fitbitCodeDetails;
-
-    const params = {
-      code: code
-    };
-
-    postFetchJSONAPI(
-      FITBIT_BACKEND_API_CALLBACK_URL,
-      params
-    ).then(responseData => {
-      const { next_url } = responseData;
-      this.props.history.push(next_url);
-    });
-  }
-
-  render() {
-    return <div />;
-  }
-}
 
 export class DailyOverviewAnalyticsView extends Component {
   constructor(props) {

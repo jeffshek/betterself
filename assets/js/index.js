@@ -51,8 +51,7 @@ import {
 import { LoginView } from "./authentication/login";
 import { UserExportAllDataView } from "./export/export";
 import {
-  DailyOverviewAnalyticsView,
-  FitBitComplete
+  DailyOverviewAnalyticsView
 } from "./daily_overview/daily_overview_view";
 import { SupplementsOverview } from "./supplement_overview/supplement_overview";
 import {
@@ -62,6 +61,7 @@ import {
   SupplementsStackView
 } from "./supplements_stacks/supplement_stack_view";
 import { MoodEventsLogView } from "./mood_log/mood_events_view";
+import { FitBitComplete } from "./fitbit/fitbit";
 
 const BetterSelfRouter = () => (
   <Router>
