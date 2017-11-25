@@ -28,13 +28,15 @@ urlpatterns = [
     url(r'^dashboard.*/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-dashboard'),
     url(r'^dashboard-login/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-login'),
     url(r'^dashboard-logout/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-logout'),
+    # specific api-end point for fitbit to redirect to for authorization
+    url(r'^dashboard/fitbit/oauth2/callback/$', TemplateView.as_view(template_name=react_dashboard_template),
+        name='fitbit-complete'),
     url(r'^demo-signup/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-demo-signup'),
     url(r'^settings/$', TemplateView.as_view(template_name=react_dashboard_template), name='react-settings'),
 
     # you may want to take out api-auth and have all traffic through rest-auth instead
     # im not sure if you even use rest_framework/api-auth anymore
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
 
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),

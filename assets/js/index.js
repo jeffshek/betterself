@@ -19,6 +19,7 @@ import {
   DASHBOARD_USER_ACTIVITIES_URL,
   DEMO_SIGNUP_URL,
   EXPORT_ALL_DATA_URL,
+  FITBIT_COMPLETE_CALLBACK_URL,
   HOME_URL,
   LOGIN_URL,
   LOGOUT_URL,
@@ -50,7 +51,8 @@ import {
 import { LoginView } from "./authentication/login";
 import { UserExportAllDataView } from "./export/export";
 import {
-  DailyOverviewAnalyticsView
+  DailyOverviewAnalyticsView,
+  FitBitComplete
 } from "./daily_overview/daily_overview_view";
 import { SupplementsOverview } from "./supplement_overview/supplement_overview";
 import {
@@ -105,6 +107,10 @@ const BetterSelfRouter = () => (
         exact
         path={DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL}
         component={DailyOverviewAnalyticsView}
+      />
+      <PrivateRoute
+        path={FITBIT_COMPLETE_CALLBACK_URL}
+        component={FitBitComplete}
       />
       <PrivateRoute
         path={DASHBOARD_SUPPLEMENTS_EVENTS_LOGS_URL}
