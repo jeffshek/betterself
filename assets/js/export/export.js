@@ -1,4 +1,4 @@
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { saveAs } from "file-saver";
