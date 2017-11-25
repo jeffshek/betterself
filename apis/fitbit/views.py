@@ -30,16 +30,15 @@ class FitbitLoginView(TemplateView):
         fb = utils.create_fitbit(callback_uri=callback_uri)
         # returns back token_url and code ... set as _ for flake8
         token_url, _ = fb.client.authorize_token_url(redirect_uri=callback_uri)
-
         return redirect(token_url)
 
 
 class FitbitCompleteView(APIView):
 
     @method_decorator(login_required)
-    def get(self, request):
+    def post(self, request):
         try:
-            code = request.GET['code']
+            code = request.data['code']
         except KeyError:
             return redirect('/500')
 
@@ -64,7 +63,8 @@ class FitbitCompleteView(APIView):
         next_url = request.session.pop('fitbit_next', None) or utils.get_setting(
             'FITBIT_LOGIN_REDIRECT')
 
-        return redirect(next_url)
+        response = {'next_url': next_url}
+        return Response(response)
 
 
 class FitbitUserAuthCheck(APIView):

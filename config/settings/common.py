@@ -303,3 +303,5 @@ LOGGING = {
 
 # celery's autodiscover is slightly failing you
 CELERY_IMPORTS = ['apis.rescuetime.tasks', 'apis.twilio.tasks']
+
+ALLOWED_HOSTS = ['127.0.0.1']

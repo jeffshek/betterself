@@ -36,6 +36,7 @@
     "moment-timezone": "^0.5.14",
     "prettier": "^1.8.2",
     "prop-types": "^15.6.0",
+    "query-string": "^5.0.1",
     "radium": "^0.19.6",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.6.2",

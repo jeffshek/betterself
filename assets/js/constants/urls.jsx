@@ -28,6 +28,10 @@ export const LOGOUT_URL = '/dashboard-logout/'
 export const SIGNUP_URL = '/dashboard-signup/'
 export const DEMO_SIGNUP_URL = '/demo-signup/'
 
+// Fitbit
+export const FITBIT_COMPLETE_CALLBACK_URL = '/dashboard/fitbit/oauth2/callback/'
+export const FITBIT_BACKEND_API_CALLBACK_URL = '/api/fitbit/oauth2/callback/'
+
 // User Settings
 export const SETTINGS_URL = '/settings/'
 export const EXPORT_ALL_DATA_URL = '/dashboard/export-all-data/'
