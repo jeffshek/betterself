@@ -336,3 +336,14 @@ class UserViewTests(TestCase):
 
         self.assertEqual(self.user.username, username)
         self.assertEqual(str(self.user.uuid), uuid)
+
+
+class TestEmailConfirmation(TestCase):
+    def test_fake_confirmation_email_returns_200(self):
+        data = {'key': 'random_key'}
+        url = reverse('account_confirm_email', kwargs=data)
+
+        client = APIClient()
+        response = client.get(url)
+        # even when the confirmation doesnt exist, django returns a 200
+        self.assertEqual(response.status_code, 200)

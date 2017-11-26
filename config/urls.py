@@ -1,3 +1,4 @@
+import debug_toolbar
 from allauth.account.views import LoginView, LogoutView, ConfirmEmailView
 from django.conf import settings
 from django.conf.urls import include, url
@@ -39,7 +40,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
+    url(r'^rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
         name='account_confirm_email'),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^login/$', LoginView.as_view()),
@@ -58,5 +59,7 @@ if settings.DEBUG:
         url(r'^403/$', default_views.permission_denied, kwargs={'exception': Exception('Permission Denied')}),
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
+        url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
+
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

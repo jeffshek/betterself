@@ -97,4 +97,6 @@ historical_rescuetime.csv
 
 celerybeat.pid
 
+scripts/database_restore.sh
+
 
