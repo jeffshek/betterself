@@ -400,4 +400,5 @@ class TestEmailConfirmation(TestCase):
         client = APIClient()
         response = client.get(url)
         # even when the confirmation doesnt exist, django returns a 200
+        # and will just say something about validation key has expired, etc
         self.assertEqual(response.status_code, 200)
