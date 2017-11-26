@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/requests";
 import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 import moment from "moment-timezone";
+import { USER_SIGNUP_URL } from "../constants/api_urls";
 
 export class SignupView extends Component {
   constructor() {
@@ -9,7 +10,8 @@ export class SignupView extends Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      email: ""
     };
 
     // Instead of using router props (which is the right way), this is a quick
@@ -24,14 +26,18 @@ export class SignupView extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const postParams = {
+    let postParams = {
       username: this.state.username,
       password: this.state.password,
       timezone: moment.tz.guess(),
       supplements: this.state.supplements
     };
 
-    fetch("api/v1/user-signup/", {
+    if (this.state.email) {
+      postParams["email"] = this.state.email;
+    }
+
+    fetch(USER_SIGNUP_URL, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify(postParams)
@@ -44,6 +50,8 @@ export class SignupView extends Component {
               alert("Username : " + responseData["username"]);
             } else if ("password" in responseData) {
               alert("Password : " + responseData["password"]);
+            } else if ("email" in responseData) {
+              alert("Email : " + responseData["email"]);
             }
           });
           // Don't return anything if its not working
@@ -104,10 +112,11 @@ export class SignupView extends Component {
                         className="form-control"
                         value={this.state.username}
                         onChange={this.handleChange}
-                        placeholder="Create Username ..."
+                        placeholder="Create Username (Think of something AWESOME) ..."
                       />
                       <span className="help-block">
-                        {" "}Between 4-32 Characters
+                        {" "}
+                        Between 4-32 Characters. You can make it whatever you want. Just not "JustinBieber". That's taken.
                       </span>
                     </div>
                   </div>
@@ -122,10 +131,30 @@ export class SignupView extends Component {
                         className="form-control"
                         value={this.state.password}
                         onChange={this.handleChange}
-                        placeholder="Enter Password ..."
+                        placeholder="Enter Password (Something SECURE and not 12345678) ..."
                       />
                       <span className="help-block">
-                        {" "}Minimum of 8 Characters
+                        {" "}
+                        Minimum of eight Characters. Think of it as protection from noisy neighbors. If you have more than eight noisy neighbors, you should probably move.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-md-3 form-control-label">
+                      Email (Optional)
+                    </label>
+                    <div className="col-md-9">
+                      <input
+                        name="email"
+                        type="email"
+                        className="form-control"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        placeholder="Enter Email (Optional) ..."
+                      />
+                      <span className="help-block">
+                        {" "}
+                        Used for password resets. It's oddly our most requested feature. Says a lot about self-improvement.
                       </span>
                     </div>
                   </div>

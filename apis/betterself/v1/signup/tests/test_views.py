@@ -44,6 +44,60 @@ class AccountsTest(TestCase):
         self.assertEqual(response.data['token'], token.key)
         self.assertFalse('password' in response.data)
 
+    def test_create_user_with_email(self):
+        """
+        Ensure we can create a new user and a valid token is created with it.
+        """
+        data = {
+            'username': 'foobar',
+            'password': 'somepassword',
+            'email': 'awesome-email@gmail.com'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        user = User.objects.latest('id')
+        token = Token.objects.get(user=user)
+
+        self.assertEqual(User.objects.count(), self.starting_user_count + 1)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['username'], data['username'])
+        self.assertEqual(response.data['token'], token.key)
+        self.assertEqual(user.email, data['email'])
+        self.assertFalse('password' in response.data)
+
+    def test_create_user_with_duplicate_email(self):
+        """
+        Ensure we can create a new user and a valid token is created with it.
+        """
+        data = {
+            'username': 'foobar',
+            'password': 'somepassword',
+            'email': 'awesome-email@gmail.com'
+        }
+
+        self.client.post(self.create_url, data, format='json')
+
+        data['username'] = 'jimmy'
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, 201, response.data)
+
+    def test_create_user_with_garbage_email(self):
+        """
+        Ensure we can create a new user and a valid token is created with it.
+        """
+        data = {
+            'username': 'foobar',
+            'password': 'somepassword',
+            'email': 'garbage'
+        }
+
+        self.client.post(self.create_url, data, format='json')
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, 400, response.data)
+        self.assertTrue('email' in response.data)
+
     def test_create_user_with_timezone(self):
         """
         Ensure we can create a new user and a valid token is created with it.
@@ -336,3 +390,15 @@ class UserViewTests(TestCase):
 
         self.assertEqual(self.user.username, username)
         self.assertEqual(str(self.user.uuid), uuid)
+
+
+class TestEmailConfirmation(TestCase):
+    def test_fake_confirmation_email_returns_200(self):
+        data = {'key': 'random_key'}
+        url = reverse('account_confirm_email', kwargs=data)
+
+        client = APIClient()
+        response = client.get(url)
+        # even when the confirmation doesnt exist, django returns a 200
+        # and will just say something about validation key has expired, etc
+        self.assertEqual(response.status_code, 200)

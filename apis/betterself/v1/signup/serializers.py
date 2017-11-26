@@ -16,10 +16,11 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     timezone = serializers.ChoiceField(choices=TIMEZONE_CHOICES, default='US/Eastern')
     supplements = serializers.CharField(max_length=350, default=None)
     phone_number = serializers.SerializerMethodField(read_only=True)
+    email = serializers.EmailField(required=False)
 
     class Meta:
         model = User
-        fields = ('uuid', 'username', 'password', 'timezone', 'supplements', 'phone_number')
+        fields = ('uuid', 'username', 'password', 'timezone', 'supplements', 'phone_number', 'email')
 
     def create(self, validated_data):
         # Override create in this serializer so we can use the function create_user

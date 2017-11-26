@@ -3,22 +3,11 @@ from supplements.models import Ingredient, Measurement, IngredientComposition, S
 
 DEFAULT_ACTIVITIES = [
     'Meditated',
-    'Jogged',
-    'Brushed Teeth',
-    'Cold Shower',
-    'Ate Breakfast',
-    'Wrote in Journal',
-    'Drank Alcohol',
-    'Hungover',
-    'Walked to Work',
     'Went to Gym'
 ]
 
 SPECIAL_ACTIVITIES = [
-    'Got Married',
     'Started New Job',
-    'Read Life-Changing Book',
-    'Bought A Car',
 ]
 
 

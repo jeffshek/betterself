@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.views import defaults as default_views
 from django.views.generic import TemplateView, RedirectView
 
+from config.settings.constants import LOCAL
+
 react_home_template = 'react/home.html'
 react_signup_template = 'react/signup.html'
 react_dashboard_template = 'react/dashboard.html'
@@ -39,7 +41,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
+    url(r'^rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
         name='account_confirm_email'),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^login/$', LoginView.as_view()),
@@ -59,4 +61,14 @@ if settings.DEBUG:
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
     ]
+
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DJANGO_ENVIRONMENT == LOCAL:
+    import debug_toolbar
+
+    urlpatterns += [
+        # https://github.com/bernardopires/django-tenant-schemas/issues/222
+        # random issue with django 1.11 breaking debug_toolbar
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]

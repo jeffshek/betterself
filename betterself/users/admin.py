@@ -36,7 +36,8 @@ class MyUserCreationForm(UserCreationForm):
 class UserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
-    list_display = ('username', 'date_joined')
+    list_display = ('username', 'date_joined', 'email')
+    ordering = ['-date_joined']
 
     def get_queryset(self, request):
         qs = super(UserAdmin, self).get_queryset(request)
