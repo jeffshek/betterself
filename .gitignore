@@ -99,4 +99,4 @@ celerybeat.pid
 
 scripts/database_restore.sh
 
-
+.env

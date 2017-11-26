@@ -1,3 +1,5 @@
+export const USER_SIGNUP_URL = "/api/v1/user-signup/";
+
 export const USER_ACTIVITIES_RESOURCE_URL = "/api/v1/user_activities/";
 export const USER_ACTIVITIES_EVENTS_RESOURCE_URL =
   "/api/v1/user_activity_events/";
