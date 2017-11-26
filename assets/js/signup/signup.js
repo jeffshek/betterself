@@ -26,13 +26,16 @@ export class SignupView extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const postParams = {
+    let postParams = {
       username: this.state.username,
       password: this.state.password,
-      email: this.state.email,
       timezone: moment.tz.guess(),
       supplements: this.state.supplements
     };
+
+    if (this.state.email) {
+      postParams["email"] = this.state.email;
+    }
 
     fetch(USER_SIGNUP_URL, {
       method: "POST",
@@ -47,6 +50,8 @@ export class SignupView extends Component {
               alert("Username : " + responseData["username"]);
             } else if ("password" in responseData) {
               alert("Password : " + responseData["password"]);
+            } else if ("email" in responseData) {
+              alert("Email : " + responseData["email"]);
             }
           });
           // Don't return anything if its not working

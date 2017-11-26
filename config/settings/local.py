@@ -8,7 +8,7 @@ Local settings
 """
 from config.settings.constants import LOCAL
 
-print ('Using {} configurations'.format(__name__))
+print('Using {} configurations'.format(__name__))
 
 import sys
 
@@ -35,8 +35,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', default='*v@g2i-82&uk+3jhsje_56_)9bmx_yg=o
 # ------------------------------------------------------------------------------
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
-                    default='django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 
 CACHES = {
     'default': {
@@ -46,10 +45,11 @@ CACHES = {
 }
 
 MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar', )
+INSTALLED_APPS += ('debug_toolbar',)
 
 # vagrants internal ip is 10.x
 INTERNAL_IPS = ('127.0.0.1', '10.0.2.2',)
+ALLOWED_HOSTS = ['127.0.0.1']
 
 DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [
@@ -90,6 +90,7 @@ DEBUG = True
 # use this file to rewrite over local db passwords
 try:
     from config.settings.local_secret_settings import *
+
     # if able to import, that means we have pulled api keys
     INSTALLED_APPS += ('anymail',)
 except ImportError:
