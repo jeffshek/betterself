@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.views import defaults as default_views
 from django.views.generic import TemplateView, RedirectView
 
+from config.settings.constants import LOCAL
+
 react_home_template = 'react/home.html'
 react_signup_template = 'react/signup.html'
 react_dashboard_template = 'react/dashboard.html'
@@ -62,7 +64,7 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-if settings.LOCAL:
+if settings.DJANGO_ENVIRONMENT == LOCAL:
     import debug_toolbar
 
     urlpatterns += [
