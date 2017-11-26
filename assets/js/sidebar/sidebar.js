@@ -13,7 +13,8 @@ import {
   DASHBOARD_SUPPLEMENTS_URL,
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
-  EXPORT_ALL_DATA_URL
+  EXPORT_ALL_DATA_URL,
+  LOGOUT_URL
 } from "../constants/urls";
 
 const NewStatus = () => <span className="badge badge-info">NEW</span>;
@@ -123,13 +124,18 @@ const DataSourcesMenuLinks = () => (
   </div>
 );
 
-const ExportSidebar = () => (
+const ControlPanelSidebar = () => (
   <div>
-    <NavigationTitle title="Export Data" />
+    <NavigationTitle title="Control Panel" />
     <NavigationLink
       iconName="icon-cloud-download"
-      label="All Data"
+      label="Export All Data"
       link={EXPORT_ALL_DATA_URL}
+    />
+    <NavigationLink
+      iconName="icon-cloud-download"
+      label="Logout"
+      link={LOGOUT_URL}
     />
   </div>
 );
@@ -144,7 +150,7 @@ const Sidebar = () => {
         <li className="divider" />
         <DataSourcesMenu />
         <li className="divider" />
-        <ExportSidebar />
+        <ControlPanelSidebar />
       </ul>
     </nav>
   );
