@@ -1,4 +1,3 @@
-import debug_toolbar
 from allauth.account.views import LoginView, LogoutView, ConfirmEmailView
 from django.conf import settings
 from django.conf.urls import include, url
@@ -64,6 +63,8 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.LOCAL:
+    import debug_toolbar
+
     urlpatterns += [
         # https://github.com/bernardopires/django-tenant-schemas/issues/222
         # random issue with django 1.11 breaking debug_toolbar
