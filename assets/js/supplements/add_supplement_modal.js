@@ -5,10 +5,6 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 export class AddSupplementModal extends Component {
   constructor({}) {
     super();
-
-    this.state = {
-      supplementName: null
-    };
   }
 
   componentWillReceiveProps(props) {
