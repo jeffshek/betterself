@@ -7,19 +7,17 @@ import {
   SUPPLEMENT_EVENTS_RESOURCE_URL,
   SUPPLEMENT_STACKS_RECORD_URL
 } from "../constants/api_urls";
-import { CreateSupplement } from "../supplements/constants";
 import { LogSupplementButton } from "./constants";
-import {
-  CreateSupplementOnNewOptionClick,
-  SelectDetailsSerializer
-} from "../utils/select_utils";
+import { SelectDetailsSerializer } from "../utils/select_utils";
+import { AddSupplementModal } from "../supplements/add_supplement_modal";
 
 export class AddSupplementLog extends Component {
   constructor() {
     super();
 
     this.state = {
-      formSupplementDateTime: moment()
+      formSupplementDateTime: moment(),
+      createSupplementModal: false
     };
   }
 
@@ -113,10 +111,20 @@ export class AddSupplementLog extends Component {
     });
   };
 
-  onNewOptionClick(props) {
-    const label = props.label;
-    CreateSupplement(label);
-  }
+  toggleCreateSupplementModal = details => {
+    // We do a check because sometimes this is passed to a child
+    // object and it won't always pass back details
+    if (details) {
+      this.setState({
+        createSupplementName: details.value,
+        createSupplementModal: !this.state.createSupplementModal
+      });
+    } else {
+      this.setState({
+        createSupplementModal: !this.state.createSupplementModal
+      });
+    }
+  };
 
   renderSubmitSupplementForm() {
     if (!this.state.supplements || !this.state.supplementStacks) {
@@ -142,7 +150,7 @@ export class AddSupplementLog extends Component {
                 <Creatable
                   name="form-field-name"
                   value={this.state.selectedSupplementIndex}
-                  onNewOptionClick={CreateSupplementOnNewOptionClick}
+                  onNewOptionClick={this.toggleCreateSupplementModal}
                   options={supplementStackDetails}
                   onChange={this.handleSupplementSelectionChange}
                 />
@@ -204,6 +212,11 @@ export class AddSupplementLog extends Component {
     return (
       <div className="card">
         <LogSupplementButton />
+        <AddSupplementModal
+          showModal={this.state.createSupplementModal}
+          toggleModal={this.toggleCreateSupplementModal}
+          defaultSupplementName={this.state.createSupplementName}
+        />
         {this.renderSubmitSupplementForm()}
       </div>
     );

@@ -46,7 +46,7 @@ export const SupplementRow = props => {
   );
 };
 
-export const CreateSupplement = supplementName => {
+export const CreateSupplementThenReload = supplementName => {
   const params = {
     name: supplementName
   };

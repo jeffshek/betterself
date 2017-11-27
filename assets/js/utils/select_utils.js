@@ -1,4 +1,4 @@
-import { CreateSupplement } from "../supplements/constants";
+import { CreateSupplementThenReload } from "../supplements/constants";
 
 export const SelectDetailsSerializer = detailsList => {
   // Formats a list of resources into a format that react-select uses
@@ -16,5 +16,5 @@ export const SelectDetailsSerializer = detailsList => {
 
 export const CreateSupplementOnNewOptionClick = props => {
   const label = props.label;
-  CreateSupplement(label);
+  CreateSupplementThenReload(label);
 };

@@ -1,29 +1,15 @@
 import React, { Component } from "react";
-import { getFetchJSONAPI } from "../utils/fetch_utils";
-import { MEASUREMENTS_RESOURCE_URL } from "../constants/api_urls";
-import { CreateSupplement } from "./constants";
+import { CreateSupplementThenReload } from "./constants";
 
 export class AddSupplementView extends Component {
   constructor() {
     super();
-    this.state = { ready: false };
-  }
-
-  componentDidMount() {
-    this.getPossibleMeasurements();
   }
 
   addSupplementFormData = e => {
     e.preventDefault();
-    CreateSupplement(this.supplementName.value);
+    CreateSupplementThenReload(this.supplementName.value);
   };
-
-  getPossibleMeasurements() {
-    getFetchJSONAPI(MEASUREMENTS_RESOURCE_URL).then(responseData => {
-      this.setState({ measurements: responseData });
-      this.setState({ ready: true });
-    });
-  }
 
   render() {
     return (
