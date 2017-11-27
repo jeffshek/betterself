@@ -7,46 +7,9 @@ import {
   SUPPLEMENT_EVENTS_RESOURCE_URL,
   SUPPLEMENT_STACKS_RECORD_URL
 } from "../constants/api_urls";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { CreateSupplement } from "../supplements/constants";
 import { LogSupplementButton } from "./constants";
-import {
-  CreateSupplementOnNewOptionClick,
-  SelectDetailsSerializer
-} from "../utils/select_utils";
-
-class AddSupplementModal extends Component {
-  constructor({}) {
-    super();
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  render() {
-    if (!this.props.showModal) {
-      return <div />;
-    }
-
-    return (
-      <Modal isOpen={this.props.showModal} toggle={this.props.toggleModal}>
-        <ModalHeader toggle={this.props.toggleModal}>
-          Create Supplement
-        </ModalHeader>
-        <ModalBody>
-          <div>Hi</div>
-        </ModalBody>
-      </Modal>
-    );
-  }
-}
+import { SelectDetailsSerializer } from "../utils/select_utils";
+import { AddSupplementModal } from "../supplements/add_supplement_modal";
 
 export class AddSupplementLog extends Component {
   constructor() {
@@ -148,31 +111,18 @@ export class AddSupplementLog extends Component {
     });
   };
 
-  toggleCreateSupplementModal = () => {
-    this.setState({
-      createSupplementModal: !this.state.createSupplementModal
-    });
-  };
-
-  renderCreateSupplementModal() {
-    if (!this.state.createSupplementModal) {
-      return <div />;
+  toggleCreateSupplementModal = details => {
+    if (details) {
+      this.setState({
+        createSupplementName: details.value,
+        createSupplementModal: !this.state.createSupplementModal
+      });
+    } else {
+      this.setState({
+        createSupplementModal: !this.state.createSupplementModal
+      });
     }
-
-    return (
-      <Modal
-        isOpen={this.state.createSupplementModal}
-        toggle={this.toggleCreateSupplementModal}
-      >
-        <ModalHeader toggle={this.toggleCreateSupplementModal}>
-          Create Supplement
-        </ModalHeader>
-        <ModalBody>
-          <div>Hi</div>
-        </ModalBody>
-      </Modal>
-    );
-  }
+  };
 
   renderSubmitSupplementForm() {
     if (!this.state.supplements || !this.state.supplementStacks) {
@@ -260,7 +210,11 @@ export class AddSupplementLog extends Component {
     return (
       <div className="card">
         <LogSupplementButton />
-        {this.renderCreateSupplementModal()}
+        <AddSupplementModal
+          showModal={this.state.createSupplementModal}
+          toggleModal={this.toggleCreateSupplementModal}
+          defaultSupplementName={this.state.createSupplementName}
+        />
         {this.renderSubmitSupplementForm()}
       </div>
     );
