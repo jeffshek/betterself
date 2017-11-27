@@ -112,6 +112,8 @@ export class AddSupplementLog extends Component {
   };
 
   toggleCreateSupplementModal = details => {
+    // We do a check because sometimes this is passed to a child
+    // object and it won't always pass back details
     if (details) {
       this.setState({
         createSupplementName: details.value,
