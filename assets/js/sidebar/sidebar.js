@@ -14,7 +14,8 @@ import {
   DASHBOARD_USER_ACTIVITIES_EVENTS_LOGS_URL,
   DASHBOARD_USER_ACTIVITIES_URL,
   EXPORT_ALL_DATA_URL,
-  LOGOUT_URL
+  LOGOUT_URL,
+  RELEASE_NOTES_URL
 } from "../constants/urls";
 
 const NewStatus = () => <span className="badge badge-info">NEW</span>;
@@ -62,7 +63,6 @@ const LogSidebar = () => {
         iconName="icon-volume-off"
         label="Mood"
         link={DASHBOARD_MOOD_LOGS_URL}
-        isNew={true}
       />
     </div>
   );
@@ -109,7 +109,6 @@ const DataSourcesMenuLinks = () => (
       iconName="icon-calendar"
       label="Supp. Stacks"
       link={DASHBOARD_SUPPLEMENTS_STACKS_URL}
-      isNew={true}
     />
     <NavigationLink
       iconName="icon-list"
@@ -127,6 +126,12 @@ const DataSourcesMenuLinks = () => (
 const ControlPanelSidebar = () => (
   <div>
     <NavigationTitle title="Control Panel" />
+    <NavigationLink
+      iconName="icon-note"
+      label="Release Notes"
+      link={RELEASE_NOTES_URL}
+      isNew={true}
+    />
     <NavigationLink
       iconName="icon-cloud-download"
       label="Export All Data"
