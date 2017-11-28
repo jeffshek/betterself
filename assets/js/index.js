@@ -23,6 +23,7 @@ import {
   HOME_URL,
   LOGIN_URL,
   LOGOUT_URL,
+  RELEASE_NOTES_URL,
   SETTINGS_URL,
   SIGNUP_URL
 } from "./constants/urls";
@@ -62,6 +63,7 @@ import {
 } from "./supplements_stacks/supplement_stack_view";
 import { MoodEventsLogView } from "./mood_log/mood_events_view";
 import { FitBitCompleteCallbackView } from "./fitbit/fitbit";
+import { ReleaseNotesView } from "./release_notes/release_notes";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -155,6 +157,10 @@ const BetterSelfRouter = () => (
       <PrivateRoute
         path={EXPORT_ALL_DATA_URL}
         component={e => <Dashboard view={UserExportAllDataView} />}
+      />
+      <PrivateRoute
+        path={RELEASE_NOTES_URL}
+        component={e => <Dashboard view={ReleaseNotesView} />}
       />
     </div>
   </Router>
