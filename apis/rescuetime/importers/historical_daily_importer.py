@@ -55,16 +55,13 @@ class RescueTimeHistoricalDailyImporter(object):
         # we don't save productivity pulse
         valid_dataframe = valid_dataframe.drop(PRODUCTIVITY_PULSE, axis=1)
 
-        records = []
         for index, values in valid_dataframe.iterrows():
             values_serialized = values.fillna(0).to_dict()
-            log = DailyProductivityLog(
-                user=self.user, date=index, source='api',
-                **values_serialized
-            )
-            records.append(log)
+            values_serialized['source'] = 'api'
 
-        DailyProductivityLog.objects.bulk_create(records)
+            DailyProductivityLog.objects.update_or_create(
+                user=self.user, date=index, defaults=values_serialized
+            )
 
     def _get_rescuetime_efficiency_for_date(self, query_date):
         query_date_formatted = query_date.strftime('%Y-%m-%d')
