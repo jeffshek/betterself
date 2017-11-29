@@ -139,7 +139,7 @@ const ControlPanelSidebar = () => (
     />
     <NavigationLink
       iconName="icon-cloud-download"
-      label="Logout"
+      label="Logout All Devices"
       link={LOGOUT_URL}
     />
   </div>

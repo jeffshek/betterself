@@ -8,6 +8,8 @@ import {
   ABBREVIATED_CHART_DATE,
   minutesToHours
 } from "../constants/dates_and_times";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { SLEEP_ACTIVITIES_AGGREGATES_URL } from "../constants/urls";
 
 const SleepHistoryChart = GenerateHistoryChartTemplate("Sleep Time (Hours)");
 
@@ -46,32 +48,26 @@ export class SleepAnalyticsView extends BaseAnalyticsView {
   }
 
   getHistory() {
-    fetch(`api/v1/sleep_activities/aggregates`, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        // Sort by datetime
-        const sleepDates = Object.keys(responseData);
-        sleepDates.sort();
+    const url = SLEEP_ACTIVITIES_AGGREGATES_URL;
+    getFetchJSONAPI(url).then(responseData => {
+      // Sort by datetime
+      const sleepDates = Object.keys(responseData);
+      sleepDates.sort();
 
-        const sleepDatesFormatted = sleepDates.map(key =>
-          moment(key).format(ABBREVIATED_CHART_DATE)
-        );
+      const sleepDatesFormatted = sleepDates.map(key =>
+        moment(key).format(ABBREVIATED_CHART_DATE)
+      );
 
-        const dataParsed = sleepDates.map(key => {
-          return minutesToHours(responseData[key]);
-        });
-
-        this.state.sleepHistory.labels = sleepDatesFormatted;
-        this.state.sleepHistory.datasets[0].data = dataParsed;
-
-        // Reset the historicalState of the graph after the data has been grabbed.
-        this.setState({ sleepHistory: this.state.sleepHistory });
+      const dataParsed = sleepDates.map(key => {
+        return minutesToHours(responseData[key]);
       });
+
+      this.state.sleepHistory.labels = sleepDatesFormatted;
+      this.state.sleepHistory.datasets[0].data = dataParsed;
+
+      // Reset the historicalState of the graph after the data has been grabbed.
+      this.setState({ sleepHistory: this.state.sleepHistory });
+    });
   }
 
   renderHistoryChart() {

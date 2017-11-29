@@ -104,7 +104,7 @@ class LoggedInHeader extends Component {
                 <Link to={LOGOUT_URL}>
                   <DropdownItem>
                     <i className="fa fa-lock" />
-                    Logout
+                    Logout All Devices
                   </DropdownItem>
                 </Link>
 
