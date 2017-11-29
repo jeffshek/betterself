@@ -12,6 +12,8 @@ import {
   UserActivitiesCorrelationTableRow,
   SupplementCorrelationTableRow
 } from "./constants";
+import { SUPPLEMENTS_RESOURCE_URL } from "../constants/urls";
+import { getFetchJSONAPI } from "../utils/fetch_utils";
 
 const SupplementsCorrelationsChart = GenerateChartTemplate(
   "Supplements Correlation"
@@ -72,20 +74,14 @@ export class BaseAnalyticsView extends Component {
   }
 
   getSupplementMapping() {
-    fetch("/api/v1/supplements/", {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        let supplementNameUUIDMapping = {};
-        responseData.map(e => {
-          supplementNameUUIDMapping[e.name] = e.uuid;
-        });
-        this.setState({ supplementNameUUIDMapping: supplementNameUUIDMapping });
+    const url = SUPPLEMENTS_RESOURCE_URL;
+    getFetchJSONAPI(url).then(responseData => {
+      let supplementNameUUIDMapping = {};
+      responseData.map(e => {
+        supplementNameUUIDMapping[e.name] = e.uuid;
       });
+      this.setState({ supplementNameUUIDMapping: supplementNameUUIDMapping });
+    });
   }
 
   getPositivelyCorrelatedData(responseData) {
@@ -113,80 +109,66 @@ export class BaseAnalyticsView extends Component {
 
   getSupplementsCorrelations() {
     const url = `${this.supplementCorrelationsURL}?correlation_lookback=${this.state.periodsLookback}&cumulative_lookback=${this.state.rollingWindow}`;
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const correlatedData = this.getCorrelatedData(responseData);
-        const labels = this.getChartLabels(correlatedData);
-        const dataValues = this.getChartData(correlatedData);
+    getFetchJSONAPI(url).then(responseData => {
+      const correlatedData = this.getCorrelatedData(responseData);
+      const labels = this.getChartLabels(correlatedData);
+      const dataValues = this.getChartData(correlatedData);
 
-        this.state.supplementsCorrelationsChart.labels = labels;
-        this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
+      this.state.supplementsCorrelationsChart.labels = labels;
+      this.state.supplementsCorrelationsChart.datasets[0].data = dataValues;
 
-        const positiveSupplementCorrelations = this.getPositivelyCorrelatedData(
-          responseData
-        );
-        const negativeSupplementCorrelations = this.getNegativelyCorrelatedData(
-          responseData
-        );
-        const neutralSupplementsCorrelations = this.getNoCorrelatedData(
-          responseData
-        );
+      const positiveSupplementCorrelations = this.getPositivelyCorrelatedData(
+        responseData
+      );
+      const negativeSupplementCorrelations = this.getNegativelyCorrelatedData(
+        responseData
+      );
+      const neutralSupplementsCorrelations = this.getNoCorrelatedData(
+        responseData
+      );
 
-        this.setState({
-          supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
-          selectedSupplementsCorrelations: positiveSupplementCorrelations,
-          positiveSupplementsCorrelations: positiveSupplementCorrelations,
-          negativeSupplementsCorrelations: negativeSupplementCorrelations,
-          neutralSupplementsCorrelations: neutralSupplementsCorrelations
-        });
+      this.setState({
+        supplementsCorrelationsChart: this.state.supplementsCorrelationsChart,
+        selectedSupplementsCorrelations: positiveSupplementCorrelations,
+        positiveSupplementsCorrelations: positiveSupplementCorrelations,
+        negativeSupplementsCorrelations: negativeSupplementCorrelations,
+        neutralSupplementsCorrelations: neutralSupplementsCorrelations
       });
+    });
   }
 
   getUserActivitiesCorrelations() {
     const url = `${this.userActivitiesCorrelationsURL}?correlation_lookback=${this.state.periodsLookback}&cumulative_lookback=${this.state.rollingWindow}`;
 
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        const correlatedData = this.getCorrelatedData(responseData);
-        const labels = this.getChartLabels(correlatedData);
-        const dataValues = this.getChartData(correlatedData);
+    getFetchJSONAPI(url).then(responseData => {
+      const correlatedData = this.getCorrelatedData(responseData);
+      const labels = this.getChartLabels(correlatedData);
+      const dataValues = this.getChartData(correlatedData);
 
-        this.state.selectedUserActivitiesCorrelationsChart.labels = labels;
-        this.state.selectedUserActivitiesCorrelationsChart.datasets[
-          0
-        ].data = dataValues;
+      this.state.selectedUserActivitiesCorrelationsChart.labels = labels;
+      this.state.selectedUserActivitiesCorrelationsChart.datasets[
+        0
+      ].data = dataValues;
 
-        const positiveUserActivityCorrelations = this.getPositivelyCorrelatedData(
-          responseData
-        );
-        const negativeUserActivitiesCorrelations = this.getNegativelyCorrelatedData(
-          responseData
-        );
-        const neutralUserActivitiesCorrelations = this.getNoCorrelatedData(
-          responseData
-        );
+      const positiveUserActivityCorrelations = this.getPositivelyCorrelatedData(
+        responseData
+      );
+      const negativeUserActivitiesCorrelations = this.getNegativelyCorrelatedData(
+        responseData
+      );
+      const neutralUserActivitiesCorrelations = this.getNoCorrelatedData(
+        responseData
+      );
 
-        this.setState({
-          selectedUserActivitiesCorrelationsChart: this.state
-            .selectedUserActivitiesCorrelationsChart,
-          selectedUserActivitiesCorrelations: positiveUserActivityCorrelations,
-          positiveUserActivitiesCorrelations: positiveUserActivityCorrelations,
-          negativeUserActivitiesCorrelations: negativeUserActivitiesCorrelations,
-          neutralUserActivitiesCorrelations: neutralUserActivitiesCorrelations
-        });
+      this.setState({
+        selectedUserActivitiesCorrelationsChart: this.state
+          .selectedUserActivitiesCorrelationsChart,
+        selectedUserActivitiesCorrelations: positiveUserActivityCorrelations,
+        positiveUserActivitiesCorrelations: positiveUserActivityCorrelations,
+        negativeUserActivitiesCorrelations: negativeUserActivitiesCorrelations,
+        neutralUserActivitiesCorrelations: neutralUserActivitiesCorrelations
       });
+    });
   }
 
   selectSupplementsCorrelationsTab = event => {

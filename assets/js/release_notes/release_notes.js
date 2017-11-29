@@ -1,4 +1,5 @@
 import React from "react";
+
 export const ReleaseNotesView = () => {
   return (
     <div className="card">
@@ -8,15 +9,23 @@ export const ReleaseNotesView = () => {
         </span>
       </div>
       <div className="card-block">
-        <h3 text-align="left">
+        <h3>
+          <b>November 28th, 2017</b>
+          {" "}
+          - Slight fix toward easier login and logout pages.
+        </h3>
+        <h3>
           <b>November 27th, 2017</b>
           {" "}
-          - We're trying something new here, as it's been a little hard communicating with everyone about new features that they've requested. So for the time being, this page is going to be a place where we post new updates and features!!! Feel free to email me feedback at
+          - We're trying something new here, as it's been a little hard communicating with everyone about new
+          features that they've requested. So for the time being, this page is going to be a place where we
+          post new updates and features!!! Feel free to email me feedback at
           {" "}
           <b>jeffshek@gmail.com.</b>
           <br /><br />
           <a href="http://res.cloudinary.com/betterhealth/image/upload/v1511838475/create-supplement-modal_fw928m.png">
-            - Added popup modal when creating new supplement (it was too easily accidently autocreated prior).
+            - Added popup modal when creating new supplement (it was too easily accidently autocreated
+            prior).
           </a>
         </h3>
       </div>

@@ -3,6 +3,7 @@ import {
   JSON_AUTHORIZATION_HEADERS,
   JSON_POST_AUTHORIZATION_HEADERS
 } from "../constants/requests";
+import { LOGOUT_URL } from "../constants/urls";
 
 export const getFetch = url => {
   return fetch(url, {
@@ -13,7 +14,13 @@ export const getFetch = url => {
 
 export const getFetchJSONAPI = url => {
   return getFetch(url).then(response => {
-    return response.json();
+    // If not authenticated, means token has expired
+    // force a hard logout
+    if (response.status == 403) {
+      window.location.assign(LOGOUT_URL);
+    }
+    const results = response.json();
+    return results;
   });
 };
 

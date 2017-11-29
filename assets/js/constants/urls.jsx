@@ -31,8 +31,13 @@ export const DEMO_SIGNUP_URL = '/demo-signup/'
 // Fitbit
 export const FITBIT_COMPLETE_CALLBACK_URL = '/dashboard/fitbit/oauth2/callback/'
 export const FITBIT_BACKEND_API_CALLBACK_URL = '/api/fitbit/oauth2/callback/'
+export const FITBIT_CHECK_AUTHORIZED_URL = '/api/fitbit/user-auth-check'
 
 // User Settings
 export const SETTINGS_URL = '/settings/'
 export const EXPORT_ALL_DATA_URL = '/dashboard/export-all-data/'
 export const RELEASE_NOTES_URL = '/dashboard/release-notes'
+
+// API
+export const SLEEP_ACTIVITIES_AGGREGATES_URL = "/api/v1/sleep_activities/aggregates"
+export const SUPPLEMENTS_RESOURCE_URL = "/api/v1/supplements/"

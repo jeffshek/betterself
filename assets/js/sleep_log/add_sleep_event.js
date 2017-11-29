@@ -11,6 +11,7 @@ import {
   YEAR_MONTH_DAY_FORMAT
 } from "../constants/dates_and_times";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
+import { FITBIT_CHECK_AUTHORIZED_URL } from "../constants/urls";
 
 export class AddSleepEvent extends Component {
   constructor(props) {
@@ -45,19 +46,12 @@ export class AddSleepEvent extends Component {
   };
 
   checkIfFitbitAuthorized = () => {
-    const url = "/api/fitbit/user-auth-check";
-    fetch(url, {
-      method: "GET",
-      headers: JSON_AUTHORIZATION_HEADERS
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        this.setState({
-          fitbitAuthorized: responseData
-        });
+    const url = FITBIT_CHECK_AUTHORIZED_URL;
+    getFetchJSONAPI(url).then(responseData => {
+      this.setState({
+        fitbitAuthorized: responseData
       });
+    });
   };
 
   submitSleepEvent = e => {
