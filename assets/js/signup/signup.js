@@ -135,7 +135,7 @@ export class SignupView extends Component {
                       />
                       <span className="help-block">
                         {" "}
-                        Minimum of eight Characters. Think of it as protection from noisy neighbors. If you have more than eight noisy neighbors, you should probably move.
+                        Minimum of eight characters. Think of it as protection from noisy neighbors. If you have more than eight noisy neighbors, you should probably move.
                       </span>
                     </div>
                   </div>

@@ -27,7 +27,6 @@ class OpenSourceAndApplicationSupport extends Component {
             {" "}
             See A Working Demo
           </a>
-          {/*Made with <span className="fa fa-heart pomegranate" /> on GitHUb*/}
         </div>
       </section>
     );
