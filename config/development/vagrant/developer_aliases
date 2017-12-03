@@ -18,6 +18,7 @@ alias dtest="python manage.py test --parallel"
 alias drun="python manage.py runserver [::]:9000"
 alias dplus="python manage.py shell_plus"
 alias dstatic="python manage.py collectstatic --noinput"
+alias dshow="python manage.py show_urls"
 alias startcelery="celery -A betterself worker -l info"
 
 # always show what's the git status

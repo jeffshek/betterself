@@ -36,6 +36,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
     'rest_framework',
     'django_extensions',
     'webpack_loader',
@@ -304,4 +305,5 @@ LOGGING = {
 # celery's autodiscover is slightly failing you
 CELERY_IMPORTS = ['apis.rescuetime.tasks', 'apis.twilio.tasks']
 
-ALLOWED_HOSTS = ['127.0.0.1']
+# This should redirect to something that sets your API Token in Session
+# LOGIN_REDIRECT_URL = "google.com"

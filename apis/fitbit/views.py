@@ -55,8 +55,7 @@ class FitbitCompleteView(APIView):
             'expires_at': token['expires_at'],
         })
 
-        next_url = request.session.pop('fitbit_next', None) or utils.get_setting(
-            'FITBIT_LOGIN_REDIRECT')
+        next_url = request.session.pop('fitbit_next', None) or utils.get_setting('FITBIT_LOGIN_REDIRECT')
 
         response = {'next_url': next_url}
         return Response(response)
