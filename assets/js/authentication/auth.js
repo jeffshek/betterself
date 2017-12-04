@@ -1,6 +1,7 @@
 import React from "react";
 import { JSON_HEADERS } from "../constants/requests";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
+import { REST_API_LOGOUT_URL, REST_API_LOGIN_URL } from "../constants/urls";
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
@@ -29,8 +30,7 @@ export const Authenticator = {
   },
 
   logout(cb) {
-    const logoutURL = "/rest-auth/logout/";
-    postFetchJSONAPI(logoutURL).then(responseData => {
+    postFetchJSONAPI(REST_API_LOGOUT_URL).then(responseData => {
       delete localStorage.token;
       delete localStorage.userName;
       this.isAuthenticated = false;
@@ -44,9 +44,8 @@ export const Authenticator = {
       password: pass
     };
 
-    const loginURL = "/rest-auth/login/";
     // Don't use the standard fetchPostUtils because the headers would be blank
-    fetch(loginURL, {
+    fetch(REST_API_LOGIN_URL, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify(credentials)
