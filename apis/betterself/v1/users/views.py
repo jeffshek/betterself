@@ -3,8 +3,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 
-from apis.betterself.v1.signup.serializers import UserDetailsSerializer
-from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer
+from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer, UserDetailsSerializer
 from apis.twilio.tasks import send_verification_text
 from betterself.users.models import UserPhoneNumberDetails
 

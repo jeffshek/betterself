@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
-from apis.betterself.v1.signup.serializers import UserDetailsSerializer
+from apis.betterself.v1.users.serializers import UserDetailsSerializer
 from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
 from config.settings.constants import TESTING
