@@ -11,3 +11,5 @@ export const MEASUREMENTS_RESOURCE_URL = "/api/v1/measurements/";
 export const SUPPLEMENT_EVENTS_RESOURCE_URL = "/api/v1/supplement_events/";
 export const SUPPLEMENT_STACKS_RECORD_URL =
   "/api/v1/supplements_stacks/record/";
+
+// TODO Merge this with URLs!

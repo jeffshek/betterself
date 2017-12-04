@@ -26,9 +26,11 @@ export const DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics
 export const LOGIN_URL = '/dashboard-login/'
 export const LOGOUT_URL = '/dashboard-logout/'
 export const SIGNUP_URL = '/dashboard-signup/'
+export const AUTHENTICATE_URL = '/dashboard/authenticate/'
 export const DEMO_SIGNUP_URL = '/demo-signup/'
 export const REST_API_LOGOUT_URL = '/rest-auth/logout/'
 export const REST_API_LOGIN_URL = '/rest-auth/login/'
+export const USER_INFO_URL = '/api/v1/user-info/'
 
 // Fitbit
 export const FITBIT_COMPLETE_CALLBACK_URL = '/dashboard/fitbit/oauth2/callback/'
