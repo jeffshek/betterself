@@ -38,13 +38,12 @@ urlpatterns = [
 
     url(r'^dashboard/authenticate$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-authenticate'),
     url(r'^dashboard-signup/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-signup'),
-    url(r'^dashboard.*/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-dashboard'),
-    url(r'^dashboard-login/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-login'),
-    url(r'^dashboard-logout/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-logout'),
-
     # Specific api-end point for fitbit to redirect for authorization
     # this allows for pulling in Fitbit data using an API Token without being SessionAuthentication
     url(r'^dashboard/fitbit/oauth2/callback/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='fitbit-complete'),
+    url(r'^dashboard-login/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-login'),
+    url(r'^dashboard-logout/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-logout'),
+    url(r'^dashboard.*/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-dashboard'),
 
     url(r'^demo-signup/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-demo-signup'),
     url(r'^settings/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-settings'),
@@ -57,15 +56,12 @@ urlpatterns = [
     url(r'^rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
         name='account_confirm_email'),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    # url(r'^rest-auth/github/$', GitHubLoginView.as_view(), name='github_login'),
+    # url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
 
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', LogoutView.as_view()),
     url(r'^session-logout/$', SessionLogoutView.as_view()),
-
-    url(r'^token-auth/$', LogoutView.as_view(), name='logged-in-token-authorization'),
-
-    # url(r'^rest-auth/github/$', GitHubLoginView.as_view(), name='github_login'),
-    # url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login')
 ]
 
 # might have to double check this, not sure why MEDIA is so oddly pronounced

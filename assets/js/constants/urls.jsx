@@ -35,7 +35,7 @@ export const REST_API_LOGOUT_URL = '/rest-auth/logout/'
 export const REST_API_LOGIN_URL = '/rest-auth/login/'
 // returns all of the user info
 export const USER_INFO_URL = '/api/v1/user-info/'
-// session-hardout will invalidate all sessions (token)
+// session force logout will invalidate all sessions (token)
 export const SESSION_LOGOUT_URL = '/session-logout/'
 
 // Fitbit

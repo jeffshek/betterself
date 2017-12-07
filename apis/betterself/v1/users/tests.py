@@ -12,7 +12,6 @@ class TestUserPhoneNumber(TestCase):
     def setUp(self):
         # We want to go ahead and originally create a user.
         self.test_user = User.objects.create_user('testuser', 'testpassword')
-        self.test_user.save()
         self.url = reverse('api-user-phone-number')
 
     def test_getting_of_phone_number(self):
@@ -94,10 +93,3 @@ class TestUserPhoneNumber(TestCase):
 
         response = client.post(self.url, data=details)
         self.assertEqual(response.status_code, 400)
-
-    def test_api_token_returned(self):
-        client = APIClient()
-        client.force_login(self.test_user)
-
-        response = client.get(self.url)
-        print (response.data)
