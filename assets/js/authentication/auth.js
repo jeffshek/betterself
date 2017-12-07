@@ -13,6 +13,7 @@ export const Authenticator = {
   isAuthenticated: !!localStorage.token,
   token: localStorage.token,
 
+  // TODO - delete this after a little bit when you're certain everything works
   login(username, password, cb) {
     if (localStorage.token) {
       this.isAuthenticated = true;

@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { DASHBOARD_INDEX_URL, USER_INFO_URL } from "../constants/urls";
+import {
+  DASHBOARD_INDEX_URL,
+  HOME_URL,
+  USER_INFO_URL
+} from "../constants/urls";
 import LoggedInHeader from "../header/internal_header";
 import Sidebar from "../sidebar/sidebar";
 
@@ -22,6 +26,7 @@ export class AuthenticationView extends Component {
           localStorage.userName = responseData.username;
         } else {
           alert("Error. Unable to login. Please contact support.");
+          window.location.assign(HOME_URL);
         }
       })
       .then(e => {
