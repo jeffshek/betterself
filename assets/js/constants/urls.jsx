@@ -23,6 +23,7 @@ export const DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/dail
 export const DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/supplements_overview/'
 
 // Auth
+export const DJANGO_BASE_LOGIN = '/login'
 export const LOGIN_URL = '/dashboard-login/'
 export const LOGOUT_URL = '/dashboard-logout/'
 export const SIGNUP_URL = '/dashboard-signup/'
