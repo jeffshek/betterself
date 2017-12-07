@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { Authenticator } from "../authentication/auth";
+import { USER_INFO_URL } from "../constants/urls";
 
 export class UserSettingsView extends Component {
   constructor() {
@@ -17,7 +18,7 @@ export class UserSettingsView extends Component {
   };
 
   deleteUser = cb => {
-    fetch("/api/v1/user-info/", {
+    fetch(USER_INFO_URL, {
       method: "DELETE",
       headers: JSON_POST_AUTHORIZATION_HEADERS
     })

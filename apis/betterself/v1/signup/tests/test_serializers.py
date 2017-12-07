@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from apis.betterself.v1.signup.serializers import UserDetailsSerializer
+from apis.betterself.v1.users.serializers import UserDetailsSerializer
 from betterself.users.models import UserPhoneNumberDetails
 
 User = get_user_model()

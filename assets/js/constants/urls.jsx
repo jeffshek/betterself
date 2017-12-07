@@ -23,10 +23,20 @@ export const DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/dail
 export const DASHBOARD_SUPPLEMENT_OVERVIEW_ANALYTICS_URL = '/dashboard/analytics/supplements_overview/'
 
 // Auth
+export const DJANGO_BASE_LOGIN = '/login'
 export const LOGIN_URL = '/dashboard-login/'
 export const LOGOUT_URL = '/dashboard-logout/'
 export const SIGNUP_URL = '/dashboard-signup/'
+export const AUTHENTICATE_URL = '/dashboard/authenticate/'
+
 export const DEMO_SIGNUP_URL = '/demo-signup/'
+export const REST_API_LOGOUT_URL = '/rest-auth/logout/'
+// rest-auth-login only returns a key of the token
+export const REST_API_LOGIN_URL = '/rest-auth/login/'
+// returns all of the user info
+export const USER_INFO_URL = '/api/v1/user-info/'
+// session force logout will invalidate all sessions (token)
+export const SESSION_LOGOUT_URL = '/session-logout/'
 
 // Fitbit
 export const FITBIT_COMPLETE_CALLBACK_URL = '/dashboard/fitbit/oauth2/callback/'

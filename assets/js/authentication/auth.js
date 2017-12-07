@@ -1,11 +1,19 @@
 import React from "react";
-import { JSON_HEADERS } from "../constants/requests";
-import { postFetchJSONAPI } from "../utils/fetch_utils";
+import {
+  JSON_HEADERS,
+  JSON_POST_AUTHORIZATION_HEADERS
+} from "../constants/requests";
+import {
+  REST_API_LOGIN_URL,
+  REST_API_LOGOUT_URL,
+  SESSION_LOGOUT_URL
+} from "../constants/urls";
 
 export const Authenticator = {
   isAuthenticated: !!localStorage.token,
   token: localStorage.token,
 
+  // TODO - delete this after a little bit when you're certain everything works
   login(username, password, cb) {
     if (localStorage.token) {
       this.isAuthenticated = true;
@@ -24,18 +32,25 @@ export const Authenticator = {
     });
   },
 
-  redirectHome() {
-    window.location.assign("/");
-  },
-
   logout(cb) {
-    const logoutURL = "/rest-auth/logout/";
-    postFetchJSONAPI(logoutURL).then(responseData => {
-      delete localStorage.token;
-      delete localStorage.userName;
-      this.isAuthenticated = false;
-      setTimeout(this.redirectHome, 500);
-    });
+    // This could be much much cleaner, but here do a three step process to logout.
+    // 1. Use a django rest-point to invalidate the login session / API
+    // 2. Delete the localstorages, so it won't keep trying with the token
+    // 3. Then redirect to a page that will invalidate any cookies just to be sure nothing gets stuck.
+    fetch(REST_API_LOGOUT_URL, {
+      method: "POST",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      credentials: "same-origin"
+    })
+      .then(response => {
+        delete localStorage.token;
+        delete localStorage.userName;
+        this.isAuthenticated = false;
+        return response.json();
+      })
+      .then(responseData => {
+        window.location.assign(SESSION_LOGOUT_URL);
+      });
   },
 
   getToken(username, pass, cb) {
@@ -44,9 +59,8 @@ export const Authenticator = {
       password: pass
     };
 
-    const loginURL = "/rest-auth/login/";
     // Don't use the standard fetchPostUtils because the headers would be blank
-    fetch(loginURL, {
+    fetch(REST_API_LOGIN_URL, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify(credentials)
@@ -62,7 +76,6 @@ export const Authenticator = {
           });
         } else {
           alert("Invalid Login Error");
-          console.log(responseData);
           cb({
             authenticated: false
           });

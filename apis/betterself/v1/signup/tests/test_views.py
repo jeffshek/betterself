@@ -362,11 +362,12 @@ class UserViewTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(username='usain-bolt')
+        User.objects.create_user(username='usain-bolt')
         super().setUpTestData()
 
     def setUp(self):
         self.client = APIClient()
+        self.user = User.objects.get(username='usain-bolt')
         self.client.force_authenticate(user=self.user)
 
     def test_deleting_of_user(self):
@@ -390,6 +391,19 @@ class UserViewTests(TestCase):
 
         self.assertEqual(self.user.username, username)
         self.assertEqual(str(self.user.uuid), uuid)
+
+    def test_user_logged_in_includes_token(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200, response.data)
+
+        expected_token = Token.objects.get(user=self.user).key
+        self.assertEqual(response.data['token'], expected_token)
+
+    def test_not_logged_user_cant_access_nothing(self):
+        client = APIClient()
+        response = client.get(self.url)
+
+        self.assertEqual(response.status_code, 403, response.data)
 
 
 class TestEmailConfirmation(TestCase):

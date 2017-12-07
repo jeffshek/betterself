@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
 import {
+  AUTHENTICATE_URL,
   DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL,
   DASHBOARD_INDEX_URL,
   DASHBOARD_MOOD_LOGS_URL,
@@ -64,6 +65,7 @@ import {
 import { MoodEventsLogView } from "./mood_log/mood_events_view";
 import { FitBitCompleteCallbackView } from "./fitbit/fitbit";
 import { ReleaseNotesView } from "./release_notes/release_notes";
+import { AuthenticationView } from "./authentication/authentication";
 
 const BetterSelfRouter = () => (
   <Router>
@@ -82,6 +84,7 @@ const BetterSelfRouter = () => (
       />
       <Route exact path={LOGIN_URL} component={LoginView} />
       <Route exact path={LOGOUT_URL} component={LogoutView} />
+      <Route exact path={AUTHENTICATE_URL} component={AuthenticationView} />
       {/*Private Routes*/}
       <PrivateRoute
         exact
