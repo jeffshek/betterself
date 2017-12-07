@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { USER_INFO_URL } from "../constants/urls";
+import { DASHBOARD_INDEX_URL, USER_INFO_URL } from "../constants/urls";
+import LoggedInHeader from "../header/internal_header";
+import Sidebar from "../sidebar/sidebar";
+
+// For any pages that are already SessionAuthenticated
 
 export class AuthenticationView extends Component {
   constructor() {
@@ -12,8 +16,16 @@ export class AuthenticationView extends Component {
       .then(responseData => {
         return responseData.json();
       })
+      .then(responseData => {
+        if ("token" in responseData) {
+          localStorage.token = responseData.token;
+          localStorage.userName = responseData.username;
+        } else {
+          alert("Error. Unable to login. Please contact support.");
+        }
+      })
       .then(e => {
-        console.log(e);
+        window.location.assign(DASHBOARD_INDEX_URL);
       });
   }
 

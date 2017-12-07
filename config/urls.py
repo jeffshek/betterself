@@ -7,6 +7,7 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView, RedirectView
 
 # from apis.github.views import GitHubLoginView, FacebookLogin
+from apis.betterself.v1.signout.views import SessionLogoutView
 from config.settings.constants import LOCAL
 
 react_home_template = 'react/home.html'
@@ -35,6 +36,7 @@ urlpatterns = [
     # Where most of the frontend interacts with
     url(r'^api/', include('apis.urls')),
 
+    url(r'^dashboard/authenticate$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-authenticate'),
     url(r'^dashboard-signup/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-signup'),
     url(r'^dashboard.*/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-dashboard'),
     url(r'^dashboard-login/$', REACT_DASHBOARD_TEMPLATE_VIEW, name='react-login'),
@@ -58,6 +60,7 @@ urlpatterns = [
 
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', LogoutView.as_view()),
+    url(r'^session-logout/$', SessionLogoutView.as_view()),
 
     url(r'^token-auth/$', LogoutView.as_view(), name='logged-in-token-authorization'),
 

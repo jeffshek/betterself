@@ -14,7 +14,8 @@ workon betterself
 cd /betterself
 
 # use alias like d-XXXXX to represent django do X"
-alias dtest="python manage.py test --parallel"
+alias dtest="python manage.py test"
+alias dtestp="python manage.py test --parallel"
 alias drun="python manage.py runserver [::]:9000"
 alias dplus="python manage.py shell_plus"
 alias dstatic="python manage.py collectstatic --noinput"

@@ -306,4 +306,4 @@ LOGGING = {
 CELERY_IMPORTS = ['apis.rescuetime.tasks', 'apis.twilio.tasks']
 
 # This should redirect to something that sets your API Token in Session
-# LOGIN_REDIRECT_URL = "google.com"
+LOGIN_REDIRECT_URL = 'react-authenticate'
