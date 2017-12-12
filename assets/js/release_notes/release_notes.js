@@ -10,6 +10,11 @@ export const ReleaseNotesView = () => {
       </div>
       <div className="card-block">
         <h3>
+          <b>December 11th, 2017</b>
+          {" "}
+          - Lots of progress toward mobile, this should be arriving soon!
+        </h3>
+        <h3>
           <b>November 28th, 2017</b>
           {" "}
           - Slight fix toward easier login and logout pages.
