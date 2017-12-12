@@ -8,6 +8,7 @@ from django.views.generic import TemplateView, RedirectView
 
 # from apis.github.views import GitHubLoginView, FacebookLogin
 from apis.betterself.v1.signout.views import SessionLogoutView
+from betterself.users.views import LoginViewCustom
 from config.settings.constants import LOCAL
 
 react_home_template = 'react/home.html'
@@ -52,6 +53,8 @@ urlpatterns = [
     # im not sure if you even use rest_framework/api-auth anymore
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+    # https://github.com/Tivix/django-rest-auth/issues/159#issuecomment-173909852
+    url(r'^rest-auth/login/$', LoginViewCustom.as_view(), name='rest_login'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
         name='account_confirm_email'),
