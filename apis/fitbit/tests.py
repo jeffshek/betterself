@@ -21,7 +21,7 @@ class FitBitUserAuthCheckViewTests(TestCase):
     def test_no_client_means_no_access(self):
         client = APIClient()
         response = client.get(self.url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_logged_in_client_but_no_fitbit_returns_false(self):
         user, _ = User.objects.get_or_create(username='fitman')

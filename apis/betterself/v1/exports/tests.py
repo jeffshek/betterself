@@ -45,4 +45,4 @@ class UserExportAllDataTests(TestCase):
         client = APIClient()
         response = client.get(self.url)
         # not authorized
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)

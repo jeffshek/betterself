@@ -403,7 +403,7 @@ class UserViewTests(TestCase):
         client = APIClient()
         response = client.get(self.url)
 
-        self.assertEqual(response.status_code, 403, response.data)
+        self.assertEqual(response.status_code, 401, response.data)
 
 
 class TestEmailConfirmation(TestCase):

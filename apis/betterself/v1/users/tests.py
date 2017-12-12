@@ -28,7 +28,7 @@ class TestUserPhoneNumber(TestCase):
     def test_access_of_phone_number_not_auth(self):
         client = APIClient()
         response = client.get(self.url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_access_of_phone_number_no_data(self):
         client = APIClient()

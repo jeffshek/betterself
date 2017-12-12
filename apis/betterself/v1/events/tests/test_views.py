@@ -345,7 +345,7 @@ class TestAggregateProductivityViews(TestCase):
     def test_view_without_login(self):
         not_logged_in_client = APIClient()
         response = not_logged_in_client.get(self.url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_with_user_and_no_data(self):
         client = APIClient()
@@ -676,7 +676,7 @@ class SupplementReminderViewsTests(BaseAPIv1Tests, PostRequestsTestsMixin):
     def test_view_no_auth(self):
         client = APIClient()
         response = client.get(self.url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_view_no_data(self):
         new_user, _ = User.objects.get_or_create(username='no-data')
