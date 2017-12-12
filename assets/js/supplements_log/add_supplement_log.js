@@ -3,13 +3,11 @@ import React, { Component } from "react";
 import moment from "moment";
 import { Creatable } from "react-select";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
-import {
-  SUPPLEMENT_EVENTS_RESOURCE_URL,
-  SUPPLEMENT_STACKS_RECORD_URL
-} from "../constants/api_urls";
+import { SUPPLEMENT_STACKS_RECORD_URL } from "../constants/urls";
 import { LogSupplementButton } from "./constants";
 import { SelectDetailsSerializer } from "../utils/select_utils";
 import { AddSupplementModal } from "../supplements/add_supplement_modal";
+import { SUPPLEMENT_EVENTS_RESOURCE_URL } from "../constants/urls";
 
 export class AddSupplementLog extends Component {
   constructor() {

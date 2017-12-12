@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { JSON_HEADERS } from "../constants/requests";
 import { DASHBOARD_DAILY_OVERVIEW_ANALYTICS_URL } from "../constants/urls";
 import moment from "moment-timezone";
-import { USER_SIGNUP_URL } from "../constants/api_urls";
+import { USER_SIGNUP_URL } from "../constants/urls";
 
 export class SignupView extends Component {
   constructor() {

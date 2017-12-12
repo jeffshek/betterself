@@ -6,7 +6,7 @@ import {
   UserActivityHistoryRow,
   UserActivityHistoryTableHeader
 } from "./constants";
-import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/api_urls";
+import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/urls";
 
 export class UserActivityLogTable extends BaseLogTable {
   constructor() {

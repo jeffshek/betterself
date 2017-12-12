@@ -4,10 +4,8 @@ import { AddSupplementLog } from "./add_supplement_log";
 import { SupplementLogTable } from "./supplement_log_table";
 import { BasePaginatedLogView } from "../resources_table/resource_view";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
-import {
-  SUPPLEMENT_RESOURCE_URL,
-  SUPPLEMENT_STACKS_RESOURCE_URL
-} from "../constants/api_urls";
+import { SUPPLEMENT_STACKS_RESOURCE_URL } from "../constants/urls";
+import { SUPPLEMENT_RESOURCE_URL } from "../constants/urls";
 
 export class SupplementLogView extends BasePaginatedLogView {
   constructor() {

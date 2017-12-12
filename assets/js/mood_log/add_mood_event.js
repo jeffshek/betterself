@@ -1,7 +1,7 @@
 import Datetime from "react-datetime";
 import React, { Component } from "react";
 import moment from "moment";
-import { MOOD_RESOURCE_URL } from "../constants/api_urls";
+import { MOOD_RESOURCE_URL } from "../constants/urls";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 
 export class AddMoodEvent extends Component {

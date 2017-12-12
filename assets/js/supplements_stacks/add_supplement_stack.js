@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
-import { SUPPLEMENT_STACKS_RESOURCE_URL } from "../constants/api_urls";
+import { SUPPLEMENT_STACKS_RESOURCE_URL } from "../constants/urls";
 
 const CreateSupplementStackButton = () => {
   return (

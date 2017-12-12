@@ -5,10 +5,8 @@ import { SupplementStackRow, SupplementStackTableHeader } from "./constants";
 import { getFetchJSONAPI } from "../utils/fetch_utils";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Select from "react-select";
-import {
-  SUPPLEMENT_RESOURCE_URL,
-  SUPPLEMENT_STACKS_RESOURCE_URL
-} from "../constants/api_urls";
+import { SUPPLEMENT_STACKS_RESOURCE_URL } from "../constants/urls";
+import { SUPPLEMENT_RESOURCE_URL } from "../constants/urls";
 
 export class SupplementStackTable extends BaseLogTable {
   constructor() {

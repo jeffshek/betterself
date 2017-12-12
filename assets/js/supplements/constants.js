@@ -3,7 +3,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
 import { DATETIME_CREATED_FORMAT } from "../constants/dates_and_times";
-import { SUPPLEMENT_RESOURCE_URL } from "../constants/api_urls";
+import { SUPPLEMENT_RESOURCE_URL } from "../constants/urls";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 
 export const SupplementHistoryTableHeader = () => (

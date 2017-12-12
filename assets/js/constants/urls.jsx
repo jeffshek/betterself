@@ -51,3 +51,14 @@ export const RELEASE_NOTES_URL = '/dashboard/release-notes'
 // API
 export const SLEEP_ACTIVITIES_AGGREGATES_URL = "/api/v1/sleep_activities/aggregates"
 export const SUPPLEMENTS_RESOURCE_URL = "/api/v1/supplements/"
+export const USER_SIGNUP_URL = "/api/v1/user-signup/";
+export const USER_ACTIVITIES_RESOURCE_URL = "/api/v1/user_activities/";
+export const USER_ACTIVITIES_EVENTS_RESOURCE_URL =
+  "/api/v1/user_activity_events/";
+export const SUPPLEMENT_RESOURCE_URL = "/api/v1/supplements/";
+export const SUPPLEMENT_STACKS_RESOURCE_URL = "/api/v1/supplements_stacks/";
+export const MOOD_RESOURCE_URL = "/api/v1/mood_logs/";
+export const MEASUREMENTS_RESOURCE_URL = "/api/v1/measurements/";
+export const SUPPLEMENT_EVENTS_RESOURCE_URL = "/api/v1/supplement_events/";
+export const SUPPLEMENT_STACKS_RECORD_URL =
+  "/api/v1/supplements_stacks/record/";

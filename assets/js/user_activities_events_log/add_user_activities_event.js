@@ -4,12 +4,10 @@ import moment from "moment";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { Creatable } from "react-select";
 import { SelectDetailsSerializer } from "../utils/select_utils";
-import {
-  USER_ACTIVITIES_EVENTS_RESOURCE_URL,
-  USER_ACTIVITIES_RESOURCE_URL
-} from "../constants/api_urls";
+import { USER_ACTIVITIES_EVENTS_RESOURCE_URL } from "../constants/urls";
 import { postFetchJSONAPI } from "../utils/fetch_utils";
 import { RenderCreateActivityButton } from "../user_activities_log/constants";
+import { USER_ACTIVITIES_RESOURCE_URL } from "../constants/urls";
 
 export class AddUserActivityEvent extends Component {
   constructor() {

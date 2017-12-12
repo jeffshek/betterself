@@ -2,7 +2,7 @@ import React from "react";
 import { CubeLoadingStyle } from "../constants/loading_styles";
 import { BaseLogTable } from "../resources_table/resource_table";
 import { MoodHistoryRow, MoodHistoryTableHeader } from "./constants";
-import { MOOD_RESOURCE_URL } from "../constants/api_urls";
+import { MOOD_RESOURCE_URL } from "../constants/urls";
 
 export class MoodEntryLogTable extends BaseLogTable {
   constructor() {
