@@ -16,7 +16,7 @@ export const getFetchJSONAPI = url => {
   return getFetch(url).then(response => {
     // If not authenticated, means token has expired
     // force a hard logout
-    if (response.status === 403) {
+    if (response.status === 401) {
       window.location.assign(LOGOUT_URL);
     }
     const results = response.json();
