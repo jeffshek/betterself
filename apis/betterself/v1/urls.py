@@ -10,7 +10,7 @@ from apis.betterself.v1.sleep.views import SleepActivityView, SleepAggregatesVie
 from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesCorrelationsView, \
     SleepActivitiesSupplementsCorrelationsView, ProductivityLogsSupplementsCorrelationsView, \
     ProductivityLogsUserActivitiesCorrelationsView
-from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView
+from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView, CreateUserViewMobile
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
     IngredientView, MeasurementView, SupplementsListView, UserSupplementStackViewSet
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
@@ -67,6 +67,7 @@ urlpatterns = [
     url(r'^{0}/$'.format(UserMoodLog.RESOURCE_NAME), UserMoodViewSet.as_view(), name=UserMoodLog.RESOURCE_NAME),
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),
+    url(r'user-signup-mobile/$', CreateUserViewMobile.as_view(), name='api-create-mobile-user'),
     url(r'user-signup-demo/$', CreateDemoUserView.as_view(), name='api-create-demo-user'),
     url(r'user-info/$', UserInfoView.as_view(), name='api-logged-in-user-details'),
     # debate if you prefer this url structure instead of the current pattern
