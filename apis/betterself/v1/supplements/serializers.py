@@ -159,7 +159,7 @@ class UserSupplementStackCompositionReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSupplementStackComposition
-        fields = ('supplement', 'quantity', 'uuid')
+        fields = ('supplement', 'quantity', 'uuid', 'description')
 
 
 class UserSupplementStackReadSerializer(serializers.ModelSerializer):
@@ -167,7 +167,7 @@ class UserSupplementStackReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSupplementStack
-        fields = ('name', 'compositions', 'uuid', 'created')
+        fields = ('name', 'compositions', 'uuid', 'created', 'description')
 
 
 class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):

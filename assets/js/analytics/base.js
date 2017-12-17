@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Bar } from "react-chartjs-2";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import { JSON_AUTHORIZATION_HEADERS } from "../constants/requests";
 import { GenerateChartTemplate } from "../constants/charts";
 import {
   NEGATIVELY_CORRELATED_LABEL,

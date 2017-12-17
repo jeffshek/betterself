@@ -39,8 +39,7 @@ urlpatterns = [
     url(r'^{0}/$'.format(Measurement.RESOURCE_NAME), MeasurementView.as_view(), name=Measurement.RESOURCE_NAME),
     url(r'^{0}/$'.format(IngredientComposition.RESOURCE_NAME), IngredientCompositionView.as_view(),
         name=IngredientComposition.RESOURCE_NAME),
-    url(r'^{0}/$'.format(SupplementLog.RESOURCE_NAME), SupplementEventView.as_view(),
-        name=SupplementLog.RESOURCE_NAME),
+    url(r'^{0}/$'.format(SupplementLog.RESOURCE_NAME), SupplementEventView.as_view(), name=SupplementLog.RESOURCE_NAME),
     url(r'^{0}/'.format(DailyProductivityLog.RESOURCE_NAME),
         include([
             url(r'^$', ProductivityLogView.as_view(), name=DailyProductivityLog.RESOURCE_NAME),
