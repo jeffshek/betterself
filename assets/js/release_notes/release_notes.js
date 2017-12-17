@@ -10,6 +10,14 @@ export const ReleaseNotesView = () => {
       </div>
       <div className="card-block">
         <h3>
+          <b>December 17th, 2017</b>
+          {" "}
+          - Still making lots of progress toward mobile (aim is a mobile app release of this or next week).
+          {" "}
+          <br />
+          - Added Log Dropdown to show the Supplement Stack Compositions
+        </h3>
+        <h3>
           <b>December 11th, 2017</b>
           {" "}
           - Lots of progress toward mobile, this should be arriving soon!
