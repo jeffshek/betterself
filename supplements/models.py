@@ -100,6 +100,12 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
     def __str__(self):
         return '{}-{}'.format(self.name, self.user)
 
+    @property
+    def description(self):
+        compositions = self.compositions.all()
+        descriptions = [composition.description for composition in compositions]
+        return ', '.join(descriptions)
+
 
 class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
     supplement = models.ForeignKey(Supplement)
@@ -111,3 +117,7 @@ class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
 
     def __str__(self):
         return '{}-{}'.format(self.supplement, self.stack)
+
+    @property
+    def description(self):
+        return '{quantity} {supplement}'.format(quantity=self.quantity, supplement=self.supplement)

@@ -107,6 +107,9 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
                 self.assertEqual(second_result[attribute], number_update_param)
 
     def test_put_request_updates_for_strings(self):
+        """
+        This test is literally garbage now that I come back and look at this.
+        """
         data = self._get_initial_data()
 
         # take the first object and update something within it
@@ -117,7 +120,7 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         copied_result = initial_result.copy()
         # don't update anything that's a list or a dictionary
         # also include an ignore list where certain attributes are read-only
-        readonly_parameters = ['supplement_name', 'supplement_uuid']
+        readonly_parameters = ['supplement_name', 'supplement_uuid', 'description']
         copied_result = {k: v for k, v in copied_result.items() if isinstance(v, str) and k not in readonly_parameters}
 
         # for any results, if its a string, update them to a constant "aka" api, since we know that's accepted in
