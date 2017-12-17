@@ -5,9 +5,13 @@ export const SelectDetailsSerializer = detailsList => {
 
   const detailsKeys = Object.keys(detailsList);
   const selectDetails = detailsKeys.map(e => {
+    let label = detailsList[e].name;
+    if (detailsList[e].description) {
+      label = label + " - " + detailsList[e].description;
+    }
     return {
       value: e,
-      label: detailsList[e].name
+      label: label
     };
   });
 

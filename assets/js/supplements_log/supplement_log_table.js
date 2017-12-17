@@ -22,15 +22,10 @@ export class SupplementLogTable extends BaseLogTable {
       }
     };
 
-    this.submitEdit = this.submitEdit.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
-    this.handleSupplementChangeOnEditObject = this.handleSupplementChangeOnEditObject.bind(
-      this
-    );
     this.resourceURL = "/api/v1/supplement_events/";
   }
 
-  handleSupplementChangeOnEditObject(event) {
+  handleSupplementChangeOnEditObject = event => {
     const target = event.target;
     const value = target.value;
 
@@ -40,7 +35,7 @@ export class SupplementLogTable extends BaseLogTable {
     this.state.editObject["supplement_uuid"] = updatedSupplement.uuid;
 
     this.setState({ editObject: this.state.editObject });
-  }
+  };
 
   confirmDelete = (uuid, supplementName, supplementTime) => {
     const answer = confirm(
@@ -52,7 +47,7 @@ export class SupplementLogTable extends BaseLogTable {
     }
   };
 
-  submitEdit() {
+  submitEdit = () => {
     const params = {
       uuid: this.state.editObject["uuid"],
       quantity: this.state["servingSizeUpdate"],
@@ -65,7 +60,7 @@ export class SupplementLogTable extends BaseLogTable {
 
     this.putParamsUpdate(params);
     this.toggle();
-  }
+  };
 
   getTableRender() {
     const historicalData = this.props.eventHistory;
