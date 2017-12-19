@@ -57,7 +57,6 @@ class IngredientCompositionView(ListCreateAPIView, ReadOrWriteSerializerChooser)
         return self.model.objects.filter(user=self.request.user)
 
 
-# TODO - Should this be called a Viewset instead (but then you have to refactor .. ALL of them)?
 class SupplementsListView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     read_serializer_class = SupplementReadSerializer
     write_serializer_class = SupplementCreateUpdateSerializer
@@ -86,4 +85,4 @@ class UserSupplementStackViewSet(ListCreateAPIView, ReadOrWriteSerializerChooser
         return self._get_read_or_write_serializer_class()
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(user=self.request.user).prefetch_related('compositions')
