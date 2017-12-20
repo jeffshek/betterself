@@ -2,6 +2,7 @@ import factory
 from django.utils import timezone
 from factory.fuzzy import FuzzyInteger
 
+from betterself.users.fixtures.factories import UserFactory
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, UserMoodLog
 
 
@@ -9,6 +10,7 @@ class SupplementEventFactory(factory.DjangoModelFactory):
     source = 'api'
     quantity = 1
     time = timezone.now()
+    user = factory.SubFactory(UserFactory)
 
     class Meta:
         model = SupplementLog

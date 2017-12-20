@@ -9,7 +9,7 @@ from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer
 from betterself.utils.date_utils import get_current_date_months_ago, get_current_utc_time_and_tz
 from config.settings.constants import TESTING, LOCAL
-from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder, WEB_INPUT_SOURCE
+from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder, WEB_INPUT_SOURCE, SupplementLog
 from supplements.models import Supplement, UserSupplementStack
 
 
@@ -80,14 +80,17 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         return instance
 
 
-class SupplementEventReadOnlySerializer(serializers.Serializer):
+class SupplementEventReadOnlySerializer(serializers.ModelSerializer):
     supplement_name = CharField(source='supplement.name')
     supplement_uuid = CharField(source='supplement.uuid')
     quantity = serializers.FloatField()
-    time = serializers.DateTimeField()
-    source = serializers.CharField()
-    uuid = serializers.UUIDField()
-    duration_minutes = serializers.IntegerField()
+
+    class Meta:
+        model = SupplementLog
+        fields = (
+            'supplement_name', 'supplement_uuid', 'quantity', 'time', 'source', 'uuid', 'duration_minutes',
+            'notes'
+        )
 
 
 class ProductivityLogReadSerializer(serializers.Serializer):

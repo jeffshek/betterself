@@ -149,6 +149,10 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         result = self.client_1.put(url, data=copied_result, format='json')
 
         for attribute in attributes_to_update:
+            # we are ignoring all the notes field since that can be dynamically generated
+            if attribute == 'notes':
+                continue
+
             self.assertEqual(result.data[attribute], string_update_param)
 
         # now for safe measure, let's use a get to retrieve the same object via UUID
@@ -156,6 +160,10 @@ class PUTRequestsTestsMixin(GenericRESTMethodMixin):
         second_result = get_response[0]
 
         for attribute in attributes_to_update:
+            # we are ignoring all the notes field since that can be dynamically generated
+            if attribute == 'notes':
+                continue
+
             self.assertEqual(second_result[attribute], string_update_param)
 
     def test_put_request_with_invalid_uuid_will_fail(self):
