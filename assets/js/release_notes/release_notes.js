@@ -13,9 +13,6 @@ export const ReleaseNotesView = () => {
           <b>December 20th, 2017</b>
           {" "}
           - Added notes feature to supplement logs.
-          {" "}
-          <br />
-          - Added Log Dropdown to show the Supplement Stack Compositions
         </h3>
         <h3>
           <b>December 17th, 2017</b>
