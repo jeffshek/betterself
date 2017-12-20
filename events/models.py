@@ -41,6 +41,7 @@ class SupplementLog(BaseModelWithUserGeneratedContent):
     time = models.DateTimeField()
     # how long it took to consume
     duration_minutes = models.IntegerField(default=0)
+    notes = models.TextField(default='')
 
     class Meta:
         unique_together = ('user', 'time', 'supplement')
@@ -74,6 +75,7 @@ class DailyProductivityLog(BaseModelWithUserGeneratedContent):
     neutral_time_minutes = models.PositiveIntegerField(null=True, blank=True)
     distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
     very_distracting_time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    notes = models.TextField(default='')
 
     class Meta:
         verbose_name = 'Daily Productivity Log'
@@ -95,6 +97,7 @@ class SleepLog(BaseModelWithUserGeneratedContent):
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    notes = models.TextField(default='')
 
     class Meta:
         verbose_name = 'Sleep Activity Log'
@@ -153,6 +156,7 @@ class UserActivity(BaseModelWithUserGeneratedContent):
     is_negative_activity = models.BooleanField(default=False)
     # I find certain events are complete days, ie. Being sick with an impacted wisdom tooth was the worst.
     is_all_day_activity = models.BooleanField(default=False)
+    notes = models.TextField(default='')
 
     class Meta:
         unique_together = (('name', 'user'),)
@@ -176,6 +180,7 @@ class UserActivityLog(BaseModelWithUserGeneratedContent):
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     duration_minutes = models.IntegerField(default=0)
     time = models.DateTimeField()
+    notes = models.TextField(default='')
 
     class Meta:
         unique_together = (('time', 'user', 'user_activity'),)
@@ -210,6 +215,7 @@ class UserMoodLog(BaseModelWithUserGeneratedContent):
     value = models.PositiveSmallIntegerField()
     notes = models.TextField(blank=True)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
+    notes = models.TextField(default='')
 
     class Meta:
         unique_together = ('user', 'time')

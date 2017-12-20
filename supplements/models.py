@@ -77,6 +77,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
     name = models.CharField(max_length=300)
     ingredient_compositions = models.ManyToManyField(IngredientComposition, blank=True)
+    notes = models.TextField(default='')
 
     # quantity is an event type of attribute, so its not here.
 
