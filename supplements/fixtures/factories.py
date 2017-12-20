@@ -64,6 +64,7 @@ class SupplementFactory(factory.DjangoModelFactory):
 
     name = DEFAULT_SUPPLEMENT_NAME
     user = factory.SubFactory(UserFactory)
+    notes = factory.LazyAttribute(lambda obj: '%s notes' % obj.name)
 
     @factory.post_generation
     def ingredient_composition(self, create, extracted, **kwargs):

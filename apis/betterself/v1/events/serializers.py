@@ -9,7 +9,7 @@ from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
 from apis.betterself.v1.users.serializers import PhoneNumberDetailsSerializer
 from betterself.utils.date_utils import get_current_date_months_ago, get_current_utc_time_and_tz
 from config.settings.constants import TESTING, LOCAL
-from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder, WEB_INPUT_SOURCE
+from events.models import INPUT_SOURCES_TUPLES, UserActivity, SupplementReminder, WEB_INPUT_SOURCE, SupplementLog
 from supplements.models import Supplement, UserSupplementStack
 
 
@@ -29,6 +29,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     supplement_name = CharField(source='supplement.name', read_only=True, required=False)
     duration_minutes = serializers.IntegerField(default=0)
+    notes = serializers.CharField(default='', max_length=1000, trim_whitespace=True, required=False, allow_blank=True)
 
     @classmethod
     def validate_supplement_uuid(cls, value):
@@ -76,18 +77,22 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.time = validated_data.get('time', instance.time)
+        instance.notes = validated_data.get('notes', instance.notes)
         instance.save()
         return instance
 
 
-class SupplementEventReadOnlySerializer(serializers.Serializer):
+class SupplementEventReadOnlySerializer(serializers.ModelSerializer):
     supplement_name = CharField(source='supplement.name')
     supplement_uuid = CharField(source='supplement.uuid')
     quantity = serializers.FloatField()
-    time = serializers.DateTimeField()
-    source = serializers.CharField()
-    uuid = serializers.UUIDField()
-    duration_minutes = serializers.IntegerField()
+
+    class Meta:
+        model = SupplementLog
+        fields = (
+            'supplement_name', 'supplement_uuid', 'quantity', 'time', 'source', 'uuid', 'duration_minutes',
+            'notes'
+        )
 
 
 class ProductivityLogReadSerializer(serializers.Serializer):
