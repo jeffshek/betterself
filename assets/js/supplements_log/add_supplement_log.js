@@ -31,6 +31,7 @@ export class AddSupplementLog extends Component {
     // api parameters used to send
     const supplementUUID = supplement.uuid;
     const quantity = this.servingSize.value;
+    const notes = this.notes.value;
     const time = this.state.formSupplementDateTime.toISOString();
     const source = "web";
     const durationMinutes = this.durationMinutes.value;
@@ -40,7 +41,8 @@ export class AddSupplementLog extends Component {
       quantity: quantity,
       time: time,
       source: source,
-      duration_minutes: durationMinutes
+      duration_minutes: durationMinutes,
+      notes: notes
     };
 
     postFetchJSONAPI(
@@ -191,6 +193,20 @@ export class AddSupplementLog extends Component {
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <label className="add-event-label">
+                Notes (How, why, supplement impacted you, etc.)
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue=" "
+                ref={input => this.notes = input}
+              />
+            </div>
+          </div>
+          <br />
           <div className="float-right">
             <button
               type="submit"

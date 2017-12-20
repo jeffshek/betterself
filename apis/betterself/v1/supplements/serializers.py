@@ -107,7 +107,7 @@ class SupplementCreateUpdateSerializer(serializers.Serializer):
     ingredient_compositions = SimpleUUIDSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
     created = serializers.DateTimeField(required=False)
-    notes = serializers.CharField(allow_blank=True, trim_whitespace=True, default='')
+    notes = serializers.CharField(trim_whitespace=True, default='', allow_blank=True)
 
     def validate(self, validated_data):
         if 'ingredient_compositions' in validated_data:

@@ -51,7 +51,8 @@ export class SupplementLogTable extends BaseLogTable {
     const params = {
       uuid: this.state.editObject["uuid"],
       quantity: this.state["servingSizeUpdate"],
-      time: this.state.editObject["time"]
+      time: this.state.editObject["time"],
+      notes: this.state["notesUpdate"]
     };
 
     if (this.state.editObject["supplement_uuid"]) {
@@ -134,10 +135,21 @@ export class SupplementLogTable extends BaseLogTable {
             onChange={this.handleDatetimeChangeOnEditObject}
             defaultValue={moment(this.state.editObject.time)}
           />
+          <br />
+          <label className="form-control-label add-event-label">
+            Notes
+          </label>
+          <input
+            name="notesUpdate"
+            type="text"
+            className="form-control"
+            defaultValue={this.state.editObject["notes"]}
+            onChange={this.handleInputChange}
+          />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.submitEdit}>Update</Button>
           <Button color="decline-modal" onClick={this.toggle}>Cancel</Button>
+          <Button color="primary" onClick={this.submitEdit}>Update</Button>
         </ModalFooter>
       </Modal>
     );

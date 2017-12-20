@@ -29,6 +29,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     supplement_name = CharField(source='supplement.name', read_only=True, required=False)
     duration_minutes = serializers.IntegerField(default=0)
+    notes = serializers.CharField(default='', max_length=1000, trim_whitespace=True, required=False, allow_blank=True)
 
     @classmethod
     def validate_supplement_uuid(cls, value):
@@ -76,6 +77,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         instance.duration_minutes = validated_data.get('duration_minutes', instance.duration_minutes)
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.time = validated_data.get('time', instance.time)
+        instance.notes = validated_data.get('notes', instance.notes)
         instance.save()
         return instance
 

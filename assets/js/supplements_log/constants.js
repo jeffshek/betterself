@@ -13,6 +13,7 @@ export const SupplementHistoryRow = props => {
   const supplementName = data.supplement_name;
   const servingSize = data.quantity;
   const source = data.source;
+  const notes = data.notes;
   const supplementTime = data.time;
   const timeFormatted = moment(supplementTime).format(
     READABLE_DATE_TIME_FORMAT
@@ -26,6 +27,7 @@ export const SupplementHistoryRow = props => {
     <tr>
       <td><Link to={supplementOverviewLink}>{supplementName}</Link></td>
       <td>{servingSize}</td>
+      <td>{notes}</td>
       <td><Link to={dailyOverviewLink}>{timeFormatted}</Link></td>
       <td>
         <div className="center-icon">
@@ -54,6 +56,7 @@ export const SupplementHistoryTableHeader = () => (
     <tr>
       <th>Supplement</th>
       <th>Serving Size</th>
+      <th>Notes</th>
       <th>Supplement Time</th>
       <th className="center-source">Actions</th>
       <th className="center-source">Source</th>
