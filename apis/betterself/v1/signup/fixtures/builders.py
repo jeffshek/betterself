@@ -9,7 +9,7 @@ from apis.betterself.v1.signup.fixtures.factories import SupplementReminderFacto
 from apis.betterself.v1.signup.fixtures.fixtures import SUPPLEMENTS_FIXTURES, USER_ACTIVITY_EVENTS
 from betterself.utils.date_utils import UTC_TZ
 from events.models import DailyProductivityLog, SleepLog, UserActivityLog, SupplementLog, UserActivity
-from supplements.models import Supplement
+from supplements.models import Supplement, UserSupplementStack, UserSupplementStackComposition
 
 
 class DemoHistoricalDataBuilder(object):
@@ -110,6 +110,12 @@ class DemoHistoricalDataBuilder(object):
         for supplement_name in SUPPLEMENTS_FIXTURES.keys():
             supplement = Supplement.objects.create(name=supplement_name, user=self.user)
             self.supplements[supplement_name] = supplement
+
+        stack, _ = UserSupplementStack.objects.get_or_create(name='Energy', user=self.user)
+
+        for supplement in [self.supplements['Caffeine'], self.supplements['Creatine']]:
+            UserSupplementStackComposition.objects.get_or_create(
+                user=self.user, stack=stack, supplement=supplement)
 
     def create_historical_fixtures(self):
         user_activities_bulk_create = []

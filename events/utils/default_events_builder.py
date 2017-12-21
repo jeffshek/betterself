@@ -1,5 +1,6 @@
 from events.models import UserActivity
-from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
+from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement, UserSupplementStack, \
+    UserSupplementStackComposition
 
 DEFAULT_ACTIVITIES = [
     'Meditated',
@@ -60,6 +61,13 @@ class DefaultEventsBuilder(object):
             name='Black Tea'
         )
         black_tea.ingredient_compositions.add(caffeine_100mg_composition)
+
+        stack, _ = UserSupplementStack.objects.get_or_create(
+            name='Energy', user=self.user)
+
+        for supplement in [black_tea, coffee]:
+            UserSupplementStackComposition.objects.get_or_create(
+                user=self.user, stack=stack, supplement=supplement)
 
     def build_default_activities(self):
         for activity_name in DEFAULT_ACTIVITIES:
