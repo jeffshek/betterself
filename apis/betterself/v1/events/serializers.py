@@ -21,7 +21,7 @@ def valid_daily_max_minutes(value):
         raise serializers.ValidationError('Less than 1 is not allowed.')
 
 
-class SupplementEventCreateUpdateSerializer(serializers.Serializer):
+class SupplementLogCreateUpdateSerializer(serializers.Serializer):
     supplement_uuid = serializers.UUIDField(source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
     time = serializers.DateTimeField()
@@ -82,7 +82,7 @@ class SupplementEventCreateUpdateSerializer(serializers.Serializer):
         return instance
 
 
-class SupplementEventReadOnlySerializer(serializers.ModelSerializer):
+class SupplementLogReadOnlySerializer(serializers.ModelSerializer):
     supplement_name = CharField(source='supplement.name')
     supplement_uuid = CharField(source='supplement.uuid')
     quantity = serializers.FloatField()
@@ -171,7 +171,7 @@ class UserActivityUpdateSerializer(serializers.Serializer):
         return instance
 
 
-class UserActivityEventCreateSerializer(serializers.Serializer):
+class UserActivityLogCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     # We send back user_activity_uuid after an event is created to serialize correctly
     user_activity = UserActivitySerializer(required=False, read_only=True)
@@ -214,7 +214,7 @@ class UserActivityEventCreateSerializer(serializers.Serializer):
         return instance
 
 
-class UserActivityEventReadSerializer(serializers.Serializer):
+class UserActivityLogReadSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
     user_activity = UserActivitySerializer()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
@@ -222,14 +222,14 @@ class UserActivityEventReadSerializer(serializers.Serializer):
     time = serializers.DateTimeField()
 
 
-class SleepActivityReadSerializer(serializers.Serializer):
+class SleepLogReadSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
     start_time = serializers.DateTimeField()
     end_time = serializers.DateTimeField()
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES)
 
 
-class SleepActivityCreateSerializer(serializers.Serializer):
+class SleepLogCreateSerializer(serializers.Serializer):
     uuid = serializers.UUIDField(required=False, read_only=True)
     start_time = serializers.DateTimeField()
     end_time = serializers.DateTimeField()
@@ -347,7 +347,7 @@ class SupplementReminderCreateSerializer(serializers.ModelSerializer):
         return obj
 
 
-class SupplementStackEventSerializer(serializers.Serializer):
+class SupplementStackLogSerializer(serializers.Serializer):
     stack_uuid = serializers.UUIDField()
     time = serializers.DateTimeField(default=get_current_utc_time_and_tz)
     source = serializers.ChoiceField(INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)

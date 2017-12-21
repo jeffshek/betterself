@@ -10,7 +10,6 @@ battle-tested API will make the eventual iOS / Android apps much easier to devel
 https://plus.google.com/+RipRowan/posts/eVeouesvaVX Steve Yegge's Platform Rant
 """
 import json
-
 import logging
 import requests
 

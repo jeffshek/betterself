@@ -6,7 +6,7 @@ import math
 class ModifiedPageNumberPagination(PageNumberPagination):
     # http://127.0.0.1:8001/api/v1/supplement_events?page=last
     last_page_strings = ('last', )
-    page_size = 50
+    page_size = 100
     page_size_query_param = 'page_size'
     max_page_size = 1000
 

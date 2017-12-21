@@ -9,7 +9,7 @@ from apis.betterself.v1.signup.tasks import create_demo_fixtures
 from betterself.users.models import DemoUserLog
 from events.models import UserActivity
 from events.utils.default_events_builder import DEFAULT_ACTIVITIES, SPECIAL_ACTIVITIES
-from supplements.models import Supplement
+from supplements.models import Supplement, UserSupplementStack
 
 User = get_user_model()
 
@@ -294,6 +294,16 @@ class AccountsTest(TestCase):
         # coffee is in twice, so total count is 5
         self.assertEqual(supplement_count, 5)
 
+    def test_creation_of_user_creates_default_stack(self):
+        data = {
+            'username': 'hi-i-like-potatos',
+            'password': 'fly-like-an-eagle',
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(UserSupplementStack.objects.all().count() > 0)
+
 
 class DemoAccountsTest(TestCase):
     @classmethod
@@ -352,6 +362,9 @@ class DemoAccountsTest(TestCase):
 
         response = self.client.get(self.create_url)
         self.assertEqual(response.status_code, 201, response.data)
+
+    def test_demo_page_creates_stacks(self):
+        self.assertTrue(UserSupplementStack.objects.all().count() > 0)
 
 
 class UserViewTests(TestCase):
