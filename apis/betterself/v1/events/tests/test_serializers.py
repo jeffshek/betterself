@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework import serializers
 
-from apis.betterself.v1.events.serializers import valid_daily_max_minutes, SupplementEventReadOnlySerializer
+from apis.betterself.v1.events.serializers import valid_daily_max_minutes, SupplementLogReadOnlySerializer
 from events.fixtures.factories import SupplementEventFactory
 from supplements.fixtures.factories import SupplementFactory
 
@@ -24,7 +24,7 @@ class TestSupplementEventSerializer(TestCase):
     def test_supplement_serializer(self):
         supplement = SupplementFactory(notes='gibberish')
         event = SupplementEventFactory(supplement=supplement)
-        serializer = SupplementEventReadOnlySerializer(event)
+        serializer = SupplementLogReadOnlySerializer(event)
 
         dict_responses = serializer.data
 

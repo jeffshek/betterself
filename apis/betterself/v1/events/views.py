@@ -10,14 +10,14 @@ from rest_framework.views import APIView
 from analytics.events.utils.dataframe_builders import ProductivityLogEventsDataframeBuilder, \
     SupplementEventsDataframeBuilder, SleepActivityDataframeBuilder
 from apis.betterself.v1.constants import DAILY_FREQUENCY, MONTHLY_FREQUENCY
-from apis.betterself.v1.events.filters import SupplementEventFilter, UserActivityFilter, UserActivityEventFilter, \
+from apis.betterself.v1.events.filters import SupplementLogFilter, UserActivityFilter, UserActivityLogFilter, \
     DailyProductivityLogFilter
-from apis.betterself.v1.events.serializers import SupplementEventCreateUpdateSerializer, \
-    SupplementEventReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
-    UserActivitySerializer, UserActivityEventCreateSerializer, UserActivityEventReadSerializer, \
+from apis.betterself.v1.events.serializers import SupplementLogCreateUpdateSerializer, \
+    SupplementLogReadOnlySerializer, ProductivityLogReadSerializer, ProductivityLogCreateSerializer, \
+    UserActivitySerializer, UserActivityLogCreateSerializer, UserActivityLogReadSerializer, \
     UserActivityUpdateSerializer, ProductivityLogRequestParametersSerializer, \
     SupplementLogRequestParametersSerializer, SupplementReminderReadSerializer, SupplementReminderCreateSerializer, \
-    SupplementStackEventSerializer
+    SupplementStackLogSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
 from betterself.utils.date_utils import get_current_userdate
 from betterself.utils.pandas_utils import force_start_end_date_to_series, force_start_end_data_to_dataframe, \
@@ -30,10 +30,10 @@ from supplements.models import Supplement, UserSupplementStack
 
 class SupplementEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = SupplementLog
-    read_serializer_class = SupplementEventReadOnlySerializer
-    write_serializer_class = SupplementEventCreateUpdateSerializer
-    update_serializer_class = SupplementEventCreateUpdateSerializer
-    filter_class = SupplementEventFilter
+    read_serializer_class = SupplementLogReadOnlySerializer
+    write_serializer_class = SupplementLogCreateUpdateSerializer
+    update_serializer_class = SupplementLogCreateUpdateSerializer
+    filter_class = SupplementLogFilter
     pagination_class = ModifiedPageNumberPagination
 
     def get_queryset(self):
@@ -109,10 +109,10 @@ class UserActivityView(ListCreateAPIView, UUIDDeleteMixin, UUIDUpdateMixin):
 class UserActivityEventView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin):
     model = UserActivityLog
     pagination_class = ModifiedPageNumberPagination
-    read_serializer_class = UserActivityEventReadSerializer
-    write_serializer_class = UserActivityEventCreateSerializer
-    update_serializer_class = UserActivityEventCreateSerializer
-    filter_class = UserActivityEventFilter
+    read_serializer_class = UserActivityLogReadSerializer
+    write_serializer_class = UserActivityLogCreateSerializer
+    update_serializer_class = UserActivityLogCreateSerializer
+    filter_class = UserActivityLogFilter
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
@@ -276,7 +276,7 @@ class UserSupplementStackRecordEvent(APIView):
     def post(self, request):
         user = request.user
 
-        serializer = SupplementStackEventSerializer(data=request.data)
+        serializer = SupplementStackLogSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         stack_uuid = serializer.data['stack_uuid']

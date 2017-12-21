@@ -46,8 +46,8 @@ class SupplementLog(BaseModelWithUserGeneratedContent):
     class Meta:
         unique_together = ('user', 'time', 'supplement')
         ordering = ['user', '-time']
-        verbose_name = 'Supplement Event'
-        verbose_name_plural = 'Supplement Events'
+        verbose_name = 'Supplement Log'
+        verbose_name_plural = 'Supplement Logs'
 
     def __str__(self):
         return self.__repr__()
@@ -213,7 +213,6 @@ class UserMoodLog(BaseModelWithUserGeneratedContent):
 
     time = models.DateTimeField(default=get_current_utc_time_and_tz)
     value = models.PositiveSmallIntegerField()
-    notes = models.TextField(blank=True)
     source = models.CharField(max_length=50, choices=INPUT_SOURCES_TUPLES, default=WEB_INPUT_SOURCE)
     notes = models.TextField(default='')
 

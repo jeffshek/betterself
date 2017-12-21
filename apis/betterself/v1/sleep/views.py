@@ -5,8 +5,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apis.betterself.v1.events.filters import SleepActivityFilter
-from apis.betterself.v1.events.serializers import SleepActivityReadSerializer, SleepActivityCreateSerializer
+from apis.betterself.v1.events.filters import SleepLogFilter
+from apis.betterself.v1.events.serializers import SleepLogReadSerializer, SleepLogCreateSerializer
 from analytics.events.utils.dataframe_builders import SleepActivityDataframeBuilder
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin
 from config.pagination import ModifiedPageNumberPagination
@@ -17,9 +17,9 @@ from events.models import SleepLog
 class SleepActivityView(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin):
     model = SleepLog
     pagination_class = ModifiedPageNumberPagination
-    read_serializer_class = SleepActivityReadSerializer
-    write_serializer_class = SleepActivityCreateSerializer
-    filter_class = SleepActivityFilter
+    read_serializer_class = SleepLogReadSerializer
+    write_serializer_class = SleepLogCreateSerializer
+    filter_class = SleepLogFilter
 
     def get_serializer_class(self):
         return self._get_read_or_write_serializer_class()
