@@ -13,6 +13,7 @@ INPUT_SOURCES = [
     'api',
     'ios',
     'android',
+    'mobile',
     WEB_INPUT_SOURCE,
     'user_excel',
     TEXT_MSG_SOURCE
