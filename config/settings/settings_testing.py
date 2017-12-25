@@ -82,26 +82,27 @@ LOGGING = {
 # TODO - Do this and do it well
 # CELERY_TASK_ALWAYS_EAGER = True
 
+# run testing in parallel - you'll find out this breaks a few things
 MIGRATION_MODULES = {
-    'auth': None,
-    'contenttypes': None,
+    # 'auth': None,
+    # 'contenttypes': None,
     'default': None,
     'sessions': None,
     'core': None,
     'profiles': None,
     'snippets': None,
     'scaffold_templates': None,
-    'users': None,
+    # 'users': None,
     'django_celery_beat': None,
-    'events': None,
+    # 'events': None,
     'fitbit': None,
     'account': None,
     'admin': None,
     'admin_honeypot': None,
-    'apis': None,
+    # 'apis': None,
     'authtoken': None,
-    'supplements': None,
-    'vendors': None,
+    # 'supplements': None,
+    # 'vendors': None,
     'sites': None,
     'socialaccount': None,
 }
