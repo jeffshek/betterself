@@ -2,7 +2,7 @@ import factory
 
 
 class UserFactory(factory.django.DjangoModelFactory):
-    username = 'default'
+    username = factory.Faker('name')
     password = factory.PostGenerationMethodCall('set_password', 'password')
 
     class Meta:

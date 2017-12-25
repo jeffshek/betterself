@@ -99,7 +99,7 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
         verbose_name_plural = 'Supplements Stacks'
 
     def __str__(self):
-        return '{}-{}'.format(self.name, self.user)
+        return '{} Stack'.format(self.name)
 
     @property
     def description(self):
@@ -117,7 +117,7 @@ class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
         unique_together = ('user', 'supplement', 'stack')
 
     def __str__(self):
-        return '{}-{}'.format(self.supplement, self.stack)
+        return '{}-{}'.format(self.stack, self.supplement)
 
     @property
     def description(self):

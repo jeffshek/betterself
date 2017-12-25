@@ -6,9 +6,10 @@ from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, 
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateUpdateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadSerializer, IngredientCompositionCreateSerializer, UserSupplementStackReadSerializer, \
-    UserSupplementStackCreateUpdateSerializer
+    UserSupplementStackCreateUpdateSerializer, UserSupplementStackCompositionCreateUpdateSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
-from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement, UserSupplementStack
+from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.models import Vendor
 
 """
@@ -86,3 +87,9 @@ class UserSupplementStackViewSet(ListCreateAPIView, ReadOrWriteSerializerChooser
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user).prefetch_related('compositions')
+
+
+class UserSupplementStackCompositionViewset(ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin,
+        UUIDUpdateMixin):
+    model = UserSupplementStackComposition
+    write_serializer_class = UserSupplementStackCompositionCreateUpdateSerializer

@@ -172,14 +172,50 @@ class UserSupplementStackReadSerializer(serializers.ModelSerializer):
         fields = ('name', 'compositions', 'uuid', 'created', 'description')
 
 
-class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
+class UserSupplementStackCompositionCreateInternalSerializer(serializers.Serializer):
+    """ Used by the Supplement Stack Serializer, doesn't exist as a RESTful endpoint by itself """
     supplement_uuid = serializers.UUIDField(required=True, source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
 
 
+class UserSupplementStackCompositionCreateUpdateSerializer(serializers.ModelSerializer):
+    supplement_uuid = serializers.CharField(required=True, source='supplement.uuid')
+    quantity = serializers.FloatField(default=1)
+    stack_uuid = serializers.CharField(required=True, source='stack.uuid')
+    uuid = serializers.UUIDField(required=False, read_only=True)
+
+    class Meta:
+        model = UserSupplementStackComposition
+        fields = ('uuid', 'supplement_uuid', 'quantity', 'stack_uuid')
+
+    def validate(self, data):
+        supplement_uuid = data.pop('supplement')['uuid']
+        supplement = Supplement.objects.get(uuid=supplement_uuid)
+
+        stack_uuid = data.pop('stack')['uuid']
+        stack = UserSupplementStack.objects.get(uuid=stack_uuid)
+
+        if supplement.user != stack.user:
+            raise ValidationError('Mismatching Users Entered on UUIDs')
+
+        data['supplement'] = supplement
+        data['stack'] = stack
+        data['user'] = stack.user
+        return data
+
+    def create(self, validated_data):
+        model = self.Meta.model
+
+        quantity = validated_data.pop('quantity')
+        defaults = {'quantity': quantity}
+
+        instance, _ = model.objects.update_or_create(defaults, **validated_data)
+        return instance
+
+
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    compositions = UserSupplementStackCompositionCreateSerializer(many=True, required=False)
+    compositions = UserSupplementStackCompositionCreateInternalSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate_compositions(self, data):

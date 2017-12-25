@@ -2,7 +2,8 @@
 import factory
 
 from betterself.users.fixtures.factories import UserFactory
-from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement
+from supplements.models import Ingredient, Measurement, IngredientComposition, Supplement, UserSupplementStack, \
+    UserSupplementStackComposition
 
 DEFAULT_INGREDIENT_NAME_1 = 'Leucine'
 DEFAULT_INGREDIENT_HL_MINUTE_1 = 50
@@ -76,3 +77,21 @@ class SupplementFactory(factory.DjangoModelFactory):
             # A list of groups were passed in, use them
             for group in extracted:
                 self.ingredient_compositions.add(group)
+
+
+class UserSupplementStackFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = UserSupplementStack
+
+    name = factory.Faker('street_suffix')
+    user = factory.SubFactory(UserFactory)
+
+
+class UserSupplementStackCompositionFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = UserSupplementStackComposition
+
+    user = factory.SubFactory(UserFactory)
+    # create the first user and pass it downwards
+    supplement = factory.SubFactory(SupplementFactory, user=factory.LazyAttribute(lambda a: a.factory_parent.user))
+    stack = factory.SubFactory(UserSupplementStackFactory, user=factory.LazyAttribute(lambda a: a.factory_parent.user))
