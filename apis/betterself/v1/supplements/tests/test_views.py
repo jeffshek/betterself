@@ -4,7 +4,7 @@ from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMi
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
-from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
+from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, UserSupplementStackFactory, SupplementFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
 from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack, \
     UserSupplementStackComposition
@@ -319,8 +319,17 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin):
+class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
     TEST_MODEL = UserSupplementStackComposition
+
+    def _get_default_post_parameters(self):
+        stack = UserSupplementStackFactory(user=self.user_1)
+        supplement = SupplementFactory(user=self.user_1)
+        request_params = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid)
+        }
+        return request_params
 
     @classmethod
     def setUpTestData(cls):
@@ -339,3 +348,15 @@ class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequest
 
         request_parameters = {'uuid': uuid}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+    def test_post_request(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request(request_parameters)
+
+    def test_post_request_increments(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request_increments(request_parameters)
+
+    def test_post_request_changes_objects_for_right_user(self):
+        request_parameters = self._get_default_post_parameters()
+        super().test_post_request_changes_objects_for_right_user(request_parameters)
