@@ -67,7 +67,7 @@ class BaseAPIv2Tests(TestCase):
         # this is kind of goofy when we've already set it as a class-attribute, but since there's a high
         # probability someone may change something in the class - run this each time per test
         self.user_1 = User.objects.get(username=self.username_1)
-        self.user_2 = User.objects.get(username=self.username_1)
+        self.user_2 = User.objects.get(username=self.username_2)
 
         # user has to be authenticated per each test!
         self.client_1 = self.create_authenticated_user_on_client(APIClient(), self.user_1)

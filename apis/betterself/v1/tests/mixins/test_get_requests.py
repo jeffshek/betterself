@@ -123,6 +123,14 @@ class GetRequestsTestsMixinV2(GenericRESTMethodMixin):
         self.assertTrue(len(data) > 0)
         self.assertEqual(response.status_code, 200)
 
+    def _get_response_length_from_get(self, client):
+        # have to generate a new api-client, since hard to know which user
+        response = client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        results = self._get_results_from_response(response)
+        return len(results)
+
     def test_get_request_no_data(self):
         # delete all user_1 data
         self.TEST_MODEL.objects.filter(user=self.user_1).delete()

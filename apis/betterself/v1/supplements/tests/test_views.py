@@ -1,5 +1,5 @@
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin, GetRequestsTestsMixinV2
-from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin, PostRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
 from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, BaseAPIv2Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
@@ -350,12 +350,23 @@ class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequest
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2):
+class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2):
     TEST_MODEL = UserSupplementStackComposition
+    PAGINATION = False
     username_1 = 'jack'
     username_2 = 'sarah'
     required_response_keys = ['supplement']
     filterable_keys = ['uuid']
+
+    @staticmethod
+    def _get_post_parameters(user):
+        stack = UserSupplementStackFactory(user=user)
+        supplement = SupplementFactory(user=user)
+        data = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid)
+        }
+        return data
 
     @classmethod
     def setUpTestData(cls):
