@@ -1,7 +1,7 @@
-from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin, GetRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, BaseAPIv2Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, UserSupplementStackFactory, SupplementFactory
@@ -319,7 +319,7 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin, PostRequestsTestsMixin):
+class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin):
     TEST_MODEL = UserSupplementStackComposition
 
     def _get_default_post_parameters(self):
@@ -349,14 +349,15 @@ class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequest
         request_parameters = {'uuid': uuid}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
-    def test_post_request(self):
-        request_parameters = self._get_default_post_parameters()
-        super().test_post_request(request_parameters)
 
-    def test_post_request_increments(self):
-        request_parameters = self._get_default_post_parameters()
-        super().test_post_request_increments(request_parameters)
+class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2):
+    TEST_MODEL = UserSupplementStackComposition
+    username_1 = 'jack'
+    username_2 = 'sarah'
+    required_response_keys = ['supplement']
+    filterable_keys = ['uuid']
 
-    def test_post_request_changes_objects_for_right_user(self):
-        request_parameters = self._get_default_post_parameters()
-        super().test_post_request_changes_objects_for_right_user(request_parameters)
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)

@@ -33,7 +33,7 @@ DEFAULT_MEASUREMENT_DETAILS = {
     'short_name': DEFAULT_MEASUREMENT_SHORT_NAME,
 }
 
-DEFAULT_SUPPLEMENT_NAME = 'BCAA'
+# DEFAULT_SUPPLEMENT_NAME = 'BCAA'
 
 
 class IngredientFactory(factory.DjangoModelFactory):
@@ -63,7 +63,7 @@ class SupplementFactory(factory.DjangoModelFactory):
     class Meta:
         model = Supplement
 
-    name = DEFAULT_SUPPLEMENT_NAME
+    name = factory.Faker('street_suffix')
     user = factory.SubFactory(UserFactory)
     notes = factory.LazyAttribute(lambda obj: '%s notes' % obj.name)
 
