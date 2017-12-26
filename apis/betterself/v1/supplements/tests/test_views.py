@@ -6,13 +6,14 @@ from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
 from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
 
-#  python manage.py test apis.betterself.v1.supplements.tests
+#  I heavily dislike what you made here now, the inheritance is toooooo much.
 
 class SupplementBaseTests(BaseAPIv1Tests):
     # maybe debate this might be better as a template design pattern ...
@@ -315,4 +316,26 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
         first_name = data[0]['name']
 
         request_parameters = {'name': first_name}
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+
+class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin):
+    TEST_MODEL = UserSupplementStackComposition
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)
+
+    def test_valid_get_request_for_key_in_response(self):
+        key = 'supplement'
+        super().test_valid_get_request_for_key_in_response(key)
+
+    def test_valid_get_request_with_params_filters_correctly(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        data = request.data
+        uuid = data[0]['uuid']
+
+        request_parameters = {'uuid': uuid}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)

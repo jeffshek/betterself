@@ -206,10 +206,17 @@ class UserSupplementStackCompositionCreateUpdateSerializer(serializers.ModelSeri
     def create(self, validated_data):
         model = self.Meta.model
 
+        # once the model is created, it only makes sense for the updated quantity to change
+        # otherwise, it should probably just be deleted and a new one created instead
         quantity = validated_data.pop('quantity')
         defaults = {'quantity': quantity}
 
         instance, _ = model.objects.update_or_create(defaults, **validated_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('quantity', instance.quantity)
+        instance.save()
         return instance
 
 

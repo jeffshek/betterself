@@ -90,6 +90,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
 class UserSupplementStack(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplements_stacks'
+
     name = models.CharField(max_length=300)
 
     class Meta:
@@ -109,6 +110,8 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
 
 
 class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
+    RESOURCE_NAME = 'supplements_stacks_compositions'
+
     supplement = models.ForeignKey(Supplement)
     stack = models.ForeignKey(UserSupplementStack, related_name='compositions')
     quantity = models.FloatField(default=1)
