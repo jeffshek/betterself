@@ -350,7 +350,8 @@ class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequest
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2):
+class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2,
+        PUTRequestsTestsMixin):
     TEST_MODEL = UserSupplementStackComposition
     PAGINATION = False
     username_1 = 'jack'

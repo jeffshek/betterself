@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -188,23 +189,37 @@ class UserSupplementStackCompositionCreateUpdateSerializer(serializers.ModelSeri
         model = UserSupplementStackComposition
         fields = ('uuid', 'supplement_uuid', 'quantity', 'stack_uuid')
 
-    def validate(self, data):
-        supplement_uuid = data.pop('supplement')['uuid']
+    def validate_supplement_uuid(self, data):
+        try:
+            Supplement.objects.get(uuid=data)
+        except ObjectDoesNotExist:
+            raise ValidationError
+
+        return data
+
+    def validate_stack_uuid(self, data):
+        try:
+            UserSupplementStack.objects.get(uuid=data)
+        except ObjectDoesNotExist:
+            raise ValidationError
+
+        return data
+
+    def create(self, validated_data):
+        model = self.Meta.model
+
+        supplement_uuid = validated_data.pop('supplement')['uuid']
         supplement = Supplement.objects.get(uuid=supplement_uuid)
 
-        stack_uuid = data.pop('stack')['uuid']
+        stack_uuid = validated_data.pop('stack')['uuid']
         stack = UserSupplementStack.objects.get(uuid=stack_uuid)
 
         if supplement.user != stack.user:
             raise ValidationError('Mismatching Users Entered on UUIDs')
 
-        data['supplement'] = supplement
-        data['stack'] = stack
-        data['user'] = stack.user
-        return data
-
-    def create(self, validated_data):
-        model = self.Meta.model
+        validated_data['supplement'] = supplement
+        validated_data['stack'] = stack
+        validated_data['user'] = stack.user
 
         # once the model is created, it only makes sense for the updated quantity to change
         # otherwise, it should probably just be deleted and a new one created instead
@@ -215,7 +230,7 @@ class UserSupplementStackCompositionCreateUpdateSerializer(serializers.ModelSeri
         return instance
 
     def update(self, instance, validated_data):
-        instance.name = validated_data.get('quantity', instance.quantity)
+        instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.save()
         return instance
 
