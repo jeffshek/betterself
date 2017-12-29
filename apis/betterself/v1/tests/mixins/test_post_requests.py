@@ -106,8 +106,6 @@ class PostRequestsTestsMixinV2(GenericRESTMethodMixin):
         self.assertEqual(user_2_initial_quantity + 1, user_2_updated_quantity)
 
     def test_post_request_idempotent(self):
-        user_2_quantity_before_post = self._get_response_length_from_get(self.client_2)
-
         user_1_quantity_before_post = self._get_response_length_from_get(self.client_1)
         user_1_data = self._get_post_parameters(self.user_1)
 
@@ -119,6 +117,21 @@ class PostRequestsTestsMixinV2(GenericRESTMethodMixin):
 
         # even after multiple posts, only one object should have been created
         user_1_quantity_after_post = self._get_response_length_from_get(self.client_1)
+        self.assertEqual(user_1_quantity_before_post + 1, user_1_quantity_after_post)
+
+    def test_post_request_doesnt_change_other_users(self):
+        user_2_quantity_before_post = self._get_response_length_from_get(self.client_2)
+
+        user_1_quantity_before_post = self._get_response_length_from_get(self.client_1)
+        user_1_data = self._get_post_parameters(self.user_1)
+        self.client_1.post(self.url, data=user_1_data)
+
+        # even after multiple posts, only one object should have been created
+        user_1_quantity_after_post = self._get_response_length_from_get(self.client_1)
         user_2_quantity_after_post = self._get_response_length_from_get(self.client_2)
         self.assertEqual(user_1_quantity_before_post + 1, user_1_quantity_after_post)
         self.assertEqual(user_2_quantity_before_post, user_2_quantity_after_post)
+
+    def test_empty_post_request(self):
+        response = self.client_1.post(self.url)
+        self.assertEqual(response.status_code, 400)
