@@ -107,5 +107,6 @@ MIGRATION_MODULES = {
     'socialaccount': None,
 }
 
-TEST_RUNNER = 'django_slowtests.testrunner.DiscoverSlowestTestsRunner'
-NUM_SLOW_TESTS = 10
+# Uncomment these to see what tests are slow!
+# TEST_RUNNER = 'django_slowtests.testrunner.DiscoverSlowestTestsRunner'
+# NUM_SLOW_TESTS = 10
