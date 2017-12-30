@@ -33,8 +33,6 @@ DEFAULT_MEASUREMENT_DETAILS = {
     'short_name': DEFAULT_MEASUREMENT_SHORT_NAME,
 }
 
-# DEFAULT_SUPPLEMENT_NAME = 'BCAA'
-
 
 class IngredientFactory(factory.DjangoModelFactory):
     class Meta:
