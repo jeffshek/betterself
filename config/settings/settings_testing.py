@@ -106,3 +106,6 @@ MIGRATION_MODULES = {
     'sites': None,
     'socialaccount': None,
 }
+
+TEST_RUNNER = 'django_slowtests.testrunner.DiscoverSlowestTestsRunner'
+NUM_SLOW_TESTS = 10
