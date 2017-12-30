@@ -3,8 +3,11 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from apis.betterself.v1.supplements.serializers import UserSupplementStackReadSerializer, \
-    UserSupplementStackCreateUpdateSerializer
+    UserSupplementStackCreateUpdateSerializer, UserSupplementStackCompositionCreateUpdateSerializer
+from betterself.users.fixtures.factories import UserFactory
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
+from supplements.fixtures.factories import SupplementFactory, UserSupplementStackFactory, \
+    UserSupplementStackCompositionFactory
 from supplements.models import UserSupplementStack
 
 User = get_user_model()
@@ -61,3 +64,46 @@ class TestSupplementStackSerializer(TestCase):
         revised_stack = UserSupplementStack.objects.get(id=stack_id)
         revised_composition_count = revised_stack.compositions.count()
         self.assertEqual(revised_composition_count, 1)
+
+
+class TestUserSupplementCompositionSerializer(TestCase):
+    def test_serializer(self):
+        user = UserFactory()
+        stack = UserSupplementStackFactory(user=user)
+        supplement = SupplementFactory(user=user)
+
+        data = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid)
+        }
+
+        serializer = UserSupplementStackCompositionCreateUpdateSerializer(data=data)
+        serializer.is_valid()
+        instance = serializer.save()
+
+        self.assertEqual(instance.stack, stack)
+        self.assertEqual(instance.user, user)
+
+        stack.refresh_from_db()
+        self.assertEqual(instance, stack.compositions.first())
+
+    def test_serializers_updates_data(self):
+        composition = UserSupplementStackCompositionFactory()
+        supplement = composition.supplement
+        stack = composition.stack
+        quantity = composition.quantity + 1
+
+        data = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid),
+            'quantity': quantity
+        }
+
+        serializer = UserSupplementStackCompositionCreateUpdateSerializer(data=data)
+        serializer.is_valid()
+        instance = serializer.save()
+
+        self.assertEqual(instance.quantity, quantity)
+
+        composition.refresh_from_db()
+        self.assertEqual(composition.quantity, quantity)

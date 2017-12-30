@@ -12,12 +12,14 @@ from apis.betterself.v1.correlations.views import SleepActivitiesUserActivitiesC
     ProductivityLogsUserActivitiesCorrelationsView
 from apis.betterself.v1.signup.views import CreateUserView, CreateDemoUserView, CreateUserViewMobile
 from apis.betterself.v1.supplements.views import VendorView, IngredientCompositionView, \
-    IngredientView, MeasurementView, SupplementsListView, UserSupplementStackViewSet
+    IngredientView, MeasurementView, SupplementsListView, UserSupplementStackViewSet, \
+    UserSupplementStackCompositionViewSet
 from apis.betterself.v1.users.views import UserInfoView, UserPhoneNumberView
 from apis.betterself.v1.exports.views import UserExportAllData
 from events.models import SupplementLog, DailyProductivityLog, UserActivity, UserActivityLog, SleepLog, \
     SupplementReminder, UserMoodLog
-from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement, UserSupplementStack
+from supplements.models import IngredientComposition, Supplement, Ingredient, Measurement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.models import Vendor
 
 urlpatterns = [
@@ -63,6 +65,7 @@ urlpatterns = [
             url(r'^$', UserSupplementStackViewSet.as_view(), name=UserSupplementStack.RESOURCE_NAME),
             url(r'^record/$', UserSupplementStackRecordEvent.as_view(), name='record-supplement-stack'),
         ])),
+    url(r'^{0}/$'.format(UserSupplementStackComposition.RESOURCE_NAME), UserSupplementStackCompositionViewSet.as_view(), name=UserSupplementStackComposition.RESOURCE_NAME),  # noqa
     url(r'^{0}/$'.format(UserMoodLog.RESOURCE_NAME), UserMoodViewSet.as_view(), name=UserMoodLog.RESOURCE_NAME),
     # The pages below are used by the front-end to create API requests that do business logic
     url(r'user-signup/$', CreateUserView.as_view(), name='api-create-user'),

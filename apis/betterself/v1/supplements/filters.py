@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from supplements.models import IngredientComposition, Supplement, UserSupplementStack
+from supplements.models import IngredientComposition, Supplement, UserSupplementStack, UserSupplementStackComposition
 
 
 class IngredientCompositionFilter(FilterSet):
@@ -31,3 +31,9 @@ class UserSupplementStackFilter(FilterSet):
     class Meta:
         model = UserSupplementStack
         fields = ['supplement_uuids', 'name', 'uuid']
+
+
+class UserSupplementStackCompositionFilter(FilterSet):
+    class Meta:
+        model = UserSupplementStackComposition
+        fields = ['uuid', 'quantity']

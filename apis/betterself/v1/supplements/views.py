@@ -2,13 +2,15 @@ from django.db.models.query import Prefetch
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from apis.betterself.v1.supplements.filters import IngredientCompositionFilter, SupplementFilter, \
-    UserSupplementStackFilter
+    UserSupplementStackFilter, UserSupplementStackCompositionFilter
 from apis.betterself.v1.supplements.serializers import IngredientCompositionReadOnlySerializer, \
     SupplementCreateUpdateSerializer, MeasurementReadOnlySerializer, IngredientSerializer, VendorSerializer, \
     SupplementReadSerializer, IngredientCompositionCreateSerializer, UserSupplementStackReadSerializer, \
-    UserSupplementStackCreateUpdateSerializer
+    UserSupplementStackCreateUpdateSerializer, UserSupplementStackCompositionCreateUpdateSerializer, \
+    UserSupplementStackCompositionReadSerializer
 from apis.betterself.v1.utils.views import ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
-from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement, UserSupplementStack
+from supplements.models import Ingredient, IngredientComposition, Measurement, Supplement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.models import Vendor
 
 """
@@ -86,3 +88,19 @@ class UserSupplementStackViewSet(ListCreateAPIView, ReadOrWriteSerializerChooser
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user).prefetch_related('compositions')
+
+
+class UserSupplementStackCompositionViewSet(
+    ListCreateAPIView, ReadOrWriteSerializerChooser, UUIDDeleteMixin, UUIDUpdateMixin
+):
+    model = UserSupplementStackComposition
+    write_serializer_class = UserSupplementStackCompositionCreateUpdateSerializer
+    read_serializer_class = UserSupplementStackCompositionReadSerializer
+    update_serializer_class = UserSupplementStackCompositionCreateUpdateSerializer
+    filter_class = UserSupplementStackCompositionFilter
+
+    def get_serializer_class(self):
+        return self._get_read_or_write_serializer_class()
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user).select_related('supplement')

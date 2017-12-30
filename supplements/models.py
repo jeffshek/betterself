@@ -90,6 +90,7 @@ class Supplement(BaseModelWithUserGeneratedContent):
 
 class UserSupplementStack(BaseModelWithUserGeneratedContent):
     RESOURCE_NAME = 'supplements_stacks'
+
     name = models.CharField(max_length=300)
 
     class Meta:
@@ -99,7 +100,7 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
         verbose_name_plural = 'Supplements Stacks'
 
     def __str__(self):
-        return '{}-{}'.format(self.name, self.user)
+        return '{} Stack'.format(self.name)
 
     @property
     def description(self):
@@ -109,6 +110,8 @@ class UserSupplementStack(BaseModelWithUserGeneratedContent):
 
 
 class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
+    RESOURCE_NAME = 'supplements_stacks_compositions'
+
     supplement = models.ForeignKey(Supplement)
     stack = models.ForeignKey(UserSupplementStack, related_name='compositions')
     quantity = models.FloatField(default=1)
@@ -117,7 +120,7 @@ class UserSupplementStackComposition(BaseModelWithUserGeneratedContent):
         unique_together = ('user', 'supplement', 'stack')
 
     def __str__(self):
-        return '{}-{}'.format(self.supplement, self.stack)
+        return '{}-{}'.format(self.stack, self.supplement)
 
     @property
     def description(self):

@@ -1,18 +1,20 @@
-from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin
-from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin
+from apis.betterself.v1.tests.mixins.test_delete_requests import DeleteRequestsTestsMixinV2
+from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin, GetRequestsTestsMixinV2
+from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin, PostRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
-from apis.betterself.v1.tests.test_base import BaseAPIv1Tests
+from apis.betterself.v1.tests.test_base import BaseAPIv1Tests, BaseAPIv2Tests
 from apis.betterself.v1.urls import API_V1_LIST_CREATE_URL
 from events.fixtures.mixins import UserSupplementStackFixturesGenerator
-from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1
+from supplements.fixtures.factories import DEFAULT_INGREDIENT_NAME_1, UserSupplementStackFactory, SupplementFactory
 from supplements.fixtures.mixins import SupplementModelsFixturesGenerator
-from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack
+from supplements.models import Supplement, IngredientComposition, Ingredient, Measurement, UserSupplementStack, \
+    UserSupplementStackComposition
 from vendors.fixtures.factories import DEFAULT_VENDOR_NAME
 from vendors.fixtures.mixins import VendorModelsFixturesGenerator
 from vendors.models import Vendor
 
 
-#  python manage.py test apis.betterself.v1.supplements.tests
+#  I heavily dislike what you made here now, the inheritance is toooooo much.
 
 class SupplementBaseTests(BaseAPIv1Tests):
     # maybe debate this might be better as a template design pattern ...
@@ -316,3 +318,59 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
 
         request_parameters = {'name': first_name}
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+
+class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin):
+    TEST_MODEL = UserSupplementStackComposition
+
+    def _get_default_post_parameters(self):
+        stack = UserSupplementStackFactory(user=self.user_1)
+        supplement = SupplementFactory(user=self.user_1)
+        request_params = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid)
+        }
+        return request_params
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)
+
+    def test_valid_get_request_for_key_in_response(self):
+        key = 'supplement'
+        super().test_valid_get_request_for_key_in_response(key)
+
+    def test_valid_get_request_with_params_filters_correctly(self):
+        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
+        request = self.client_1.get(url)
+        data = request.data
+        uuid = data[0]['uuid']
+
+        request_parameters = {'uuid': uuid}
+        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
+
+
+class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2,
+        PUTRequestsTestsMixin, DeleteRequestsTestsMixinV2):
+    TEST_MODEL = UserSupplementStackComposition
+    PAGINATION = False
+    username_1 = 'jack'
+    username_2 = 'sarah'
+    required_response_keys = ['supplement']
+    filterable_keys = ['uuid']
+
+    @staticmethod
+    def _get_post_parameters(user):
+        stack = UserSupplementStackFactory(user=user)
+        supplement = SupplementFactory(user=user)
+        data = {
+            'stack_uuid': str(stack.uuid),
+            'supplement_uuid': str(supplement.uuid)
+        }
+        return data
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)

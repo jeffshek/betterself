@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -172,14 +173,71 @@ class UserSupplementStackReadSerializer(serializers.ModelSerializer):
         fields = ('name', 'compositions', 'uuid', 'created', 'description')
 
 
-class UserSupplementStackCompositionCreateSerializer(serializers.Serializer):
+class UserSupplementStackCompositionCreateInternalSerializer(serializers.Serializer):
+    """ Used by the Supplement Stack Serializer, doesn't exist as a RESTful endpoint by itself """
     supplement_uuid = serializers.UUIDField(required=True, source='supplement.uuid')
     quantity = serializers.FloatField(default=1)
 
 
+class UserSupplementStackCompositionCreateUpdateSerializer(serializers.ModelSerializer):
+    supplement_uuid = serializers.CharField(required=True, source='supplement.uuid')
+    quantity = serializers.FloatField(default=1)
+    stack_uuid = serializers.CharField(required=True, source='stack.uuid')
+    uuid = serializers.UUIDField(required=False, read_only=True)
+
+    class Meta:
+        model = UserSupplementStackComposition
+        fields = ('uuid', 'supplement_uuid', 'quantity', 'stack_uuid')
+
+    def validate_supplement_uuid(self, data):
+        try:
+            Supplement.objects.get(uuid=data)
+        except ObjectDoesNotExist:
+            raise ValidationError
+
+        return data
+
+    def validate_stack_uuid(self, data):
+        try:
+            UserSupplementStack.objects.get(uuid=data)
+        except ObjectDoesNotExist:
+            raise ValidationError
+
+        return data
+
+    def create(self, validated_data):
+        model = self.Meta.model
+
+        supplement_uuid = validated_data.pop('supplement')['uuid']
+        supplement = Supplement.objects.get(uuid=supplement_uuid)
+
+        stack_uuid = validated_data.pop('stack')['uuid']
+        stack = UserSupplementStack.objects.get(uuid=stack_uuid)
+
+        if supplement.user != stack.user:
+            raise ValidationError('Mismatching Users Entered on UUIDs')
+
+        validated_data['supplement'] = supplement
+        validated_data['stack'] = stack
+        validated_data['user'] = stack.user
+
+        # once the model is created, it only makes sense for the updated quantity to change
+        # otherwise, it should probably just be deleted and a new one created instead
+        quantity = validated_data.pop('quantity')
+        defaults = {'quantity': quantity}
+
+        instance, _ = model.objects.update_or_create(defaults, **validated_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.save()
+        return instance
+
+
 class UserSupplementStackCreateUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=300)
-    compositions = UserSupplementStackCompositionCreateSerializer(many=True, required=False)
+    compositions = UserSupplementStackCompositionCreateInternalSerializer(many=True, required=False)
     uuid = serializers.UUIDField(required=False, read_only=True)
 
     def validate_compositions(self, data):
