@@ -107,15 +107,6 @@ class GetRequestsTestsMixin(GenericRESTMethodMixin):
 
 
 class GetRequestsTestsMixinV2(GenericRESTMethodMixin):
-    def _get_results_from_response(self, response):
-        # pagination puts data into results
-        if self.PAGINATION:
-            request_data = response.data['results']
-        else:
-            request_data = response.data
-
-        return request_data
-
     def test_get_request(self):
         response = self.client_1.get(self.url)
         data = self._get_results_from_response(response)

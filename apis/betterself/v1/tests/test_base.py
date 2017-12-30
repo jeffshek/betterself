@@ -87,3 +87,12 @@ class GenericRESTMethodMixin(object):
         url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
         request = client.get(url)
         return request
+
+    def _get_results_from_response(self, response):
+        # pagination puts data into results
+        if self.PAGINATION:
+            request_data = response.data['results']
+        else:
+            request_data = response.data
+
+        return request_data

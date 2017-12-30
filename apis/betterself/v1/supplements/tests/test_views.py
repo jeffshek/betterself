@@ -1,3 +1,4 @@
+from apis.betterself.v1.tests.mixins.test_delete_requests import DeleteRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin, GetRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin, PostRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_put_requests import PUTRequestsTestsMixin
@@ -351,7 +352,7 @@ class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequest
 
 
 class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2,
-        PUTRequestsTestsMixin):
+        PUTRequestsTestsMixin, DeleteRequestsTestsMixinV2):
     TEST_MODEL = UserSupplementStackComposition
     PAGINATION = False
     username_1 = 'jack'
