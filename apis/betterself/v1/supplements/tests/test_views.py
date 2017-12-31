@@ -320,37 +320,6 @@ class SupplementStackV1Tests(SupplementBaseTests, GetRequestsTestsMixin, PostReq
         super().test_valid_get_request_with_params_filters_correctly(request_parameters)
 
 
-class UserSupplementStackCompositionViewsetTests(SupplementBaseTests, GetRequestsTestsMixin):
-    TEST_MODEL = UserSupplementStackComposition
-
-    def _get_default_post_parameters(self):
-        stack = UserSupplementStackFactory(user=self.user_1)
-        supplement = SupplementFactory(user=self.user_1)
-        request_params = {
-            'stack_uuid': str(stack.uuid),
-            'supplement_uuid': str(supplement.uuid)
-        }
-        return request_params
-
-    @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
-        UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)
-
-    def test_valid_get_request_for_key_in_response(self):
-        key = 'supplement'
-        super().test_valid_get_request_for_key_in_response(key)
-
-    def test_valid_get_request_with_params_filters_correctly(self):
-        url = API_V1_LIST_CREATE_URL.format(self.TEST_MODEL.RESOURCE_NAME)
-        request = self.client_1.get(url)
-        data = request.data
-        uuid = data[0]['uuid']
-
-        request_parameters = {'uuid': uuid}
-        super().test_valid_get_request_with_params_filters_correctly(request_parameters)
-
-
 class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTestsMixinV2, PostRequestsTestsMixinV2,
         PUTRequestsTestsMixin, DeleteRequestsTestsMixinV2):
     TEST_MODEL = UserSupplementStackComposition
@@ -374,3 +343,21 @@ class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTe
     def setUpTestData(cls):
         super().setUpTestData()
         UserSupplementStackFixturesGenerator.create_fixtures(cls.user_1)
+
+    def test_delete_composition_wont_delete_stack(self):
+        """ That moment of fear when you want to be absolutely certain your cascades are set correctly """
+        supplement_composition = UserSupplementStackComposition.objects.filter(user=self.user_1).first()
+        supplement_composition_uuid = supplement_composition.uuid
+        stack_uuid = supplement_composition.stack.uuid
+
+        data = {
+            'uuid': supplement_composition_uuid
+        }
+
+        response = self.client_1.delete(self.url, data=data)
+        self.assertEqual(response.status_code, 204)
+
+        stack_still_exists = UserSupplementStack.objects.filter(uuid=stack_uuid, user=self.user_1).exists()
+        self.assertTrue(stack_still_exists)
+
+        self.client_1.delete
