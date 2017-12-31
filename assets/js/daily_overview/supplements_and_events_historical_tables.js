@@ -186,7 +186,7 @@ export class SupplementsAndUserActivitiesMultiTab extends Component {
     return (
       <MultiTabTableView
         tableNavTabs={this.tableNavTabs}
-        tableColumnHeaders={["Time", "Supplement", "Quantity"]}
+        tableColumnHeaders={["Time", "Supplement", "Quantity", "Actions"]}
         tableData={this.state.supplementsHistory}
         tableRowRenderer={SupplementTableRow}
         tableName="Supplements Taken"

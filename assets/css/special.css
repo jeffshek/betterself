@@ -166,3 +166,8 @@
 .col-sm-7.form-control-label.label-no-bottom-padding {
   margin-bottom: 0px;
 }
+
+.release-notes {
+  padding-bottom: 10px;
+  font-size: large;
+}

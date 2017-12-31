@@ -1,8 +1,35 @@
 import React from "react";
-import { READABLE_TIME_FORMAT } from "../constants/dates_and_times";
+import {
+  READABLE_DATE_TIME_FORMAT,
+  READABLE_TIME_FORMAT
+} from "../constants/dates_and_times";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { getSupplementOverviewURLFromUUID } from "../routing/routing_utils";
+import { JSON_POST_AUTHORIZATION_HEADERS } from "../constants/requests";
+import { SUPPLEMENT_EVENTS_RESOURCE_URL } from "../constants/urls";
+
+const DeleteSupplementFromDailyOverview = ({ uuid, supplement_name, time }) => {
+  const timeFormatted = moment(time).format(READABLE_DATE_TIME_FORMAT);
+  const answer = confirm(
+    `WARNING: THIS WILL DELETE THE FOLLOWING EVENT \n\n${supplement_name} at ${timeFormatted}!\n\nConfirm? `
+  );
+
+  if (answer) {
+    const params = {
+      uuid: uuid
+    };
+    fetch(SUPPLEMENT_EVENTS_RESOURCE_URL, {
+      method: "DELETE",
+      headers: JSON_POST_AUTHORIZATION_HEADERS,
+      body: JSON.stringify(params)
+    }).then(
+      // After deleting, just refresh the entire page. In the future, remove
+      // from the array and setState
+      location.reload()
+    );
+  }
+};
 
 export const SupplementTableRow = props => {
   const { details } = props;
@@ -19,6 +46,14 @@ export const SupplementTableRow = props => {
         <Link to={supplementOverviewLink}>{details.supplement_name}</Link>
       </td>
       <td>{details.quantity}</td>
+      <td>
+        <div
+          className="remove-icon"
+          onClick={e => DeleteSupplementFromDailyOverview(details)}
+        >
+          <i className="fa fa-remove fa-1x" />
+        </div>
+      </td>
     </tr>
   );
 };
