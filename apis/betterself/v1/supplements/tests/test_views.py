@@ -1,3 +1,5 @@
+from django.urls import reverse
+
 from apis.betterself.v1.tests.mixins.test_delete_requests import DeleteRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_get_requests import GetRequestsTestsMixin, GetRequestsTestsMixinV2
 from apis.betterself.v1.tests.mixins.test_post_requests import PostRequestsTestsMixin, PostRequestsTestsMixinV2
@@ -360,4 +362,18 @@ class UserSupplementStackCompositionViewsetTestsV2(BaseAPIv2Tests, GetRequestsTe
         stack_still_exists = UserSupplementStack.objects.filter(uuid=stack_uuid, user=self.user_1).exists()
         self.assertTrue(stack_still_exists)
 
-        self.client_1.delete
+    def test_delete_supplement_wont_delete_stack(self):
+        supplement_composition = UserSupplementStackComposition.objects.filter(user=self.user_1).first()
+        supplement_uuid = supplement_composition.supplement.uuid
+        stack_uuid = supplement_composition.stack.uuid
+
+        data = {
+            'uuid': supplement_uuid
+        }
+
+        url = reverse(Supplement.RESOURCE_NAME)
+        response = self.client_1.delete(url, data=data)
+        self.assertEqual(response.status_code, 204)
+
+        stack_still_exists = UserSupplementStack.objects.filter(uuid=stack_uuid, user=self.user_1).exists()
+        self.assertTrue(stack_still_exists)
