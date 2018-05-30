@@ -45,7 +45,7 @@ psycopg2==2.7.3.2
 PyJWT==1.5.3
 pysocks==1.6.8
 pytz==2017.3
-raven==6.4.0
+raven==6.9.0
 readline==6.2.4.1
 redis==2.10.6
 requests==2.18.4
