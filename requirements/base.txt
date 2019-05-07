@@ -39,7 +39,7 @@ openpyxl==2.4.9
 pandas==0.22.0
 patch==1.16
 patsy==0.4.1
-phonenumberslite==8.8.8
+phonenumberslite==8.10.11
 Pillow==4.3.0
 psycopg2==2.7.3.2
 PyJWT==1.5.3
