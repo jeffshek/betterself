@@ -23,7 +23,7 @@ django-redis==4.8.0
 django-rest-auth==0.9.3
 django-secure==1.0.1
 django-webpack-loader==0.6.0
-djangorestframework==3.7.7
+djangorestframework==3.10.1
 factory-boy==2.9.2
 Faker==0.8.8
 fitbit==0.3.0
