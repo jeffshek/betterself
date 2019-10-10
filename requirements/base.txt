@@ -2,7 +2,7 @@ amqp==2.2.2
 babel==2.5.3
 billiard==3.5.0.3
 celery==4.1.0
-contextlib2==0.5.5
+contextlib2==0.6.0.post1
 coverage==4.4.2
 cython==0.27.3
 django==1.11.7
