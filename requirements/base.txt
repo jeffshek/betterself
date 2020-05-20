@@ -28,7 +28,7 @@ factory-boy==2.9.2
 Faker==0.8.8
 fitbit==0.3.0
 honcho==1.0.1
-httplib2==0.10.3
+httplib2==0.18.0
 ipython==6.2.1
 kombu==4.1.0
 MagicMock==0.3
