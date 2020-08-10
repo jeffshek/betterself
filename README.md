@@ -6,7 +6,7 @@
 
 Powered by [BrowserStack](https://BrowserStack.com) (Logo on button of README.md)
 
-## UPDATE: This (specific) project is no longer being maintained. I got pulled into a few consuming projects the last two years, and BetterSelf got neglected. During that time, I realized where I wanted to take this. I'm currently in the process of rewriting BetterSelf 2.0 with a slightly different approach. Privacy will remain a big deal in BetterSelf 2.0 (I will never sell any of your data), but it will also reflect a more practical approach on communication with users (using email). BetterSelf 2.0 will (finally) have correct mobile support (Flutter), be written in Python 3.6/3.7 (with typing) and have a much improved UI experience. I'd had a lot of requests for proper analytics, a recommendation engine, and a proper way to upload 23andme data which is all on the radar. I've recently quit my job to work on these project ideas I've had for a while, so sit tight as BetterSelf begins it's next step. Thank you for your patience.
+## UPDATE: This (specific) project has been moved to https://github.com/jeffshek/open. It will be actively maintained on that repo. The mobile apps are still coming along!
 
 BetterSelf - Your Body's Dashboard
 ==============================
