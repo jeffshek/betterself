@@ -61,5 +61,5 @@ uuid==1.30
 vine==1.1.4
 wheel==0.30.0
 whitenoise==3.3.1
-xlrd==1.1.0
+xlrd==2.0.1
 XlsxWriter==1.0.2
