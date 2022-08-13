@@ -44,7 +44,7 @@ Pillow==4.3.0
 psycopg2==2.7.3.2
 PyJWT==1.5.3
 pysocks==1.6.8
-pytz==2017.3
+pytz==2022.2.1
 raven==6.4.0
 readline==6.2.4.1
 redis==2.10.6
