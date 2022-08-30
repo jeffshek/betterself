@@ -33,7 +33,7 @@
     "jquery": "^3.2.1",
     "lint-staged": "^5.0.0",
     "moment": "^2.19.2",
-    "moment-timezone": "^0.5.14",
+    "moment-timezone": "^0.5.35",
     "prettier": "^1.8.2",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
