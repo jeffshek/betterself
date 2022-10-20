@@ -42,7 +42,7 @@ patsy==0.4.1
 phonenumberslite==8.8.8
 Pillow==4.3.0
 psycopg2==2.7.3.2
-PyJWT==1.5.3
+PyJWT==2.6.0
 pysocks==1.6.8
 pytz==2017.3
 raven==6.4.0
