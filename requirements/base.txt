@@ -25,7 +25,7 @@ django-secure==1.0.1
 django-webpack-loader==0.6.0
 djangorestframework==3.7.7
 factory-boy==2.9.2
-Faker==0.8.8
+Faker==18.2.0
 fitbit==0.3.0
 honcho==1.0.1
 httplib2==0.10.3
