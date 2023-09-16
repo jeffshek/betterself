@@ -33,7 +33,7 @@ ipython==6.2.1
 kombu==4.1.0
 MagicMock==0.3
 Markdown==2.6.10
-numpy==1.13.3
+numpy==1.26.0
 oauthlib==2.0.6
 openpyxl==2.4.9
 pandas==0.22.0
