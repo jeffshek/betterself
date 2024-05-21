@@ -48,7 +48,7 @@ pytz==2017.3
 raven==6.4.0
 readline==6.2.4.1
 redis==2.10.6
-requests==2.18.4
+requests==2.32.1
 requests-oauthlib==0.8.0
 scipy==1.0.0
 setuptools==38.2.5
