@@ -1,5 +1,5 @@
 # overlaps with test
-django-debug-toolbar==1.9.1
+django-debug-toolbar==4.4.1
 django-slowtests==0.5.1
 
 # local only specific
